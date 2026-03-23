@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { css } from "@linaria/core";
+import { styled } from "@linaria/react";
 
-const hero = css`
+const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,19 +11,19 @@ const hero = css`
   gap: 1.5rem;
 `;
 
-const title = css`
+const Title = styled.h1`
   font-size: 3rem;
   font-weight: 800;
   line-height: 1.2;
 `;
 
-const subtitle = css`
+const Subtitle = styled.p`
   font-size: 1.1rem;
   opacity: 0.6;
   max-width: 480px;
 `;
 
-const cta = css`
+const Cta = styled(Link)`
   display: inline-block;
   padding: 0.75rem 2rem;
   background: var(--primary);
@@ -39,14 +39,12 @@ const cta = css`
 
 export default function Hero() {
   return (
-    <section className={hero}>
-      <h1 className={title}>Preview CSV files instantly</h1>
-      <p className={subtitle}>
+    <Section>
+      <Title>Preview CSV files instantly</Title>
+      <Subtitle>
         Upload any CSV file and explore your data with a clean, readable table.
-      </p>
-      <Link href="/csv-preview" className={cta}>
-        Get started
-      </Link>
-    </section>
+      </Subtitle>
+      <Cta href="/csv-preview">Get started</Cta>
+    </Section>
   );
 }

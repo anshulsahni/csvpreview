@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { css } from "@linaria/core";
+import { styled } from "@linaria/react";
 
-const dropzone = css`
+const Dropzone = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,12 +20,12 @@ const dropzone = css`
   }
 `;
 
-const label = css`
+const Label = styled.p`
   font-size: 1rem;
   opacity: 0.6;
 `;
 
-const button = css`
+const Button = styled.button`
   padding: 0.5rem 1.25rem;
   background: var(--primary);
   color: #fff;
@@ -48,11 +48,9 @@ export default function FileUpload({ onFile }: FileUploadProps) {
   };
 
   return (
-    <div className={dropzone} onClick={() => inputRef.current?.click()}>
-      <p className={label}>Drop a CSV file here or click to browse</p>
-      <button className={button} type="button">
-        Choose file
-      </button>
+    <Dropzone onClick={() => inputRef.current?.click()}>
+      <Label>Drop a CSV file here or click to browse</Label>
+      <Button type="button">Choose file</Button>
       <input
         ref={inputRef}
         type="file"
@@ -60,6 +58,6 @@ export default function FileUpload({ onFile }: FileUploadProps) {
         hidden
         onChange={handleChange}
       />
-    </div>
+    </Dropzone>
   );
 }

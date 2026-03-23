@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { css } from "@linaria/core";
+import { styled } from "@linaria/react";
 import FileUpload from "./components/FileUpload";
 import CsvTable from "./components/CsvTable";
 
-const container = css`
+const Container = styled.div`
   padding: 2rem;
   max-width: 1100px;
   margin: 0 auto;
@@ -14,12 +14,12 @@ const container = css`
   gap: 2rem;
 `;
 
-const heading = css`
+const Heading = styled.h1`
   font-size: 1.75rem;
   font-weight: 700;
 `;
 
-const meta = css`
+const Meta = styled.p`
   font-size: 0.875rem;
   opacity: 0.5;
 `;
@@ -46,17 +46,17 @@ export default function CsvPreviewClient() {
   };
 
   return (
-    <div className={container}>
-      <h1 className={heading}>CSV Preview</h1>
+    <Container>
+      <Heading>CSV Preview</Heading>
       <FileUpload onFile={handleFile} />
       {data && (
         <>
-          <p className={meta}>
+          <Meta>
             {fileName} — {data.rows.length} rows, {data.headers.length} columns
-          </p>
+          </Meta>
           <CsvTable headers={data.headers} rows={data.rows} />
         </>
       )}
-    </div>
+    </Container>
   );
 }

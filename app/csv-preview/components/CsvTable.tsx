@@ -1,12 +1,12 @@
-import { css } from "@linaria/core";
+import { styled } from "@linaria/react";
 
-const wrapper = css`
+const Wrapper = styled.div`
   overflow-x: auto;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
 `;
 
-const table = css`
+const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
@@ -40,8 +40,8 @@ interface CsvTableProps {
 
 export default function CsvTable({ headers, rows }: CsvTableProps) {
   return (
-    <div className={wrapper}>
-      <table className={table}>
+    <Wrapper>
+      <Table>
         <thead>
           <tr>
             {headers.map((h) => (
@@ -58,7 +58,7 @@ export default function CsvTable({ headers, rows }: CsvTableProps) {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Wrapper>
   );
 }

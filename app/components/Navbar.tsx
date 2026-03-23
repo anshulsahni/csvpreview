@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { css } from "@linaria/core";
+import { styled } from "@linaria/react";
 
-const nav = css`
+const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -9,13 +9,13 @@ const nav = css`
   border-bottom: 1px solid #e5e7eb;
 `;
 
-const brand = css`
+const Brand = styled.span`
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--primary);
 `;
 
-const links = css`
+const Links = styled.div`
   display: flex;
   gap: 1.5rem;
   margin-left: auto;
@@ -34,13 +34,13 @@ const links = css`
 
 export default function Navbar() {
   return (
-    <nav className={nav}>
-      <span className={brand}>CSV Preview</span>
-      <div className={links}>
+    <Nav>
+      <Brand>CSV Preview</Brand>
+      <Links>
         <Link href="/">Home</Link>
         <Link href="/csv-preview">CSV Preview</Link>
         <Link href="/about">About</Link>
-      </div>
-    </nav>
+      </Links>
+    </Nav>
   );
 }

@@ -6,7 +6,7 @@ const Nav = styled.nav`
   align-items: center;
   gap: 2rem;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 `;
 
 const Brand = styled.span`

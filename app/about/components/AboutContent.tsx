@@ -27,7 +27,7 @@ const Stack = styled.div`
 
 const Tag = styled.span`
   padding: 0.3rem 0.75rem;
-  background: #f3f4f6;
+  background: var(--subtle);
   border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 500;

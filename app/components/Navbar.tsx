@@ -38,7 +38,6 @@ export default function Navbar() {
       <Brand>CSV Preview</Brand>
       <Links>
         <Link href="/">Home</Link>
-        <Link href="/csv-preview">CSV Preview</Link>
         <Link href="/about">About</Link>
       </Links>
     </Nav>

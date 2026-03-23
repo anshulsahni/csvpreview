@@ -1,0 +1,6 @@
+{
+  "presets": [
+    ["next/babel"],
+    ["@wyw-in-js/babel-preset", { "evaluate": true }]
+  ]
+}

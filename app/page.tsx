@@ -1,11 +1,12 @@
 import Navbar from "@/app/components/Navbar";
+import CsvViewer from "@/app/components/CsvViewer";
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main>
-        <p>Hello World</p>
+      <main style={{ padding: "1rem" }}>
+        <CsvViewer />
       </main>
     </>
   );

@@ -1,6 +1,13 @@
 {
   "presets": [
-    ["next/babel"],
-    ["@wyw-in-js/babel-preset", { "evaluate": true }]
-  ]
+    ["next/babel"]
+  ],
+  "env": {
+    "development": {
+      "presets": [["@wyw-in-js/babel-preset", { "evaluate": true }]]
+    },
+    "production": {
+      "presets": [["@wyw-in-js/babel-preset", { "evaluate": true }]]
+    }
+  }
 }

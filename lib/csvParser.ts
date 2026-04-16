@@ -1,3 +1,4 @@
+import Papa from "papaparse";
 /**
  * CSV Parser — stable wrapper around PapaParse
  *
@@ -6,10 +7,6 @@
  * detail. The exported types and function signature are designed to be stable
  * even if the underlying parsing library is swapped.
  */
-
-// ============================================================================
-// SECTION 1: Exported public types (no papaparse imports here)
-// ============================================================================
 
 /**
  * Supported CSV delimiters
@@ -42,16 +39,6 @@ export interface ParseResult {
 export interface ParseOptions {
   delimiter?: Delimiter;
 }
-
-// ============================================================================
-// SECTION 2: Import from PapaParse (implementation detail)
-// ============================================================================
-
-import Papa from "papaparse";
-
-// ============================================================================
-// SECTION 3: Private mapping helpers (NOT exported)
-// ============================================================================
 
 /**
  * Maps a PapaParse error to our ParseError interface

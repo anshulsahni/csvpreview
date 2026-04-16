@@ -12,6 +12,10 @@
   --primary: #0070f3;
   --border: #e5e7eb;
   --subtle: #f3f4f6;
+  --grid-header-bg: #f0f2f5;
+  --grid-header-text: #555;
+  --grid-border: #d0d7de;
+  --grid-cell-bg: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,11 +31,18 @@
   }
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
 }
 
 a {

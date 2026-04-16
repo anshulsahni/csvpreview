@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, ChangeEvent, useEffect } from "react";
+import SpreadsheetGrid from "./SpreadsheetGrid";
 
 type CsvData = string[][];
 
@@ -44,25 +45,21 @@ export default function CsvViewer() {
   }
 
   return (
-    <div>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
-      {csvData && <button onClick={handleClear} style={{ marginLeft: "0.5rem" }}>Clear</button>}
-      {fileName && <p>File: {fileName}</p>}
-      {csvData && (
-        <table border={1} cellPadding={4} style={{ borderCollapse: "collapse", marginTop: "1rem" }}>
-          <tbody>
-            {csvData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, colIndex) => (
-                  rowIndex === 0
-                    ? <th key={colIndex}>{cell}</th>
-                    : <td key={colIndex}>{cell}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <div style={{ padding: "0.5rem 1rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <input type="file" accept=".csv" onChange={handleFileUpload} />
+        {csvData && (
+          <button onClick={handleClear}>Clear</button>
+        )}
+        {fileName && (
+          <span style={{ fontSize: "0.85rem", color: "var(--foreground)", opacity: 0.6 }}>
+            {fileName}
+          </span>
+        )}
+      </div>
+      <div style={{ flex: 1, overflow: "hidden" }}>
+        <SpreadsheetGrid data={csvData ?? []} />
+      </div>
     </div>
   );
 }

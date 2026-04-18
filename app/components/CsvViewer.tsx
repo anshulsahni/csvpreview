@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent, useEffect, useRef } from "react";
 import SpreadsheetGrid from "./SpreadsheetGrid";
+import { parseCSV } from "../../lib/csvParser";
 
 type CsvData = string[][];
 
@@ -30,7 +31,7 @@ export default function CsvViewer() {
     const reader = new FileReader();
     reader.onload = (event) => {
       const text = event.target?.result as string;
-      const rows = text.trim().split("\n").map((row) => row.split(","));
+      const { rows } = parseCSV(text);
       setCsvData(rows);
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_NAME, file.name);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useRef } from "react";
 import SpreadsheetGrid from "./SpreadsheetGrid";
 
 type CsvData = string[][];
@@ -11,6 +11,7 @@ const LS_KEY_NAME = "csvpreview_filename";
 export default function CsvViewer() {
   const [csvData, setCsvData] = useState<CsvData | null>(null);
   const [fileName, setFileName] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const savedData = localStorage.getItem(LS_KEY_DATA);
@@ -42,18 +43,19 @@ export default function CsvViewer() {
     setFileName("");
     localStorage.removeItem(LS_KEY_DATA);
     localStorage.removeItem(LS_KEY_NAME);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <div style={{ padding: "0.5rem 1rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        <input type="file" accept=".csv" onChange={handleFileUpload} />
+        <input ref={fileInputRef} type="file" accept=".csv" onChange={handleFileUpload} />
         {csvData && (
           <button onClick={handleClear}>Clear</button>
         )}
         {fileName && (
           <span style={{ fontSize: "0.85rem", color: "var(--foreground)", opacity: 0.6 }}>
-            {fileName}
+            File: {fileName}
           </span>
         )}
       </div>

@@ -51,9 +51,7 @@ export default function SpreadsheetGrid({ data }: SpreadsheetGridProps) {
         </table>
       </TableScroller>
       <StatusBar>
-        {isEmpty
-          ? "Ready \u2014 upload a .csv, paste content, or start typing to create a new sheet"
-          : "\u00a0"}
+        {isEmpty ? "Ready \u2014 upload a .csv file to preview it here" : "\u00a0"}
       </StatusBar>
     </GridWrapper>
   );

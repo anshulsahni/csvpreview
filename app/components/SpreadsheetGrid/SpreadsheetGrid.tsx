@@ -58,11 +58,7 @@ export default function SpreadsheetGrid({
                 <HeaderRowGutterTh>H</HeaderRowGutterTh>
                 {Array.from({ length: vm.numCols }, (_, ci) => (
                   <HeaderRowTh key={ci}>
-<<<<<<< HEAD
                     {vm.headerRowCells?.[ci] ?? ""}
-=======
-                    {(vm.headerRowCells ?? [])[ci] ?? ""}
->>>>>>> origin/task_3.1_toggle_header_row
                   </HeaderRowTh>
                 ))}
               </tr>

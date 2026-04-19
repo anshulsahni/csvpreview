@@ -124,9 +124,8 @@ function computeViewModel(
 }
 
 export function useSpreadsheetGrid(
-  args: UseSpreadsheetGridArgs
+  { data, firstRowAsHeader }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
-  const { data, firstRowAsHeader } = args;
   const { sort, onArrowClick } = useSortState();
 
   const base = useMemo(

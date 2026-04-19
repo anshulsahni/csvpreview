@@ -224,6 +224,42 @@ describe("useUploadModal", () => {
 
       expect(onPasteSubmit).not.toHaveBeenCalled();
     });
+
+    it("submitPastedText calls onPasteSubmit with current pasted text when non-empty", () => {
+      const onPasteSubmit = jest.fn();
+      const { result } = renderHook(() =>
+        useUploadModal(makeArgs({ onPasteSubmit }))
+      );
+
+      act(() => {
+        result.current.setPastedText("col1,col2\n1,2");
+      });
+      act(() => {
+        result.current.submitPastedText();
+      });
+
+      expect(onPasteSubmit).toHaveBeenCalledWith("col1,col2\n1,2");
+    });
+
+    it("submitPastedText does nothing when paste area is empty or whitespace-only", () => {
+      const onPasteSubmit = jest.fn();
+      const { result } = renderHook(() =>
+        useUploadModal(makeArgs({ onPasteSubmit }))
+      );
+
+      act(() => {
+        result.current.submitPastedText();
+      });
+      expect(onPasteSubmit).not.toHaveBeenCalled();
+
+      act(() => {
+        result.current.setPastedText("   \n\t");
+      });
+      act(() => {
+        result.current.submitPastedText();
+      });
+      expect(onPasteSubmit).not.toHaveBeenCalled();
+    });
   });
 
   describe("Escape handling", () => {

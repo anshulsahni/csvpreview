@@ -2,6 +2,7 @@
 
 import { styled } from "@linaria/react";
 import SpreadsheetGrid from "../SpreadsheetGrid";
+import Toolbar from "../Toolbar";
 import UploadModal from "../UploadModal";
 import { useCsvViewer } from "./hooks";
 
@@ -14,6 +15,10 @@ export default function CsvViewer() {
         <UploadButton type="button" onClick={viewer.openUpload}>
           Upload
         </UploadButton>
+        <Toolbar
+          firstRowAsHeader={viewer.firstRowAsHeader}
+          onFirstRowAsHeaderChange={viewer.setFirstRowAsHeader}
+        />
         {viewer.csvData && (
           <ClearButton type="button" onClick={viewer.handleClear}>
             Clear
@@ -22,7 +27,10 @@ export default function CsvViewer() {
         {viewer.fileName && <FileLabel>File: {viewer.fileName}</FileLabel>}
       </TopBar>
       <GridArea>
-        <SpreadsheetGrid data={viewer.csvData ?? []} />
+        <SpreadsheetGrid
+          data={viewer.csvData ?? []}
+          firstRowAsHeader={viewer.firstRowAsHeader}
+        />
       </GridArea>
       <UploadModal
         isOpen={viewer.isUploadOpen}

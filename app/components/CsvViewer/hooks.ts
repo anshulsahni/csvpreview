@@ -18,6 +18,8 @@ export interface UseCsvViewerReturn {
   isUploadOpen: boolean;
   parseErrors: ParseError[];
   delimiter: Delimiter;
+  firstRowAsHeader: boolean;
+  setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
   closeUpload: () => void;
@@ -45,6 +47,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
   const [delimiter] = useState<Delimiter>(",");
+  const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
 
   useEffect(() => {
     const persisted = readPersistedRows();
@@ -98,6 +101,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setCsvData([]);
     setFileName("");
     setParseErrors([]);
+    setFirstRowAsHeader(false);
     setIsUploadOpen(false);
   }
 
@@ -105,6 +109,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setCsvData(null);
     setFileName("");
     setParseErrors([]);
+    setFirstRowAsHeader(false);
     try {
       localStorage.removeItem(LS_KEY_DATA);
       localStorage.removeItem(LS_KEY_FILE_NAME);
@@ -129,6 +134,8 @@ export function useCsvViewer(): UseCsvViewerReturn {
     isUploadOpen,
     parseErrors,
     delimiter,
+    firstRowAsHeader,
+    setFirstRowAsHeader,
     openUpload,
     closeUpload,
     handleFilePicked,

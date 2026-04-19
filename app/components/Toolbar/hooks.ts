@@ -11,8 +11,7 @@ export interface UseToolbarReturn {
   handleFirstRowAsHeaderChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function useToolbar(args: UseToolbarArgs): UseToolbarReturn {
-  const { onFirstRowAsHeaderChange } = args;
+export function useToolbar({ onFirstRowAsHeaderChange }: UseToolbarArgs): UseToolbarReturn {
 
   const handleFirstRowAsHeaderChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {

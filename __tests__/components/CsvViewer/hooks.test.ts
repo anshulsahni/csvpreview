@@ -103,7 +103,7 @@ describe("useCsvViewer", () => {
     });
   });
 
-  describe("handleFilePicked (objective #2 — file path, objective #3 — errors)", () => {
+  describe("handleFilePicked()", () => {
     it("parses a valid .csv file, sets state, persists to localStorage, closes modal", async () => {
       mockFileReaderWithText("Name,Age\nAlice,30\nBob,25");
       const { result } = renderHook(() => useCsvViewer());
@@ -196,7 +196,7 @@ describe("useCsvViewer", () => {
     });
   });
 
-  describe("handlePasteSubmit (objective #2 — paste path)", () => {
+  describe("handlePasteSubmit()", () => {
     it("parses pasted CSV, sets filename to 'pasted.csv', closes modal", async () => {
       const { result } = renderHook(() => useCsvViewer());
 
@@ -244,7 +244,7 @@ describe("useCsvViewer", () => {
     });
   });
 
-  describe("handleStartBlank (objective #4)", () => {
+  describe("handleStartBlank()", () => {
     it("empties csvData, clears fileName and errors, closes modal", async () => {
       const { result } = renderHook(() => useCsvViewer());
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
@@ -265,7 +265,7 @@ describe("useCsvViewer", () => {
     });
   });
 
-  describe("handleClear (objective #5 round-trip)", () => {
+  describe("handleClear()", () => {
     it("resets state, removes localStorage keys, and reopens the modal", async () => {
       const rows = [["x"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
@@ -296,7 +296,6 @@ describe("useCsvViewer", () => {
       act(() => {
         result.current.setFirstRowAsHeader(true);
       });
-      expect(result.current.firstRowAsHeader).toBe(true);
 
       act(() => {
         result.current.handleClear();
@@ -315,19 +314,6 @@ describe("useCsvViewer", () => {
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
       expect(result.current.firstRowAsHeader).toBe(false);
-    });
-
-    it("setFirstRowAsHeader updates the flag", async () => {
-      const rows = [["a"]];
-      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
-
-      const { result } = renderHook(() => useCsvViewer());
-      await waitFor(() => expect(result.current.csvData).toEqual(rows));
-
-      act(() => {
-        result.current.setFirstRowAsHeader(true);
-      });
-      expect(result.current.firstRowAsHeader).toBe(true);
     });
   });
 

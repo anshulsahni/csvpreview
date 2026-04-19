@@ -76,11 +76,10 @@ function computeViewModel(
   };
 }
 
-export function useSpreadsheetGrid(
-  args: UseSpreadsheetGridArgs
-): SpreadsheetGridViewModel {
-  const { data, firstRowAsHeader } = args;
-
+export function useSpreadsheetGrid({
+  data,
+  firstRowAsHeader,
+}: UseSpreadsheetGridArgs): SpreadsheetGridViewModel {
   return useMemo(
     () => computeViewModel(data, firstRowAsHeader),
     [data, firstRowAsHeader]

@@ -30,7 +30,7 @@ export default function SpreadsheetGrid({
                 <HeaderRowGutterTh>H</HeaderRowGutterTh>
                 {Array.from({ length: vm.numCols }, (_, ci) => (
                   <HeaderRowTh key={ci}>
-                    {vm.headerRowCells[ci] ?? ""}
+                    {(vm.headerRowCells ?? [])[ci] ?? ""}
                   </HeaderRowTh>
                 ))}
               </tr>

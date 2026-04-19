@@ -8,7 +8,7 @@ import {
 } from "@/lib/csvParser";
 
 export const LS_KEY_DATA = "csvpreview_data";
-export const LS_KEY_NAME = "csvpreview_filename";
+export const LS_KEY_FILE_NAME = "csvpreview_filename";
 
 const PASTED_FILENAME = "pasted.csv";
 
@@ -50,7 +50,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     const persisted = readPersistedRows();
     if (persisted) {
       setCsvData(persisted);
-      setFileName(localStorage.getItem(LS_KEY_NAME) ?? "");
+      setFileName(localStorage.getItem(LS_KEY_FILE_NAME) ?? "");
     } else {
       setIsUploadOpen(true);
     }
@@ -68,7 +68,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
       setFileName(name);
       try {
         localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
-        localStorage.setItem(LS_KEY_NAME, name);
+        localStorage.setItem(LS_KEY_FILE_NAME, name);
       } catch {
         // localStorage may be unavailable (privacy mode, quota). Non-fatal.
       }
@@ -116,7 +116,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setParseErrors([]);
     try {
       localStorage.removeItem(LS_KEY_DATA);
-      localStorage.removeItem(LS_KEY_NAME);
+      localStorage.removeItem(LS_KEY_FILE_NAME);
     } catch {
       // ignore
     }

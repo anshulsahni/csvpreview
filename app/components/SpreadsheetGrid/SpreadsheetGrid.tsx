@@ -2,6 +2,7 @@
 
 import { styled } from "@linaria/react";
 import { useSpreadsheetGrid } from "./hooks";
+import { SortArrows } from "./SortArrows";
 
 export interface SpreadsheetGridProps {
   data: string[][];
@@ -21,16 +22,43 @@ export default function SpreadsheetGrid({
           <thead>
             <tr>
               <CornerTh />
-              {Array.from({ length: vm.numCols }, (_, ci) => (
-                <ColTh key={ci}>{vm.colLabel(ci)}</ColTh>
-              ))}
+              {Array.from({ length: vm.numCols }, (_, ci) => {
+                const isSortCol = vm.sort?.colIdx === ci;
+                const activeDir =
+                  vm.sort && vm.sort.colIdx === ci
+                    ? vm.sort.direction
+                    : null;
+                return (
+                  <ColTh
+                    key={ci}
+                    sortActive={isSortCol}
+                    aria-sort={
+                      isSortCol
+                        ? activeDir === "asc"
+                          ? "ascending"
+                          : "descending"
+                        : undefined
+                    }
+                  >
+                    <ColThInner>
+                      <span>{vm.colLabel(ci)}</span>
+                      <SortArrows
+                        activeDirection={activeDir}
+                        onArrowClick={(dir) =>
+                          vm.onSortArrowClick(ci, dir)
+                        }
+                      />
+                    </ColThInner>
+                  </ColTh>
+                );
+              })}
             </tr>
             {vm.headerRowCells && (
               <tr data-header-row>
                 <HeaderRowGutterTh>H</HeaderRowGutterTh>
                 {Array.from({ length: vm.numCols }, (_, ci) => (
                   <HeaderRowTh key={ci}>
-                    {vm.headerRowCells[ci] ?? ""}
+                    {vm.headerRowCells?.[ci] ?? ""}
                   </HeaderRowTh>
                 ))}
               </tr>
@@ -87,7 +115,7 @@ const CornerTh = styled.th`
   border: 1px solid var(--grid-border);
 `;
 
-const ColTh = styled.th`
+const ColTh = styled.th<{ sortActive?: boolean }>`
   position: sticky;
   top: 0;
   z-index: 4;
@@ -97,11 +125,22 @@ const ColTh = styled.th`
   box-sizing: border-box;
   text-align: center;
   font-weight: normal;
-  background: var(--grid-header-bg);
+  background: ${({ sortActive }) =>
+    sortActive
+      ? "var(--grid-sort-active-bg)"
+      : "var(--grid-header-bg)"};
   color: var(--grid-header-text);
   border: 1px solid var(--grid-border);
-  padding: 3px 4px;
+  padding: 2px 4px;
   user-select: none;
+`;
+
+const ColThInner = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
 `;
 
 const HeaderRowGutterTh = styled.th`

@@ -63,11 +63,11 @@
 - **Dependencies:** Task 1.1
 - **Parallelizable:** No — depends on 1.1
 
-### Task 3.2 — Column Sort
-- **What to build:** Sort icon (▲/▼) in each column header. Click cycles: none → asc → desc → none. Auto-detects numeric vs text. Shows "N rows · Sorted by col X" in status bar. Active sort column highlighted blue per wireframe 2.
+### Task 3.2 — Column Sort (Done — 2026-04-19)
+- **What to build:** Sort controls (▲ asc / ▼ desc) on each column-letter header. Click sets sort on that column/direction; click the same active arrow again clears. Auto-detects numeric vs text. Shows "N rows · Sorted by col X asc|desc" in status bar. Active sort column highlighted blue per wireframe 2.
 - **Files involved:**
-  - `app/components/SpreadsheetGrid.tsx` (sort state, comparator)
-  - `lib/sortUtils.ts` (new — numeric detection + comparator functions)
+  - `app/components/SpreadsheetGrid/` (sort state in `hooks.ts`, UI in `SpreadsheetGrid.tsx`)
+  - `lib/sortUtils.ts` (numeric detection + comparators + stable `sortRows`)
 - **Dependencies:** Task 3.1
 - **Parallelizable:** Yes — can run in parallel with Task 4.1
 

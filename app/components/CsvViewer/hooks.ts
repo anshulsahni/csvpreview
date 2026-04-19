@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   parseCSV,
   type Delimiter,
@@ -56,61 +56,52 @@ export function useCsvViewer(): UseCsvViewerReturn {
     }
   }, []);
 
-  const ingest = useCallback(
-    (text: string, name: string) => {
-      const { rows, errors } = parseCSV(text, { delimiter });
-      if (errors.length > 0) {
-        setParseErrors(errors);
-        return;
-      }
-      setParseErrors([]);
-      setCsvData(rows);
-      setFileName(name);
-      try {
-        localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
-        localStorage.setItem(LS_KEY_FILE_NAME, name);
-      } catch {
-        // localStorage may be unavailable (privacy mode, quota). Non-fatal.
-      }
-      setIsUploadOpen(false);
-    },
-    [delimiter]
-  );
+  function ingest(text: string, name: string) {
+    const { rows, errors } = parseCSV(text, { delimiter });
+    if (errors.length > 0) {
+      setParseErrors(errors);
+      return;
+    }
+    setParseErrors([]);
+    setCsvData(rows);
+    setFileName(name);
+    try {
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
+      localStorage.setItem(LS_KEY_FILE_NAME, name);
+    } catch {
+      // localStorage may be unavailable (privacy mode, quota). Non-fatal.
+    }
+    setIsUploadOpen(false);
+  }
 
-  const handleFilePicked = useCallback(
-    (file: File) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = (event.target?.result as string) ?? "";
-        ingest(text, file.name);
-      };
-      reader.onerror = () => {
-        setParseErrors([{ line: 0, message: "Could not read file" }]);
-      };
-      reader.readAsText(file);
-    },
-    [ingest]
-  );
+  function handleFilePicked(file: File) {
+    const reader = new FileReader();
+    reader.onload = function handleFileReaderLoad(event: ProgressEvent<FileReader>) {
+      const text = (event.target?.result as string) ?? "";
+      ingest(text, file.name);
+    };
+    reader.onerror = function handleFileReaderError() {
+      setParseErrors([{ line: 0, message: "Could not read file" }]);
+    };
+    reader.readAsText(file);
+  }
 
-  const handlePasteSubmit = useCallback(
-    (text: string) => {
-      if (text.trim() === "") {
-        setParseErrors([{ line: 0, message: "Paste area is empty" }]);
-        return;
-      }
-      ingest(text, PASTED_FILENAME);
-    },
-    [ingest]
-  );
+  function handlePasteSubmit(text: string) {
+    if (text.trim() === "") {
+      setParseErrors([{ line: 0, message: "Paste area is empty" }]);
+      return;
+    }
+    ingest(text, PASTED_FILENAME);
+  }
 
-  const handleStartBlank = useCallback(() => {
+  function handleStartBlank() {
     setCsvData([]);
     setFileName("");
     setParseErrors([]);
     setIsUploadOpen(false);
-  }, []);
+  }
 
-  const handleClear = useCallback(() => {
+  function handleClear() {
     setCsvData(null);
     setFileName("");
     setParseErrors([]);
@@ -121,16 +112,16 @@ export function useCsvViewer(): UseCsvViewerReturn {
       // ignore
     }
     setIsUploadOpen(true);
-  }, []);
+  }
 
-  const openUpload = useCallback(() => {
+  function openUpload() {
     setIsUploadOpen(true);
-  }, []);
+  }
 
-  const closeUpload = useCallback(() => {
+  function closeUpload() {
     setParseErrors([]);
     setIsUploadOpen(false);
-  }, []);
+  }
 
   return {
     csvData,

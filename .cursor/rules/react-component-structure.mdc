@@ -1,0 +1,23 @@
+---
+description: React component + custom-hooks layout convention
+globs: app/components/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Component folder layout
+
+- Put each UI unit under `app/components/<Name>/` (folder name = main component name, or a logical parent grouping subcomponents).
+- Standard files:
+  - `<Name>.tsx` — **rendering only**: consume a view-model from the local `hooks.ts`, wire props/handlers to JSX. Avoid business rules and side effects here (except trivial DOM wiring).
+  - `hooks.ts` — **all behavior**: state, derived data, event handlers, and **pure** `computeXxxViewModel` helpers exported for tests.
+  - `index.ts` — re-export the default component and public types.
+- **Do not** add a repo-root `hooks/` bucket; colocate hooks with the component that owns them.
+
+## Testing
+
+- Prefer unit tests for pure `compute*` functions and hook behavior (`renderHook`).
+- Add RTL component tests only when the render branch is non-trivial (e.g. conditional attributes, keyboard routing).
+
+## Reference
+
+- Example: `app/components/SpreadsheetGrid/` and `__tests__/components/SpreadsheetGrid/`.

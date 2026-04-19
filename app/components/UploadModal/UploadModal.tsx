@@ -67,14 +67,26 @@ export default function UploadModal(props: UploadModalProps) {
 
         <Divider>— or paste CSV below —</Divider>
 
-        <PasteArea
-          value={modal.pastedText}
-          onChange={(event) => modal.setPastedText(event.target.value)}
-          onKeyDown={modal.handlePasteKeyDown}
-          placeholder="Paste your CSV content here… (Ctrl+V)"
-          rows={5}
-          aria-label="Paste CSV content"
-        />
+        <PasteSection>
+          <PasteArea
+            value={modal.pastedText}
+            onChange={(event) => modal.setPastedText(event.target.value)}
+            onKeyDown={modal.handlePasteKeyDown}
+            placeholder="Paste your CSV content here… (Ctrl+V)"
+            rows={5}
+            aria-label="Paste CSV content"
+          />
+          <PasteActions>
+            <PasteSubmitButton
+              type="button"
+              onClick={modal.submitPastedText}
+              disabled={modal.pastedText.trim() === ""}
+              aria-label="Submit pasted CSV for upload"
+            >
+              Submit
+            </PasteSubmitButton>
+          </PasteActions>
+        </PasteSection>
 
         {props.errors.length > 0 && (
           <ErrorPanel role="alert">
@@ -214,6 +226,37 @@ const Divider = styled.div`
   font-size: 0.8rem;
   color: var(--foreground);
   opacity: 0.55;
+`;
+
+const PasteSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const PasteActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const PasteSubmitButton = styled.button`
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 `;
 
 const PasteArea = styled.textarea`

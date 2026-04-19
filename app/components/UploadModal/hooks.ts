@@ -30,6 +30,7 @@ export interface UseUploadModalReturn {
   handleDrop: (event: DragEvent) => void;
   handleFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handlePasteKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
+  submitPastedText: () => void;
   handleBackdropClick: (event: MouseEvent) => void;
   handleCardClick: (event: MouseEvent) => void;
   handleStartBlankClick: () => void;
@@ -120,12 +121,16 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
     event.target.value = "";
   }
 
+  function submitPastedText() {
+    if (pastedText.trim() === "") return;
+    onPasteSubmit(pastedText);
+  }
+
   function handlePasteKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     const isSubmit = event.key === "Enter" && (event.ctrlKey || event.metaKey);
     if (!isSubmit) return;
     event.preventDefault();
-    if (pastedText.trim() === "") return;
-    onPasteSubmit(pastedText);
+    submitPastedText();
   }
 
   function handleBackdropClick(event: MouseEvent) {
@@ -156,6 +161,7 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
     handleDrop,
     handleFileInputChange,
     handlePasteKeyDown,
+    submitPastedText,
     handleBackdropClick,
     handleCardClick,
     handleStartBlankClick,

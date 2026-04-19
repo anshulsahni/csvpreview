@@ -24,6 +24,11 @@ describe("UploadModal (render smoke)", () => {
       screen.getByRole("button", { name: "Accepts: .csv files only" })
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Paste CSV content")).toBeInTheDocument();
+    const pasteSubmit = screen.getByRole("button", {
+      name: "Submit pasted CSV for upload",
+    });
+    expect(pasteSubmit).toBeInTheDocument();
+    expect(pasteSubmit).toBeDisabled();
     expect(
       screen.getByRole("button", { name: "Start with a blank sheet" })
     ).toBeInTheDocument();

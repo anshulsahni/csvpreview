@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import {
   LS_KEY_DATA,
-  LS_KEY_NAME,
+  LS_KEY_FILE_NAME,
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 
@@ -64,7 +64,7 @@ afterEach(() => {
 
 describe("useCsvViewer", () => {
   describe("mount behavior", () => {
-    it("auto-opens the upload modal when localStorage is empty (objective #1)", async () => {
+    it("auto-opens the upload modal when localStorage is empty", async () => {
       const { result } = renderHook(() => useCsvViewer());
 
       await waitFor(() => {
@@ -74,13 +74,13 @@ describe("useCsvViewer", () => {
       expect(result.current.fileName).toBe("");
     });
 
-    it("hydrates from localStorage and keeps modal closed when data exists (objective #5)", async () => {
+    it("hydrates from localStorage and keeps modal closed when data exists", async () => {
       const rows = [
         ["Name", "Age"],
         ["Alice", "30"],
       ];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
-      localStorage.setItem(LS_KEY_NAME, "people.csv");
+      localStorage.setItem(LS_KEY_FILE_NAME, "people.csv");
 
       const { result } = renderHook(() => useCsvViewer());
 
@@ -124,7 +124,7 @@ describe("useCsvViewer", () => {
       expect(result.current.fileName).toBe("people.csv");
       expect(result.current.parseErrors).toEqual([]);
       expect(result.current.isUploadOpen).toBe(false);
-      expect(localStorage.getItem(LS_KEY_NAME)).toBe("people.csv");
+      expect(localStorage.getItem(LS_KEY_FILE_NAME)).toBe("people.csv");
       expect(JSON.parse(localStorage.getItem(LS_KEY_DATA) ?? "[]")).toEqual([
         ["Name", "Age"],
         ["Alice", "30"],
@@ -155,7 +155,7 @@ describe("useCsvViewer", () => {
     it("does not overwrite already-loaded data when a new upload has parse errors", async () => {
       const rows = [["keep", "me"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
-      localStorage.setItem(LS_KEY_NAME, "existing.csv");
+      localStorage.setItem(LS_KEY_FILE_NAME, "existing.csv");
 
       mockFileReaderWithText('"unclosed');
       const { result } = renderHook(() => useCsvViewer());
@@ -230,7 +230,7 @@ describe("useCsvViewer", () => {
       expect(result.current.isUploadOpen).toBe(true);
     });
 
-    it("surfaces parse errors for malformed pasted CSV (objective #3)", async () => {
+    it("surfaces parse errors for malformed pasted CSV", async () => {
       const { result } = renderHook(() => useCsvViewer());
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -269,7 +269,7 @@ describe("useCsvViewer", () => {
     it("resets state, removes localStorage keys, and reopens the modal", async () => {
       const rows = [["x"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
-      localStorage.setItem(LS_KEY_NAME, "data.csv");
+      localStorage.setItem(LS_KEY_FILE_NAME, "data.csv");
 
       const { result } = renderHook(() => useCsvViewer());
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
@@ -283,7 +283,7 @@ describe("useCsvViewer", () => {
       expect(result.current.parseErrors).toEqual([]);
       expect(result.current.isUploadOpen).toBe(true);
       expect(localStorage.getItem(LS_KEY_DATA)).toBeNull();
-      expect(localStorage.getItem(LS_KEY_NAME)).toBeNull();
+      expect(localStorage.getItem(LS_KEY_FILE_NAME)).toBeNull();
     });
 
     it("resets firstRowAsHeader to false", async () => {

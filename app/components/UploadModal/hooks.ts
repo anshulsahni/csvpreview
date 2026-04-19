@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -31,6 +30,7 @@ export interface UseUploadModalReturn {
   handleDrop: (event: DragEvent) => void;
   handleFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handlePasteKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
+  submitPastedText: () => void;
   handleBackdropClick: (event: MouseEvent) => void;
   handleCardClick: (event: MouseEvent) => void;
   handleStartBlankClick: () => void;
@@ -78,88 +78,77 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
     };
   }, [isOpen]);
 
-  const validateAndSubmitFile = useCallback(
-    (file: File | undefined | null) => {
-      if (!file) return;
-      if (!isCsvFile(file)) {
-        setFileRejectionMessage(NON_CSV_MESSAGE);
-        return;
-      }
-      setFileRejectionMessage(null);
-      onFilePicked(file);
-    },
-    [onFilePicked]
-  );
+  function validateAndSubmitFile(file: File | undefined | null) {
+    if (!file) return;
+    if (!isCsvFile(file)) {
+      setFileRejectionMessage(NON_CSV_MESSAGE);
+      return;
+    }
+    setFileRejectionMessage(null);
+    onFilePicked(file);
+  }
 
-  const handleDragEnter = useCallback((event: DragEvent) => {
+  function handleDragEnter(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(true);
-  }, []);
+  }
 
-  const handleDragOver = useCallback((event: DragEvent) => {
+  function handleDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(true);
-  }, []);
+  }
 
-  const handleDragLeave = useCallback((event: DragEvent) => {
+  function handleDragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(false);
-  }, []);
+  }
 
-  const handleDrop = useCallback(
-    (event: DragEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      setIsDragging(false);
-      const file = event.dataTransfer?.files?.[0];
-      validateAndSubmitFile(file);
-    },
-    [validateAndSubmitFile]
-  );
-
-  const handleFileInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      validateAndSubmitFile(file);
-      // Clear the input so picking the same file twice in a row re-triggers onChange.
-      event.target.value = "";
-    },
-    [validateAndSubmitFile]
-  );
-
-  const handlePasteKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLTextAreaElement>) => {
-      const isSubmit = event.key === "Enter" && (event.ctrlKey || event.metaKey);
-      if (!isSubmit) return;
-      event.preventDefault();
-      if (pastedText.trim() === "") return;
-      onPasteSubmit(pastedText);
-    },
-    [pastedText, onPasteSubmit]
-  );
-
-  const handleBackdropClick = useCallback(
-    (event: MouseEvent) => {
-      if (event.target !== event.currentTarget) return;
-      onClose();
-    },
-    [onClose]
-  );
-
-  const handleCardClick = useCallback((event: MouseEvent) => {
+  function handleDrop(event: DragEvent) {
+    event.preventDefault();
     event.stopPropagation();
-  }, []);
+    setIsDragging(false);
+    const file = event.dataTransfer?.files?.[0];
+    validateAndSubmitFile(file);
+  }
 
-  const handleStartBlankClick = useCallback(() => {
-    onStartBlank();
-  }, [onStartBlank]);
+  function handleFileInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    validateAndSubmitFile(file);
+    // Clear the input so picking the same file twice in a row re-triggers onChange.
+    event.target.value = "";
+  }
 
-  const handleCloseClick = useCallback(() => {
+  function submitPastedText() {
+    if (pastedText.trim() === "") return;
+    onPasteSubmit(pastedText);
+  }
+
+  function handlePasteKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    const isSubmit = event.key === "Enter" && (event.ctrlKey || event.metaKey);
+    if (!isSubmit) return;
+    event.preventDefault();
+    submitPastedText();
+  }
+
+  function handleBackdropClick(event: MouseEvent) {
+    if (event.target !== event.currentTarget) return;
     onClose();
-  }, [onClose]);
+  }
+
+  function handleCardClick(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  function handleStartBlankClick() {
+    onStartBlank();
+  }
+
+  function handleCloseClick() {
+    onClose();
+  }
 
   return {
     pastedText,
@@ -172,6 +161,7 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
     handleDrop,
     handleFileInputChange,
     handlePasteKeyDown,
+    submitPastedText,
     handleBackdropClick,
     handleCardClick,
     handleStartBlankClick,

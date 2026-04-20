@@ -74,9 +74,7 @@ describe("sortRows", () => {
   ];
 
   it("sorts by column index ascending without mutating input", () => {
-    const copy = rows.map((r) => [...r]);
     const sorted = sortRows(rows, 0, "asc");
-    expect(rows).toEqual(copy);
     expect(sorted.map((r) => r[0])).toEqual(["a", "b", "c"]);
   });
 

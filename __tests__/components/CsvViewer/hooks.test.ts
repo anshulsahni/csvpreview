@@ -285,6 +285,36 @@ describe("useCsvViewer", () => {
       expect(localStorage.getItem(LS_KEY_DATA)).toBeNull();
       expect(localStorage.getItem(LS_KEY_FILE_NAME)).toBeNull();
     });
+
+    it("resets firstRowAsHeader to false", async () => {
+      const rows = [["h"]];
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
+
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.csvData).toEqual(rows));
+
+      act(() => {
+        result.current.setFirstRowAsHeader(true);
+      });
+
+      act(() => {
+        result.current.handleClear();
+      });
+
+      expect(result.current.firstRowAsHeader).toBe(false);
+    });
+  });
+
+  describe("firstRowAsHeader", () => {
+    it("defaults to false", async () => {
+      const rows = [["a"]];
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
+
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.csvData).toEqual(rows));
+
+      expect(result.current.firstRowAsHeader).toBe(false);
+    });
   });
 
   describe("open/close helpers", () => {

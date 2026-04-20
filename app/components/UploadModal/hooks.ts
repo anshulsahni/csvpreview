@@ -60,6 +60,7 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
 
   useEffect(() => {
     if (!isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPastedText("");
       setIsDragging(false);
       setFileRejectionMessage(null);

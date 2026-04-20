@@ -2,9 +2,16 @@
 
 import { useMemo, useState } from "react";
 import {
+  detectColumnType,
   sortRows,
   type SortDirection,
 } from "@/lib/sortUtils";
+import {
+  applyFilters,
+  getUniqueValues,
+  type ColumnFilter,
+  type FilterMap,
+} from "@/lib/filterUtils";
 
 export const MIN_COLS = 26;
 export const MIN_ROWS = 50;
@@ -41,7 +48,18 @@ export interface SpreadsheetGridViewModel {
   colLabel: (idx: number) => string;
   statusHint: string;
   sort: SortState | null;
+  filters: FilterMap;
+  openColIdx: number | null;
+  totalRowCount: number;
+  visibleRowCount: number;
+  activeFilterCount: number;
+  columnTypeFor: (colIdx: number) => "numeric" | "text";
+  uniqueValuesFor: (colIdx: number) => string[];
+  columnDisplayName: (colIdx: number) => string;
   onSortArrowClick: (colIdx: number, direction: SortDirection) => void;
+  openDropdown: (colIdx: number) => void;
+  closeDropdown: () => void;
+  setFilter: (colIdx: number, filter: ColumnFilter | null) => void;
 }
 
 export function useSortState(): {
@@ -66,11 +84,60 @@ export function useSortState(): {
   return { sort, onArrowClick };
 }
 
+export function useFilterState(): {
+  filters: FilterMap;
+  openColIdx: number | null;
+  openDropdown: (colIdx: number) => void;
+  closeDropdown: () => void;
+  setFilter: (colIdx: number, filter: ColumnFilter | null) => void;
+} {
+  const [filters, setFilters] = useState<FilterMap>({});
+  const [openColIdx, setOpenColIdx] = useState<number | null>(null);
+
+  const openDropdown = (colIdx: number) => {
+    setOpenColIdx((prev) => (prev === colIdx ? null : colIdx));
+  };
+
+  const closeDropdown = () => {
+    setOpenColIdx(null);
+  };
+
+  const setFilter = (colIdx: number, filter: ColumnFilter | null) => {
+    setFilters((prev) => {
+      const next = { ...prev };
+      if (filter === null) {
+        delete next[colIdx];
+      } else {
+        next[colIdx] = filter;
+      }
+      return next;
+    });
+  };
+
+  return { filters, openColIdx, openDropdown, closeDropdown, setFilter };
+}
+
+function getColumnDisplayName(
+  firstRowAsHeader: boolean,
+  headerRowCells: string[] | null,
+  colIdx: number
+): string {
+  if (firstRowAsHeader) {
+    const header = (headerRowCells?.[colIdx] ?? "").trim();
+    if (header !== "") return header;
+  }
+  return colLabel(colIdx);
+}
+
 function computeViewModel(
   data: string[][],
   firstRowAsHeader: boolean,
-  sort: SortState | null
-): Omit<SpreadsheetGridViewModel, "onSortArrowClick"> {
+  sort: SortState | null,
+  filters: FilterMap
+): Omit<
+  SpreadsheetGridViewModel,
+  "onSortArrowClick" | "openDropdown" | "closeDropdown" | "setFilter" | "openColIdx"
+> {
   const isEmpty = data.length === 0;
 
   const numCols = isEmpty
@@ -90,24 +157,53 @@ function computeViewModel(
     rowNumberOffset = 1;
   }
 
+  const totalRowCount = bodyRows.length;
+  const filteredRows =
+    totalRowCount > 0 ? applyFilters(bodyRows, filters) : bodyRows;
   const displayBodyRows =
-    sort !== null && bodyRows.length > 0
-      ? sortRows(bodyRows, sort.colIdx, sort.direction)
-      : bodyRows;
+    sort !== null && filteredRows.length > 0
+      ? sortRows(filteredRows, sort.colIdx, sort.direction)
+      : filteredRows;
+  const visibleRowCount = displayBodyRows.length;
+  const activeFilterEntries = Object.entries(filters);
+  const activeFilterCount = activeFilterEntries.length;
 
-  const bodyRowCount = displayBodyRows.length;
+  const columnTypeByIdx = new Map<number, "numeric" | "text">();
+  const uniqueValuesByIdx = new Map<number, string[]>();
+  for (let ci = 0; ci < numCols; ci += 1) {
+    const values = bodyRows.map((row) => (row[ci] ?? "").trim());
+    columnTypeByIdx.set(ci, detectColumnType(values));
+    uniqueValuesByIdx.set(ci, getUniqueValues(bodyRows, ci));
+  }
+
   const numRows = isEmpty
     ? MIN_ROWS
-    : Math.max(MIN_ROWS, bodyRowCount);
+    : Math.max(MIN_ROWS, visibleRowCount);
 
   let statusHint: string;
   if (isEmpty) {
     statusHint = "Ready \u2014 upload a .csv file to preview it here";
-  } else if (sort !== null && bodyRows.length > 0) {
-    const dirLabel = sort.direction === "asc" ? "asc" : "desc";
-    statusHint = `${bodyRows.length} rows \u00b7 Sorted by col ${colLabel(sort.colIdx)} ${dirLabel}`;
   } else {
-    statusHint = "\u00a0";
+    const parts: string[] = [];
+
+    if (activeFilterCount === 1) {
+      const [firstKey] = activeFilterEntries[0];
+      const filterColIdx = Number(firstKey);
+      parts.push(
+        `Filter active on ${getColumnDisplayName(firstRowAsHeader, headerRowCells, filterColIdx)}`
+      );
+      parts.push(`Showing ${visibleRowCount} of ${totalRowCount} rows`);
+    } else if (activeFilterCount > 1) {
+      parts.push(`Filters active on ${activeFilterCount} columns`);
+      parts.push(`Showing ${visibleRowCount} of ${totalRowCount} rows`);
+    }
+
+    if (sort !== null && filteredRows.length > 0) {
+      const dirLabel = sort.direction === "asc" ? "asc" : "desc";
+      parts.push(`Sorted by col ${colLabel(sort.colIdx)} ${dirLabel}`);
+    }
+
+    statusHint = parts.length > 0 ? parts.join(" \u00b7 ") : "\u00a0";
   }
 
   return {
@@ -120,6 +216,14 @@ function computeViewModel(
     colLabel,
     statusHint,
     sort,
+    filters,
+    totalRowCount,
+    visibleRowCount,
+    activeFilterCount,
+    columnTypeFor: (colIdx: number) => columnTypeByIdx.get(colIdx) ?? "text",
+    uniqueValuesFor: (colIdx: number) => uniqueValuesByIdx.get(colIdx) ?? [],
+    columnDisplayName: (colIdx: number) =>
+      getColumnDisplayName(firstRowAsHeader, headerRowCells, colIdx),
   };
 }
 
@@ -127,18 +231,29 @@ export function useSpreadsheetGrid(
   { data, firstRowAsHeader }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
   const { sort, onArrowClick } = useSortState();
+  const {
+    filters,
+    openColIdx,
+    openDropdown,
+    closeDropdown,
+    setFilter,
+  } = useFilterState();
 
   const base = useMemo(
-    () => computeViewModel(data, firstRowAsHeader, sort),
-    [data, firstRowAsHeader, sort]
+    () => computeViewModel(data, firstRowAsHeader, sort, filters),
+    [data, firstRowAsHeader, sort, filters]
   );
 
   return useMemo(
     () => ({
       ...base,
       onSortArrowClick: onArrowClick,
+      openColIdx,
+      openDropdown,
+      closeDropdown,
+      setFilter,
     }),
-    [base, onArrowClick]
+    [base, onArrowClick, openColIdx, openDropdown, closeDropdown, setFilter]
   );
 }
 
@@ -146,7 +261,11 @@ export function useSpreadsheetGrid(
 export function computeSpreadsheetGridViewModel(
   data: string[][],
   firstRowAsHeader: boolean,
-  sort: SortState | null = null
-): Omit<SpreadsheetGridViewModel, "onSortArrowClick"> {
-  return computeViewModel(data, firstRowAsHeader, sort);
+  sort: SortState | null = null,
+  filters: FilterMap = {}
+): Omit<
+  SpreadsheetGridViewModel,
+  "onSortArrowClick" | "openDropdown" | "closeDropdown" | "setFilter" | "openColIdx"
+> {
+  return computeViewModel(data, firstRowAsHeader, sort, filters);
 }

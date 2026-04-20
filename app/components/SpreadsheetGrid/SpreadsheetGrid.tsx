@@ -1,6 +1,7 @@
 "use client";
 
 import { styled } from "@linaria/react";
+import FilterDropdown from "../FilterDropdown";
 import { useSpreadsheetGrid } from "./hooks";
 import { SortArrows } from "./SortArrows";
 
@@ -24,6 +25,7 @@ export default function SpreadsheetGrid({
               <CornerTh />
               {Array.from({ length: vm.numCols }, (_, ci) => {
                 const isSortCol = vm.sort?.colIdx === ci;
+                const isFilterActive = vm.filters[ci] !== undefined;
                 const activeDir =
                   vm.sort && vm.sort.colIdx === ci
                     ? vm.sort.direction
@@ -48,7 +50,35 @@ export default function SpreadsheetGrid({
                           vm.onSortArrowClick(ci, dir)
                         }
                       />
+                      <FilterFunnelButton
+                        type="button"
+                        data-active={isFilterActive ? "true" : undefined}
+                        aria-label={`Filter column ${vm.colLabel(ci)}`}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          vm.openDropdown(ci);
+                        }}
+                      >
+                        <FilterGlyph />
+                      </FilterFunnelButton>
                     </ColThInner>
+                    {vm.openColIdx === ci && (
+                      <FilterDropdown
+                        title={vm.columnDisplayName(ci)}
+                        columnType={vm.columnTypeFor(ci)}
+                        uniqueValues={vm.uniqueValuesFor(ci)}
+                        currentFilter={vm.filters[ci] ?? null}
+                        onApply={(filter) => {
+                          vm.setFilter(ci, filter);
+                          vm.closeDropdown();
+                        }}
+                        onClear={() => {
+                          vm.setFilter(ci, null);
+                          vm.closeDropdown();
+                        }}
+                        onClose={vm.closeDropdown}
+                      />
+                    )}
                   </ColTh>
                 );
               })}
@@ -119,6 +149,7 @@ const ColTh = styled.th<{ sortActive?: boolean }>`
   position: sticky;
   top: 0;
   z-index: 4;
+  overflow: visible;
   min-width: 100px;
   width: 100px;
   height: var(--grid-col-header-height);
@@ -141,6 +172,45 @@ const ColThInner = styled.div`
   justify-content: center;
   gap: 4px;
   width: 100%;
+`;
+
+const FilterFunnelButton = styled.button`
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--grid-filter-icon-idle);
+  line-height: 1;
+
+  &[data-active="true"] {
+    color: var(--grid-filter-icon-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+  }
+`;
+
+const FilterGlyph = styled.span`
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid currentColor;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: -2px;
+    width: 2px;
+    height: 4px;
+    background: currentColor;
+  }
 `;
 
 const HeaderRowGutterTh = styled.th`

@@ -52,6 +52,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
   useEffect(() => {
     const persisted = readPersistedRows();
     if (persisted) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCsvData(persisted);
       setFileName(localStorage.getItem(LS_KEY_FILE_NAME) ?? "");
     } else {

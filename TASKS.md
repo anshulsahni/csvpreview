@@ -77,11 +77,12 @@
 
 **Goal:** Per-column filter dropdown: checkbox list for categorical values (searchable when ≥5 options), numeric comparison operators for numeric columns. Active filter shown in status bar.
 
-### Task 4.1 — Filter Dropdown
+### Task 4.1 — Filter Dropdown (Done — 2026-04-20)
 - **What to build:** Filter icon (funnel) in each column header. Click opens a dropdown with: checkbox list of unique values (search input when ≥5 items), or operator + value input for numeric columns. "Apply Filter" and "Clear" buttons. Active filters highlighted. Status bar shows "Showing N of M rows · Filter active on col X". Matches wireframe 4.
 - **Files involved:**
-  - `app/components/FilterDropdown.tsx` (new — dropdown component)
-  - `app/components/SpreadsheetGrid.tsx` (filter state, filtered-row slice passed to render)
+  - `app/components/FilterDropdown/` (new — dropdown component + hook)
+  - `app/components/SpreadsheetGrid/` (filter state, filtered-row slice passed to render)
+  - `lib/filterUtils.ts` (new — pure filtering helpers)
 - **Dependencies:** Task 3.1
 - **Parallelizable:** Yes — can run in parallel with Task 3.2
 

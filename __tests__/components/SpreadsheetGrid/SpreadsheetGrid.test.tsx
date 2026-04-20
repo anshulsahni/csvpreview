@@ -52,4 +52,51 @@ describe("SpreadsheetGrid (render smoke)", () => {
     const headers = screen.getAllByRole("columnheader");
     expect(headers[2]).toHaveAttribute("aria-sort", "ascending");
   });
+
+  it("opens one filter dropdown at a time", async () => {
+    const user = userEvent.setup();
+    const data = [
+      ["Alice", "Mumbai"],
+      ["Bob", "Delhi"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const filterA = screen.getAllByRole("button", {
+      name: "Filter column A",
+    })[0];
+    const filterB = screen.getAllByRole("button", {
+      name: "Filter column B",
+    })[0];
+
+    await user.click(filterA);
+    expect(screen.getByRole("dialog", { name: "Filter A" })).toBeInTheDocument();
+
+    await user.click(filterB);
+    expect(screen.queryByRole("dialog", { name: "Filter A" })).not.toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Filter B" })).toBeInTheDocument();
+  });
+
+  it("applies a set filter and reduces visible rows", async () => {
+    const user = userEvent.setup();
+    const data = [
+      ["Alice", "Mumbai"],
+      ["Bob", "Delhi"],
+      ["Carol", "Pune"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const filterCity = screen.getAllByRole("button", {
+      name: "Filter column B",
+    })[0];
+    await user.click(filterCity);
+
+    await user.click(screen.getByRole("checkbox", { name: "Delhi" }));
+    await user.click(screen.getByRole("checkbox", { name: "Pune" }));
+    await user.click(screen.getByRole("button", { name: "Apply Filter" }));
+
+    expect(screen.getByText("Alice")).toBeInTheDocument();
+    expect(screen.getByText(/Showing 1 of 3 rows/)).toBeInTheDocument();
+    expect(screen.queryByText("Bob")).not.toBeInTheDocument();
+    expect(screen.queryByText("Carol")).not.toBeInTheDocument();
+  });
 });

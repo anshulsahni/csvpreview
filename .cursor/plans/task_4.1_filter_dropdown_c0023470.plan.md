@@ -4,25 +4,25 @@ overview: Add a per-column filter dropdown (funnel icon in each column header) w
 todos:
   - id: fix_conflict
     content: Resolve merge-conflict markers in app/components/SpreadsheetGrid/SpreadsheetGrid.tsx (lines 61-65)
-    status: pending
+    status: completed
   - id: filter_utils
     content: Create lib/filterUtils.ts (ColumnFilter types, FilterMap, getUniqueValues, applyFilters, matchesNumericFilter) with unit tests
-    status: pending
+    status: completed
   - id: filter_hook
     content: Add useFilterState + extend computeSpreadsheetGridViewModel pipeline (filter → sort), statusHint variants, unique/type helpers in SpreadsheetGrid/hooks.ts
-    status: pending
+    status: completed
   - id: dropdown_component
     content: Create app/components/FilterDropdown/ (FilterDropdown.tsx, hooks.ts, index.ts) with text + numeric modes, search input, Apply/Clear, outside-click/Escape close
-    status: pending
+    status: completed
   - id: grid_render
     content: Wire FilterFunnel + mount FilterDropdown inside SpreadsheetGrid.tsx header; update CSS vars in app/globals.css
-    status: pending
+    status: completed
   - id: tests
     content: Extend SpreadsheetGrid hooks/render tests and add FilterDropdown + filterUtils tests
-    status: pending
+    status: completed
   - id: mark_done
     content: Flip Task 4.1 status to Done in TASKS.md and tasks.csv after jest + eslint pass
-    status: pending
+    status: completed
 isProject: false
 ---
 

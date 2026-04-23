@@ -25,9 +25,9 @@ describe("SpreadsheetGrid (render smoke)", () => {
     ];
     render(<SpreadsheetGrid data={data} />);
 
-    const ascColA = screen.getAllByRole("button", {
-      name: "Sort ascending",
-    })[0];
+    const ascColA = screen.getByRole("button", {
+      name: "Sort column A ascending",
+    });
     await user.click(ascColA);
 
     const table = screen.getByRole("table");
@@ -44,9 +44,9 @@ describe("SpreadsheetGrid (render smoke)", () => {
     ];
     render(<SpreadsheetGrid data={data} />);
 
-    const ascColB = screen.getAllByRole("button", {
-      name: "Sort ascending",
-    })[1];
+    const ascColB = screen.getByRole("button", {
+      name: "Sort column B ascending",
+    });
     await user.click(ascColB);
 
     const headers = screen.getAllByRole("columnheader");

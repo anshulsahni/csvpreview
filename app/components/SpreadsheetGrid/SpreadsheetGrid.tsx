@@ -46,6 +46,7 @@ export default function SpreadsheetGrid({
                       <span>{vm.colLabel(ci)}</span>
                       <SortArrows
                         activeDirection={activeDir}
+                        columnLabel={vm.colLabel(ci)}
                         onArrowClick={(dir) =>
                           vm.onSortArrowClick(ci, dir)
                         }

@@ -70,6 +70,14 @@ export function compareValues(
   return ta.localeCompare(tb, undefined, { sensitivity: "base" });
 }
 
+/** Blanks must stay at the end for both sort directions; matches `compareValues` blank rules. */
+function isSortKeyBlank(value: string, type: ColumnType): boolean {
+  if (type === "numeric") {
+    return parseFiniteNumber(value) === null;
+  }
+  return value.trim() === "";
+}
+
 /**
  * Stable sort by column `colIdx`. Does not mutate `rows`.
  * Out-of-range `colIdx` treats every cell as empty (order unchanged except tie-break by index).
@@ -94,8 +102,21 @@ export function sortRows(
       colIdx >= 0 && colIdx < x.row.length ? x.row[colIdx] ?? "" : "";
     const vb =
       colIdx >= 0 && colIdx < y.row.length ? y.row[colIdx] ?? "" : "";
+    const blankA = isSortKeyBlank(va, type);
+    const blankB = isSortKeyBlank(vb, type);
+    if (blankA && blankB) {
+      return x.i - y.i;
+    }
+    if (blankA && !blankB) {
+      return 1;
+    }
+    if (!blankA && blankB) {
+      return -1;
+    }
     const cmp = compareValues(va, vb, type);
-    if (cmp !== 0) return direction === "asc" ? cmp : -cmp;
+    if (cmp !== 0) {
+      return direction === "asc" ? cmp : -cmp;
+    }
     return x.i - y.i;
   });
 

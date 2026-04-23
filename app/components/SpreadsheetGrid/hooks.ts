@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   detectColumnType,
   sortRows,
@@ -36,6 +36,20 @@ export interface UseSpreadsheetGridArgs {
   firstRowAsHeader: boolean;
 }
 
+export interface CellSelection {
+  anchorRow: number;
+  anchorCol: number;
+  activeRow: number;
+  activeCol: number;
+}
+
+export interface SelectionBounds {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+}
+
 export interface SpreadsheetGridViewModel {
   isEmpty: boolean;
   numCols: number;
@@ -56,7 +70,14 @@ export interface SpreadsheetGridViewModel {
   columnTypeFor: (colIdx: number) => "numeric" | "text";
   uniqueValuesFor: (colIdx: number) => string[];
   columnDisplayName: (colIdx: number) => string;
+  selection: CellSelection | null;
+  isDragging: boolean;
+  isCellSelected: (rowIdx: number, colIdx: number) => boolean;
   onSortArrowClick: (colIdx: number, direction: SortDirection) => void;
+  onCellMouseDown: (rowIdx: number, colIdx: number) => void;
+  onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
+  onColumnHeaderMouseDown: (colIdx: number) => void;
+  onRowGutterMouseDown: (rowIdx: number) => void;
   openDropdown: (colIdx: number) => void;
   closeDropdown: () => void;
   setFilter: (colIdx: number, filter: ColumnFilter | null) => void;
@@ -115,6 +136,182 @@ export function useFilterState(): {
   };
 
   return { filters, openColIdx, openDropdown, closeDropdown, setFilter };
+}
+
+export function getSelectionBounds(
+  selection: CellSelection | null
+): SelectionBounds | null {
+  if (selection === null) {
+    return null;
+  }
+
+  return {
+    top: Math.min(selection.anchorRow, selection.activeRow),
+    left: Math.min(selection.anchorCol, selection.activeCol),
+    bottom: Math.max(selection.anchorRow, selection.activeRow),
+    right: Math.max(selection.anchorCol, selection.activeCol),
+  };
+}
+
+export function isCellSelected(
+  selection: CellSelection | null,
+  rowIdx: number,
+  colIdx: number
+): boolean {
+  const bounds = getSelectionBounds(selection);
+  if (bounds === null) {
+    return false;
+  }
+
+  return (
+    rowIdx >= bounds.top &&
+    rowIdx <= bounds.bottom &&
+    colIdx >= bounds.left &&
+    colIdx <= bounds.right
+  );
+}
+
+export function cellRangeLabel(
+  selection: CellSelection | null,
+  rowNumberOffset: number
+): string | null {
+  const bounds = getSelectionBounds(selection);
+  if (bounds === null) {
+    return null;
+  }
+
+  const start = `${colLabel(bounds.left)}${bounds.top + rowNumberOffset}`;
+  const end = `${colLabel(bounds.right)}${bounds.bottom + rowNumberOffset}`;
+  if (start === end) {
+    return start;
+  }
+  return `${start}:${end}`;
+}
+
+function selectedCellCount(selection: CellSelection | null): number {
+  const bounds = getSelectionBounds(selection);
+  if (bounds === null) {
+    return 0;
+  }
+  return (bounds.bottom - bounds.top + 1) * (bounds.right - bounds.left + 1);
+}
+
+function selectionStatusHint(
+  selection: CellSelection | null,
+  rowNumberOffset: number
+): string | null {
+  const count = selectedCellCount(selection);
+  const label = cellRangeLabel(selection, rowNumberOffset);
+  if (count === 0 || label === null) {
+    return null;
+  }
+  return `${count} cells selected (${label})`;
+}
+
+export function useSelectionState({
+  numRows,
+  numCols,
+  isEmpty,
+}: {
+  numRows: number;
+  numCols: number;
+  isEmpty: boolean;
+}): {
+  selection: CellSelection | null;
+  isDragging: boolean;
+  clearSelection: () => void;
+  onCellMouseDown: (rowIdx: number, colIdx: number) => void;
+  onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
+  onColumnHeaderMouseDown: (colIdx: number) => void;
+  onRowGutterMouseDown: (rowIdx: number) => void;
+} {
+  const [selection, setSelection] = useState<CellSelection | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const clearSelection = useCallback(() => {
+    setSelection(null);
+    setIsDragging(false);
+  }, []);
+
+  const onCellMouseDown = (rowIdx: number, colIdx: number) => {
+    if (isEmpty) {
+      return;
+    }
+    setSelection({
+      anchorRow: rowIdx,
+      anchorCol: colIdx,
+      activeRow: rowIdx,
+      activeCol: colIdx,
+    });
+    setIsDragging(true);
+  };
+
+  const onCellMouseEnter = (rowIdx: number, colIdx: number) => {
+    if (!isDragging) {
+      return;
+    }
+    setSelection((prev) => {
+      if (prev === null) {
+        return prev;
+      }
+      return {
+        ...prev,
+        activeRow: rowIdx,
+        activeCol: colIdx,
+      };
+    });
+  };
+
+  const onColumnHeaderMouseDown = (colIdx: number) => {
+    if (isEmpty || numRows <= 0) {
+      return;
+    }
+    setSelection({
+      anchorRow: 0,
+      anchorCol: colIdx,
+      activeRow: numRows - 1,
+      activeCol: colIdx,
+    });
+    setIsDragging(false);
+  };
+
+  const onRowGutterMouseDown = (rowIdx: number) => {
+    if (isEmpty || numCols <= 0) {
+      return;
+    }
+    setSelection({
+      anchorRow: rowIdx,
+      anchorCol: 0,
+      activeRow: rowIdx,
+      activeCol: numCols - 1,
+    });
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (!isDragging) {
+      return;
+    }
+
+    const onMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [isDragging]);
+
+  return {
+    selection,
+    isDragging,
+    clearSelection,
+    onCellMouseDown,
+    onCellMouseEnter,
+    onColumnHeaderMouseDown,
+    onRowGutterMouseDown,
+  };
 }
 
 function getColumnDisplayName(
@@ -243,17 +440,73 @@ export function useSpreadsheetGrid(
     () => computeViewModel(data, firstRowAsHeader, sort, filters),
     [data, firstRowAsHeader, sort, filters]
   );
+  const {
+    selection,
+    isDragging,
+    clearSelection,
+    onCellMouseDown,
+    onCellMouseEnter,
+    onColumnHeaderMouseDown,
+    onRowGutterMouseDown,
+  } = useSelectionState({
+    numRows: base.visibleRowCount,
+    numCols: base.numCols,
+    isEmpty: base.isEmpty,
+  });
+  const isFirstSelectionCleanupRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstSelectionCleanupRender.current) {
+      isFirstSelectionCleanupRender.current = false;
+      return;
+    }
+    clearSelection();
+  }, [sort, filters, firstRowAsHeader, clearSelection]);
+
+  const combinedStatusHint = useMemo(() => {
+    const selectionHint = selectionStatusHint(selection, base.rowNumberOffset);
+    if (selectionHint === null) {
+      return base.statusHint;
+    }
+    if (base.statusHint === "\u00a0") {
+      return selectionHint;
+    }
+    return `${base.statusHint} \u00b7 ${selectionHint}`;
+  }, [base.rowNumberOffset, base.statusHint, selection]);
 
   return useMemo(
     () => ({
       ...base,
+      statusHint: combinedStatusHint,
+      selection,
+      isDragging,
+      isCellSelected: (rowIdx: number, colIdx: number) =>
+        isCellSelected(selection, rowIdx, colIdx),
       onSortArrowClick: onArrowClick,
+      onCellMouseDown,
+      onCellMouseEnter,
+      onColumnHeaderMouseDown,
+      onRowGutterMouseDown,
       openColIdx,
       openDropdown,
       closeDropdown,
       setFilter,
     }),
-    [base, onArrowClick, openColIdx, openDropdown, closeDropdown, setFilter]
+    [
+      base,
+      combinedStatusHint,
+      selection,
+      isDragging,
+      onArrowClick,
+      onCellMouseDown,
+      onCellMouseEnter,
+      onColumnHeaderMouseDown,
+      onRowGutterMouseDown,
+      openColIdx,
+      openDropdown,
+      closeDropdown,
+      setFilter,
+    ]
   );
 }
 

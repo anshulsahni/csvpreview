@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
 
@@ -98,5 +98,84 @@ describe("SpreadsheetGrid (render smoke)", () => {
     expect(screen.getByText(/Showing 1 of 3 rows/)).toBeInTheDocument();
     expect(screen.queryByText("Bob")).not.toBeInTheDocument();
     expect(screen.queryByText("Carol")).not.toBeInTheDocument();
+  });
+
+  it("mouse drag selects a rectangular range and shows selection status", () => {
+    const data = [
+      ["A1", "B1"],
+      ["A2", "B2"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const table = screen.getByRole("table");
+    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const secondRowSecondCol = table.querySelector(
+      "tbody tr:nth-child(2) td:nth-child(3)"
+    );
+
+    expect(firstCell).not.toBeNull();
+    expect(secondRowSecondCol).not.toBeNull();
+
+    fireEvent.mouseDown(firstCell as Element);
+    fireEvent.mouseEnter(secondRowSecondCol as Element);
+    fireEvent.mouseUp(window);
+
+    expect(firstCell).toHaveAttribute("data-selected", "true");
+    expect(secondRowSecondCol).toHaveAttribute("data-selected", "true");
+    expect(screen.getByText(/4 cells selected \(A1:B2\)/)).toBeInTheDocument();
+  });
+
+  it("mousedown on column header selects whole visible column", () => {
+    const data = [
+      ["r1c1", "r1c2"],
+      ["r2c1", "r2c2"],
+      ["r3c1", "r3c2"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const headers = screen.getAllByRole("columnheader");
+    fireEvent.mouseDown(headers[2]);
+
+    const table = screen.getByRole("table");
+    const cells = table.querySelectorAll("tbody td:nth-child(3)");
+    expect(cells[0]).toHaveAttribute("data-selected", "true");
+    expect(cells[1]).toHaveAttribute("data-selected", "true");
+    expect(cells[2]).toHaveAttribute("data-selected", "true");
+  });
+
+  it("mousedown on row gutter selects whole row", () => {
+    const data = [
+      ["r1c1", "r1c2"],
+      ["r2c1", "r2c2"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const table = screen.getByRole("table");
+    const secondRowGutter = table.querySelector("tbody tr:nth-child(2) th");
+    expect(secondRowGutter).not.toBeNull();
+
+    fireEvent.mouseDown(secondRowGutter as Element);
+
+    const rowCells = table.querySelectorAll("tbody tr:nth-child(2) td");
+    expect(rowCells[0]).toHaveAttribute("data-selected", "true");
+    expect(rowCells[1]).toHaveAttribute("data-selected", "true");
+  });
+
+  it("sort arrow click does not trigger column selection", async () => {
+    const user = userEvent.setup();
+    const data = [
+      ["z", "1"],
+      ["a", "2"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const ascColA = screen.getAllByRole("button", {
+      name: "Sort ascending",
+    })[0];
+    await user.click(ascColA);
+
+    const table = screen.getByRole("table");
+    const firstDataCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    expect(firstDataCell).not.toHaveAttribute("data-selected", "true");
   });
 });

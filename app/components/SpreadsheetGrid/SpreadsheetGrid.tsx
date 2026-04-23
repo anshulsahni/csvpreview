@@ -17,7 +17,7 @@ export default function SpreadsheetGrid({
   const vm = useSpreadsheetGrid({ data, firstRowAsHeader });
 
   return (
-    <GridWrapper>
+    <GridWrapper data-dragging={vm.isDragging ? "true" : undefined}>
       <TableScroller>
         <table>
           <thead>
@@ -34,6 +34,7 @@ export default function SpreadsheetGrid({
                   <ColTh
                     key={ci}
                     sortActive={isSortCol}
+                    onMouseDown={() => vm.onColumnHeaderMouseDown(ci)}
                     aria-sort={
                       isSortCol
                         ? activeDir === "asc"
@@ -97,9 +98,16 @@ export default function SpreadsheetGrid({
           <tbody>
             {Array.from({ length: vm.numRows }, (_, ri) => (
               <tr key={ri}>
-                <RowTh>{vm.rowNumberOffset + ri}</RowTh>
+                <RowTh onMouseDown={() => vm.onRowGutterMouseDown(ri)}>
+                  {vm.rowNumberOffset + ri}
+                </RowTh>
                 {Array.from({ length: vm.numCols }, (_, ci) => (
-                  <DataTd key={ci}>
+                  <DataTd
+                    key={ci}
+                    data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
+                    onMouseDown={() => vm.onCellMouseDown(ri, ci)}
+                    onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
+                  >
                     {vm.bodyRows[ri]?.[ci] ?? ""}
                   </DataTd>
                 ))}
@@ -119,6 +127,10 @@ const GridWrapper = styled.div`
   height: 100%;
   font-size: 13px;
   font-family: Arial, Helvetica, sans-serif;
+
+  &[data-dragging="true"] {
+    user-select: none;
+  }
 `;
 
 const TableScroller = styled.div`
@@ -262,6 +274,7 @@ const RowTh = styled.th`
   border: 1px solid var(--grid-border);
   padding: 3px 4px;
   user-select: none;
+  cursor: pointer;
 `;
 
 const DataTd = styled.td`
@@ -274,6 +287,11 @@ const DataTd = styled.td`
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 0 4px;
+  user-select: none;
+
+  &[data-selected="true"] {
+    background: var(--grid-selection-bg);
+  }
 `;
 
 const StatusBar = styled.div`

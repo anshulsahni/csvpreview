@@ -41,6 +41,13 @@ export default function FilterDropdown({
     };
     const onPointerDown = (event: MouseEvent) => {
       if (rootRef.current?.contains(event.target as Node)) return;
+      // Let the funnel's own click handler perform the toggle.
+      if (
+        event.target instanceof Element &&
+        event.target.closest('[data-filter-trigger="true"]')
+      ) {
+        return;
+      }
       onClose();
     };
     document.addEventListener("keydown", onKeyDown);

@@ -5,18 +5,20 @@ import type { SortDirection } from "@/lib/sortUtils";
 
 export interface SortArrowsProps {
   activeDirection: SortDirection | null;
+  columnLabel: string;
   onArrowClick: (direction: SortDirection) => void;
 }
 
 export function SortArrows({
   activeDirection,
+  columnLabel,
   onArrowClick,
 }: SortArrowsProps) {
   return (
     <SortArrowsWrap>
       <SortArrowBtn
         type="button"
-        aria-label="Sort ascending"
+        aria-label={`Sort column ${columnLabel} ascending`}
         data-active={activeDirection === "asc" ? "true" : undefined}
         onClick={(e) => {
           e.stopPropagation();
@@ -27,7 +29,7 @@ export function SortArrows({
       </SortArrowBtn>
       <SortArrowBtn
         type="button"
-        aria-label="Sort descending"
+        aria-label={`Sort column ${columnLabel} descending`}
         data-active={activeDirection === "desc" ? "true" : undefined}
         onClick={(e) => {
           e.stopPropagation();

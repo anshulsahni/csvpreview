@@ -1,8 +1,10 @@
+import { act, renderHook } from "@testing-library/react";
 import {
   colLabel,
   computeSpreadsheetGridViewModel,
   MIN_COLS,
   MIN_ROWS,
+  useSortState,
 } from "@/app/components/SpreadsheetGrid/hooks";
 
 describe("computeSpreadsheetGridViewModel", () => {
@@ -64,6 +66,73 @@ describe("computeSpreadsheetGridViewModel", () => {
   it("status hint for empty data", () => {
     const vm = computeSpreadsheetGridViewModel([], false);
     expect(vm.statusHint).toContain("upload");
+  });
+
+  it("sort asc on col 0 reorders bodyRows", () => {
+    const data = [
+      ["b", "y"],
+      ["a", "x"],
+    ];
+    const vm = computeSpreadsheetGridViewModel(data, false, {
+      colIdx: 0,
+      direction: "asc",
+    });
+    expect(vm.bodyRows).toEqual([
+      ["a", "x"],
+      ["b", "y"],
+    ]);
+    expect(vm.sort).toEqual({ colIdx: 0, direction: "asc" });
+  });
+
+  it("status hint shows sorted-by when sort active", () => {
+    const vm = computeSpreadsheetGridViewModel([["a"], ["b"]], false, {
+      colIdx: 0,
+      direction: "asc",
+    });
+    expect(vm.statusHint).toContain("Sorted by col A asc");
+    expect(vm.statusHint).toContain("2 rows");
+  });
+
+  it("header on: sort applies only to body rows, rowNumberOffset unchanged", () => {
+    const data = [
+      ["Name", "Age"],
+      ["Bob", "2"],
+      ["Alice", "1"],
+    ];
+    const vm = computeSpreadsheetGridViewModel(data, true, {
+      colIdx: 0,
+      direction: "asc",
+    });
+    expect(vm.rowNumberOffset).toBe(2);
+    expect(vm.bodyRows).toEqual([
+      ["Alice", "1"],
+      ["Bob", "2"],
+    ]);
+  });
+});
+
+describe("useSortState", () => {
+  it("sets asc, clears on same arrow, switches column/direction", () => {
+    const { result } = renderHook(() => useSortState());
+    expect(result.current.sort).toBeNull();
+
+    act(() => {
+      result.current.onArrowClick(1, "asc");
+    });
+    expect(result.current.sort).toEqual({ colIdx: 1, direction: "asc" });
+
+    act(() => {
+      result.current.onArrowClick(1, "asc");
+    });
+    expect(result.current.sort).toBeNull();
+
+    act(() => {
+      result.current.onArrowClick(1, "asc");
+    });
+    act(() => {
+      result.current.onArrowClick(2, "desc");
+    });
+    expect(result.current.sort).toEqual({ colIdx: 2, direction: "desc" });
   });
 });
 

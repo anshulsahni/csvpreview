@@ -55,6 +55,8 @@ export default function SpreadsheetGrid({
                         type="button"
                         data-active={isFilterActive ? "true" : undefined}
                         aria-label={`Filter column ${vm.colLabel(ci)}`}
+                        aria-pressed={isFilterActive}
+                        aria-expanded={vm.openColIdx === ci}
                         onClick={(event) => {
                           event.stopPropagation();
                           vm.openDropdown(ci);

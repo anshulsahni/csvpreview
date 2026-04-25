@@ -169,9 +169,9 @@ describe("SpreadsheetGrid (render smoke)", () => {
     ];
     render(<SpreadsheetGrid data={data} />);
 
-    const ascColA = screen.getAllByRole("button", {
-      name: "Sort ascending",
-    })[0];
+    const ascColA = screen.getByRole("button", {
+      name: "Sort column A ascending",
+    });
     await user.click(ascColA);
 
     const table = screen.getByRole("table");

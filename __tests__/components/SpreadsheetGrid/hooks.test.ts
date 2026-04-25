@@ -4,6 +4,7 @@ import {
   computeSpreadsheetGridViewModel,
   MIN_COLS,
   MIN_ROWS,
+  useFilterState,
   useSortState,
 } from "@/app/components/SpreadsheetGrid/hooks";
 
@@ -90,7 +91,6 @@ describe("computeSpreadsheetGridViewModel", () => {
       direction: "asc",
     });
     expect(vm.statusHint).toContain("Sorted by col A asc");
-    expect(vm.statusHint).toContain("2 rows");
   });
 
   it("header on: sort applies only to body rows, rowNumberOffset unchanged", () => {
@@ -108,6 +108,63 @@ describe("computeSpreadsheetGridViewModel", () => {
       ["Alice", "1"],
       ["Bob", "2"],
     ]);
+  });
+
+  it("single active filter shows filtered count status", () => {
+    const vm = computeSpreadsheetGridViewModel(
+      [
+        ["Name", "City"],
+        ["Alice", "Mumbai"],
+        ["Bob", "Delhi"],
+      ],
+      true,
+      null,
+      {
+        1: { kind: "set", values: new Set(["Mumbai"]) },
+      }
+    );
+    expect(vm.visibleRowCount).toBe(1);
+    expect(vm.totalRowCount).toBe(2);
+    expect(vm.statusHint).toContain("Filter active on City");
+    expect(vm.statusHint).toContain("Showing 1 of 2 rows");
+  });
+
+  it("multiple filters show compact status", () => {
+    const vm = computeSpreadsheetGridViewModel(
+      [
+        ["Alice", "22", "Mumbai"],
+        ["Bob", "28", "Delhi"],
+        ["Carol", "31", "Pune"],
+      ],
+      false,
+      null,
+      {
+        1: { kind: "numeric", op: ">=", value: 28 },
+        2: { kind: "set", values: new Set(["Delhi", "Pune"]) },
+      }
+    );
+    expect(vm.activeFilterCount).toBe(2);
+    expect(vm.visibleRowCount).toBe(2);
+    expect(vm.statusHint).toContain("Filters active on 2 columns");
+    expect(vm.statusHint).toContain("Showing 2 of 3 rows");
+  });
+
+  it("status hint combines filter and sort details", () => {
+    const vm = computeSpreadsheetGridViewModel(
+      [
+        ["Alice", "22"],
+        ["Bob", "28"],
+        ["Carol", "31"],
+      ],
+      false,
+      { colIdx: 0, direction: "asc" },
+      {
+        1: { kind: "numeric", op: ">", value: 25 },
+      }
+    );
+    expect(vm.statusHint).toContain("Filter active on B");
+    expect(vm.statusHint).toContain("Showing 2 of 3 rows");
+    expect(vm.statusHint).toContain("Sorted by col A asc");
   });
 });
 
@@ -133,6 +190,42 @@ describe("useSortState", () => {
       result.current.onArrowClick(2, "desc");
     });
     expect(result.current.sort).toEqual({ colIdx: 2, direction: "desc" });
+  });
+});
+
+describe("useFilterState", () => {
+  it("opens one dropdown at a time and sets/clears column filters", () => {
+    const { result } = renderHook(() => useFilterState());
+    expect(result.current.openColIdx).toBeNull();
+    expect(result.current.filters).toEqual({});
+
+    act(() => {
+      result.current.openDropdown(2);
+    });
+    expect(result.current.openColIdx).toBe(2);
+
+    act(() => {
+      result.current.openDropdown(3);
+    });
+    expect(result.current.openColIdx).toBe(3);
+
+    act(() => {
+      result.current.setFilter(1, {
+        kind: "set",
+        values: new Set(["Delhi"]),
+      });
+    });
+    expect(result.current.filters[1]).toEqual({
+      kind: "set",
+      values: new Set(["Delhi"]),
+    });
+
+    act(() => {
+      result.current.setFilter(1, null);
+      result.current.closeDropdown();
+    });
+    expect(result.current.filters[1]).toBeUndefined();
+    expect(result.current.openColIdx).toBeNull();
   });
 });
 

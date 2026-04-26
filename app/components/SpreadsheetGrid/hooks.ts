@@ -22,6 +22,8 @@ export const MIN_ROWS = 50;
 export type { SortState } from "@/lib/sortUtils";
 export type { CellSelection, SelectionBounds } from "./selectionUtils";
 export {
+  aggregationStatusHint,
+  computeSelectionAggregates,
   colLabel,
   getSelectionBounds,
   isCellSelected,
@@ -274,6 +276,7 @@ export function useSpreadsheetGrid(
     numCols: base.numCols,
     isEmpty: base.isEmpty,
     rowNumberOffset: base.rowNumberOffset,
+    bodyRows: base.bodyRows,
     baseStatusHint: base.statusHint,
     sort,
     filters,

@@ -451,7 +451,7 @@ describe("useSpreadsheetGrid selection lifecycle", () => {
 
     expect(result.current.statusHint).toContain("4 cells selected (A1:B2)");
     expect(result.current.statusHint).toContain("Sum: 7");
-    expect(result.current.statusHint).toContain("Avg: 2.333333");
+    expect(result.current.statusHint).toContain("Avg: 2.33");
     expect(result.current.statusHint).toContain("Min: 1");
     expect(result.current.statusHint).toContain("Max: 4");
   });

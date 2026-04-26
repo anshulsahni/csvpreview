@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { styled } from "@linaria/react";
 import FilterDropdown from "../FilterDropdown";
 import { useSpreadsheetGrid } from "./hooks";

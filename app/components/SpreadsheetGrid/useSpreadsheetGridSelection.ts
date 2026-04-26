@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FilterMap } from "@/lib/filterUtils";
 import type { SortState } from "@/lib/sortUtils";
 import {
+  aggregationStatusHint,
   isCellSelected as isCellInSelectionRange,
   selectionStatusHint,
   type CellSelection,
@@ -120,6 +121,7 @@ export function useSpreadsheetGridSelection({
   numCols,
   isEmpty,
   rowNumberOffset,
+  bodyRows,
   baseStatusHint,
   sort,
   filters,
@@ -129,6 +131,7 @@ export function useSpreadsheetGridSelection({
   numCols: number;
   isEmpty: boolean;
   rowNumberOffset: number;
+  bodyRows: readonly string[][];
   baseStatusHint: string;
   sort: SortState | null;
   filters: FilterMap;
@@ -169,14 +172,21 @@ export function useSpreadsheetGridSelection({
 
   const statusHint = useMemo(() => {
     const selectionHint = selectionStatusHint(selection, rowNumberOffset);
-    if (selectionHint === null) {
-      return baseStatusHint;
+    const aggregateHint = aggregationStatusHint(selection, bodyRows);
+    const parts: string[] = [];
+
+    if (baseStatusHint !== "\u00a0") {
+      parts.push(baseStatusHint);
     }
-    if (baseStatusHint === "\u00a0") {
-      return selectionHint;
+    if (selectionHint !== null) {
+      parts.push(selectionHint);
     }
-    return `${baseStatusHint} \u00b7 ${selectionHint}`;
-  }, [baseStatusHint, rowNumberOffset, selection]);
+    if (aggregateHint !== null) {
+      parts.push(aggregateHint);
+    }
+
+    return parts.length > 0 ? parts.join(" \u00b7 ") : "\u00a0";
+  }, [baseStatusHint, bodyRows, rowNumberOffset, selection]);
 
   const isCellSelected = useCallback(
     (rowIdx: number, colIdx: number) =>

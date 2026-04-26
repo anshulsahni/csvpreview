@@ -161,6 +161,58 @@ describe("SpreadsheetGrid (render smoke)", () => {
     expect(rowCells[1]).toHaveAttribute("data-selected", "true");
   });
 
+  it("shows aggregate stats in status bar for numeric selection", () => {
+    const data = [
+      ["1", "2"],
+      ["3", "4"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const table = screen.getByRole("table");
+    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const secondRowSecondCol = table.querySelector(
+      "tbody tr:nth-child(2) td:nth-child(3)"
+    );
+
+    expect(firstCell).not.toBeNull();
+    expect(secondRowSecondCol).not.toBeNull();
+
+    fireEvent.mouseDown(firstCell as Element);
+    fireEvent.mouseEnter(secondRowSecondCol as Element);
+    fireEvent.mouseUp(window);
+
+    expect(screen.getByText(/Sum: 10/)).toBeInTheDocument();
+    expect(screen.getByText(/Avg: 2.5/)).toBeInTheDocument();
+    expect(screen.getByText(/Min: 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Max: 4/)).toBeInTheDocument();
+  });
+
+  it("hides aggregate stats when fewer than two numeric cells are selected", () => {
+    const data = [
+      ["foo", "bar"],
+      ["baz", "7"],
+    ];
+    render(<SpreadsheetGrid data={data} />);
+
+    const table = screen.getByRole("table");
+    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const secondRowSecondCol = table.querySelector(
+      "tbody tr:nth-child(2) td:nth-child(3)"
+    );
+
+    expect(firstCell).not.toBeNull();
+    expect(secondRowSecondCol).not.toBeNull();
+
+    fireEvent.mouseDown(firstCell as Element);
+    fireEvent.mouseEnter(secondRowSecondCol as Element);
+    fireEvent.mouseUp(window);
+
+    expect(screen.queryByText(/Sum:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Avg:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Min:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Max:/)).not.toBeInTheDocument();
+  });
+
   it("sort arrow click does not trigger column selection", async () => {
     const user = userEvent.setup();
     const data = [

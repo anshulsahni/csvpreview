@@ -1,7 +1,9 @@
 import { act, renderHook } from "@testing-library/react";
 import {
+  aggregationStatusHint,
   cellRangeLabel,
   colLabel,
+  computeSelectionAggregates,
   computeSpreadsheetGridViewModel,
   getSelectionBounds,
   isCellSelected,
@@ -294,6 +296,75 @@ describe("selection helpers", () => {
       )
     ).toBe("B2:D4");
   });
+
+  it("computeSelectionAggregates calculates stats from selected numeric cells", () => {
+    const aggregates = computeSelectionAggregates(
+      {
+        anchorRow: 1,
+        anchorCol: 2,
+        activeRow: 0,
+        activeCol: 0,
+      },
+      [
+        ["1", "2", "x"],
+        ["3", "", "4"],
+      ]
+    );
+
+    expect(aggregates).toEqual({
+      numericCount: 4,
+      sum: 10,
+      avg: 2.5,
+      min: 1,
+      max: 4,
+    });
+  });
+
+  it("computeSelectionAggregates ignores padded rows and needs at least two numeric cells", () => {
+    const selection = {
+      anchorRow: 0,
+      anchorCol: 0,
+      activeRow: 5,
+      activeCol: 1,
+    };
+
+    expect(
+      computeSelectionAggregates(selection, [
+        ["10", "oops"],
+        ["", ""],
+      ])
+    ).toBeNull();
+
+    expect(
+      computeSelectionAggregates(selection, [
+        ["10", "oops"],
+        ["20", ""],
+      ])
+    ).toEqual({
+      numericCount: 2,
+      sum: 30,
+      avg: 15,
+      min: 10,
+      max: 20,
+    });
+  });
+
+  it("aggregationStatusHint formats aggregate summary when eligible", () => {
+    const hint = aggregationStatusHint(
+      {
+        anchorRow: 0,
+        anchorCol: 0,
+        activeRow: 1,
+        activeCol: 1,
+      },
+      [
+        ["1.5", "2.5"],
+        ["3", "4"],
+      ]
+    );
+
+    expect(hint).toBe("Sum: 11 · Avg: 2.75 · Min: 1.5 · Max: 4");
+  });
 });
 
 describe("useSpreadsheetGrid selection lifecycle", () => {
@@ -360,5 +431,46 @@ describe("useSpreadsheetGrid selection lifecycle", () => {
 
     rerender({ firstRowAsHeader: true });
     expect(result.current.selection).toBeNull();
+  });
+
+  it("adds aggregation status when at least two numeric cells are selected", () => {
+    const data = [
+      ["1", "2"],
+      ["foo", "4"],
+    ];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    act(() => {
+      result.current.onCellMouseDown(0, 0);
+    });
+    act(() => {
+      result.current.onCellMouseEnter(1, 1);
+    });
+
+    expect(result.current.statusHint).toContain("4 cells selected (A1:B2)");
+    expect(result.current.statusHint).toContain("Sum: 7");
+    expect(result.current.statusHint).toContain("Avg: 2.333333");
+    expect(result.current.statusHint).toContain("Min: 1");
+    expect(result.current.statusHint).toContain("Max: 4");
+  });
+
+  it("does not add aggregation status when selection has fewer than two numeric cells", () => {
+    const data = [["foo", "1"]];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    act(() => {
+      result.current.onCellMouseDown(0, 0);
+    });
+    act(() => {
+      result.current.onCellMouseEnter(0, 1);
+    });
+
+    expect(result.current.statusHint).toContain("2 cells selected (A1:B1)");
+    expect(result.current.statusHint).not.toContain("Sum:");
+    expect(result.current.statusHint).not.toContain("Avg:");
   });
 });

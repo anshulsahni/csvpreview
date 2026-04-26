@@ -4,19 +4,19 @@ overview: Implement task 6.1 by deriving numeric aggregations from the existing 
 todos:
   - id: add-aggregation-helpers
     content: Add pure helper functions in `SpreadsheetGrid/hooks.ts` to collect selected numeric values and compute count, sum, avg, min, and max.
-    status: pending
+    status: completed
   - id: compose-status
     content: Append the aggregation segment to `combinedStatusHint` using existing status separator conventions.
-    status: pending
+    status: completed
   - id: cover-hooks
     content: Add hook/helper unit tests for numeric, mixed, padded, and insufficient numeric selections.
-    status: pending
+    status: completed
   - id: cover-rendering
     content: Add component tests for visible aggregation status and hidden aggregation status.
-    status: pending
+    status: completed
   - id: verify
     content: Run focused SpreadsheetGrid tests and lint/full tests as appropriate.
-    status: pending
+    status: completed
 isProject: false
 ---
 

@@ -25,6 +25,7 @@
   --grid-sort-arrow-active: #2563eb;
   --grid-filter-icon-idle: #9ca3af;
   --grid-filter-icon-active: #d97706;
+  --grid-selection-bg: #cfe2ff;
   --dropdown-bg: var(--background);
   --dropdown-border: var(--border);
   --dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -48,6 +49,7 @@
     --grid-sort-arrow-active: #60a5fa;
     --grid-filter-icon-idle: #6b7280;
     --grid-filter-icon-active: #f59e0b;
+    --grid-selection-bg: #1e3a5f;
     --dropdown-bg: #111827;
     --dropdown-border: #374151;
     --dropdown-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);

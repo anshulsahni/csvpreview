@@ -5,7 +5,10 @@ import {
   detectColumnType,
   sortRows,
   type SortDirection,
+  type SortState,
 } from "@/lib/sortUtils";
+import { colLabel, type CellSelection } from "./selectionUtils";
+import { useSpreadsheetGridSelection } from "./useSpreadsheetGridSelection";
 import {
   applyFilters,
   getUniqueValues,
@@ -16,20 +19,15 @@ import {
 export const MIN_COLS = 26;
 export const MIN_ROWS = 50;
 
-export function colLabel(idx: number): string {
-  let label = "";
-  let i = idx + 1;
-  while (i > 0) {
-    label = String.fromCharCode(64 + ((i - 1) % 26) + 1) + label;
-    i = Math.floor((i - 1) / 26);
-  }
-  return label;
-}
-
-export interface SortState {
-  colIdx: number;
-  direction: SortDirection;
-}
+export type { SortState } from "@/lib/sortUtils";
+export type { CellSelection, SelectionBounds } from "./selectionUtils";
+export {
+  colLabel,
+  getSelectionBounds,
+  isCellSelected,
+  cellRangeLabel,
+} from "./selectionUtils";
+export { useSelectionState } from "./useSpreadsheetGridSelection";
 
 export interface UseSpreadsheetGridArgs {
   data: string[][];
@@ -56,7 +54,14 @@ export interface SpreadsheetGridViewModel {
   columnTypeFor: (colIdx: number) => "numeric" | "text";
   uniqueValuesFor: (colIdx: number) => string[];
   columnDisplayName: (colIdx: number) => string;
+  selection: CellSelection | null;
+  isDragging: boolean;
+  isCellSelected: (rowIdx: number, colIdx: number) => boolean;
   onSortArrowClick: (colIdx: number, direction: SortDirection) => void;
+  onCellMouseDown: (rowIdx: number, colIdx: number) => void;
+  onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
+  onColumnHeaderMouseDown: (colIdx: number) => void;
+  onRowGutterMouseDown: (rowIdx: number) => void;
   openDropdown: (colIdx: number) => void;
   closeDropdown: () => void;
   setFilter: (colIdx: number, filter: ColumnFilter | null) => void;
@@ -136,7 +141,18 @@ function computeViewModel(
   filters: FilterMap
 ): Omit<
   SpreadsheetGridViewModel,
-  "onSortArrowClick" | "openDropdown" | "closeDropdown" | "setFilter" | "openColIdx"
+  | "onSortArrowClick"
+  | "openDropdown"
+  | "closeDropdown"
+  | "setFilter"
+  | "openColIdx"
+  | "selection"
+  | "isDragging"
+  | "isCellSelected"
+  | "onCellMouseDown"
+  | "onCellMouseEnter"
+  | "onColumnHeaderMouseDown"
+  | "onRowGutterMouseDown"
 > {
   const isEmpty = data.length === 0;
 
@@ -244,16 +260,59 @@ export function useSpreadsheetGrid(
     [data, firstRowAsHeader, sort, filters]
   );
 
+  const {
+    selection,
+    isDragging,
+    statusHint: combinedStatusHint,
+    onCellMouseDown,
+    onCellMouseEnter,
+    onColumnHeaderMouseDown,
+    onRowGutterMouseDown,
+    isCellSelected,
+  } = useSpreadsheetGridSelection({
+    numRows: base.visibleRowCount,
+    numCols: base.numCols,
+    isEmpty: base.isEmpty,
+    rowNumberOffset: base.rowNumberOffset,
+    baseStatusHint: base.statusHint,
+    sort,
+    filters,
+    firstRowAsHeader,
+  });
+
   return useMemo(
     () => ({
       ...base,
+      statusHint: combinedStatusHint,
+      selection,
+      isDragging,
+      isCellSelected,
       onSortArrowClick: onArrowClick,
+      onCellMouseDown,
+      onCellMouseEnter,
+      onColumnHeaderMouseDown,
+      onRowGutterMouseDown,
       openColIdx,
       openDropdown,
       closeDropdown,
       setFilter,
     }),
-    [base, onArrowClick, openColIdx, openDropdown, closeDropdown, setFilter]
+    [
+      base,
+      combinedStatusHint,
+      selection,
+      isDragging,
+      isCellSelected,
+      onArrowClick,
+      onCellMouseDown,
+      onCellMouseEnter,
+      onColumnHeaderMouseDown,
+      onRowGutterMouseDown,
+      openColIdx,
+      openDropdown,
+      closeDropdown,
+      setFilter,
+    ]
   );
 }
 
@@ -265,7 +324,18 @@ export function computeSpreadsheetGridViewModel(
   filters: FilterMap = {}
 ): Omit<
   SpreadsheetGridViewModel,
-  "onSortArrowClick" | "openDropdown" | "closeDropdown" | "setFilter" | "openColIdx"
+  | "onSortArrowClick"
+  | "openDropdown"
+  | "closeDropdown"
+  | "setFilter"
+  | "openColIdx"
+  | "selection"
+  | "isDragging"
+  | "isCellSelected"
+  | "onCellMouseDown"
+  | "onCellMouseEnter"
+  | "onColumnHeaderMouseDown"
+  | "onRowGutterMouseDown"
 > {
   return computeViewModel(data, firstRowAsHeader, sort, filters);
 }

@@ -1,10 +1,14 @@
 import { act, renderHook } from "@testing-library/react";
 import {
+  cellRangeLabel,
   colLabel,
   computeSpreadsheetGridViewModel,
+  getSelectionBounds,
+  isCellSelected,
   MIN_COLS,
   MIN_ROWS,
   useFilterState,
+  useSpreadsheetGrid,
   useSortState,
 } from "@/app/components/SpreadsheetGrid/hooks";
 
@@ -234,5 +238,127 @@ describe("colLabel", () => {
     expect(colLabel(0)).toBe("A");
     expect(colLabel(25)).toBe("Z");
     expect(colLabel(26)).toBe("AA");
+  });
+});
+
+describe("selection helpers", () => {
+  it("getSelectionBounds normalizes reversed ranges", () => {
+    expect(
+      getSelectionBounds({
+        anchorRow: 4,
+        anchorCol: 3,
+        activeRow: 1,
+        activeCol: 1,
+      })
+    ).toEqual({
+      top: 1,
+      left: 1,
+      bottom: 4,
+      right: 3,
+    });
+  });
+
+  it("isCellSelected returns true only within range bounds", () => {
+    const selection = {
+      anchorRow: 1,
+      anchorCol: 1,
+      activeRow: 3,
+      activeCol: 2,
+    };
+    expect(isCellSelected(selection, 2, 2)).toBe(true);
+    expect(isCellSelected(selection, 0, 2)).toBe(false);
+    expect(isCellSelected(selection, 2, 0)).toBe(false);
+  });
+
+  it("cellRangeLabel formats single and multi-cell selections", () => {
+    expect(
+      cellRangeLabel(
+        {
+          anchorRow: 0,
+          anchorCol: 1,
+          activeRow: 0,
+          activeCol: 1,
+        },
+        2
+      )
+    ).toBe("B2");
+    expect(
+      cellRangeLabel(
+        {
+          anchorRow: 0,
+          anchorCol: 1,
+          activeRow: 2,
+          activeCol: 3,
+        },
+        2
+      )
+    ).toBe("B2:D4");
+  });
+});
+
+describe("useSpreadsheetGrid selection lifecycle", () => {
+  it("clears selection when sort state changes", () => {
+    const data = [
+      ["b", "2"],
+      ["a", "1"],
+    ];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    act(() => {
+      result.current.onCellMouseDown(0, 0);
+    });
+    expect(result.current.selection).not.toBeNull();
+
+    act(() => {
+      result.current.onSortArrowClick(0, "asc");
+    });
+    expect(result.current.selection).toBeNull();
+  });
+
+  it("clears selection when filters change", () => {
+    const data = [
+      ["Alice", "Mumbai"],
+      ["Bob", "Delhi"],
+    ];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    act(() => {
+      result.current.onCellMouseDown(0, 0);
+    });
+    expect(result.current.selection).not.toBeNull();
+
+    act(() => {
+      result.current.setFilter(1, {
+        kind: "set",
+        values: new Set(["Delhi"]),
+      });
+    });
+    expect(result.current.selection).toBeNull();
+  });
+
+  it("clears selection when firstRowAsHeader toggles", () => {
+    const data = [
+      ["Name", "City"],
+      ["Alice", "Mumbai"],
+    ];
+    const { result, rerender } = renderHook(
+      ({ firstRowAsHeader }) =>
+        useSpreadsheetGrid({ data, firstRowAsHeader }),
+      {
+        initialProps: { firstRowAsHeader: false },
+      }
+    );
+
+    act(() => {
+      result.current.onCellMouseDown(0, 0);
+    });
+    expect(result.current.selection).not.toBeNull();
+
+    rerender({ firstRowAsHeader: true });
+    expect(result.current.selection).toBeNull();
   });
 });

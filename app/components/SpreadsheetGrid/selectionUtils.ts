@@ -89,5 +89,6 @@ export function selectionStatusHint(
   if (count === 0 || label === null) {
     return null;
   }
-  return `${count} cells selected (${label})`;
+  const noun = count === 1 ? "cell" : "cells";
+  return `${count} ${noun} selected (${label})`;
 }

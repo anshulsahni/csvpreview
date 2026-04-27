@@ -1,3 +1,5 @@
+import { parseFiniteNumber } from "@/lib/sortUtils";
+
 export interface CellSelection {
   anchorRow: number;
   anchorCol: number;
@@ -99,15 +101,6 @@ export function selectionStatusHint(
   }
   const noun = count === 1 ? "cell" : "cells";
   return `${count} ${noun} selected (${label})`;
-}
-
-function parseFiniteNumber(value: string): number | null {
-  const trimmed = value.trim();
-  if (trimmed === "") {
-    return null;
-  }
-  const asNumber = Number(trimmed);
-  return Number.isFinite(asNumber) ? asNumber : null;
 }
 
 export function computeSelectionAggregates(

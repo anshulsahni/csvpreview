@@ -1,3 +1,5 @@
+import { parseFiniteNumber } from "@/lib/sortUtils";
+
 export interface CellSelection {
   anchorRow: number;
   anchorCol: number;
@@ -10,6 +12,14 @@ export interface SelectionBounds {
   left: number;
   bottom: number;
   right: number;
+}
+
+export interface SelectionAggregates {
+  numericCount: number;
+  sum: number;
+  avg: number;
+  min: number;
+  max: number;
 }
 
 export function colLabel(idx: number): string {
@@ -91,4 +101,68 @@ export function selectionStatusHint(
   }
   const noun = count === 1 ? "cell" : "cells";
   return `${count} ${noun} selected (${label})`;
+}
+
+export function computeSelectionAggregates(
+  selection: CellSelection | null,
+  rows: readonly string[][]
+): SelectionAggregates | null {
+  const bounds = getSelectionBounds(selection);
+  if (bounds === null) {
+    return null;
+  }
+
+  let numericCount = 0;
+  let sum = 0;
+  let min = Number.POSITIVE_INFINITY;
+  let max = Number.NEGATIVE_INFINITY;
+
+  for (let rowIdx = bounds.top; rowIdx <= bounds.bottom; rowIdx += 1) {
+    const row = rows[rowIdx];
+    if (row === undefined) {
+      continue;
+    }
+    for (let colIdx = bounds.left; colIdx <= bounds.right; colIdx += 1) {
+      const maybeNum = parseFiniteNumber(row[colIdx] ?? "");
+      if (maybeNum === null) {
+        continue;
+      }
+
+      numericCount += 1;
+      sum += maybeNum;
+      min = Math.min(min, maybeNum);
+      max = Math.max(max, maybeNum);
+    }
+  }
+
+  if (numericCount < 2) {
+    return null;
+  }
+
+  return {
+    numericCount,
+    sum,
+    avg: sum / numericCount,
+    min,
+    max,
+  };
+}
+
+function formatAggregateNumber(value: number): string {
+  if (Number.isInteger(value)) {
+    return String(value);
+  }
+  return String(Number(value.toFixed(2)));
+}
+
+export function aggregationStatusHint(
+  selection: CellSelection | null,
+  rows: readonly string[][]
+): string | null {
+  const aggregates = computeSelectionAggregates(selection, rows);
+  if (aggregates === null) {
+    return null;
+  }
+
+  return `Sum: ${formatAggregateNumber(aggregates.sum)} · Avg: ${formatAggregateNumber(aggregates.avg)} · Min: ${formatAggregateNumber(aggregates.min)} · Max: ${formatAggregateNumber(aggregates.max)}`;
 }

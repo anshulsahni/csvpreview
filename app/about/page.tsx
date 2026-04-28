@@ -5,7 +5,7 @@ import AboutContent from "./components/AboutContent";
 export const metadata: Metadata = {
   title: "About – CSV Preview | Your Data Never Leaves Your Browser",
   description:
-    "CSV Preview is a minimal, privacy-first tool for inspecting CSV files entirely in your browser. No server, no signup — built with Next.js, React, and TypeScript.",
+    "CSV Preview is a minimal, privacy-first tool for inspecting CSV files entirely in your browser. No server, no signups",
   keywords: [
     "about CSV Preview",
     "privacy CSV tool",

@@ -5,13 +5,13 @@ import AnalyticsProvider from "@/app/components/AnalyticsProvider";
 export const metadata: Metadata = {
   title: "CSV Preview – View CSV Files Instantly in Your Browser",
   description:
-    "CSV Preview lets you upload and preview CSV files directly in your browser. No server, no signup – your data stays local.",
-  keywords: ["CSV viewer", "CSV preview", "open CSV online", "CSV file reader"],
+    "CSV Preview lets you open and inspect CSV files directly in your browser. Privacy-first — no server, no signup, your data stays local.",
+  keywords: ["CSV viewer", "CSV preview", "open CSV online", "CSV file reader", "privacy CSV"],
   robots: { index: true, follow: true },
   openGraph: {
     title: "CSV Preview – View CSV Files Instantly in Your Browser",
     description:
-      "Upload and preview CSV files directly in your browser. No server, no signup – your data stays local.",
+      "Open and inspect CSV files directly in your browser. Privacy-first — no server, no signup, your data stays local.",
     type: "website",
   },
 };

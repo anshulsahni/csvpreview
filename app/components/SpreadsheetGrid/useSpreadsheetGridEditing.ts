@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 
 export interface EditingCell {
@@ -21,14 +21,16 @@ interface UseSpreadsheetGridEditingArgs {
 export interface SpreadsheetGridEditingVm {
   focusedCell: EditingCell | null;
   editingCell: EditingCell | null;
-  draftValue: string;
   isEditingCell: (rowIdx: number, colIdx: number) => boolean;
-  onDraftChange: (value: string) => void;
+  onDraftValueChange: (value: string) => void;
   onCellFocus: (rowIdx: number, colIdx: number) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellDoubleClick: (rowIdx: number, colIdx: number) => void;
   onCellKeyDown: (event: KeyboardEvent, rowIdx: number, colIdx: number) => void;
-  onEditorKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
+  onEditorKeyDown: (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+    value: string
+  ) => void;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -48,7 +50,7 @@ export function useSpreadsheetGridEditing({
 }: UseSpreadsheetGridEditingArgs): SpreadsheetGridEditingVm {
   const [focusedCell, setFocusedCell] = useState<EditingCell | null>(null);
   const [editingCell, setEditingCell] = useState<EditingCell | null>(null);
-  const [draftValue, setDraftValue] = useState("");
+  const draftValueRef = useRef("");
 
   const isEditingCell = (rowIdx: number, colIdx: number) =>
     editingCell?.rowIdx === rowIdx && editingCell.colIdx === colIdx;
@@ -67,7 +69,7 @@ export function useSpreadsheetGridEditing({
     setFocusedCell({ rowIdx, colIdx });
     selectSingleCell(rowIdx, colIdx);
     setEditingCell({ rowIdx, colIdx });
-    setDraftValue(bodyRows[rowIdx]?.[colIdx] ?? "");
+    draftValueRef.current = bodyRows[rowIdx]?.[colIdx] ?? "";
   };
 
   const exitEditing = (
@@ -83,21 +85,21 @@ export function useSpreadsheetGridEditing({
       selectSingleCell(clamped.rowIdx, clamped.colIdx);
     }
     setEditingCell(null);
-    setDraftValue("");
+    draftValueRef.current = "";
   };
 
-  const commitAndMove = (deltaRow: number, deltaCol: number) => {
+  const commitAndMove = (value: string, deltaRow: number, deltaCol: number) => {
     if (editingCell === null) return;
-    commitAt(editingCell.rowIdx, editingCell.colIdx, draftValue);
+    commitAt(editingCell.rowIdx, editingCell.colIdx, value);
     exitEditing({
       rowIdx: editingCell.rowIdx + deltaRow,
       colIdx: editingCell.colIdx + deltaCol,
     });
   };
 
-  const commitAndStay = () => {
+  const commitAndStay = (value: string) => {
     if (editingCell === null) return;
-    commitAt(editingCell.rowIdx, editingCell.colIdx, draftValue);
+    commitAt(editingCell.rowIdx, editingCell.colIdx, value);
     exitEditing(editingCell);
   };
 
@@ -106,9 +108,9 @@ export function useSpreadsheetGridEditing({
       editingCell !== null &&
       (editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx)
     ) {
-      commitAt(editingCell.rowIdx, editingCell.colIdx, draftValue);
+      commitAt(editingCell.rowIdx, editingCell.colIdx, draftValueRef.current);
       setEditingCell(null);
-      setDraftValue("");
+      draftValueRef.current = "";
     }
     setFocusedCell({ rowIdx, colIdx });
   };
@@ -116,9 +118,10 @@ export function useSpreadsheetGridEditing({
   return {
     focusedCell,
     editingCell,
-    draftValue,
     isEditingCell,
-    onDraftChange: setDraftValue,
+    onDraftValueChange: (value) => {
+      draftValueRef.current = value;
+    },
     onCellFocus: (rowIdx, colIdx) => {
       setFocusedCell({ rowIdx, colIdx });
     },
@@ -134,23 +137,24 @@ export function useSpreadsheetGridEditing({
         startEditing(rowIdx, colIdx);
       }
     },
-    onEditorKeyDown: (event) => {
+    onEditorKeyDown: (event, value) => {
+      draftValueRef.current = value;
       if (event.key === "Escape") {
         event.preventDefault();
         event.stopPropagation();
-        commitAndStay();
+        commitAndStay(value);
         return;
       }
       if (event.key === "Tab") {
         event.preventDefault();
         event.stopPropagation();
-        commitAndMove(0, 1);
+        commitAndMove(value, 0, 1);
         return;
       }
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         event.stopPropagation();
-        commitAndMove(1, 0);
+        commitAndMove(value, 1, 0);
       }
     },
   };

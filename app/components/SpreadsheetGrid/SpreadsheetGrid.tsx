@@ -122,8 +122,9 @@ export default function SpreadsheetGrid({
                   >
                     {vm.isEditingCell(ri, ci) ? (
                       <CellEditor
-                        value={vm.draftValue}
-                        onChange={vm.onDraftChange}
+                        key={`editor-${ri}-${ci}-${vm.bodyRows[ri]?.[ci] ?? ""}`}
+                        initialValue={vm.bodyRows[ri]?.[ci] ?? ""}
+                        onDraftValueChange={vm.onDraftValueChange}
                         onKeyDown={vm.onEditorKeyDown}
                       />
                     ) : (

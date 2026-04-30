@@ -2,23 +2,33 @@
 
 import React from "react";
 import { styled } from "@linaria/react";
+import { useState } from "react";
 
 export interface CellEditorProps {
-  value: string;
-  onChange: (value: string) => void;
-  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  initialValue: string;
+  onDraftValueChange: (value: string) => void;
+  onKeyDown: (
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
+    value: string
+  ) => void;
 }
 
 export default function CellEditor({
-  value,
-  onChange,
+  initialValue,
+  onDraftValueChange,
   onKeyDown,
 }: CellEditorProps) {
+  const [draft, setDraft] = useState(initialValue);
+
   return (
     <EditorTextarea
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      onKeyDown={onKeyDown}
+      value={draft}
+      onChange={(event) => {
+        const next = event.target.value;
+        setDraft(next);
+        onDraftValueChange(next);
+      }}
+      onKeyDown={(event) => onKeyDown(event, event.currentTarget.value)}
       onFocus={(event) => {
         const el = event.currentTarget;
         const end = el.value.length;

@@ -72,7 +72,6 @@ export interface SpreadsheetGridViewModel {
   isDragging: boolean;
   focusedCell: { rowIdx: number; colIdx: number } | null;
   editingCell: { rowIdx: number; colIdx: number } | null;
-  draftValue: string;
   isCellSelected: (rowIdx: number, colIdx: number) => boolean;
   isEditingCell: (rowIdx: number, colIdx: number) => boolean;
   onSortArrowClick: (colIdx: number, direction: SortDirection) => void;
@@ -85,8 +84,11 @@ export interface SpreadsheetGridViewModel {
     rowIdx: number,
     colIdx: number
   ) => void;
-  onEditorKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
-  onDraftChange: (value: string) => void;
+  onEditorKeyDown: (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+    value: string
+  ) => void;
+  onDraftValueChange: (value: string) => void;
   onColumnHeaderMouseDown: (colIdx: number) => void;
   onRowGutterMouseDown: (rowIdx: number) => void;
   openDropdown: (colIdx: number) => void;
@@ -351,7 +353,6 @@ export function useSpreadsheetGrid(
       isDragging,
       focusedCell: editingVm.focusedCell,
       editingCell: editingVm.editingCell,
-      draftValue: editingVm.draftValue,
       isCellSelected,
       isEditingCell: editingVm.isEditingCell,
       onSortArrowClick: onArrowClick,
@@ -361,7 +362,7 @@ export function useSpreadsheetGrid(
       onCellDoubleClick: editingVm.onCellDoubleClick,
       onCellKeyDown: editingVm.onCellKeyDown,
       onEditorKeyDown: editingVm.onEditorKeyDown,
-      onDraftChange: editingVm.onDraftChange,
+      onDraftValueChange: editingVm.onDraftValueChange,
       onColumnHeaderMouseDown,
       onRowGutterMouseDown,
       openColIdx,
@@ -406,7 +407,6 @@ export function computeSpreadsheetGridViewModel(
   | "isDragging"
   | "focusedCell"
   | "editingCell"
-  | "draftValue"
   | "isCellSelected"
   | "isEditingCell"
   | "onCellMouseDown"
@@ -415,7 +415,7 @@ export function computeSpreadsheetGridViewModel(
   | "onCellDoubleClick"
   | "onCellKeyDown"
   | "onEditorKeyDown"
-  | "onDraftChange"
+  | "onDraftValueChange"
   | "onColumnHeaderMouseDown"
   | "onRowGutterMouseDown"
 > {

@@ -7,9 +7,8 @@ describe("Navbar", () => {
     expect(screen.getByText("CSV Preview")).toBeInTheDocument();
   });
 
-  it("renders Home and About navigation links", () => {
+  it("renders the About navigation link", () => {
     render(<Navbar />);
-    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about");
   });
 });

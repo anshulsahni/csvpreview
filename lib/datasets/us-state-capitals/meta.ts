@@ -12,8 +12,6 @@ const meta: DatasetMeta = {
     "state capitals population",
   ],
   firstRowAsHeader: true,
-  intro:
-    "All 50 US state capitals with state abbreviation and 2020 census population. Click column headers to sort, or use the filter funnel to narrow rows.",
 };
 
 export default meta;

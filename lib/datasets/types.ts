@@ -4,6 +4,4 @@ export interface DatasetMeta {
   description: string;
   keywords?: string[];
   firstRowAsHeader?: boolean;
-  h1?: string;
-  intro?: string;
 }

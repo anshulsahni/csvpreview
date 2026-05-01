@@ -54,33 +54,32 @@ export default async function DatasetPage({ params }: { params: Params }) {
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
-          padding: "1rem 2rem",
-          gap: "0.75rem",
         }}
       >
-        <header
+        <div
           style={{
             display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: "1rem",
+            flexDirection: "column",
+            height: "100%",
           }}
         >
-          <div>
-            <h1 style={{ margin: 0, fontSize: "1.5rem" }}>{ds.h1 ?? ds.title}</h1>
-            {ds.intro && (
-              <p style={{ margin: "0.5rem 0 0", opacity: 0.75, maxWidth: "60ch" }}>
-                {ds.intro}
-              </p>
-            )}
+          <div
+            style={{
+              padding: "0.5rem 1rem",
+              borderBottom: "1px solid var(--border)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+            }}
+          >
+            <OpenInEditorButton rows={rows} filename={`${ds.slug}.csv`} />
           </div>
-          <OpenInEditorButton rows={rows} filename={`${ds.slug}.csv`} />
-        </header>
-        <div style={{ flex: 1, minHeight: 0 }}>
-          <SpreadsheetGrid
-            data={rows}
-            firstRowAsHeader={ds.firstRowAsHeader ?? true}
-          />
+          <div style={{ flex: 1, overflow: "hidden" }}>
+            <SpreadsheetGrid
+              data={rows}
+              firstRowAsHeader={ds.firstRowAsHeader ?? true}
+            />
+          </div>
         </div>
       </main>
     </>

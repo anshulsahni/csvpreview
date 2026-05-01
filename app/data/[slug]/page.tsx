@@ -73,6 +73,19 @@ export default async function DatasetPage({ params }: { params: Params }) {
             }}
           >
             <OpenInEditorButton rows={rows} filename={`${ds.slug}.csv`} />
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                opacity: 0.75,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {ds.title}
+            </h1>
           </div>
           <div style={{ flex: 1, overflow: "hidden" }}>
             <SpreadsheetGrid

@@ -1,0 +1,241 @@
+Rank,Country/Territory,Status,Population,% of World,Date,Source Type
+World,World,World,8232000000,100%,13 Jun 2025,UN projection
+1,India,Country,1417492000,17.2%,1 Jul 2025,Official projection
+2,China,Country,1404890000,17.0%,31 Dec 2025,Official estimate
+3,United States,Country,341784857,4.1%,1 Jul 2025,Official estimate
+4,Indonesia,Country,288315089,3.5%,31 Dec 2025,National annual projection
+5,Pakistan,Country,241499431,2.9%,1 Mar 2023,2023 census result
+6,Nigeria,Country,223800000,2.7%,1 Jul 2023,Official projection
+7,Brazil,Country,213421037,2.6%,1 Jul 2025,Official estimate
+8,Bangladesh,Country,169828911,2.1%,14 Jun 2022,2022 census result
+9,Russia,Country,146028325,1.8%,1 Jan 2025,Official estimate
+10,Mexico,Country,131001723,1.6%,31 Dec 2025,National quarterly estimate
+11,Japan,Country,122860000,1.5%,1 Apr 2026,Monthly national estimate
+12,Philippines,Country,114123600,1.4%,1 Jul 2025,Official projection
+13,Democratic Republic of the Congo,Country,112832000,1.4%,1 Jul 2025,UN projection
+14,Ethiopia,Country,111652998,1.4%,1 Jul 2025,National annual projection
+15,Egypt,Country,107868296,1.3%,1 Jul 2025,Official estimate
+16,Vietnam,Country,102300000,1.2%,31 Dec 2025,Official estimate
+17,Iran,Country,86563000,1.0%,20 Mar 2025,Official projection
+18,Turkey,Country,86092168,1.0%,31 Dec 2025,Official estimate
+19,Germany,Country,83497147,1.0%,30 Sep 2025,National quarterly estimate
+20,United Kingdom,Country,69487000,0.8%,30 Jun 2025,Official estimate
+21,France,Country,69081996,0.8%,1 Jan 2026,Yearly national estimate
+22,Tanzania,Country,68153004,0.8%,1 Jul 2025,Official projection
+23,Thailand,Country,65826149,0.8%,30 Nov 2025,Monthly national estimate
+24,South Africa,Country,63100945,0.8%,30 Jun 2025,Official estimate
+25,Italy,Country,58931425,0.7%,31 Jan 2026,Monthly national estimate
+26,Kenya,Country,53330978,0.6%,1 Jul 2025,Official projection
+27,Colombia,Country,53057212,0.6%,1 Jan 2025,Official projection
+28,Sudan,Country,51662000,0.6%,1 Jul 2025,UN projection
+29,Myanmar,Country,51375327,0.6%,15 Oct 2024,2024 census result
+30,South Korea,Country,51111158,0.6%,31 Jan 2026,Monthly national estimate
+31,Spain,Country,49570725,0.6%,1 Jan 2026,National quarterly estimate
+32,Algeria,Country,47400000,0.6%,1 Jan 2025,National annual projection
+33,Argentina,Country,46387098,0.6%,1 Jul 2025,National annual projection
+34,Iraq,Country,46118793,0.6%,21 Nov 2024,2024 census result
+35,Uganda,Country,45905417,0.6%,10 May 2024,2024 census result
+36,Afghanistan,Country,43844000,0.5%,1 Jul 2025,UN projection
+37,Canada,Country,41472081,0.5%,1 Jan 2026,National quarterly estimate
+38,Angola,Country,38778554,0.5%,1 Jan 2026,National estimate
+39,Uzbekistan,Country,38236704,0.5%,1 Jan 2026,Official estimate
+40,Poland,Country,37296000,0.5%,28 Feb 2026,Monthly national estimate
+41,Morocco,Country,36828330,0.4%,1 Sep 2024,2024 census result
+42,Saudi Arabia,Country,35300280,0.4%,1 Jul 2024,Official estimate
+43,Peru,Country,34350244,0.4%,1 Jul 2025,National annual projection
+44,Malaysia,Country,34334400,0.4%,31 Dec 2025,National quarterly estimate
+45,Mozambique,Country,34090466,0.4%,1 Jul 2025,National annual projection
+46,Ghana,Country,33742380,0.4%,1 Jul 2025,National annual projection
+47,Yemen,Country,32684503,0.4%,1 Jul 2023,Official estimate
+48,Madagascar,Country,31727042,0.4%,1 Jul 2025,National annual projection
+49,Ivory Coast,Country,31719275,0.4%,31 Dec 2024,National annual projection
+50,Nepal,Country,29911840,0.4%,25 Nov 2025,National annual projection
+51,Cameroon,Country,29442327,0.4%,1 Jul 2025,National annual projection
+52,Ukraine,Country,28700000,0.3%,1 Sep 2025,State migration service
+53,Venezuela,Country,28517000,0.3%,1 Jul 2025,UN projection
+54,Australia,Country,27724744,0.3%,30 Sep 2025,Official projection
+55,Niger,Country,27522750,0.3%,1 Jul 2025,National annual projection
+56,North Korea,Country,25950000,0.3%,1 Jul 2024,National annual projection
+57,Syria,Country,25620427,0.3%,1 Jul 2025,Monthly estimate
+58,Burkina Faso,Country,24070553,0.3%,1 Jul 2025,Official projection
+59,Taiwan,Territory,23270568,0.3%,31 Mar 2026,Official estimate
+60,Mali,Country,22395489,0.3%,15 Jun 2022,2022 census result
+61,Sri Lanka,Country,21781800,0.3%,19 Dec 2024,2024 census result
+62,Malawi,Country,20734262,0.3%,1 Jul 2025,National annual projection
+63,Kazakhstan,Country,20532240,0.2%,1 Mar 2026,Official estimate
+64,Chile,Country,20206953,0.2%,30 Jun 2025,National annual projection
+65,Zambia,Country,19693423,0.2%,8 Sep 2022,2022 census result
+66,Somalia,Country,19655000,0.2%,1 Jul 2025,UN projection
+67,Chad,Country,19340757,0.2%,1 Jul 2025,National annual projection
+68,Senegal,Country,19075959,0.2%,1 Jul 2025,National annual projection
+69,Romania,Country,19036031,0.2%,1 Jan 2025,Official estimate
+70,Netherlands,Country,18137265,0.2%,28 Feb 2026,Official estimate
+71,Ecuador,Country,18103660,0.2%,1 Jul 2025,National annual projection
+72,Guatemala,Country,18312373,0.2%,1 Jul 2026,National annual projection
+73,Cambodia,Country,17577760,0.2%,1 Jul 2025,Official projection
+74,Guinea,Country,17521167,0.2%,1 Jul 2025,Census
+75,Zimbabwe,Country,17073087,0.2%,1 Jul 2025,Official projection
+76,South Sudan,Country,15786898,0.2%,1 Jul 2025,National annual projection
+77,Rwanda,Country,14104969,0.2%,1 Jul 2025,National annual projection
+78,Benin,Country,13224860,0.2%,1 Jul 2025,National annual projection
+79,Burundi,Country,12332788,0.1%,16 Aug 2024,Preliminary census result
+80,Tunisia,Country,11972169,0.1%,6 Nov 2024,2024 census result
+81,Jordan,Country,11937000,0.1%,31 Dec 2025,National estimate
+82,Belgium,Country,11930567,0.1%,1 Feb 2026,Official estimate
+83,Haiti,Country,11867032,0.1%,1 Jul 2024,National annual projection
+84,Bolivia,Country,11365333,0.1%,23 Mar 2024,2024 census result
+85,United Arab Emirates,Country,11294243,0.1%,31 Dec 2024,Official estimate
+86,Czechia,Country,10915839,0.1%,31 Dec 2025,Official estimate
+87,Dominican Republic,Country,10771504,0.1%,10 Nov 2022,2022 census result
+88,Portugal,Country,10749635,0.1%,31 Dec 2024,Official estimate
+89,Sweden,Country,10604061,0.1%,28 Feb 2026,Monthly national estimate
+90,Tajikistan,Country,10499000,0.1%,1 Jan 2025,Official estimate
+91,Greece,Country,10372335,0.1%,1 Jan 2025,Official estimate
+92,Azerbaijan,Country,10259701,0.1%,1 Dec 2025,Monthly national estimate
+93,Israel,Country,10244000,0.1%,21 Apr 2026,Monthly national estimate
+94,Papua New Guinea,Country,10185363,0.1%,16 Jun 2024,2024 census result
+95,Honduras,Country,10186738,0.1%,1 Jul 2026,National annual projection
+96,Cuba,Country,9748007,0.1%,31 Dec 2024,Official estimate
+97,Hungary,Country,9489000,0.1%,1 Jan 2026,Official estimate
+98,Austria,Country,9219113,0.1%,1 Jan 2026,National quarterly estimate
+99,Switzerland,Country,9124288,0.1%,31 Dec 2025,National quarterly estimate
+100,Sierra Leone,Country,9077691,0.1%,1 Jul 2025,National annual projection
+101,Belarus,Country,9056080,0.1%,1 Jan 2026,Official estimate
+102,Togo,Country,8095498,0.10%,8 Nov 2022,2022 census result
+103,Laos,Country,7647000,0.09%,1 Jul 2024,National annual projection
+104,Hong Kong (China),Territory,7510800,0.09%,31 Dec 2025,National estimate
+105,Libya,Country,7459000,0.09%,1 Jul 2025,UN projection
+106,Kyrgyzstan,Country,7404300,0.09%,1 Jan 2026,Monthly national estimate
+107,Turkmenistan,Country,7057841,0.09%,17 Dec 2022,2022 census result
+108,Nicaragua,Country,6874748,0.08%,30 Jun 2024,Official estimate
+109,Serbia,Country,6567783,0.08%,1 Jan 2025,Official estimate
+110,Central African Republic,Country,6470307,0.08%,1 Jul 2024,National annual projection
+111,Bulgaria,Country,6437360,0.08%,31 Dec 2024,Official estimate
+112,Congo,Country,6142180,0.07%,17 May 2023,2023 census result
+113,Singapore,Country,6110200,0.07%,30 Jun 2025,National annual projection
+114,Paraguay,Country,6109644,0.07%,9 Nov 2022,2022 census result
+115,El Salvador,Country,6029976,0.07%,2 May 2024,2024 census result
+116,Denmark,Country,6029607,0.07%,1 Mar 2026,Monthly national estimate
+117,Finland,Country,5650933,0.07%,31 Mar 2026,Monthly national estimate
+118,Norway,Country,5627400,0.07%,31 Dec 2025,National quarterly estimate
+119,Lebanon,Country,5490000,0.07%,1 Jul 2021,Official estimate
+120,Palestine,Territory,5483450,0.07%,1 Jan 2023,National annual projection
+121,Ireland,Country,5458600,0.07%,1 Apr 2025,National estimate
+122,Slovakia,Country,5409407,0.07%,31 Dec 2025,National quarterly estimate
+123,Oman,Country,5368120,0.07%,31 Mar 2026,Monthly national estimate
+124,New Zealand,Country,5342000,0.06%,31 Dec 2025,National quarterly estimate
+125,Liberia,Country,5248621,0.06%,10 Nov 2022,2022 census result
+126,Costa Rica,Country,5191824,0.06%,30 Jun 2025,National annual projection
+127,Mauritania,Country,4927532,0.06%,25 Dec 2023,2023 census result
+128,Kuwait,Country,4881254,0.06%,1 Jan 2025,Official estimate
+129,Panama,Country,4064780,0.05%,1 Jul 2026,2023 census result
+130,Croatia,Country,3866233,0.05%,1 Jul 2024,Official estimate
+131,Georgia,Country,3704500,0.04%,1 Jan 2025,Official estimate
+132,Eritrea,Country,3607000,0.04%,1 Jul 2025,UN projection
+133,Mongolia,Country,3544835,0.04%,31 Dec 2024,National annual projection
+134,Uruguay,Country,3485931,0.04%,30 Jun 2025,National annual projection
+135,Bosnia and Herzegovina,Country,3412000,0.04%,1 Jul 2024,Official estimate
+136,Qatar,Country,3214609,0.04%,31 Dec 2025,Monthly national estimate
+137,Puerto Rico (US),Territory,3184195,0.04%,1 Jul 2025,Annual projection
+138,Armenia,Country,3076200,0.04%,1 Jan 2025,Official estimate
+139,Namibia,Country,3022401,0.04%,24 Sep 2023,2023 census
+140,Lithuania,Country,2884359,0.03%,1 Apr 2026,Monthly national estimate
+141,Jamaica,Country,2774538,0.03%,12 Sep 2022,2022 census result
+142,Gabon,Country,2469296,0.03%,1 Jul 2025,National annual projection
+143,Gambia,Country,2422712,0.03%,1 May 2024,Preliminary census results
+144,Moldova,Country,2381300,0.03%,1 Jan 2025,Official estimate
+145,Albania,Country,2363314,0.03%,1 Jan 2025,Official estimate
+146,Botswana,Country,2359609,0.03%,18 Mar 2022,2022 census result
+147,Slovenia,Country,2135107,0.03%,1 Jan 2026,National quarterly estimate
+148,Lesotho,Country,2116427,0.03%,2024,Official survey
+149,Guinea-Bissau,Country,1852784,0.02%,1 Jul 2025,National annual projection
+150,Latvia,Country,1818300,0.02%,1 Mar 2026,Monthly national estimate
+151,North Macedonia,Country,1822612,0.02%,31 Dec 2024,Official estimate
+152,Equatorial Guinea,Country,1668768,0.02%,1 Jul 2024,Official estimate
+153,Bahrain,Country,1594654,0.02%,31 Dec 2024,Official estimate
+154,Kosovo,Territory,1585566,0.02%,4 Apr 2024,2024 national census
+155,Timor-Leste,Country,1391221,0.02%,1 Jul 2025,National annual projection
+156,Trinidad and Tobago,Country,1367764,0.02%,30 Jun 2025,Official estimate
+157,Estonia,Country,1360745,0.02%,1 Jan 2026,Official estimate
+158,Mauritius,Country,1241856,0.02%,31 Dec 2025,National estimate
+159,Eswatini,Country,1235549,0.01%,1 Jul 2024,Official projection
+160,Djibouti,Country,1066809,0.01%,20 May 2024,2024 census result
+161,Cyprus,Country,983000,0.01%,31 Dec 2024,Official estimate
+162,Guyana,Country,956044,0.01%,31 Dec 2024,Official estimate
+163,Comoros,Country,944388,0.01%,2026,Official estimate
+164,Fiji,Country,902623,0.01%,1 Jan 2026,National annual projection
+165,Bhutan,Country,784043,0.010%,2025,National annual projection
+166,Solomon Islands,Country,750325,0.009%,1 Jul 2024,National annual projection
+167,Macau (China),Territory,688900,0.008%,31 Dec 2025,National quarterly estimate
+168,Luxembourg,Country,681973,0.008%,1 Jan 2025,Official estimate
+169,Montenegro,Country,623327,0.008%,1 Jan 2025,Official estimate
+170,Suriname,Country,616500,0.007%,1 Jul 2021,Official estimate
+171,Western Sahara (disputed),Territory,600904,0.007%,1 Jul 2025,UN projection
+172,Malta,Country,574250,0.007%,31 Dec 2024,Official estimate
+173,Maldives,Country,515132,0.006%,13 Sep 2022,2022 census result
+174,Cape Verde,Country,491233,0.006%,16 Jun 2021,2021 census result
+175,Northern Cyprus,Territory,476214,0.006%,31 Dec 2023,Official projection
+176,Brunei,Country,458600,0.006%,1 Jul 2025,Official estimate
+177,Belize,Country,417634,0.005%,1 Jul 2025,Official estimate
+178,Bahamas,Country,398165,0.005%,4 Apr 2022,2022 census result
+179,Iceland,Country,394530,0.005%,1 Jan 2026,National quarterly estimate
+180,Transnistria,Territory,367776,0.004%,31 Mar 2024,Official estimate
+181,Vanuatu,Country,321409,0.004%,1 Jul 2024,National annual projection
+182,French Polynesia (France),Territory,279500,0.003%,31 Dec 2024,National annual projection
+183,Barbados,Country,267800,0.003%,31 Dec 2022,Official estimate
+184,New Caledonia (France),Territory,264596,0.003%,1 Jan 2025,National annual projection
+185,Abkhazia,Territory,244236,0.003%,1 Jan 2022,Official estimate
+186,São Tomé and Príncipe,Country,209607,0.003%,2024,Preliminary census result
+187,Samoa,Country,205557,0.002%,6 Nov 2021,2021 census
+188,Saint Lucia,Country,184100,0.002%,1 Jul 2023,Official estimate
+189,Curaçao (Netherlands),Territory,156115,0.002%,1 Jan 2025,Official estimate
+190,Guam (US),Territory,153836,0.002%,1 Apr 2020,2020 census result
+191,Seychelles,Country,123097,0.001%,31 Dec 2025,Official estimate
+192,Kiribati,Country,120740,0.001%,1 Jul 2021,National annual projection
+193,Saint Vincent and the Grenadines,Country,110872,0.001%,1 Jul 2022,Official estimate
+194,Aruba (Netherlands),Territory,109435,0.001%,30 Jun 2025,Official estimate
+195,Grenada,Country,109021,0.001%,2021,Preliminary census results
+196,Antigua and Barbuda,Country,103603,0.001%,1 Jan 2024,Official estimate
+197,Jersey (UK),Territory,103267,0.001%,21 Mar 2021,2021 census result
+198,Tonga,Country,100179,0.001%,30 Nov 2021,2021 census result
+199,Andorra,Country,89368,0.001%,31 Mar 2026,Monthly national estimate
+200,Cayman Islands (UK),Territory,88833,0.001%,31 Dec 2024,National annual projection
+201,U.S. Virgin Islands (US),Territory,87146,0.001%,1 Apr 2020,2020 census result
+202,Isle of Man (UK),Territory,84975,0.001%,1 Apr 2025,Official estimate
+203,Micronesia,Country,75817,0.0009%,12 Feb 2023,2023 census
+204,Dominica,Country,71946,0.0009%,2018,UN estimate
+205,Guernsey (UK),Territory,64781,0.0008%,31 Dec 2023,National quarterly estimate
+206,Bermuda (UK),Territory,64055,0.0008%,1 Jul 2021,National annual projection
+207,Greenland (Denmark),Territory,56740,0.0007%,1 Jan 2026,National quarterly estimate
+208,South Ossetia,Territory,56520,0.0007%,31 Dec 2021,Official estimate
+209,Faroe Islands (Denmark),Territory,55177,0.0007%,1 Mar 2026,Monthly national estimate
+210,Saint Kitts and Nevis,Country,51320,0.0006%,2022,2022 census result
+211,Turks and Caicos Islands (UK),Territory,50828,0.0006%,1 Jul 2024,Official estimate
+212,American Samoa (US),Territory,49710,0.0006%,1 Apr 2020,2020 census result
+213,Northern Mariana Islands (US),Territory,47329,0.0006%,1 Apr 2020,2020 census result
+214,Marshall Islands,Country,42418,0.0005%,30 Sep 2021,2021 census
+215,Sint Maarten (Netherlands),Territory,41349,0.0005%,1 Jan 2025,Official estimate
+216,Liechtenstein,Country,41237,0.0005%,31 Dec 2025,National estimate
+217,British Virgin Islands (UK),Territory,39471,0.0005%,1 Jul 2024,UN projection
+218,Monaco,Country,38857,0.0005%,31 Dec 2025,Census
+219,Gibraltar (UK),Territory,38196,0.0005%,14 Nov 2022,Preliminary census results
+220,San Marino,Country,34156,0.0004%,28 Feb 2026,Monthly national estimate
+221,Saint Martin (France),Territory,31496,0.0004%,1 Jan 2025,Official estimate
+222,Palau,Country,16733,0.0002%,1 Jul 2021,2021 census
+223,Anguilla (UK),Territory,16010,0.0002%,31 Dec 2024,Official estimate
+224,Cook Islands (New Zealand),Territory,15040,0.0002%,1 Jul 2021,2021 census
+225,Nauru,Country,11680,0.0001%,30 Oct 2021,2021 census
+226,Wallis and Futuna (France),Territory,11620,0.0001%,24 Jul 2023,2023 census
+227,Tuvalu,Country,10643,0.0001%,12 Dec 2022,2022 census
+228,Saint Barthélemy (France),Territory,10562,0.0001%,1 Jan 2025,Official estimate
+229,Saint Pierre and Miquelon (France),Territory,5819,0%,1 Jan 2025,Official estimate
+230,Saint Helena Ascension and Tristan da Cunha (UK),Territory,5651,0%,1 Jul 2021,2021 census
+231,Montserrat (UK),Territory,4386,0%,23 Sep 2023,2023 census result
+232,Falkland Islands (UK),Territory,3662,0%,10 Oct 2021,2021 census result
+233,Tokelau (New Zealand),Territory,2608,0%,1 Jan 2025,2025 census
+234,Norfolk Island (Australia),Territory,2188,0%,1 Jan 2021,2021 census
+235,Christmas Island (Australia),Territory,1692,0%,1 Jan 2021,2021 census
+236,Niue (New Zealand),Territory,1681,0%,11 Nov 2022,2022 census
+237,Vatican City,Country,882,0%,31 Dec 2024,Official figure
+238,Cocos (Keeling) Islands (Australia),Territory,593,0%,30 Jun 2020,2021 census
+239,Pitcairn Islands (UK),Territory,35,0%,1 Jul 2023,Official estimate

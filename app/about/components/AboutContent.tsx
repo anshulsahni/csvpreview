@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { styled } from "@linaria/react";
+import { BRAND, BRAND_NAME } from "@/lib/brand";
 
 const Section = styled.section`
   max-width: 640px;
@@ -7,6 +9,12 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+`;
+
+const LogoWrap = styled.div`
+  width: min(14rem, 100%);
+  aspect-ratio: 1;
+  position: relative;
 `;
 
 const Heading = styled.h1`
@@ -38,6 +46,16 @@ const TECH = ["Next.js 16", "React 19", "TypeScript", "Linaria CSS"];
 export default function AboutContent() {
   return (
     <Section>
+      <LogoWrap>
+        <Image
+          src={BRAND.logo1024}
+          alt={`${BRAND_NAME} logo`}
+          fill
+          sizes="14rem"
+          style={{ objectFit: "contain" }}
+          priority
+        />
+      </LogoWrap>
       <Heading>About</Heading>
       <Body>
         CSV Preview is a minimal web app for quickly inspecting CSV files in your

@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Navbar from "@/app/components/Navbar";
 import AboutContent from "./components/AboutContent";
+import { BRAND, brandOpenGraphImages } from "@/lib/brand";
+
+const title = "About – CSV Preview | Your Data Never Leaves Your Browser";
+const description =
+  "CSV Preview is a minimal, privacy-first tool for inspecting CSV files entirely in your browser. No server, no signups";
 
 export const metadata: Metadata = {
-  title: "About – CSV Preview | Your Data Never Leaves Your Browser",
-  description:
-    "CSV Preview is a minimal, privacy-first tool for inspecting CSV files entirely in your browser. No server, no signups",
+  title,
+  description,
   keywords: [
     "about CSV Preview",
     "privacy CSV tool",
@@ -14,10 +18,17 @@ export const metadata: Metadata = {
   ],
   robots: { index: true, follow: true },
   openGraph: {
-    title: "About – CSV Preview | Your Data Never Leaves Your Browser",
+    title,
     description:
       "CSV Preview is a minimal, privacy-first tool for inspecting CSV files entirely in your browser. No server, no signup — built with Next.js, React, and TypeScript.",
     type: "website",
+    images: brandOpenGraphImages,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [BRAND.logo1024],
   },
 };
 

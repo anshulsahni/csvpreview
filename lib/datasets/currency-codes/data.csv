@@ -1,0 +1,162 @@
+ISO Code,Currency Name,Symbol,Countries Using,Fractional Unit,Fractional Amount,Currency Type
+AED,UAE Dirham,د.إ,United Arab Emirates,Fils,100,Active
+AFN,Afghan Afghani,؋,Afghanistan,Pul,100,Active
+ALL,Albanian Lek,L,Albania,Qindarkë,100,Active
+AMD,Armenian Dram,֏,Armenia,Luma,100,Active
+ANG,Netherlands Antillean Guilder,ƒ,"Curaçao, Sint Maarten",Cent,100,Active
+AOA,Angolan Kwanza,Kz,Angola,Cêntimo,100,Active
+ARS,Argentine Peso,$,Argentina,Centavo,100,Active
+AUD,Australian Dollar,$,"Australia, Kiribati, Nauru, Papua New Guinea, Tuvalu",Cent,100,Active
+AWG,Aruban Florin,ƒ,Aruba,Cent,100,Active
+AZN,Azerbaijani Manat,₼,Azerbaijan,Qəpik,100,Active
+BAM,Bosnia-Herzegovina Convertible Mark,KM,Bosnia and Herzegovina,Fening,100,Active
+BBD,Barbadian Dollar,$,Barbados,Cent,100,Active
+BDT,Bangladeshi Taka,৳,Bangladesh,Paisa,100,Active
+BGN,Bulgarian Lev,лв,Bulgaria,Stotinka,100,Active
+BHD,Bahraini Dinar,BD,Bahrain,Fils,1000,Active
+BIF,Burundian Franc,Fr,Burundi,Centime,100,Active
+BMD,Bermudian Dollar,$,Bermuda,Cent,100,Active
+BND,Brunei Dollar,$,"Brunei, Singapore",Sen,100,Active
+BOB,Bolivian Boliviano,Bs.,Bolivia,Centavo,100,Active
+BRL,Brazilian Real,R$,Brazil,Centavo,100,Active
+BSD,Bahamian Dollar,$,Bahamas,Cent,100,Active
+BTN,Bhutanese Ngultrum,Nu,Bhutan,Chetrum,100,Active
+BWP,Botswana Pula,P,Botswana,Thebe,100,Active
+BYN,Belarusian Ruble,Br,Belarus,Kopek,100,Active
+BZD,Belize Dollar,$,Belize,Cent,100,Active
+CAD,Canadian Dollar,$,Canada,Cent,100,Active
+CDF,Congolese Franc,Fr,Democratic Republic of Congo,Centime,100,Active
+CHF,Swiss Franc,Fr,"Switzerland, Liechtenstein",Rappen,100,Active
+CLP,Chilean Peso,$,Chile,Centavo,100,Active
+CNY,Chinese Yuan Renminbi,¥,China,Fen,100,Active
+COP,Colombian Peso,$,Colombia,Centavo,100,Active
+CRC,Costa Rican Colón,₡,Costa Rica,Céntimo,100,Active
+CUP,Cuban Peso,$,Cuba,Centavo,100,Active
+CVE,Cape Verdean Escudo,$,Cape Verde,Centavo,100,Active
+CZK,Czech Koruna,Kč,Czech Republic,Haléř,100,Active
+DJF,Djiboutian Franc,Fr,Djibouti,Centime,100,Active
+DKK,Danish Krone,kr,"Denmark, Faroe Islands, Greenland",Øre,100,Active
+DOP,Dominican Peso,$,Dominican Republic,Centavo,100,Active
+DZD,Algerian Dinar,دج,Algeria,Centime,100,Active
+EGP,Egyptian Pound,£,Egypt,Piastre,100,Active
+ERN,Eritrean Nakfa,Nfk,Eritrea,Cent,100,Active
+ETB,Ethiopian Birr,Br,Ethiopia,Santim,100,Active
+EUR,Euro,€,"Austria, Belgium, Croatia, Cyprus, Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, Netherlands, Portugal, Slovakia, Slovenia, Spain + others",Cent,100,Active
+FJD,Fijian Dollar,$,Fiji,Cent,100,Active
+FKP,Falkland Islands Pound,£,Falkland Islands,Penny,100,Active
+GBP,British Pound Sterling,£,"United Kingdom, Jersey, Guernsey, Isle of Man",Penny,100,Active
+GEL,Georgian Lari,₾,Georgia,Tetri,100,Active
+GHS,Ghanaian Cedi,₵,Ghana,Pesewa,100,Active
+GIP,Gibraltar Pound,£,Gibraltar,Penny,100,Active
+GMD,Gambian Dalasi,D,Gambia,Butut,100,Active
+GNF,Guinean Franc,Fr,Guinea,Centime,100,Active
+GTQ,Guatemalan Quetzal,Q,Guatemala,Centavo,100,Active
+GYD,Guyanese Dollar,$,Guyana,Cent,100,Active
+HKD,Hong Kong Dollar,$,Hong Kong,Cent,100,Active
+HNL,Honduran Lempira,L,Honduras,Centavo,100,Active
+HTG,Haitian Gourde,G,Haiti,Centime,100,Active
+HUF,Hungarian Forint,Ft,Hungary,Fillér,100,Active
+IDR,Indonesian Rupiah,Rp,Indonesia,Sen,100,Active
+ILS,Israeli New Shekel,₪,Israel,Agora,100,Active
+INR,Indian Rupee,₹,"India, Bhutan",Paisa,100,Active
+IQD,Iraqi Dinar,ع.د,Iraq,Fils,1000,Active
+IRR,Iranian Rial,﷼,Iran,Dinar,100,Active
+ISK,Icelandic Króna,kr,Iceland,Eyrir,100,Active
+JMD,Jamaican Dollar,$,Jamaica,Cent,100,Active
+JOD,Jordanian Dinar,JD,Jordan,Fils,1000,Active
+JPY,Japanese Yen,¥,Japan,Sen,100,Active
+KES,Kenyan Shilling,KSh,Kenya,Cent,100,Active
+KGS,Kyrgyzstani Som,с,Kyrgyzstan,Tyiyn,100,Active
+KHR,Cambodian Riel,៛,Cambodia,Sen,100,Active
+KMF,Comorian Franc,Fr,Comoros,Centime,100,Active
+KPW,North Korean Won,₩,North Korea,Chon,100,Active
+KRW,South Korean Won,₩,South Korea,Jeon,100,Active
+KWD,Kuwaiti Dinar,KD,Kuwait,Fils,1000,Active
+KYD,Cayman Islands Dollar,$,Cayman Islands,Cent,100,Active
+KZT,Kazakhstani Tenge,₸,Kazakhstan,Tïın,100,Active
+LAK,Lao Kip,₭,Laos,Att,100,Active
+LBP,Lebanese Pound,ل.ل,Lebanon,Piastre,100,Active
+LKR,Sri Lankan Rupee,Rs,Sri Lanka,Cent,100,Active
+LRD,Liberian Dollar,$,Liberia,Cent,100,Active
+LSL,Lesotho Loti,L,Lesotho,Sente,100,Active
+LYD,Libyan Dinar,LD,Libya,Dirham,1000,Active
+MAD,Moroccan Dirham,MAD,Morocco,Centime,100,Active
+MDL,Moldovan Leu,L,Moldova,Ban,100,Active
+MGA,Malagasy Ariary,Ar,Madagascar,Iraimbilanja,5,Active
+MKD,Macedonian Denar,ден,North Macedonia,Deni,100,Active
+MMK,Myanmar Kyat,K,Myanmar,Pya,100,Active
+MNT,Mongolian Tögrög,₮,Mongolia,Möngö,100,Active
+MOP,Macanese Pataca,P,Macau,Avo,100,Active
+MRU,Mauritanian Ouguiya,UM,Mauritania,Khoum,5,Active
+MUR,Mauritian Rupee,Rs,Mauritius,Cent,100,Active
+MVR,Maldivian Rufiyaa,Rf,Maldives,Laari,100,Active
+MWK,Malawian Kwacha,MK,Malawi,Tambala,100,Active
+MXN,Mexican Peso,$,Mexico,Centavo,100,Active
+MYR,Malaysian Ringgit,RM,Malaysia,Sen,100,Active
+MZN,Mozambican Metical,MT,Mozambique,Centavo,100,Active
+NAD,Namibian Dollar,$,Namibia,Cent,100,Active
+NGN,Nigerian Naira,₦,Nigeria,Kobo,100,Active
+NIO,Nicaraguan Córdoba,C$,Nicaragua,Centavo,100,Active
+NOK,Norwegian Krone,kr,"Norway, Svalbard, Jan Mayen",Øre,100,Active
+NPR,Nepalese Rupee,Rs,Nepal,Paisa,100,Active
+NZD,New Zealand Dollar,$,"New Zealand, Cook Islands, Niue, Pitcairn, Tokelau",Cent,100,Active
+OMR,Omani Rial,﷼,Oman,Baisa,1000,Active
+PAB,Panamanian Balboa,B/.,Panama,Centésimo,100,Active
+PEN,Peruvian Sol,S/,Peru,Céntimo,100,Active
+PGK,Papua New Guinean Kina,K,Papua New Guinea,Toea,100,Active
+PHP,Philippine Peso,₱,Philippines,Sentimo,100,Active
+PKR,Pakistani Rupee,Rs,Pakistan,Paisa,100,Active
+PLN,Polish Zloty,zł,Poland,Grosz,100,Active
+PYG,Paraguayan Guaraní,₲,Paraguay,Céntimo,100,Active
+QAR,Qatari Riyal,﷼,Qatar,Dirham,100,Active
+RON,Romanian Leu,lei,Romania,Ban,100,Active
+RSD,Serbian Dinar,din,Serbia,Para,100,Active
+RUB,Russian Ruble,₽,Russia,Kopek,100,Active
+RWF,Rwandan Franc,Fr,Rwanda,Centime,100,Active
+SAR,Saudi Riyal,﷼,Saudi Arabia,Hallallah,100,Active
+SBD,Solomon Islands Dollar,$,Solomon Islands,Cent,100,Active
+SCR,Seychellois Rupee,Rs,Seychelles,Cent,100,Active
+SDG,Sudanese Pound,£,Sudan,Piastre,100,Active
+SEK,Swedish Krona,kr,Sweden,Öre,100,Active
+SGD,Singapore Dollar,$,"Singapore, Brunei",Cent,100,Active
+SHP,Saint Helena Pound,£,"Saint Helena, Ascension, Tristan da Cunha",Penny,100,Active
+SLE,Sierra Leonean Leone,Le,Sierra Leone,Cent,100,Active
+SOS,Somali Shilling,Sh,Somalia,Cent,100,Active
+SRD,Surinamese Dollar,$,Suriname,Cent,100,Active
+SSP,South Sudanese Pound,£,South Sudan,Piastre,100,Active
+STN,São Tomé and Príncipe Dobra,Db,São Tomé and Príncipe,Cêntimo,100,Active
+SVC,Salvadoran Colón,₡,El Salvador,Centavo,100,Active
+SYP,Syrian Pound,£,Syria,Piastre,100,Active
+SZL,Swazi Lilangeni,L,Eswatini,Cent,100,Active
+THB,Thai Baht,฿,Thailand,Satang,100,Active
+TJS,Tajikistani Somoni,SM,Tajikistan,Diram,100,Active
+TMT,Turkmenistan Manat,T,Turkmenistan,Tennesi,100,Active
+TND,Tunisian Dinar,DT,Tunisia,Millime,1000,Active
+TOP,Tongan Paʻanga,T$,Tonga,Seniti,100,Active
+TRY,Turkish Lira,₺,Turkey,Kuruş,100,Active
+TTD,Trinidad and Tobago Dollar,$,Trinidad and Tobago,Cent,100,Active
+TWD,New Taiwan Dollar,$,Taiwan,Cent,100,Active
+TZS,Tanzanian Shilling,Sh,Tanzania,Cent,100,Active
+UAH,Ukrainian Hryvnia,₴,Ukraine,Kopiyka,100,Active
+UGX,Ugandan Shilling,Sh,Uganda,Cent,100,Active
+USD,United States Dollar,$,"United States, Ecuador, El Salvador, Marshall Islands, Micronesia, Palau, Panama, Timor-Leste, Zimbabwe + others",Cent,100,Active
+UYU,Uruguayan Peso,$,Uruguay,Centésimo,100,Active
+UZS,Uzbekistani Som,сўм,Uzbekistan,Tiyin,100,Active
+VES,Venezuelan Bolívar,Bs.S,Venezuela,Céntimo,100,Active
+VND,Vietnamese Đồng,₫,Vietnam,Hào,10,Active
+VUV,Vanuatu Vatu,Vt,Vanuatu,None,1,Active
+WST,Samoan Tālā,T,Samoa,Sene,100,Active
+XAF,Central African CFA Franc,Fr,"Cameroon, Central African Republic, Chad, Republic of Congo, Equatorial Guinea, Gabon",Centime,100,Active
+XCD,East Caribbean Dollar,$,"Anguilla, Antigua and Barbuda, Dominica, Grenada, Montserrat, Saint Kitts and Nevis, Saint Lucia, Saint Vincent",Cent,100,Active
+XOF,West African CFA Franc,Fr,"Benin, Burkina Faso, Guinea-Bissau, Ivory Coast, Mali, Niger, Senegal, Togo",Centime,100,Active
+XPF,CFP Franc,Fr,"French Polynesia, New Caledonia, Wallis and Futuna",Centime,100,Active
+YER,Yemeni Rial,﷼,Yemen,Fils,100,Active
+ZAR,South African Rand,R,"South Africa, Namibia, Lesotho, Eswatini",Cent,100,Active
+ZMW,Zambian Kwacha,ZK,Zambia,Ngwee,100,Active
+ZWG,Zimbabwe Gold,ZiG,Zimbabwe,Cent,100,Active
+XAU,Gold,N/A,International,Troy ounce,1,Precious Metal
+XAG,Silver,N/A,International,Troy ounce,1,Precious Metal
+XPT,Platinum,N/A,International,Troy ounce,1,Precious Metal
+XPD,Palladium,N/A,International,Troy ounce,1,Precious Metal
+XDR,Special Drawing Rights (SDR),SDR,IMF member countries,N/A,1,IMF Reserve Asset
+XBT,Bitcoin (crypto reference),₿,Decentralized,Satoshi,100000000,Cryptocurrency Reference

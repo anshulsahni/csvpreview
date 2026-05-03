@@ -30,6 +30,7 @@ export default function CsvViewer() {
         <SpreadsheetGrid
           data={viewer.csvData ?? []}
           firstRowAsHeader={viewer.firstRowAsHeader}
+          onCellChange={viewer.handleCellChange}
         />
       </GridArea>
       <UploadModal

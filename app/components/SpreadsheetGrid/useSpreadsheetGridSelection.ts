@@ -22,6 +22,7 @@ export function useSelectionState({
   selection: CellSelection | null;
   isDragging: boolean;
   clearSelection: () => void;
+  selectSingleCell: (rowIdx: number, colIdx: number) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
   onColumnHeaderMouseDown: (colIdx: number) => void;
@@ -32,6 +33,16 @@ export function useSelectionState({
 
   const clearSelection = useCallback(() => {
     setSelection(null);
+    setIsDragging(false);
+  }, []);
+
+  const selectSingleCell = useCallback((rowIdx: number, colIdx: number) => {
+    setSelection({
+      anchorRow: rowIdx,
+      anchorCol: colIdx,
+      activeRow: rowIdx,
+      activeCol: colIdx,
+    });
     setIsDragging(false);
   }, []);
 
@@ -109,6 +120,7 @@ export function useSelectionState({
     selection,
     isDragging,
     clearSelection,
+    selectSingleCell,
     onCellMouseDown,
     onCellMouseEnter,
     onColumnHeaderMouseDown,
@@ -140,6 +152,7 @@ export function useSpreadsheetGridSelection({
   selection: CellSelection | null;
   isDragging: boolean;
   statusHint: string;
+  selectSingleCell: (rowIdx: number, colIdx: number) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
   onColumnHeaderMouseDown: (colIdx: number) => void;
@@ -150,6 +163,7 @@ export function useSpreadsheetGridSelection({
     selection,
     isDragging,
     clearSelection,
+    selectSingleCell,
     onCellMouseDown,
     onCellMouseEnter,
     onColumnHeaderMouseDown,
@@ -198,6 +212,7 @@ export function useSpreadsheetGridSelection({
     selection,
     isDragging,
     statusHint,
+    selectSingleCell,
     onCellMouseDown,
     onCellMouseEnter,
     onColumnHeaderMouseDown,

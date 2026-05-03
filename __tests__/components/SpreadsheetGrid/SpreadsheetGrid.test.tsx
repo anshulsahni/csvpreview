@@ -1,6 +1,34 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
+
+function EditableGridHarness({
+  initialData,
+  firstRowAsHeader = false,
+}: {
+  initialData: string[][];
+  firstRowAsHeader?: boolean;
+}) {
+  const [data, setData] = useState(initialData);
+  return (
+    <SpreadsheetGrid
+      data={data}
+      firstRowAsHeader={firstRowAsHeader}
+      onCellChange={(rowIdx, colIdx, value) => {
+        setData((prev) => {
+          const next = prev.map((row) => row.slice());
+          while (next.length <= rowIdx) next.push([]);
+          while ((next[rowIdx] ?? []).length <= colIdx) {
+            (next[rowIdx] ?? []).push("");
+          }
+          next[rowIdx]![colIdx] = value;
+          return next;
+        });
+      }}
+    />
+  );
+}
 
 describe("SpreadsheetGrid (render smoke)", () => {
   it("with first row as header, shows header text in thead and first body row from data[1]", () => {
@@ -229,5 +257,101 @@ describe("SpreadsheetGrid (render smoke)", () => {
     const table = screen.getByRole("table");
     const firstDataCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
     expect(firstDataCell).not.toHaveAttribute("data-selected", "true");
+  });
+
+  it("double-click opens editor and Enter commits then moves down", async () => {
+    const user = userEvent.setup();
+    render(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
+
+    const table = screen.getByRole("table");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const cellA2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(2)");
+    expect(cellA1).not.toBeNull();
+    expect(cellA2).not.toBeNull();
+
+    await user.dblClick(cellA1 as Element);
+    const textarea = screen.getByRole("textbox");
+    await user.clear(textarea);
+    await user.type(textarea, "Edited{enter}");
+
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect((cellA1 as Element).textContent).toContain("Edited");
+    expect(cellA2).toHaveAttribute("data-selected", "true");
+  });
+
+  it("Shift+Enter inserts newline and Escape commits without moving", async () => {
+    const user = userEvent.setup();
+    render(<EditableGridHarness initialData={[["A1", "B1"]]} />);
+
+    const table = screen.getByRole("table");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    expect(cellA1).not.toBeNull();
+
+    await user.dblClick(cellA1 as Element);
+    const textarea = screen.getByRole("textbox");
+    await user.clear(textarea);
+    await user.type(textarea, "Line1{shift>}{enter}{/shift}Line2{escape}");
+
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    // TODO: add assertion for detecting new line also, currently can't do, because
+    // in view mode, new line isn't presented as newline to user
+    expect((cellA1 as Element).textContent).toContain("Line1");
+    expect((cellA1 as Element).textContent).toContain("Line2");
+    expect(cellA1).toHaveAttribute("data-selected", "true");
+  });
+
+  it("Tab commits and moves focus/selection right", async () => {
+    const user = userEvent.setup();
+    render(<EditableGridHarness initialData={[["A1", "B1"]]} />);
+
+    const table = screen.getByRole("table");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const cellB1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+    expect(cellA1).not.toBeNull();
+    expect(cellB1).not.toBeNull();
+
+    await user.dblClick(cellA1 as Element);
+    const textarea = screen.getByRole("textbox");
+    await user.clear(textarea);
+    await user.type(textarea, "AX{tab}");
+
+    expect(screen.getByText("AX")).toBeInTheDocument();
+    expect(cellB1).toHaveAttribute("data-selected", "true");
+  });
+
+  it("places the cursor at the end when entering edit mode", async () => {
+    const user = userEvent.setup();
+    render(<EditableGridHarness initialData={[["Existing"]]} />);
+
+    const table = screen.getByRole("table");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    expect(cellA1).not.toBeNull();
+
+    await user.dblClick(cellA1 as Element);
+
+    const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+    expect(textarea.selectionStart).toBe("Existing".length);
+    expect(textarea.selectionEnd).toBe("Existing".length);
+  });
+
+  it("clicking another cell commits the active edit and selects the clicked cell", async () => {
+    const user = userEvent.setup();
+    render(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
+
+    const table = screen.getByRole("table");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const cellB2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(3)");
+    expect(cellA1).not.toBeNull();
+    expect(cellB2).not.toBeNull();
+
+    await user.dblClick(cellA1 as Element);
+    const textarea = screen.getByRole("textbox");
+    await user.clear(textarea);
+    await user.type(textarea, "Committed on click");
+    await user.click(cellB2 as Element);
+
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect((cellA1 as Element).textContent).toContain("Committed on click");
+    expect(cellB2).toHaveAttribute("data-selected", "true");
   });
 });

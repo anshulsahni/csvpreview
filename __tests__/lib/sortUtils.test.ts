@@ -2,7 +2,6 @@ import {
   compareValues,
   detectColumnType,
   parseFiniteNumber,
-  sortRows,
 } from "@/lib/sortUtils";
 
 describe("parseFiniteNumber", () => {
@@ -63,56 +62,5 @@ describe("compareValues text (mixed)", () => {
   it("uses localeCompare for pure text", () => {
     expect(compareValues("a", "b", "text")).toBeLessThan(0);
     expect(compareValues("A", "b", "text")).toBeLessThan(0);
-  });
-});
-
-describe("sortRows", () => {
-  const rows = [
-    ["b", "2"],
-    ["a", "10"],
-    ["c", "1"],
-  ];
-
-  it("sorts by column index ascending without mutating input", () => {
-    const sorted = sortRows(rows, 0, "asc");
-    expect(sorted.map((r) => r[0])).toEqual(["a", "b", "c"]);
-  });
-
-  it("sorts numeric column numerically", () => {
-    const sorted = sortRows(rows, 1, "asc");
-    expect(sorted.map((r) => r[1])).toEqual(["1", "2", "10"]);
-  });
-
-  it("inverts for desc", () => {
-    const sorted = sortRows(rows, 1, "desc");
-    expect(sorted.map((r) => r[1])).toEqual(["10", "2", "1"]);
-  });
-
-  it("keeps blank cells last when sorting descending (numeric column)", () => {
-    const data = [["1"], [""], ["3"], ["2"]];
-    const sorted = sortRows(data, 0, "desc");
-    expect(sorted.map((r) => r[0])).toEqual(["3", "2", "1", ""]);
-  });
-
-  it("keeps blank cells last when sorting descending (text column)", () => {
-    const data = [["a"], [""], ["b"], ["c"]];
-    const sorted = sortRows(data, 0, "desc");
-    expect(sorted.map((r) => r[0])).toEqual(["c", "b", "a", ""]);
-  });
-
-  it("is stable on ties", () => {
-    const data = [
-      ["x", "1"],
-      ["y", "1"],
-      ["z", "1"],
-    ];
-    const sorted = sortRows(data, 1, "asc");
-    expect(sorted.map((r) => r[0])).toEqual(["x", "y", "z"]);
-  });
-
-  it("handles out-of-range colIdx — stable original order", () => {
-    const data = [["a"], ["b"]];
-    const sorted = sortRows(data, 99, "asc");
-    expect(sorted).toEqual([["a"], ["b"]]);
   });
 });

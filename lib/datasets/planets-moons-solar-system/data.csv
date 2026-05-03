@@ -1,0 +1,33 @@
+Body Type,Name,Parent Body,Diameter (km),Mass (kg),Distance from Sun (AU),Orbital Period (Earth days),Surface Gravity (m/s²),Atmosphere,Notable Features
+Planet,Mercury,Sun,4879,3.3e23,0.39,88.0,3.7,Minimal,Smallest planet; extreme temperature swings
+Planet,Venus,Sun,12104,4.87e24,0.72,224.7,8.87,Thick CO2,Hottest planet; retrograde rotation
+Planet,Earth,Sun,12742,5.97e24,1.00,365.25,9.81,N2/O2,Only known life-bearing planet
+Planet,Mars,Sun,6779,6.42e23,1.52,687.0,3.72,Thin CO2,Olympus Mons; largest volcano in solar system
+Planet,Jupiter,Sun,139820,1.90e27,5.20,4333,24.79,H2/He,Largest planet; Great Red Spot storm
+Planet,Saturn,Sun,116460,5.68e26,9.58,10759,10.44,H2/He,Famous ring system; least dense planet
+Planet,Uranus,Sun,50724,8.68e25,19.22,30687,8.87,H2/He/CH4,Rotates on its side; coldest atmosphere
+Planet,Neptune,Sun,49244,1.02e26,30.05,60190,11.15,H2/He/CH4,Strongest winds; 1 moon (Triton) retrograde
+Dwarf Planet,Pluto,Sun,2376,1.30e22,39.5,90560,0.62,Thin N2,Reclassified in 2006; heart-shaped plain
+Dwarf Planet,Eris,Sun,2326,1.66e22,67.9,204196,0.8,Thin CH4,Most massive dwarf planet
+Dwarf Planet,Ceres,Sun,945,9.39e20,2.77,1681,0.27,None,Largest asteroid belt body
+Moon,Moon (Luna),Earth,3474,7.35e22,N/A,27.3,1.62,None,Only natural satellite of Earth; tidal locking
+Moon,Phobos,Mars,22.4,1.07e16,N/A,0.32,0.0057,None,Closest moon to Mars; will collide in ~50M years
+Moon,Deimos,Mars,12.4,1.48e15,N/A,1.26,0.003,None,
+Moon,Io,Jupiter,3643,8.93e22,N/A,1.77,1.796,SO2 trace,Most volcanically active body in solar system
+Moon,Europa,Jupiter,3121,4.80e22,N/A,3.55,1.315,O2 trace,Subsurface ocean; candidate for extraterrestrial life
+Moon,Ganymede,Jupiter,5268,1.48e23,N/A,7.15,1.428,O2 trace,Largest moon in solar system; larger than Mercury
+Moon,Callisto,Jupiter,4820,1.08e23,N/A,16.69,1.235,CO2/O2 trace,Most heavily cratered object in solar system
+Moon,Titan,Saturn,5149,1.35e23,N/A,15.95,1.352,N2/CH4,Only moon with dense atmosphere; methane lakes
+Moon,Enceladus,Saturn,504,1.08e20,N/A,1.37,0.113,H2O/N2,Active geysers; subsurface liquid ocean
+Moon,Mimas,Saturn,396,3.75e19,N/A,0.94,0.064,None,Resembles Death Star; Herschel Crater
+Moon,Rhea,Saturn,1527,2.31e21,N/A,4.52,0.264,O2/CO2 trace,Saturn's second largest moon
+Moon,Dione,Saturn,1122,1.10e21,N/A,2.74,0.232,O2 trace,
+Moon,Tethys,Saturn,1060,6.18e20,N/A,1.89,0.145,None,
+Moon,Iapetus,Saturn,1469,1.81e21,N/A,79.32,0.224,None,Two-toned coloring
+Moon,Miranda,Uranus,471,6.59e19,N/A,1.41,0.079,None,Bizarre, varied terrain; Verona Rupes cliff
+Moon,Ariel,Uranus,1157,1.35e21,N/A,2.52,0.27,None,
+Moon,Umbriel,Uranus,1169,1.17e21,N/A,4.14,0.2,None,
+Moon,Titania,Uranus,1577,3.53e21,N/A,8.71,0.379,None,Uranus's largest moon
+Moon,Oberon,Uranus,1522,3.01e21,N/A,13.46,0.347,None,
+Moon,Triton,Neptune,2707,2.14e22,N/A,5.88 (retrograde),0.779,N2 trace,Only large retrograde moon; likely captured KBO
+Moon,Charon,Pluto,1212,1.59e21,N/A,6.39,0.288,None,Largest relative moon; Pluto-Charon are binary system

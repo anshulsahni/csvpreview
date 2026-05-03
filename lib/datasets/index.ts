@@ -26,6 +26,22 @@ import airlineCodes from "./airline-codes/meta";
 import busiestAirports from "./busiest-airports/meta";
 import highSpeedRailNetworks from "./high-speed-rail-networks/meta";
 import metroSystemsWorld from "./metro-systems-world/meta";
+import worldCuisines from "./world-cuisines/meta";
+import topCropsGlobal from "./top-crops-global/meta";
+import coffeeProducingCountries from "./coffee-producing-countries/meta";
+import teaVarieties from "./tea-varieties/meta";
+import indianSweets from "./indian-sweets/meta";
+import spices from "./spices/meta";
+import wineRegions from "./wine-regions/meta";
+import caloriesMacros from "./calories-macros/meta";
+import humanBodyOrgans from "./human-body-organs-functions/meta";
+import tallestBuildings from "./tallest-buildings-world/meta";
+import majorEarthquakes from "./major-earthquakes-history/meta";
+import planetsMoonsSolarSystem from "./planets-moons-solar-system/meta";
+import endangeredSpecies from "./endangered-species-iucn/meta";
+import animalSpecies from "./animal-species-lifespan-diet-habitat/meta";
+import periodicTableElements from "./periodic-table-elements/meta";
+import longestBridgesTunnels from "./longest-bridges-tunnels/meta";
 
 export const datasets: DatasetMeta[] = [
   countriesCapitals,
@@ -55,6 +71,22 @@ export const datasets: DatasetMeta[] = [
   busiestAirports,
   highSpeedRailNetworks,
   metroSystemsWorld,
+  worldCuisines,
+  topCropsGlobal,
+  coffeeProducingCountries,
+  teaVarieties,
+  indianSweets,
+  spices,
+  wineRegions,
+  caloriesMacros,
+  humanBodyOrgans,
+  tallestBuildings,
+  majorEarthquakes,
+  planetsMoonsSolarSystem,
+  endangeredSpecies,
+  animalSpecies,
+  periodicTableElements,
+  longestBridgesTunnels,
 ];
 
 const bySlug = new Map(datasets.map((d) => [d.slug, d]));

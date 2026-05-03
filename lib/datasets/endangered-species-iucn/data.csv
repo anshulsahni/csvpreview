@@ -1,0 +1,31 @@
+Rank,Common Name,Scientific Name,Class,IUCN Status,Population Estimate,Primary Threats,Range / Habitat,Country / Region,Last Assessment Year
+1,Amur Leopard,Panthera pardus orientalis,Mammalia,Critically Endangered,<100,Habitat loss / Poaching,Temperate forest,Russia & China,2022
+2,Javan Rhino,Rhinoceros sondaicus,Mammalia,Critically Endangered,~76,Habitat loss / Poaching,Tropical rainforest,Indonesia,2021
+3,Sumatran Orangutan,Pongo abelii,Mammalia,Critically Endangered,<14000,Deforestation / Illegal trade,Tropical rainforest,Sumatra,2022
+4,Cross River Gorilla,Gorilla gorilla diehli,Mammalia,Critically Endangered,<300,Habitat loss / Hunting,Forest,Nigeria & Cameroon,2022
+5,Yangtze Finless Porpoise,Neophocaena asiaeorientalis,Mammalia,Critically Endangered,<1000,Pollution / Vessel strikes,Freshwater rivers,China,2022
+6,Sumatran Elephant,Elephas maximus sumatranus,Mammalia,Critically Endangered,~1300,Deforestation / Conflict,Tropical forest,Sumatra,2012
+7,Hawksbill Sea Turtle,Eretmochelys imbricata,Reptilia,Critically Endangered,~8000 nesting females,Poaching / Bycatch,Tropical reefs,Worldwide,2008
+8,Saola,Pseudoryx nghetinhensis,Mammalia,Critically Endangered,Unknown (<700 estimated),Hunting / Habitat loss,Tropical forest,Vietnam & Laos,2015
+9,Tapanuli Orangutan,Pongo tapanuliensis,Mammalia,Critically Endangered,<800,Deforestation,Tropical forest,Sumatra,2017
+10,Kakapo,Strigops habroptila,Aves,Critically Endangered,~247,Introduced predators,Forest,New Zealand,2018
+11,Black-footed Ferret,Mustela nigripes,Mammalia,Endangered,~300–400,Plague / Habitat loss,Grasslands,USA,2015
+12,Mountain Gorilla,Gorilla beringei beringei,Mammalia,Endangered,~1063,Habitat loss / Disease,Montane forest,Uganda / Rwanda / DRC,2019
+13,Amur Tiger,Panthera tigris altaica,Mammalia,Endangered,~500,Poaching / Habitat loss,Temperate forest,Russia & China,2022
+14,African Wild Dog,Lycaon pictus,Mammalia,Endangered,~6600,Habitat fragmentation / Disease,Savanna,Sub-Saharan Africa,2012
+15,Giant Panda,Ailuropoda melanoleuca,Mammalia,Vulnerable,~1864,Habitat loss,Temperate bamboo forest,China,2016
+16,Blue Whale,Balaenoptera musculus,Mammalia,Endangered,10000–25000,Ship strikes / Climate change,Open ocean,Worldwide,2018
+17,Leatherback Sea Turtle,Dermochelys coriacea,Reptilia,Vulnerable,~34000 nesting females,Bycatch / Climate change,Tropical ocean,Worldwide,2013
+18,Snow Leopard,Panthera uncia,Mammalia,Vulnerable,4000–6500,Poaching / Climate change,Mountain,Central Asia,2017
+19,African Lion,Panthera leo,Mammalia,Vulnerable,~20000,Habitat loss / Human conflict,Savanna,Africa,2014
+20,Polar Bear,Ursus maritimus,Mammalia,Vulnerable,20000–25000,Climate change / Pollution,Arctic sea ice,Arctic,2015
+21,Whale Shark,Rhincodon typus,Chondrichthyes,Endangered,Unknown,Fishing / Vessel strikes,Tropical ocean,Worldwide,2016
+22,Vaquita,Phocoena sinus,Mammalia,Critically Endangered,<10,Illegal gillnetting,Gulf of California,Mexico,2022
+23,Sumatran Tiger,Panthera tigris sumatrae,Mammalia,Critically Endangered,~400,Habitat loss / Poaching,Tropical forest,Sumatra,2022
+24,Pangolin (Sunda),Manis javanica,Mammalia,Critically Endangered,Unknown,Trafficking / Habitat loss,Forest & plantations,Southeast Asia,2019
+25,Irrawaddy Dolphin,Orcaella brevirostris,Mammalia,Endangered,~90 (Mekong pop.),Gillnets / Habitat loss,Rivers & coastal,Southeast Asia,2017
+26,Philippine Eagle,Pithecophaga jefferyi,Aves,Critically Endangered,<800,Deforestation / Hunting,Tropical rainforest,Philippines,2022
+27,Florida Manatee,Trichechus manatus latirostris,Mammalia,Vulnerable,~6300,Boat strikes / Algae bloom,Coastal waters,USA (Florida),2022
+28,Golden Lion Tamarin,Leontopithecus rosalia,Mammalia,Endangered,~3200,Deforestation / Urban expansion,Atlantic forest,Brazil,2022
+29,Orangutan (Bornean),Pongo pygmaeus,Mammalia,Critically Endangered,~100000,Deforestation / Hunting,Tropical rainforest,Borneo,2016
+30,Red Panda,Ailurus fulgens,Mammalia,Endangered,~2500,Habitat loss / Poaching,Montane forest,China / Nepal / India,2015

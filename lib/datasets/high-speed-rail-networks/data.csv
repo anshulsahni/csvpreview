@@ -1,0 +1,40 @@
+Country,Network Name,Year First Line Opened,Operational Length (km),Lines,Max Speed (km/h),Technology,Operator(s),Status
+China,High-Speed Railway (高铁),2008,45000,50+,350,Electric Multiple Unit (EMU),China Railway,World's largest HSR network
+Japan,Shinkansen (新幹線),1964,3081,9,320,Shinkansen EMU,JR Group,Oldest HSR in the world
+Spain,Alta Velocidad Española (AVE),1992,3849,18,310,EMU / TGV,Renfe/ADIF,Largest network in Europe
+Germany,Intercity-Express (ICE),1991,1571,8,300,EMU,Deutsche Bahn,Connects major German cities
+France,Train à Grande Vitesse (TGV),1981,2734,11,320,Alstom TGV,SNCF,Pioneered HSR in Europe
+Italy,Alta Velocità (AV),2009,1467,7,300,Frecciarossa EMU,Trenitalia / Italo,Two competing operators
+United Kingdom,High Speed 1 (HS1),2007,113,1,300,Eurostar + Javelin,Network Rail / HS1 Ltd,London to Channel Tunnel
+Turkey,Yüksek Hızlı Tren (YHT),2009,1213,8,250,EMU,TCDD,Expanding network
+South Korea,KTX (Korea Train Express),2004,1104,5,305,TGV-derived EMU,Korail / SR,Connects Seoul to major cities
+Saudi Arabia,Haramain High Speed Railway,2018,453,1,320,Talgo/Bombardier,Saudi Railways,Mecca to Medina
+Taiwan,Taiwan High Speed Rail (THSR),2007,354,1,300,Shinkansen-based,THSRC,Taipei to Zuoying
+Morocco,Al Boraq,2018,323,1,320,Alstom AGV (TGV),ONCF,Africa's first HSR
+USA,Acela,2000,735,1,240,Bombardier/Alstom,Amtrak,Boston–Washington; not true HSR by international standards
+Uzbekistan,Afrosiyob,2011,344,2,250,Talgo 250,O'zbekiston Temir Yo'llari,Tashkent to Samarkand
+Russia,Sapsan / Lastochka,2009,645,2,250,Siemens Velaro,Russian Railways,Moscow–Saint Petersburg
+Belgium,HSL,1997,209,2,300,TGV / Thalys,Infrabel,Part of European HSL network
+Netherlands,HSL-Zuid,2009,125,1,300,Fyra / Thalys,ProRail,Amsterdam to Belgium border
+Austria,ÖBB Railjet,2008,N/A (shared),Various,230,Siemens Railjet,ÖBB,Semi-HSR, uses upgraded tracks
+Sweden,X2000,1990,N/A (mixed use),Various,200,SJ,Tilting technology on conventional track
+Finland,Pendolino,1995,N/A (mixed use),Various,220,VR Group,Helsinki to major cities
+Switzerland,ICN,2000,N/A (tilting),Various,200,SBB,Tilting train on mixed lines
+Portugal,Alfa Pendular,1999,N/A (mixed use),Various,220,CP Portugal,Lisbon to Porto
+Poland,Pendolino (ED250),2014,N/A (upgraded),Various,250,PKP Intercity,Upgraded conventional tracks
+Czech Republic,LEO Express / RegioJet,2012,N/A,Various,160,Private operators,Faster intercity; upgrading to HSR
+Denmark,IC4,2012,N/A,Various,200,DSB,Semi-HSR on conventional lines
+Norway,Flytoget,1998,N/A,1,210,Oslo Airport Express,Semi-HSR
+Hungary,Budapest–Belgrade HSR,2025 (planned),350,1,200,Siemens/CRRC,MÁV,Under construction
+India,Mumbai–Ahmedabad HSR,2026 (partial),508,1,320,Shinkansen E5-based,NHSRCL,Under construction; first HSR in India
+Indonesia,Whoosh (Jakarta–Bandung),2023,142.3,1,350,CRRC Qingdao Sifang,KAI,Southeast Asia's first HSR
+Thailand,High-Speed Rail (planned),2027 (planned),220,1,250,CRRC,SRT,Under construction
+Vietnam,North–South Express Railway,2035 (planned),1541,1,350,TBD,Vietnam Railways,Planning stage
+Malaysia,HSR (KL–Singapore),Postponed,350,1,320,TBD,TBD,Postponed indefinitely
+Singapore,Thomson–East Coast Line,2020,43,1,90,Heavy rail (metro-class),SMRT,City-scale; not inter-city HSR
+Egypt,High-Speed Rail (Siemens),2026 (planned),660,3,230,Siemens Velaro,ENR,Under construction; Africa's second HSR
+Iran,Tehran–Isfahan,2017,406,1,250,Various,RAI,Planned extensions underway
+Argentina,Tren Bala (proposed),Indefinitely postponed,N/A,N/A,320,TBD,TBD,Never built
+Brazil,Rio–São Paulo HSR,Cancelled,N/A,N/A,300,TBD,TBD,Cancelled in planning
+Mexico,Tren Maya,2023,1525,1,160,Alstom,Fonatur,Tourism focus; semi-HSR standard
+Israel,Tel Aviv–Jerusalem,2018,56,1,160,Alstom / AnsaldoBreda,Israel Railways,Upgraded line; semi-HSR

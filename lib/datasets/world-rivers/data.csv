@@ -1,0 +1,81 @@
+Rank,River,Length (km),Length (miles),Outflow,Countries,Continent
+1,Nile,6650,4132,Mediterranean Sea,"Ethiopia, Sudan, South Sudan, Uganda, Tanzania, Kenya, Rwanda, Burundi, DRC, Egypt",Africa
+2,Amazon,6400,3976,Atlantic Ocean,"Peru, Colombia, Brazil",South America
+3,Yangtze,6300,3917,East China Sea,China,Asia
+4,Mississippi-Missouri,6275,3902,Gulf of Mexico,United States,North America
+5,Yenisei-Angara,5539,3441,Kara Sea,"Russia, Mongolia",Asia
+6,Yellow River (Huang He),5464,3395,Bohai Sea,China,Asia
+7,Ob-Irtysh,5410,3364,Gulf of Ob,"Russia, Kazakhstan, China, Mongolia",Asia
+8,Congo,4700,2920,Atlantic Ocean,"DRC, Republic of Congo, Angola, Zambia, Tanzania, Rwanda, Burundi, Cameroon",Africa
+9,Amur-Argun,4444,2763,Sea of Okhotsk,"Russia, China, Mongolia",Asia
+10,Lena,4400,2736,Laptev Sea,Russia,Asia
+11,Mekong,4350,2703,South China Sea,"China, Myanmar, Laos, Thailand, Cambodia, Vietnam",Asia
+12,Mackenzie,4241,2637,Beaufort Sea,Canada,North America
+13,Niger,4200,2611,Gulf of Guinea,"Guinea, Mali, Niger, Benin, Nigeria",Africa
+14,Murray-Darling,3750,2330,Southern Ocean,Australia,Oceania
+15,Tocantins,3650,2269,Atlantic Ocean,Brazil,South America
+16,Volga,3692,2294,Caspian Sea,Russia,Europe
+17,Zambezi,2693,1674,Indian Ocean,"Zambia, Angola, Namibia, Botswana, Zimbabwe, Mozambique",Africa
+18,Paraná,4880,3032,Río de la Plata,"Brazil, Paraguay, Argentina",South America
+19,Euphrates,2800,1740,Persian Gulf,"Turkey, Syria, Iraq",Asia
+20,Salween,2815,1749,Andaman Sea,"China, Myanmar, Thailand",Asia
+21,Indus,3180,1976,Arabian Sea,"China, India, Pakistan",Asia
+22,Danube,2860,1778,Black Sea,"Germany, Austria, Slovakia, Hungary, Croatia, Serbia, Romania, Bulgaria, Moldova, Ukraine",Europe
+23,Brahmaputra,2900,1802,Bay of Bengal,"China, India, Bangladesh",Asia
+24,Ganges,2525,1569,Bay of Bengal,"India, Bangladesh",Asia
+25,Syr Darya,3078,1913,Aral Sea,"Kyrgyzstan, Tajikistan, Uzbekistan, Kazakhstan",Asia
+26,Amu Darya,2620,1628,Aral Sea,"Afghanistan, Tajikistan, Turkmenistan, Uzbekistan",Asia
+27,Tigris,1950,1212,Persian Gulf,"Turkey, Syria, Iraq",Asia
+28,Dnieper,2285,1420,Black Sea,"Russia, Belarus, Ukraine",Europe
+29,Irrawaddy,2170,1348,Andaman Sea,Myanmar,Asia
+30,Ural,2428,1509,Caspian Sea,"Russia, Kazakhstan",Europe/Asia
+31,Orinoco,2250,1399,Atlantic Ocean,"Colombia, Venezuela",South America
+32,Limpopo,1800,1118,Indian Ocean,"Zimbabwe, Botswana, South Africa, Mozambique",Africa
+33,Orange,2200,1367,Atlantic Ocean,"Lesotho, South Africa, Namibia",Africa
+34,Senegal,1790,1112,Atlantic Ocean,"Guinea, Mali, Mauritania, Senegal",Africa
+35,Colorado (USA),2333,1450,Gulf of California,"USA, Mexico",North America
+36,Columbia,2000,1243,Pacific Ocean,"USA, Canada",North America
+37,Arkansas,2364,1469,Mississippi River,United States,North America
+38,Red River (USA),2190,1360,Mississippi River,United States,North America
+39,Snake,1735,1078,Columbia River,United States,North America
+40,Ohio,1579,981,Mississippi River,United States,North America
+41,Rhine,1230,765,North Sea,"Switzerland, Liechtenstein, Austria, Germany, France, Netherlands",Europe
+42,Elbe,1091,678,North Sea,"Czech Republic, Germany",Europe
+43,Seine,776,482,English Channel,France,Europe
+44,Loire,1006,625,Atlantic Ocean,France,Europe
+45,Tagus,1007,626,Atlantic Ocean,"Spain, Portugal",Europe
+46,Ebro,930,578,Mediterranean Sea,Spain,Europe
+47,Vistula,1047,651,Baltic Sea,Poland,Europe
+48,Odra,854,531,Baltic Sea,"Czech Republic, Poland, Germany",Europe
+49,Dniester,1352,840,Black Sea,"Ukraine, Moldova",Europe
+50,Don,1950,1212,Sea of Azov,Russia,Europe
+51,Pechora,1809,1124,Barents Sea,Russia,Europe
+52,Kama,1805,1122,Volga River,Russia,Europe
+53,Oka,1500,932,Volga River,Russia,Europe
+54,Northern Dvina,1302,809,White Sea,Russia,Europe
+55,Daugava,1020,634,Gulf of Riga,"Russia, Belarus, Latvia",Europe
+56,Neva,74,46,Gulf of Finland,Russia,Europe
+57,Po,682,424,Adriatic Sea,Italy,Europe
+58,Tagliamento,172,107,Adriatic Sea,Italy,Europe
+59,Tiber,405,252,Tyrrhenian Sea,Italy,Europe
+60,Douro,897,557,Atlantic Ocean,"Spain, Portugal",Europe
+61,Guadiana,818,508,Atlantic Ocean,"Spain, Portugal",Europe
+62,Guadalquivir,657,408,Atlantic Ocean,Spain,Europe
+63,Nile (Blue),1783,1108,Nile River,"Ethiopia, Sudan",Africa
+64,Kasai,1900,1181,Congo River,"Angola, DRC",Africa
+65,Ubangi,2300,1429,Congo River,"DRC, Republic of Congo, Central African Republic",Africa
+66,Shabelle,2490,1547,Indian Ocean,"Ethiopia, Somalia",Africa
+67,Jubba,1808,1123,Indian Ocean,"Ethiopia, Somalia",Africa
+68,Benue,1400,870,Niger River,"Cameroon, Nigeria",Africa
+69,Volta,1500,932,Gulf of Guinea,"Burkina Faso, Ghana",Africa
+70,Gambia,1120,696,Atlantic Ocean,"Guinea, Senegal, Gambia",Africa
+71,Ogooué,1200,746,Atlantic Ocean,Gabon,Africa
+72,Rovuma,800,497,Indian Ocean,"Tanzania, Mozambique",Africa
+73,Cunene,1050,653,Atlantic Ocean,"Angola, Namibia",Africa
+74,Chao Phraya,1200,746,Gulf of Thailand,Thailand,Asia
+75,Pearl River,2400,1491,South China Sea,China,Asia
+76,Songhua,1434,891,Amur River,China,Asia
+77,Tarim,2179,1354,Lop Nor (dry),China,Asia
+78,Amu Darya (upper),2620,1628,Aral Sea,"Tajikistan, Afghanistan",Asia
+79,Helmand,1150,715,Lake Hamoun,"Afghanistan, Iran",Asia
+80,Hari,1100,684,Tedzhen reservoir,"Afghanistan, Iran, Turkmenistan",Asia

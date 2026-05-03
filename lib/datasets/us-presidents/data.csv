@@ -1,0 +1,48 @@
+Number,President,Party,Term Start,Term End,Vice President,Born,Died,State,Notable For
+1,George Washington,Unaffiliated,1789-04-30,1797-03-04,John Adams,1732-02-22,1799-12-14,Virginia,First President; set two-term precedent
+2,John Adams,Federalist,1797-03-04,1801-03-04,Thomas Jefferson,1735-10-30,1826-07-04,Massachusetts,First VP to become President
+3,Thomas Jefferson,Democratic-Republican,1801-03-04,1809-03-04,Aaron Burr / George Clinton,1743-04-13,1826-07-04,Virginia,Louisiana Purchase; Declaration of Independence author
+4,James Madison,Democratic-Republican,1809-03-04,1817-03-04,George Clinton / Elbridge Gerry,1751-03-16,1836-06-28,Virginia,War of 1812; Father of the Constitution
+5,James Monroe,Democratic-Republican,1817-03-04,1825-03-04,Daniel D. Tompkins,1758-04-28,1831-07-04,Virginia,Monroe Doctrine; Era of Good Feelings
+6,John Quincy Adams,Democratic-Republican,1825-03-04,1829-03-04,John C. Calhoun,1767-07-11,1848-02-23,Massachusetts,Son of 2nd president; disputed election win
+7,Andrew Jackson,Democratic,1829-03-04,1837-03-04,John C. Calhoun / Martin Van Buren,1767-03-15,1845-06-08,South Carolina,Indian Removal Act; populist movement
+8,Martin Van Buren,Democratic,1837-03-04,1841-03-04,Richard Mentor Johnson,1782-12-05,1862-07-24,New York,Panic of 1837; first born US citizen president
+9,William Henry Harrison,Whig,1841-03-04,1841-04-04,John Tyler,1773-02-09,1841-04-04,Ohio,Shortest presidency (31 days); died in office
+10,John Tyler,Whig / Unaffiliated,1841-04-04,1845-03-04,None,1790-03-29,1862-01-18,Virginia,First VP to assume presidency on death
+11,James K. Polk,Democratic,1845-03-04,1849-03-04,George M. Dallas,1795-11-02,1849-06-15,North Carolina,Manifest Destiny; Oregon and California acquisitions
+12,Zachary Taylor,Whig,1849-03-04,1850-07-09,Millard Fillmore,1784-11-24,1850-07-09,Virginia,Died in office 16 months in
+13,Millard Fillmore,Whig,1850-07-09,1853-03-04,None,1800-01-07,1874-03-08,New York,Compromise of 1850; Fugitive Slave Act
+14,Franklin Pierce,Democratic,1853-03-04,1857-03-04,William Rufus DeVane King,1804-11-23,1869-10-08,New Hampshire,Kansas-Nebraska Act; worsened sectional crisis
+15,James Buchanan,Democratic,1857-03-04,1861-03-04,John C. Breckinridge,1791-04-23,1868-06-01,Pennsylvania,Only unmarried president; preceded Civil War
+16,Abraham Lincoln,Republican,1861-03-04,1865-04-15,Hannibal Hamlin / Andrew Johnson,1809-02-12,1865-04-15,Illinois,Abolished slavery; led Union in Civil War; assassinated
+17,Andrew Johnson,Democratic / National Union,1865-04-15,1869-03-04,None,1808-12-29,1875-07-31,North Carolina,First impeached president; Reconstruction
+18,Ulysses S. Grant,Republican,1869-03-04,1877-03-04,Schuyler Colfax / Henry Wilson,1822-04-27,1885-07-23,Ohio,Civil War general; Reconstruction; corruption scandals
+19,Rutherford B. Hayes,Republican,1877-03-04,1881-03-04,William A. Wheeler,1822-10-04,1893-01-17,Ohio,Disputed 1876 election; ended Reconstruction
+20,James A. Garfield,Republican,1881-03-04,1881-09-19,Chester A. Arthur,1831-11-19,1881-09-19,Ohio,Assassinated 200 days into term
+21,Chester A. Arthur,Republican,1881-09-19,1885-03-04,None,1829-10-05,1886-11-18,Vermont,Civil service reform; Chinese Exclusion Act
+22,Grover Cleveland,Democratic,1885-03-04,1889-03-04,Thomas A. Hendricks,1837-03-18,1908-06-24,New Jersey,First of two non-consecutive terms
+23,Benjamin Harrison,Republican,1889-03-04,1893-03-04,Levi P. Morton,1833-08-20,1901-03-13,Ohio,Six states admitted; grandson of 9th president
+24,Grover Cleveland,Democratic,1893-03-04,1897-03-04,Adlai Stevenson I,1837-03-18,1908-06-24,New Jersey,Only president to serve non-consecutive terms
+25,William McKinley,Republican,1897-03-04,1901-09-14,Garret Hobart / Theodore Roosevelt,1843-01-29,1901-09-14,Ohio,Spanish-American War; assassinated
+26,Theodore Roosevelt,Republican,1901-09-14,1909-03-04,Charles W. Fairbanks,1858-10-27,1919-01-06,New York,Progressive reforms; Nobel Peace Prize; youngest president
+27,William Howard Taft,Republican,1909-03-04,1913-03-04,James S. Sherman,1857-09-15,1930-03-08,Ohio,Later became Chief Justice; heaviest president
+28,Woodrow Wilson,Democratic,1913-03-04,1921-03-04,Thomas R. Marshall,1856-12-28,1924-02-03,Virginia,WWI; League of Nations; Federal Reserve
+29,Warren G. Harding,Republican,1921-03-04,1923-08-02,Calvin Coolidge,1865-11-02,1923-08-02,Ohio,Teapot Dome scandal; died in office
+30,Calvin Coolidge,Republican,1923-08-02,1929-03-04,Charles G. Dawes,1872-07-04,1933-01-05,Vermont,Roaring Twenties prosperity; laissez-faire economics
+31,Herbert Hoover,Republican,1929-03-04,1933-03-04,Charles Curtis,1874-08-10,1964-10-20,Iowa,Great Depression began under his term
+32,Franklin D. Roosevelt,Democratic,1933-03-04,1945-04-12,"John Nance Garner, Henry Wallace, Harry S. Truman",1882-01-30,1945-04-12,New York,New Deal; WWII; only 4-term president; died in office
+33,Harry S. Truman,Democratic,1945-04-12,1953-01-20,Alben W. Barkley,1884-05-08,1972-12-26,Missouri,Atomic bomb; NATO; Korean War; Marshall Plan
+34,Dwight D. Eisenhower,Republican,1953-01-20,1961-01-20,Richard Nixon,1890-10-14,1969-03-28,Kansas,Cold War; Interstate Highway System; NASA founded
+35,John F. Kennedy,Democratic,1961-01-20,1963-11-22,Lyndon B. Johnson,1917-05-29,1963-11-22,Massachusetts,Cuban Missile Crisis; space race; assassinated
+36,Lyndon B. Johnson,Democratic,1963-11-22,1969-01-20,Hubert Humphrey,1908-08-27,1973-01-22,Texas,Civil Rights Act; Vietnam War escalation; Great Society
+37,Richard Nixon,Republican,1969-01-20,1974-08-09,Spiro Agnew / Gerald Ford,1913-01-09,1994-04-22,California,Watergate; only president to resign; opened China relations
+38,Gerald Ford,Republican,1974-08-09,1977-01-20,Nelson Rockefeller,1913-07-14,2006-12-26,Nebraska,Pardoned Nixon; only president never elected VP or P
+39,Jimmy Carter,Democratic,1977-01-20,1981-01-20,Walter Mondale,1924-10-01,2024-12-29,Georgia,Camp David Accords; Iran hostage crisis; Nobel Peace Prize
+40,Ronald Reagan,Republican,1981-01-20,1989-01-20,George H. W. Bush,1911-02-06,2004-06-05,Illinois,Cold War end; Reaganomics; oldest elected president (at time)
+41,George H. W. Bush,Republican,1989-01-20,1993-01-20,Dan Quayle,1924-06-12,2018-11-30,Massachusetts,Gulf War; German reunification; ADA signed
+42,Bill Clinton,Democratic,1993-01-20,2001-01-20,Al Gore,1946-08-19,Alive,Arkansas,Economic boom; NAFTA; second impeached president
+43,George W. Bush,Republican,2001-01-20,2009-01-20,Dick Cheney,1946-07-06,Alive,Connecticut,9/11 response; Iraq War; War on Terror
+44,Barack Obama,Democratic,2009-01-20,2017-01-20,Joe Biden,1961-08-04,Alive,Hawaii,First African-American president; ACA (Obamacare); bin Laden killed
+45,Donald Trump,Republican,2017-01-20,2021-01-20,Mike Pence,1946-06-14,Alive,New York,Third impeached president; COVID-19 pandemic; MAGA movement
+46,Joe Biden,Democratic,2021-01-20,2025-01-20,Kamala Harris,1942-11-20,Alive,Pennsylvania,Oldest president; first female VP (Harris); withdrew from 2024 race
+47,Donald Trump,Republican,2025-01-20,Present,JD Vance,1946-06-14,Alive,New York,Second non-consecutive term; second president to serve twice

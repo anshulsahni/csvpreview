@@ -1,0 +1,40 @@
+Wine Region,Country,Sub-Region/Appellation,Primary Red Grapes,Primary White Grapes,Wine Style,Climate,Notable Wines,Protected Status
+Bordeaux,France,Médoc / Saint-Émilion / Pomerol,Cabernet Sauvignon / Merlot / Cabernet Franc,Sauvignon Blanc / Sémillon,Structured reds / Dry whites / Sauternes (sweet),Maritime / Oceanic,Château Pétrus / Château Margaux / Mouton Rothschild,AOC
+Burgundy (Bourgogne),France,Côte de Nuits / Côte de Beaune,Pinot Noir,Chardonnay,Elegant reds / Rich whites,Continental,Romanée-Conti / Meursault / Montrachet,AOC
+Champagne,France,Reims / Épernay / Aÿ,Pinot Noir / Pinot Meunier,Chardonnay,Sparkling,Cool Continental,Dom Pérignon / Krug / Bollinger,AOC
+Rhône Valley,France,Northern Rhône / Southern Rhône,Syrah / Grenache / Mourvèdre,Viognier / Marsanne / Roussanne,Full-bodied reds / Aromatic whites,Mediterranean / Continental,Châteauneuf-du-Pape / Hermitage / Côte-Rôtie,AOC
+Alsace,France,Bas-Rhin / Haut-Rhin,Pinot Noir,Riesling / Gewürztraminer / Pinot Gris,Aromatic dry/off-dry whites,Semi-continental,Trimbach Riesling / Hugel Gewürztraminer,AOC
+Loire Valley,France,Sancerre / Pouilly-Fumé / Chinon / Vouvray,Cabernet Franc,Sauvignon Blanc / Chenin Blanc / Muscadet,Light reds / Crisp whites / Sparkling,Oceanic/Continental,Sancerre / Vouvray / Muscadet,AOC
+Tuscany,Italy,Chianti / Brunello di Montalcino / Bolgheri,Sangiovese / Cabernet Sauvignon (Super Tuscans),Vernaccia / Trebbiano,Structured reds,Mediterranean,Brunello / Sassicaia / Tignanello,DOC/DOCG
+Piedmont,Italy,Barolo / Barbaresco / Asti,Nebbiolo / Barbera / Dolcetto,Moscato / Arneis,Tannic powerful reds / Sparkling sweet,Continental,Barolo / Barbaresco / Asti Spumante,DOC/DOCG
+Veneto,Italy,Valpolicella / Soave / Prosecco,Corvina / Rondinella / Molinara,Garganega / Glera,Dry reds / Sparkling whites / Amarone,Mediterranean/Continental,Amarone / Soave / Prosecco,DOC/DOCG
+Sicily,Italy,Etna / Marsala / Nero d'Avola regions,Nero d'Avola / Nerello Mascalese,Grillo / Catarratto / Carricante,Bold reds / Fortified / Volcanic whites,Mediterranean,Etna Rosso / Marsala / Planeta,DOC/DOCG
+Rioja,Spain,Rioja Alta / Alavesa / Baja,Tempranillo / Garnacha / Mazuelo,Viura / Malvasía,Oak-aged reds / White,Semi-arid Continental,CVNE / Marqués de Riscal / Muga,DOC
+Priorat,Spain,Priorat,Garnacha / Cariñena,Garnacha Blanca / Macabeo,Powerful concentrated reds,Mediterranean,Clos Mogador / Álvaro Palacios,DOCa
+Ribera del Duero,Spain,Ribera del Duero,Tempranillo (Tinto Fino),Albillo,Full-bodied reds,Continental (high altitude),Vega Sicilia / Pingus / Pesquera,DO
+Galicia / Rías Baixas,Spain,Rías Baixas,–,Albariño,Crisp aromatic whites,Atlantic/Oceanic,Pazo de Señoráns / Martín Códax,DO
+Douro Valley,Portugal,Douro / Porto,Touriga Nacional / Touriga Franca / Tinta Roriz,Rabigato / Viosinho,Port (fortified) / Dry reds,Continental (hot valley),Graham's / Quinta do Crasto / Taylor's,DOC
+Alentejo,Portugal,Alentejo,Aragonez / Trincadeira / Alicante Bouschet,Antão Vaz / Arinto,Full-bodied reds / Whites,Hot Mediterranean,Esporão / Herdade do Esporão,DO
+Vinho Verde,Portugal,Minho / Lima / Monção,Vinhão,Alvarinho / Loureiro / Arinto,Light semi-sparkling low-alcohol whites,Atlantic,Quinta da Aveleda / Soalheiro,DOC
+Napa Valley,USA (California),Oakville / Rutherford / Stags Leap,Cabernet Sauvignon / Merlot / Zinfandel,Chardonnay / Sauvignon Blanc,Full-bodied reds / Rich whites,Mediterranean,Opus One / Screaming Eagle / Caymus,AVA
+Sonoma,USA (California),Russian River Valley / Alexander Valley,Pinot Noir / Cabernet Sauvignon / Zinfandel,Chardonnay / Sauvignon Blanc,Elegant reds / Crisp whites,Coastal Mediterranean,Jordan / Williams Selyem / Kosta Browne,AVA
+Willamette Valley,USA (Oregon),Dundee Hills / Eola-Amity Hills,Pinot Noir,Pinot Gris / Chardonnay / Pinot Blanc,Cool-climate Pinot Noir,Maritime,Eyrie Vineyards / Adelsheim / A to Z,AVA
+Barossa Valley,Australia,Barossa / Eden Valley,Shiraz / Cabernet Sauvignon / Grenache,Riesling / Viognier,Bold reds / Dry Riesling,Hot Continental,Penfolds / Henschke / Torbreck,GI
+McLaren Vale,Australia,McLaren Vale,Shiraz / Grenache / Cabernet,Chardonnay / Sauvignon Blanc,Rich reds,Mediterranean,d'Arenberg / Wirra Wirra,GI
+Coonawarra,Australia,Coonawarra,Cabernet Sauvignon / Shiraz / Merlot,Chardonnay / Riesling,Elegant Cabernet,Cool Maritime,Wynns / Katnook / Majella,GI
+Marlborough,New Zealand,Wairau Valley / Awatere Valley,Pinot Noir,Sauvignon Blanc / Pinot Gris / Riesling,Crisp Sauvignon Blanc / Pinot,Maritime Cool,Cloudy Bay / Villa Maria / Dog Point,GI
+Central Otago,New Zealand,Bannockburn / Gibbston,Pinot Noir,Pinot Gris / Riesling,World's southernmost Pinot Noir,Continental (cold),Felton Road / Rippon / Two Paddocks,GI
+Mendoza,Argentina,Luján de Cuyo / Valle de Uco,Malbec / Cabernet Sauvignon / Bonarda,Torrontés / Chardonnay,Bold reds / Aromatic whites,Continental (high altitude),Achaval Ferrer / Catena Zapata / Zuccardi,DOC/IG
+Maipo Valley,Chile,Alto Maipo,Cabernet Sauvignon / Carménère,Sauvignon Blanc / Chardonnay,Full-bodied reds,Mediterranean,Almaviva / Don Melchor / Concha y Toro,DO
+Casablanca Valley,Chile,Casablanca,Pinot Noir / Merlot,Sauvignon Blanc / Chardonnay,Cool-climate whites / reds,Cool Coastal,Santa Rita / Veramonte / Cono Sur,DO
+Western Cape,South Africa,Stellenbosch / Franschhoek / Swartland,Pinotage / Cabernet Sauvignon / Shiraz,Chenin Blanc / Sauvignon Blanc,Varied: bold reds / rich whites,Mediterranean,Kanonkop / Eben Sadie / Boekenhoutskloof,WO
+Franschhoek,South Africa,Franschhoek Valley,Cabernet Sauvignon / Merlot / Pinotage,Chardonnay / Semillon / Chenin Blanc,Cap Classique sparkling / Varied,Mediterranean,Graham Beck / Rupert & Rothschild / Rickety Bridge,WO
+Mosel,Germany,Bernkastel / Piesport / Wehlen,–,Riesling,Off-dry to sweet Riesling / Sekt,Cool Continental,Dr. Loosen / JJ Prüm / Egon Müller,Prädikatswein
+Rheingau,Germany,Hochheim / Rüdesheim / Johannisberg,Pinot Noir (Spätburgunder),Riesling,Dry and classic Riesling,Cool Continental,Schloss Johannisberg / Robert Weil,Prädikatswein
+Pfalz,Germany,Mittelhaardt / Deutsche Weinstrasse,Dornfelder / Portugieser / Pinot Noir,Riesling / Müller-Thurgau,Richer Riesling / Reds,Warm Continental,Müller-Catoir / Dr. Bürklin-Wolf,Prädikatswein
+Wachau,Austria,Wachau (Danube),–,Grüner Veltliner / Riesling,Dry mineral whites,Continental (river-moderated),F.X. Pichler / Rudi Pichler / Prager,DAC
+Burgenland,Austria,Neusiedlersee / Mittelburgenland,Blaufränkisch / Zweigelt / St. Laurent,Welschriesling / Chardonnay,Noble sweet (Trockenbeerenauslese) / Reds,Pannonian,Kracher / Umathum / Gesellmann,DAC
+Tokaj,Hungary,Tokaj-Hegyalja,–,Furmint / Hárslevelű / Yellow Muscat,Aszú sweet / Dry Furmint,Continental,Royal Tokaji / Oremus / Disznókő,Protected (EU)
+Georgian Wine Regions,Georgia,Kakheti / Kartli / Imereti,Saperavi / Rkatsiteli,Rkatsiteli / Mtsvane,Amber (qvevri) / Red,Continental,Pheasant's Tears / Chateau Mukhrani,Protected (EU/GI)
+Bekaa Valley,Lebanon,Bekaa Valley,Cinsault / Cabernet Sauvignon / Syrah,Obaideh / Merwah,Full-bodied reds,Semi-arid Mediterranean,Château Musar / Ksara / Massaya,No
+Nashik,India,Nashik Valley,Shiraz / Cabernet Sauvignon,Chenin Blanc / Sauvignon Blanc / Viognier,Varied,Semi-arid,Sula Vineyards / York Winery / Fratelli,No

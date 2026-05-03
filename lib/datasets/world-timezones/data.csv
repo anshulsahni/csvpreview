@@ -1,0 +1,39 @@
+Timezone Name,UTC Offset,UTC Offset DST,Region,Major Cities,Countries
+UTC-12:00,-12:00,-12:00,Pacific,Baker Island; Howland Island,United States (uninhabited)
+UTC-11:00,-11:00,-11:00,Pacific,Pago Pago; Alofi,American Samoa; Niue
+UTC-10:00,-10:00,-10:00,Pacific,Honolulu; Papeete,United States (Hawaii); French Polynesia
+UTC-09:30,-09:30,-09:30,Pacific,Taiohae,French Polynesia (Marquesas)
+UTC-09:00,-09:00,-08:00,Americas,Anchorage; Juneau,United States (Alaska)
+UTC-08:00,-08:00,-07:00,Americas,Los Angeles; Vancouver; Tijuana,"USA (Pacific); Canada (BC); Mexico"
+UTC-07:00,-07:00,-06:00,Americas,Denver; Phoenix; Calgary,"USA (Mountain); Canada (Alberta)"
+UTC-06:00,-06:00,-05:00,Americas,Chicago; Mexico City; Winnipeg,"USA (Central); Mexico; Canada"
+UTC-05:00,-05:00,-04:00,Americas,New York; Toronto; Bogotá,"USA (Eastern); Canada; Colombia; Peru"
+UTC-04:00,-04:00,-03:00,Americas,Halifax; Santiago; La Paz; Caracas,"Canada (Atlantic); Chile; Bolivia; Venezuela"
+UTC-03:30,-03:30,-02:30,Americas,St. John's,Canada (Newfoundland)
+UTC-03:00,-03:00,-02:00,Americas,São Paulo; Buenos Aires; Montevideo,"Brazil; Argentina; Uruguay"
+UTC-02:00,-02:00,-01:00,Atlantic,Fernando de Noronha; South Georgia,Brazil (islands); South Georgia
+UTC-01:00,-01:00,+00:00,Atlantic,Praia; Ponta Delgada,"Cape Verde; Portugal (Azores)"
+UTC+00:00,+00:00,+01:00,Europe/Africa,London; Dublin; Lisbon; Accra; Dakar,"UK; Ireland; Portugal; Ghana; Senegal"
+UTC+01:00,+01:00,+02:00,Europe/Africa,Paris; Berlin; Rome; Lagos; Kinshasa,"France; Germany; Italy; Nigeria; DRC"
+UTC+02:00,+02:00,+03:00,Europe/Africa,Cairo; Athens; Johannesburg; Helsinki; Kiev,"Egypt; Greece; South Africa; Finland; Ukraine"
+UTC+03:00,+03:00,+03:00,Europe/Asia/Africa,Moscow; Nairobi; Riyadh; Baghdad; Istanbul,"Russia; Kenya; Saudi Arabia; Iraq; Turkey"
+UTC+03:30,+03:30,+04:30,Asia,Tehran,Iran
+UTC+04:00,+04:00,+05:00,Asia,Dubai; Baku; Tbilisi; Muscat,"UAE; Azerbaijan; Georgia; Oman"
+UTC+04:30,+04:30,+04:30,Asia,Kabul,Afghanistan
+UTC+05:00,+05:00,+06:00,Asia,Karachi; Tashkent; Islamabad; Yekaterinburg,"Pakistan; Uzbekistan"
+UTC+05:30,+05:30,+05:30,Asia,Mumbai; New Delhi; Kolkata; Chennai,India
+UTC+05:45,+05:45,+05:45,Asia,Kathmandu,Nepal
+UTC+06:00,+06:00,+07:00,Asia,Dhaka; Almaty; Omsk,"Bangladesh; Kazakhstan"
+UTC+06:30,+06:30,+06:30,Asia,Yangon; Cocos Islands,Myanmar
+UTC+07:00,+07:00,+08:00,Asia,Bangkok; Jakarta; Hanoi; Krasnoyarsk,"Thailand; Indonesia (W); Vietnam; Russia"
+UTC+08:00,+08:00,+09:00,Asia/Pacific,Beijing; Singapore; Manila; Kuala Lumpur; Perth,"China; Singapore; Philippines; Malaysia; Australia (W)"
+UTC+08:45,+08:45,+08:45,Pacific,Eucla,Australia (small border zone)
+UTC+09:00,+09:00,+10:00,Asia/Pacific,Tokyo; Seoul; Pyongyang; Yakutsk,"Japan; South Korea; North Korea"
+UTC+09:30,+09:30,+10:30,Pacific,Adelaide; Darwin,Australia (South/Northern Territory)
+UTC+10:00,+10:00,+11:00,Pacific,Sydney; Melbourne; Brisbane; Guam; Vladivostok,"Australia (East); Guam; Russia"
+UTC+10:30,+10:30,+10:30,Pacific,Lord Howe Island,Australia (Lord Howe Island)
+UTC+11:00,+11:00,+12:00,Pacific,Noumea; Honiara; Magadan,"New Caledonia; Solomon Islands; Russia"
+UTC+12:00,+12:00,+13:00,Pacific,Auckland; Wellington; Suva; Kamchatka,"New Zealand; Fiji; Russia"
+UTC+12:45,+12:45,+13:45,Pacific,Chatham Islands,New Zealand (Chatham Islands)
+UTC+13:00,+13:00,+14:00,Pacific,Apia; Nuku'alofa; Fakaofo,"Samoa; Tonga; Tokelau"
+UTC+14:00,+14:00,+14:00,Pacific,Kiritimati (Christmas Island),Kiribati

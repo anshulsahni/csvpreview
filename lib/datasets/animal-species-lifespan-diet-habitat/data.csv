@@ -1,0 +1,41 @@
+Rank,Common Name,Scientific Name,Class,Order,Lifespan (years),Diet,Habitat,IUCN Status,Weight (kg),Region
+1,African Elephant,Loxodonta africana,Mammalia,Proboscidea,60–70,Herbivore,Savanna & Forest,Vulnerable,4000–7000,Sub-Saharan Africa
+2,Blue Whale,Balaenoptera musculus,Mammalia,Artiodactyla,80–90,Carnivore (krill),Ocean,Endangered,100000–150000,Worldwide oceans
+3,Chimpanzee,Pan troglodytes,Mammalia,Primates,40–50,Omnivore,Tropical Forest,Endangered,32–60,Central & West Africa
+4,Snow Leopard,Panthera uncia,Mammalia,Carnivora,15–18,Carnivore,Mountain,Vulnerable,22–55,Central Asia
+5,Bengal Tiger,Panthera tigris tigris,Mammalia,Carnivora,10–15,Carnivore,Mangrove & Forest,Endangered,140–300,Indian Subcontinent
+6,Giant Panda,Ailuropoda melanoleuca,Mammalia,Carnivora,20–30,Herbivore (bamboo),Temperate Forest,Vulnerable,70–125,China
+7,Polar Bear,Ursus maritimus,Mammalia,Carnivora,25–30,Carnivore,Arctic tundra & sea ice,Vulnerable,350–700,Arctic Circle
+8,Gorilla,Gorilla gorilla,Mammalia,Primates,35–40,Herbivore,Tropical rainforest,Critically Endangered,70–200,Central Africa
+9,African Lion,Panthera leo,Mammalia,Carnivora,12–16,Carnivore,Savanna & Grassland,Vulnerable,120–250,Sub-Saharan Africa
+10,Humpback Whale,Megaptera novaeangliae,Mammalia,Artiodactyla,45–50,Carnivore (krill & fish),Ocean,Least Concern,25000–40000,Worldwide oceans
+11,Grey Wolf,Canis lupus,Mammalia,Carnivora,6–13,Carnivore,Forest & Tundra,Least Concern,25–80,North America / Eurasia
+12,Common Bottlenose Dolphin,Tursiops truncatus,Mammalia,Artiodactyla,40–50,Carnivore,Coastal Ocean,Least Concern,150–650,Worldwide oceans
+13,Giraffe,Giraffa camelopardalis,Mammalia,Artiodactyla,20–25,Herbivore,Savanna,Vulnerable,700–1270,Sub-Saharan Africa
+14,Hippopotamus,Hippopotamus amphibius,Mammalia,Artiodactyla,40–50,Herbivore,Rivers & Lakes,Vulnerable,1500–3000,Sub-Saharan Africa
+15,Komodo Dragon,Varanus komodoensis,Reptilia,Squamata,30,Carnivore,Tropical savanna,Endangered,70–90,Indonesia
+16,Saltwater Crocodile,Crocodylus porosus,Reptilia,Crocodilia,70,Carnivore,Mangrove & Rivers,Least Concern,400–1000,South & Southeast Asia
+17,Green Sea Turtle,Chelonia mydas,Reptilia,Testudines,80,Herbivore,Tropical Ocean,Endangered,68–190,Worldwide tropics
+18,King Cobra,Ophiophagus hannah,Reptilia,Squamata,20,Carnivore,Rainforest,Vulnerable,6–9,South & Southeast Asia
+19,Bald Eagle,Haliaeetus leucocephalus,Aves,Accipitriformes,20–30,Carnivore,Lakes & Rivers,Least Concern,3–6.3,North America
+20,Emperor Penguin,Aptenodytes forsteri,Aves,Sphenisciformes,20–25,Carnivore (fish),Antarctic,Near Threatened,22–45,Antarctica
+21,Wandering Albatross,Diomedea exulans,Aves,Procellariiformes,50–60,Carnivore,Ocean,Vulnerable,6–12,Southern Ocean
+22,Peregrine Falcon,Falco peregrinus,Aves,Falconiformes,15–17,Carnivore,Cliffs & Cities,Least Concern,0.3–1.5,Worldwide
+23,Flamingo,Phoenicopterus roseus,Aves,Phoenicopteriformes,30–40,Omnivore (algae & crustaceans),Wetlands & Lagoons,Least Concern,2–4,Africa / Europe / Asia
+24,African Grey Parrot,Psittacus erithacus,Aves,Psittaciformes,40–60,Omnivore,Tropical Forest,Endangered,0.4–0.5,Central Africa
+25,Cheetah,Acinonyx jubatus,Mammalia,Carnivora,10–12,Carnivore,Savanna & Grassland,Vulnerable,21–65,Africa & Iran
+26,Orangutan,Pongo pygmaeus,Mammalia,Primates,30–40,Omnivore,Rainforest,Critically Endangered,30–90,Borneo & Sumatra
+27,African Wild Dog,Lycaon pictus,Mammalia,Carnivora,10–12,Carnivore,Savanna,Endangered,18–36,Sub-Saharan Africa
+28,Black Rhinoceros,Diceros bicornis,Mammalia,Perissodactyla,35–50,Herbivore,Savanna & Shrubland,Critically Endangered,800–1400,Southern & Eastern Africa
+29,Manatee,Trichechus manatus,Mammalia,Sirenia,40–60,Herbivore,Coastal & Rivers,Vulnerable,200–600,Caribbean & Gulf of Mexico
+30,Red Fox,Vulpes vulpes,Mammalia,Carnivora,2–5,Omnivore,Forest & Urban,Least Concern,3–14,Worldwide
+31,Snow Owl,Bubo scandiacus,Aves,Strigiformes,10,Carnivore,Arctic tundra,Vulnerable,1.6–3,Arctic
+32,Jaguar,Panthera onca,Mammalia,Carnivora,12–15,Carnivore,Rainforest & Wetland,Near Threatened,56–96,Central & South America
+33,Platypus,Ornithorhynchus anatinus,Mammalia,Monotremata,12–17,Carnivore,Freshwater,Near Threatened,0.7–2.4,Eastern Australia
+34,Manta Ray,Mobula birostris,Chondrichthyes,Myliobatiformes,40,Carnivore (plankton),Tropical Ocean,Endangered,1350–2000,Worldwide tropics
+35,Mountain Gorilla,Gorilla beringei beringei,Mammalia,Primates,35–40,Herbivore,Mountain Forest,Endangered,100–225,East Africa
+36,Sperm Whale,Physeter macrocephalus,Mammalia,Artiodactyla,60–70,Carnivore,Deep Ocean,Vulnerable,11000–57000,Worldwide oceans
+37,Giant Squid,Architeuthis dux,Cephalopoda,Teuthida,5,Carnivore,Deep Ocean,Least Concern,100–275,Worldwide deep seas
+38,African Penguin,Spheniscus demersus,Aves,Sphenisciformes,10–15,Carnivore,Coastal Ocean,Endangered,2–5,South Africa
+39,Honey Bee,Apis mellifera,Insecta,Hymenoptera,0.1–1,Omnivore (nectar & pollen),Meadows & Forests,Least Concern,0.0001,Worldwide
+40,Monarch Butterfly,Danaus plexippus,Insecta,Lepidoptera,0.2–0.9,Herbivore,Open fields & meadows,Endangered,0.0003,North America

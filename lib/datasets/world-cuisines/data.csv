@@ -1,0 +1,61 @@
+Country/Region,Cuisine,Signature Dish,Key Ingredients,Meal Type,Flavour Profile
+Italy,Italian,Spaghetti Carbonara,Pasta / Eggs / Guanciale / Pecorino Romano,Main Course,Creamy / Savoury / Umami
+Italy,Italian,Neapolitan Pizza,Pizza Dough / Tomato / Mozzarella / Basil,Main Course,Tangy / Savoury / Herby
+France,French,Coq au Vin,Chicken / Red Wine / Mushrooms / Lardons,Main Course,Rich / Earthy / Savoury
+France,French,Croissant,Butter / Flour / Yeast / Milk,Breakfast/Snack,Buttery / Flaky / Mild
+Spain,Spanish,Paella Valenciana,Rice / Saffron / Chicken / Rabbit / Beans,Main Course,Smoky / Savoury / Floral
+Spain,Spanish,Gazpacho,Tomatoes / Cucumber / Peppers / Olive Oil,Appetiser/Soup,Tangy / Fresh / Cool
+Japan,Japanese,Sushi,Rice / Raw Fish / Nori / Wasabi,Main Course,Umami / Clean / Delicate
+Japan,Japanese,Ramen,Wheat Noodles / Broth / Chashu Pork / Egg,Main Course,Savoury / Rich / Umami
+China,Chinese,Peking Duck,Duck / Hoisin Sauce / Pancakes / Spring Onion,Main Course,Sweet / Savoury / Crispy
+China,Chinese,Dim Sum,Rice Flour / Pork / Shrimp / Various fillings,Brunch/Snack,Varied / Savoury / Delicate
+India,North Indian,Butter Chicken,Chicken / Tomato / Cream / Spices,Main Course,Creamy / Mildly Spiced / Rich
+India,South Indian,Dosa with Sambar,Rice / Lentil Batter / Vegetables / Tamarind,Breakfast/Main,Tangy / Crispy / Spiced
+Mexico,Mexican,Tacos al Pastor,Pork / Pineapple / Chilli / Tortilla,Main Course/Snack,Spicy / Sweet / Smoky
+Mexico,Mexican,Mole Poblano,Chilli / Chocolate / Spices / Chicken,Main Course,Complex / Earthy / Bittersweet
+Thailand,Thai,Pad Thai,Rice Noodles / Shrimp / Peanuts / Tamarind,Main Course,Sweet / Sour / Savoury
+Thailand,Thai,Green Curry,Coconut Milk / Green Chilli / Galangal / Lemongrass,Main Course,Spicy / Creamy / Aromatic
+Lebanon,Lebanese,Hummus,Chickpeas / Tahini / Lemon / Garlic,Appetiser/Dip,Nutty / Tangy / Creamy
+Lebanon,Lebanese,Shawarma,Lamb / Chicken / Garlic Sauce / Flatbread,Main Course/Snack,Savoury / Spiced / Garlicky
+Greece,Greek,Moussaka,Eggplant / Ground Lamb / Béchamel,Main Course,Savoury / Rich / Herby
+Greece,Greek,Souvlaki,Grilled Pork / Pita / Tzatziki / Tomato,Main Course/Snack,Grilled / Fresh / Tangy
+Turkey,Turkish,Döner Kebab,Lamb / Chicken / Flatbread / Yogurt,Main Course/Snack,Savoury / Spiced / Garlicky
+Turkey,Turkish,Baklava,Phyllo Pastry / Pistachios / Honey / Butter,Dessert,Sweet / Nutty / Buttery
+Morocco,Moroccan,Tagine,Lamb / Preserved Lemon / Olives / Spices,Main Course,Earthy / Spiced / Citrusy
+Morocco,Moroccan,Couscous,Semolina / Vegetables / Lamb / Ras el Hanout,Main Course,Savoury / Mild / Herby
+Ethiopia,Ethiopian,Injera with Doro Wat,Teff Flatbread / Chicken Stew / Berbere Spice,Main Course,Sour / Spicy / Earthy
+Nigeria,Nigerian,Jollof Rice,Rice / Tomato / Pepper / Palm Oil,Main Course,Smoky / Spicy / Savoury
+South Africa,South African,Braai / Boerewors,Spiced Beef/Pork Sausage / Maize / Chakalaka,Main Course,Smoky / Spiced / Savoury
+Peru,Peruvian,Ceviche,Raw Fish / Lime Juice / Chilli / Red Onion,Starter/Main,Tangy / Spicy / Fresh
+Peru,Peruvian,Lomo Saltado,Beef / Tomatoes / Peppers / Soy Sauce / Fries,Main Course,Savoury / Umami / Stir-fried
+Brazil,Brazilian,Feijoada,Black Beans / Pork / Sausage / Farofa,Main Course,Rich / Earthy / Smoky
+Argentina,Argentine,Asado,Grilled Beef Ribs / Chimichurri / Chorizo,Main Course,Smoky / Herbaceous / Meaty
+USA,American,Burger,Beef Patty / Cheese / Lettuce / Brioche Bun,Main Course/Snack,Savoury / Rich / Grilled
+USA (South),Southern American,Fried Chicken,Chicken / Buttermilk / Flour / Spices,Main Course,Crispy / Savoury / Spiced
+Vietnam,Vietnamese,Pho,Rice Noodles / Bone Broth / Beef / Herbs,Main Course,Umami / Aromatic / Clean
+Vietnam,Vietnamese,Bánh Mì,Baguette / Pork / Pickled Vegetables / Pâté,Snack/Main,Crispy / Tangy / Savoury
+South Korea,Korean,Bibimbap,Rice / Vegetables / Gochujang / Egg / Beef,Main Course,Spicy / Umami / Balanced
+South Korea,Korean,Korean BBQ (Galbi),Marinated Short Ribs / Sesame / Soy / Garlic,Main Course,Sweet / Savoury / Grilled
+Germany,German,Bratwurst with Sauerkraut,Pork Sausage / Fermented Cabbage / Mustard,Main Course,Savoury / Tangy / Hearty
+Germany,German,Schnitzel,Breaded Veal / Lemon / Parsley Potatoes,Main Course,Crispy / Savoury / Mild
+UK,British,Fish and Chips,Battered Cod / Fried Potatoes / Malt Vinegar / Peas,Main Course,Crispy / Mild / Tangy
+UK,British,Full English Breakfast,Eggs / Bacon / Sausage / Beans / Toast / Tomato,Breakfast,Savoury / Hearty / Rich
+Portugal,Portuguese,Bacalhau à Brás,Salted Cod / Eggs / Onion / Potatoes / Olives,Main Course,Savoury / Salty / Eggy
+Russia,Russian,Beef Stroganoff,Beef / Sour Cream / Mushrooms / Onion,Main Course,Creamy / Savoury / Rich
+Russia,Russian,Borscht,Beetroot / Cabbage / Beef / Smetana,Soup,Earthy / Sweet / Tangy
+Poland,Polish,Pierogi,Dough / Potato / Cheese / Sauerkraut,Main Course/Snack,Savoury / Comfort / Mild
+Hungary,Hungarian,Goulash,Beef / Paprika / Onion / Tomato,Soup/Stew,Smoky / Spiced / Hearty
+Indonesia,Indonesian,Nasi Goreng,Fried Rice / Kecap Manis / Egg / Tempeh,Main Course,Sweet / Savoury / Smoky
+Malaysia,Malaysian,Nasi Lemak,Rice / Coconut Milk / Sambal / Anchovies / Egg,Main Course,Creamy / Spicy / Savoury
+Philippines,Filipino,Adobo,Chicken / Pork / Vinegar / Soy Sauce / Garlic,Main Course,Tangy / Savoury / Garlicky
+Pakistan,Pakistani,Biryani,Basmati Rice / Mutton / Saffron / Fried Onion,Main Course,Aromatic / Spiced / Rich
+Sri Lanka,Sri Lankan,Kottu Roti,Flaky Flatbread / Vegetables / Egg / Curry,Main Course,Spicy / Savoury / Textured
+Nepal,Nepali,Dal Bhat,Lentil Soup / Rice / Vegetable Curry / Pickles,Main Course,Mild / Comforting / Earthy
+Egypt,Egyptian,Koshari,Rice / Lentils / Macaroni / Tomato Sauce / Fried Onion,Main Course,Tangy / Savoury / Hearty
+Israel,Israeli,Shakshuka,Eggs / Tomatoes / Peppers / Cumin / Feta,Breakfast/Main,Tangy / Spiced / Savoury
+Iran,Iranian,Ghormeh Sabzi,Lamb / Kidney Beans / Dried Limes / Herbs,Main Course,Sour / Herby / Rich
+Sweden,Swedish,Swedish Meatballs,Beef / Pork / Cream Sauce / Lingonberry,Main Course,Creamy / Sweet / Savoury
+Finland,Finnish,Karjalanpiirakka,Rye Pastry / Rice Porridge / Egg Butter,Snack/Breakfast,Mild / Earthy / Buttery
+Switzerland,Swiss,Fondue,Gruyère / Emmental / White Wine / Kirsch / Bread,Shared Main,Nutty / Creamy / Tangy
+Belgium,Belgian,Moules-Frites,Mussels / White Wine / Cream / Frites,Main Course,Briny / Savoury / Crispy
+Netherlands,Dutch,Stamppot,Mashed Potato / Kale / Smoked Sausage,Main Course,Hearty / Smoky / Earthy

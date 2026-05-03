@@ -1,0 +1,51 @@
+Rank,Crop,Category,Global Production (million tonnes 2022),Top Producer,2nd Producer,3rd Producer,Primary Use,Calories per 100g (raw),Growing Season
+1,Sugarcane,Sugar Crop,1900,Brazil,India,China,Sugar / Ethanol / Molasses,38,Year-round (tropical)
+2,Maize (Corn),Cereal,1162,USA,China,Brazil,Feed / Food / Starch / Ethanol,365,3–5 months
+3,Wheat,Cereal,781,China,India,Russia,Bread / Pasta / Flour,340,6–8 months (winter/spring)
+4,Rice (Paddy),Cereal,754,China,India,Bangladesh,Staple food,360 (milled),3–6 months
+5,Sugar Beet,Sugar Crop,278,Russia,France,USA,Sugar / Animal feed,43,5–7 months
+6,Soybean,Oilseed / Legume,349,USA,Brazil,Argentina,Oil / Animal feed / Tofu / Soy milk,446,3–5 months
+7,Palm Oil Fruit,Oilseed,456,Indonesia,Malaysia,Nigeria,Palm oil / Oleochemicals,884 (oil),Year-round (tropical)
+8,Potato,Vegetable / Tuber,374,China,India,Ukraine,Food / Starch / Feed,77,3–4 months
+9,Cassava (Manioc),Root Crop,310,Nigeria,DR Congo,Thailand,Starch / Flour / Animal feed,160,8–18 months
+10,Barley,Cereal,155,Russia,Australia,Germany,Beer / Whisky / Animal feed / Food,354,3–5 months
+11,Sweet Potato,Root Crop,89,China,Ethiopia,Nigeria,Food / Animal feed,86,3–5 months
+12,Tomato,Vegetable,186,China,India,Turkey,Fresh / Sauce / Processing,18,3–4 months
+13,Banana,Fruit,124,India,China,Indonesia,Fresh consumption / Processing,89,9–12 months
+14,Watermelon,Fruit,100,China,Turkey,India,Fresh consumption,30,2–4 months
+15,Rapeseed (Canola),Oilseed,87,Canada,China,Australia,Oil / Animal feed / Biodiesel,884 (oil),5–6 months
+16,Cotton (Lint + Seed),Fibre / Oilseed,56,India,China,USA,Textile / Cottonseed oil,0 (fibre),5–6 months
+17,Yam,Root Crop,75,Nigeria,Ethiopia,Ivory Coast,Food (West Africa staple),118,6–8 months
+18,Sunflower Seed,Oilseed,57,Ukraine,Russia,Argentina,Oil / Snacks / Feed,584,3–4 months
+19,Millet,Cereal,31,India,Nigeria,China,Food / Feed / Beer (Africa),378,2–4 months
+20,Sorghum,Cereal,59,USA,Nigeria,Ethiopia,Food / Feed / Biofuel / Beer,329,3–5 months
+21,Groundnut (Peanut),Oilseed / Legume,48,China,India,Nigeria,Oil / Peanut butter / Snacks / Feed,567,3–5 months
+22,Grapes,Fruit,77,China,Italy,Spain,Wine / Fresh / Raisins / Juice,69,Annual (perennial crop)
+23,Apple,Fruit,87,China,USA,Turkey,Fresh / Juice / Cider / Processing,52,Annual (perennial)
+24,Onion (Dry),Vegetable,100,China,India,USA,Food (universal flavouring),40,3–5 months
+25,Orange,Citrus Fruit,79,Brazil,China,India,Juice / Fresh / Zest,47,Annual (perennial)
+26,Pea (Dry),Legume,14,Canada,Russia,China,Food / Feed / Plant protein,341,3–4 months
+27,Chickpea,Legume,15,India,Australia,Pakistan,Dal / Hummus / Flour,364,3–5 months
+28,Lentil,Legume,6.9,Canada,India,Turkey,Dal / Soups / Flour,352,3–4 months
+29,Coconut,Tree Nut / Oilseed,62,Indonesia,Philippines,India,Oil / Milk / Fresh / Copra,354,Year-round (perennial)
+30,Coffee (Green),Beverage Crop,10.5,Brazil,Vietnam,Colombia,Beverage,0 (beverage),Annual (perennial tree)
+31,Cocoa (Beans),Beverage Crop,5.8,Ivory Coast,Ghana,Indonesia,Chocolate / Butter / Powder,228,Year-round (perennial)
+32,Tea (Green),Beverage Crop,7.1,China,India,Kenya,Beverage,1 (beverage),Year-round (perennial)
+33,Rubber (Natural),Industrial Crop,13,Thailand,Indonesia,Vietnam,Tyres / Industrial products,0 (industrial),Year-round (perennial)
+34,Tobacco,Industrial Crop,6.1,China,Brazil,India,Smoking / Industrial nicotine,0 (industrial),3–4 months
+35,Flaxseed (Linseed),Oilseed,3.2,Canada,Kazakhstan,Russia,Oil / Fibre (linen) / Health food,534,3–4 months
+36,Oats,Cereal,22,Russia,Canada,Australia,Food / Feed / Oat milk,389,3–4 months
+37,Rye,Cereal,11,Germany,Poland,Russia,Bread / Whisky / Feed,338,6–8 months
+38,Triticale,Cereal,14,Poland,Germany,France,Feed / Flour (niche),336,6–8 months
+39,Buckwheat,Pseudo-Cereal,4.1,Russia,China,Ukraine,Flour / Noodles / Groats,343,2–3 months (fast crop)
+40,Quinoa,Pseudo-Cereal,0.19,Peru,Bolivia,Ecuador,Superfood grain,368,5–7 months
+41,Amaranth (Grain),Pseudo-Cereal,0.09,Mexico,Peru,India,Flour / Puffed grain / Health food,371,3–4 months
+42,Teff,Cereal,0.8,Ethiopia,India,USA,Injera flatbread / Flour,367,2–3 months
+43,Mango,Fruit,58,India,Indonesia,China,Fresh / Juice / Pickles / Processed,60,Annual (perennial tree)
+44,Pineapple,Fruit,28,Costa Rica,Philippines,Brazil,Fresh / Canned / Juice,50,12–18 months
+45,Papaya,Fruit,13,India,Brazil,Indonesia,Fresh / Juice,43,9–12 months
+46,Strawberry,Fruit,9.2,China,USA,Mexico,Fresh / Jam / Processing,32,Annual / Perennial
+47,Avocado,Fruit,8.9,Mexico,Dominican Republic,Peru,Fresh / Guacamole / Oil,160,Annual (perennial)
+48,Olive,Fruit / Oilseed,20,Spain,Morocco,Turkey,Oil / Table olive / Soap,145,Annual (perennial)
+49,Garlic,Vegetable,30,China,India,Bangladesh,Universal seasoning,149,6–9 months
+50,Carrot,Vegetable,44,China,USA,Russia,Fresh / Juice / Processed,41,2–4 months

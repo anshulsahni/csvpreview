@@ -7,6 +7,10 @@ import indianStates from "./indian-states/meta";
 import sp500Companies from "./sp500-companies/meta";
 import worldAirports from "./world-airports/meta";
 import worldPopulation from "./world-population/meta";
+import mountainHeights from "./mountain-heights/meta";
+import worldRivers from "./world-rivers/meta";
+import currencyCodes from "./currency-codes/meta";
+import nationalParks from "./national-parks/meta";
 
 export const datasets: DatasetMeta[] = [
   countriesCapitals,
@@ -17,6 +21,10 @@ export const datasets: DatasetMeta[] = [
   countryGdp,
   worldAirports,
   sp500Companies,
+  mountainHeights,
+  worldRivers,
+  currencyCodes,
+  nationalParks,
 ];
 
 const bySlug = new Map(datasets.map((d) => [d.slug, d]));

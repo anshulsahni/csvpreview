@@ -1,0 +1,101 @@
+Rank,Park Name,Country,Continent,Area (km²),Established Year,UNESCO Status,Notable Feature
+1,Northeast Greenland National Park,Greenland (Denmark),Europe,972000,1974,No,World's largest national park
+2,Rub' al Khali (Empty Quarter),Saudi Arabia,Asia,647500,2000,No,Largest sand desert
+3,Arctic National Wildlife Refuge,United States,North America,120000,1960,No,Critical Arctic habitat
+4,Namib-Naukluft National Park,Namibia,Africa,49768,1907,No,World's oldest desert
+5,Kavango Zambezi Transfrontier,Botswana/Namibia/Zimbabwe/Zambia/Angola,Africa,444000,2011,No,World's largest transfrontier park
+6,Tsavo National Park,Kenya,Africa,21812,1948,No,Largest park in Kenya
+7,Serengeti National Park,Tanzania,Africa,14763,1951,Yes,Great wildebeest migration
+8,Kruger National Park,South Africa,Africa,19485,1926,No,Africa's flagship safari park
+9,Okavango Delta (Moremi),Botswana,Africa,4871,1963,Yes,World's largest inland delta
+10,Virunga National Park,DRC,Africa,7800,1925,Yes,Africa's oldest park; gorilla habitat
+11,Bwindi Impenetrable Forest,Uganda,Africa,331,1991,Yes,Mountain gorilla sanctuary
+12,Yellowstone National Park,United States,North America,8983,1872,Yes,World's first national park
+13,Grand Canyon National Park,United States,North America,4926,1919,Yes,Iconic canyon landscape
+14,Yosemite National Park,United States,North America,3027,1890,Yes,Giant sequoias and waterfalls
+15,Denali National Park,United States,North America,24585,1917,No,Highest peak in North America
+16,Everglades National Park,United States,North America,6105,1947,Yes,Largest subtropical wilderness in USA
+17,Olympic National Park,United States,North America,3734,1938,Yes,Temperate rainforest and glaciers
+18,Rocky Mountain National Park,United States,North America,1075,1915,No,High alpine terrain
+19,Zion National Park,United States,North America,593,1919,No,Red rock canyons
+20,Bryce Canyon National Park,United States,North America,145,1928,No,Unique hoodoo formations
+21,Jasper National Park,Canada,North America,10878,1907,Yes,Canadian Rockies wilderness
+22,Banff National Park,Canada,North America,6641,1885,Yes,Canada's oldest national park
+23,Wood Buffalo National Park,Canada,North America,44807,1922,Yes,World's largest bison herd
+24,Gwaii Haanas National Park,Canada,North America,1495,1988,Yes,Indigenous Haida heritage
+25,El Imposible National Park,El Salvador,North America,52,1989,No,Largest forest in El Salvador
+26,Corcovado National Park,Costa Rica,North America,424,1975,No,Highest biodiversity in Central America
+27,Tikal National Park,Guatemala,North America,576,1955,Yes,Ancient Maya ruins in jungle
+28,Amazon National Park,Brazil,South America,9938,1974,No,Part of Amazon rainforest
+29,Los Glaciares National Park,Argentina,South America,4459,1937,Yes,Perito Moreno glacier
+30,Iguaçu National Park,Argentina/Brazil,South America,2529,1934,Yes,Iguazu Falls
+31,Galapagos National Park,Ecuador,South America,7995,1959,Yes,Darwin's evolution lab
+32,Manu National Park,Peru,South America,15328,1973,Yes,Highest biodiversity in South America
+33,Pantanal Conservation Area,Brazil,South America,1350,2000,Yes,World's largest tropical wetland
+34,Canaima National Park,Venezuela,South America,30000,1962,Yes,Angel Falls; tepui landscape
+35,Torres del Paine,Chile,South America,2400,1959,No,Dramatic granite towers
+36,Sajama National Park,Bolivia,South America,1000,1939,No,Bolivia's first national park
+37,Sagarmatha National Park,Nepal,Asia,1148,1976,Yes,Mount Everest; highest park
+38,Kaziranga National Park,India,Asia,430,1974,Yes,Two-thirds of world's rhinos
+39,Sundarbans National Park,India/Bangladesh,Asia,1330,1984,Yes,Largest mangrove forest
+40,Ranthambore National Park,India,Asia,392,1980,No,Bengal tiger reserve
+41,Valley of Flowers National Park,India,Asia,87,1982,Yes,Himalayan alpine flowers
+42,Jim Corbett National Park,India,Asia,521,1936,No,India's oldest national park
+43,Khangchendzonga National Park,India,Asia,1784,1977,Yes,Third-highest peak
+44,Zhangjiajie National Forest Park,China,Asia,43,1982,No,Avatar floating mountains inspiration
+45,Jiuzhaigou Valley,China,Asia,720,1978,Yes,Colourful alpine lakes
+46,Huanglong Scenic Area,China,Asia,700,1992,Yes,Colourful pools and glaciers
+47,Three Parallel Rivers,China,Asia,1700,2003,Yes,Biodiversity hotspot
+48,Komodo National Park,Indonesia,Asia,1733,1980,Yes,Komodo dragons
+49,Raja Ampat Marine Park,Indonesia,Asia,6100,2007,No,Highest marine biodiversity globally
+50,Mount Kinabalu Park,Malaysia,Asia,754,1964,Yes,Highest peak in SE Asia
+51,Khao Yai National Park,Thailand,Asia,2168,1962,Yes,Thailand's oldest national park
+52,Phong Nha-Ke Bang,Vietnam,Asia,885,2001,Yes,World's largest cave (Son Doong)
+53,Sri Lanka Sinharaja Forest,Sri Lanka,Asia,88,1978,Yes,Last viable primary rainforest
+54,Wakhan National Park,Afghanistan,Asia,10800,2014,No,Pamir plateau wilderness
+55,Altai Mountains (Altay),Russia/Mongolia/China/Kazakhstan,Asia,16000,1998,Yes,Shared transboundary biosphere
+56,Tundra and Taiga Reserve,Russia,Asia,41692,1916,No,Oldest Russian reserve (Barguzin)
+57,Lake Baikal,Russia,Asia,8800,1986,Yes,World's deepest lake
+58,Kamchatka Volcanoes,Russia,Asia,4000,1996,Yes,Active volcanic landscape
+59,Wrangel Island Reserve,Russia,Asia,9160,1976,Yes,Polar bear denning ground
+60,Fuji-Hakone-Izu National Park,Japan,Asia,1227,1936,No,Mount Fuji and hot springs
+61,Yakushima,Japan,Asia,107,1993,Yes,Ancient cedar forests
+62,Shiretoko National Park,Japan,Asia,386,2005,Yes,Drift ice ecosystem
+63,Taebaeksan National Park,South Korea,Asia,70,1989,No,High-altitude alpine meadows
+64,Hallasan National Park,South Korea,Asia,149,1970,No,Jeju volcanic island
+65,Swiss National Park,Switzerland,Europe,170,1914,No,Only national park in Switzerland
+66,Gran Paradiso National Park,Italy,Europe,703,1922,No,Italy's oldest national park
+67,Plitvice Lakes National Park,Croatia,Europe,295,1949,Yes,Cascading turquoise lakes
+68,Bialowieza Forest,Poland/Belarus,Europe,142,1932,Yes,Last primeval European forest; bison
+69,Cairngorms National Park,UK,Europe,4528,2003,No,Largest UK national park
+70,Snowdonia National Park,UK,Europe,2176,1951,No,Wales' first national park
+71,Fiordland National Park,New Zealand,Oceania,12607,1952,Yes,Milford Sound; dramatic fiords
+72,Tongariro National Park,New Zealand,Oceania,795,1887,Yes,World's fourth oldest park; Maori heritage
+73,Kakadu National Park,Australia,Oceania,19804,1979,Yes,Rock art and wetlands
+74,Daintree National Park,Australia,Oceania,1200,1981,Yes,World's oldest tropical rainforest
+75,Blue Mountains National Park,Australia,Oceania,2678,1959,Yes,Eucalyptus forests and gorges
+76,Uluru-Kata Tjuta National Park,Australia,Oceania,1326,1958,Yes,Sacred Ayers Rock
+77,Great Barrier Reef Marine Park,Australia,Oceania,344400,1975,Yes,World's largest coral reef system
+78,Kilauea (Hawaii Volcanoes NP),United States,Oceania,1308,1916,Yes,Active shield volcanoes
+79,Virunga (cross-border),Rwanda,Africa,160,1925,Yes,Mountain gorilla habitat extension
+80,Bale Mountains National Park,Ethiopia,Africa,2150,1970,No,Ethiopian wolf habitat
+81,Simien Mountains National Park,Ethiopia,Africa,412,1969,Yes,Gelada baboons and rare wildlife
+82,Toubkal National Park,Morocco,Africa,380,1942,No,Highest peak in North Africa
+83,Ichkeul National Park,Tunisia,Africa,126,1980,Yes,Critical migratory bird wetland
+84,W National Park,Benin/Burkina Faso/Niger,Africa,10000,1954,Yes,Transboundary savanna park
+85,Comoé National Park,Ivory Coast,Africa,11500,1968,Yes,Largest protected area in West Africa
+86,Lopé National Park,Gabon,Africa,5000,2002,Yes,Rainforest and savanna mosaic
+87,Manovo-Gounda St Floris,Central African Republic,Africa,17400,1933,Yes,Rare large mammal populations
+88,Niokolo-Koba National Park,Senegal,Africa,9130,1954,Yes,Last refuge of Derby eland
+89,Ai-Ais Richtersveld Transfrontier,South Africa/Namibia,Africa,6000,2003,No,Desert mountain landscape
+90,iSimangaliso Wetland Park,South Africa,Africa,2395,1999,Yes,First South African UNESCO site
+91,Madidi National Park,Bolivia,South America,18958,1995,No,One of world's most biodiverse areas
+92,Sierra Nevada de Santa Marta,Colombia,South America,3830,1964,Yes,World's highest coastal mountain
+93,Podocarpus National Park,Ecuador,South America,1462,1983,No,Cloud forest and páramo
+94,Yasuni National Park,Ecuador,South America,9823,1979,Yes,Amazon biodiversity hotspot
+95,Chan Chan Archaeological Zone,Peru,South America,14,1986,Yes,Largest pre-Columbian city in Americas
+96,Huascarán National Park,Peru,South America,3400,1975,Yes,Highest tropical mountain range
+97,Noel Kempff Mercado NP,Bolivia,South America,1523,1979,Yes,Pristine Amazon ecosystems
+98,Iberá Wetlands,Argentina,South America,13000,2018,No,Largest wetland system in Argentina
+99,Cotopaxi National Park,Ecuador,South America,335,1975,No,One of world's highest active volcanoes
+100,Titicaca National Reserve,Peru,South America,360,1978,No,World's highest navigable lake

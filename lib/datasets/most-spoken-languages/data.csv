@@ -1,0 +1,51 @@
+Rank,Language,Language Family,Native Speakers (millions),Total Speakers (millions),Primary Countries,Script,Official UN Language
+1,Mandarin Chinese,Sino-Tibetan,920,1100,China; Taiwan; Singapore,Chinese Characters,Yes
+2,Spanish,Indo-European (Romance),475,560,"Mexico, Colombia, Spain, Argentina + 17 more",Latin,Yes
+3,English,Indo-European (Germanic),380,1500,"USA, UK, Australia, Canada, India + many more",Latin,Yes
+4,Hindi,Indo-European (Indo-Aryan),345,600,"India, Nepal, Fiji",Devanagari,Yes
+5,Bengali,Indo-European (Indo-Aryan),234,270,"Bangladesh, India (West Bengal)",Bengali,No
+6,Portuguese,Indo-European (Romance),236,260,"Brazil, Portugal, Mozambique, Angola",Latin,No
+7,Russian,Indo-European (Slavic),147,260,"Russia, Belarus, Kazakhstan, Kyrgyzstan",Cyrillic,Yes
+8,Urdu,Indo-European (Indo-Aryan),70,230,"Pakistan, India",Perso-Arabic,No
+9,Japanese,Japonic,125,130,Japan,Kanji/Hiragana/Katakana,No
+10,Yue Chinese (Cantonese),Sino-Tibetan,84,100,"China (Guangdong), Hong Kong, Macau",Chinese Characters,No
+11,Vietnamese,Austroasiatic,77,85,Vietnam,Latin (Quốc ngữ),No
+12,Marathi,Indo-European (Indo-Aryan),83,95,"India (Maharashtra)",Devanagari,No
+13,Telugu,Dravidian,82,93,"India (Andhra Pradesh, Telangana)",Telugu,No
+14,Wu Chinese (Shanghainese),Sino-Tibetan,80,82,"China (Shanghai, Zhejiang, Jiangsu)",Chinese Characters,No
+15,Turkish,Turkic,79,88,"Turkey, Northern Cyprus",Latin,No
+16,Korean,Koreanic,77,82,"South Korea, North Korea",Hangul,No
+17,Tamil,Dravidian,75,85,"India (Tamil Nadu), Sri Lanka, Singapore",Tamil,No
+18,French,Indo-European (Romance),76,280,"France, Canada (Quebec), DRC, many African nations",Latin,Yes
+19,German,Indo-European (Germanic),76,130,"Germany, Austria, Switzerland",Latin,No
+20,Persian (Farsi),Indo-European (Iranian),70,110,"Iran, Afghanistan (Dari), Tajikistan",Perso-Arabic,No
+21,Hausa,Afro-Asiatic (Chadic),50,70,"Nigeria, Niger, Ghana",Latin / Ajami,No
+22,Javanese,Austronesian,68,84,"Indonesia (Java)",Latin / Javanese,No
+23,Min Chinese (Hokkien/Fujianese),Sino-Tibetan,62,75,"China (Fujian), Taiwan, SE Asia",Chinese Characters,No
+24,Italian,Indo-European (Romance),63,68,"Italy, Switzerland, San Marino",Latin,No
+25,Punjabi,Indo-European (Indo-Aryan),63,100,"India (Punjab), Pakistan (Punjab)",Gurmukhi / Shahmukhi,No
+26,Gujarati,Indo-European (Indo-Aryan),55,65,"India (Gujarat), diaspora worldwide",Gujarati,No
+27,Thai,Kra-Dai,44,60,Thailand,Thai,No
+28,Kannada,Dravidian,43,57,"India (Karnataka)",Kannada,No
+29,Polish,Indo-European (Slavic),45,48,"Poland, diaspora",Latin,No
+30,Ukrainian,Indo-European (Slavic),31,40,Ukraine,Cyrillic,No
+31,Malayalam,Dravidian,36,38,"India (Kerala)",Malayalam,No
+32,Odia (Oriya),Indo-European (Indo-Aryan),35,37,"India (Odisha)",Odia,No
+33,Swahili (Kiswahili),Niger-Congo (Bantu),16,100,"Tanzania, Kenya, Uganda, DRC",Latin,No
+34,Malay/Indonesian,Austronesian,33,270,"Indonesia (Bahasa), Malaysia, Brunei, Singapore",Latin,No
+35,Dutch,Indo-European (Germanic),24,30,"Netherlands, Belgium (Flemish)",Latin,No
+36,Sinhala,Indo-European (Indo-Aryan),17,17,Sri Lanka,Sinhala,No
+37,Romanian,Indo-European (Romance),24,26,"Romania, Moldova",Latin,No
+38,Amharic,Afro-Asiatic (Semitic),22,32,"Ethiopia",Ge'ez (Ethiopic),No
+39,Somali,Afro-Asiatic (Cushitic),16,20,"Somalia, Ethiopia, Kenya, Djibouti",Latin / Osmanya,No
+40,Yoruba,Niger-Congo,40,50,"Nigeria, Benin, Togo",Latin,No
+41,Igbo,Niger-Congo,24,27,"Nigeria",Latin,No
+42,Zulu,Niger-Congo (Bantu),12,27,"South Africa",Latin,No
+43,Xhosa,Niger-Congo (Bantu),9,19,"South Africa",Latin,No
+44,Afrikaans,Indo-European (Germanic),7,17,"South Africa, Namibia",Latin,No
+45,Greek,Indo-European (Hellenic),13,14,"Greece, Cyprus",Greek,No
+46,Czech,Indo-European (Slavic),10,12,"Czech Republic",Latin,No
+47,Hungarian,Uralic,12,14,"Hungary, Romania",Latin,No
+48,Swedish,Indo-European (Germanic),10,13,"Sweden, Finland",Latin,No
+49,Hebrew,Afro-Asiatic (Semitic),5,9,Israel,Hebrew,No
+50,Arabic (Modern Standard),Afro-Asiatic (Semitic),0,274,"22 Arab nations (as lingua franca)",Arabic,Yes

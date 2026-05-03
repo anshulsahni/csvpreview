@@ -1,0 +1,34 @@
+Rank,Country,Continent,Production (thousand 60kg bags 2022),Market Share (%),Coffee Type,Primary Varieties,Harvest Months,Altitude (masl),Processing Method
+1,Brazil,South America,63500,37.2,Arabica + Robusta,Bourbon / Catuai / Conilon,May–September,400–1200,Natural / Pulped Natural
+2,Vietnam,Asia,29000,17.0,Robusta,Robusta / Arabica (small),October–April,500–1500,Wet / Dry
+3,Colombia,South America,12600,7.4,Arabica,Castillo / Caturra / Typica,March–June / Sep–Dec,1200–2000,Washed
+4,Indonesia,Asia,10870,6.4,Robusta + Arabica,Mandheling / Toraja / Java,May–August,1000–1800,Wet-hulled (Giling Basah)
+5,Ethiopia,Africa,7675,4.5,Arabica,Yirgacheffe / Sidama / Harrar,October–January,1500–2200,Natural / Washed
+6,Honduras,North America,5800,3.4,Arabica,Catuai / Lempira / IHCAFE-90,December–April,1000–1800,Washed
+7,India,Asia,5483,3.2,Robusta + Arabica,Robusta / S795 / Cauvery,November–February,600–1600,Washed / Monsooned
+8,Uganda,Africa,5100,3.0,Robusta + Arabica,Robusta / SL14 / SL28,October–January,1200–2100,Natural / Washed
+9,Mexico,North America,3800,2.2,Arabica,Typica / Bourbon,November–March,1000–1700,Washed
+10,Guatemala,North America,3500,2.1,Arabica,Bourbon / Catuai / Typica,November–March,1300–2000,Washed
+11,Peru,South America,3450,2.0,Arabica,Typica / Caturra / Pache,June–August,1200–2000,Washed
+12,Ivory Coast,Africa,2400,1.4,Robusta,Robusta,October–March,200–600,Dry
+13,Tanzania,Africa,1100,0.6,Arabica + Robusta,Chagga / Kent,July–December,1400–2200,Washed / Natural
+14,Kenya,Africa,950,0.6,Arabica,SL28 / SL34 / Ruiru 11,October–December,1400–2100,Washed (Double)
+15,Papua New Guinea,Oceania,900,0.5,Arabica,Typica / Arusha,April–September,1300–1900,Washed
+16,Laos,Asia,850,0.5,Robusta + Arabica,Robusta / Typica,November–February,800–1300,Wet / Dry
+17,Nicaragua,North America,800,0.5,Arabica,Caturra / Catuai / Maracaturra,December–March,900–1700,Washed
+18,Costa Rica,North America,750,0.4,Arabica,Typica / Catuai / Villa Sarchi,October–March,1200–1900,Washed / Honey
+19,Philippines,Asia,600,0.4,Arabica + Robusta + Liberica + Excelsa,Barako / Benguet / Sagada,November–March,800–1800,Washed / Natural
+20,Cameroon,Africa,580,0.3,Robusta + Arabica,Robusta / Java,October–February,900–1400,Dry
+21,El Salvador,North America,500,0.3,Arabica,Bourbon / Pacas / Pacamara,November–February,600–1800,Washed / Natural
+22,Ecuador,South America,480,0.3,Arabica + Robusta,Typica / Caturra,July–December,900–2000,Washed
+23,Bolivia,South America,200,0.1,Arabica,Typica / Caturra,June–October,1000–1800,Washed
+24,Rwanda,Africa,370,0.2,Arabica,Bourbon,February–June,1700–2200,Washed
+25,Burundi,Africa,300,0.2,Arabica,Bourbon,June–August,1500–2000,Washed
+26,DR Congo,Africa,340,0.2,Robusta + Arabica,Robusta / Typica,Various,500–2000,Dry / Washed
+27,Venezuela,South America,280,0.2,Arabica,Typica / Bourbon,October–January,900–1700,Washed
+28,China (Yunnan),Asia,250,0.1,Arabica,Catimor / Typica,November–April,1000–1700,Washed
+29,Timor-Leste,Asia,90,0.1,Arabica + Robusta,Timor Hybrid,June–September,1400–1800,Natural
+30,Cuba,North America,110,0.1,Arabica,Typica / Crystal Mountain,July–November,500–1500,Washed
+31,Jamaica,North America,22,0.01,Arabica,Typica (Blue Mountain),August–March,1000–1700,Washed
+32,Hawaii (USA),North America,10,0.01,Arabica,Kona (Typica),August–January,500–900,Washed
+33,Yemen,Asia,25,0.01,Arabica,Dawairi / Tufahi / Ismaili,September–December,1500–2500,Natural (dry on rooftops)

@@ -1,0 +1,81 @@
+Number,Prime Minister,Party,Term Start,Term End,Tenure (years),Monarch,Born,Died,Notable For
+1,Robert Walpole,Whig,1721-04-03,1742-02-11,20.8,George I / George II,1676-08-26,1745-03-18,Generally regarded as first PM; longest-serving
+2,Spencer Compton,Whig,1742-02-16,1743-07-02,1.4,George II,1673-04-01,1743-07-02,Died in office
+3,Henry Pelham,Whig,1743-08-27,1754-03-06,10.5,George II,1694-09-25,1754-03-06,Died in office; Austrian Succession peace
+4,Duke of Newcastle,Whig,1754-03-16,1756-11-11,2.7,George II,1693-07-21,1768-11-17,First term; Seven Years War began
+5,Duke of Devonshire,Whig,1756-11-16,1757-07-25,0.7,George II,1720-05-08,1764-10-02,Seven Years War early phase
+6,Duke of Newcastle,Whig,1757-07-02,1762-05-26,4.9,George II / George III,1693-07-21,1768-11-17,Second term; Seven Years War victory
+7,Earl of Bute,Tory,1762-05-26,1763-04-08,0.9,George III,1713-05-25,1792-03-10,First Scottish PM; Treaty of Paris
+8,George Grenville,Whig,1763-04-16,1765-07-13,2.2,George III,1712-10-14,1770-11-13,Stamp Act on American colonies
+9,Marquess of Rockingham,Whig,1765-07-13,1766-07-30,1.0,George III,1730-05-13,1782-07-01,First term; repealed Stamp Act
+10,Earl of Chatham (Pitt the Elder),Whig,1766-07-30,1768-10-14,2.2,George III,1708-11-15,1778-05-11,Seven Years War architect
+11,Duke of Grafton,Whig,1768-10-14,1770-01-28,1.3,George III,1735-09-28,1811-03-14,Wilkes affair; Townshend Acts
+12,Lord North,Tory,1770-01-28,1782-03-20,12.1,George III,1732-04-13,1792-08-05,American Independence lost; Tea Act
+13,Marquess of Rockingham,Whig,1782-03-27,1782-07-01,0.3,George III,1730-05-13,1782-07-01,Second term; died in office
+14,Earl of Shelburne,Whig,1782-07-04,1783-04-02,0.7,George III,1737-05-02,1805-05-07,Treaty of Paris (American independence)
+15,Duke of Portland,Whig / Tory,1783-04-02,1783-12-19,0.7,George III,1738-04-14,1809-10-30,First term; Fox-North Coalition
+16,William Pitt the Younger,Tory,1783-12-19,1801-03-14,17.2,George III,1759-05-28,1806-01-23,Youngest PM at 24; French Revolutionary Wars
+17,Henry Addington,Tory,1801-03-17,1804-05-10,3.2,George III,1757-05-30,1844-02-15,Peace of Amiens with Napoleon
+18,William Pitt the Younger,Tory,1804-05-10,1806-01-23,1.7,George III,1759-05-28,1806-01-23,Second term; died in office; Battle of Trafalgar
+19,Lord Grenville,Whig,1806-02-11,1807-03-31,1.1,George III,1759-10-25,1834-01-12,Ministry of All the Talents; slave trade abolished
+20,Duke of Portland,Tory,1807-03-31,1809-10-04,2.5,George III,1738-04-14,1809-10-30,Second term; Napoleonic Wars; died in office
+21,Spencer Perceval,Tory,1809-10-04,1812-05-11,2.6,George III,1762-11-01,1812-05-11,Only PM assassinated
+22,Earl of Liverpool,Tory,1812-06-08,1827-02-17,14.6,George III / George IV,1770-06-07,1828-12-04,Defeated Napoleon; Corn Laws; longest 19th-c PM
+23,George Canning,Tory,1827-04-10,1827-08-08,0.3,George IV,1770-04-11,1827-08-08,Shortest serving PM (119 days); died in office
+24,Viscount Goderich,Tory,1827-08-31,1828-01-22,0.4,George IV,1782-11-01,1859-01-28,Resigned without facing Parliament
+25,Duke of Wellington,Tory,1828-01-22,1830-11-22,2.8,George IV / William IV,1769-05-01,1852-09-14,Catholic Emancipation; Battle of Waterloo hero
+26,Earl Grey,Whig,1830-11-22,1834-07-16,3.6,William IV,1764-03-13,1845-07-17,Reform Act 1832; abolished slavery in Empire
+27,Viscount Melbourne,Whig,1834-07-16,1834-11-17,0.3,William IV,1779-03-15,1848-11-24,First term; advised young Queen Victoria
+28,Duke of Wellington (Caretaker),Tory,1834-11-17,1834-12-09,0.06,William IV,1769-05-01,1852-09-14,Caretaker PM briefly
+29,Sir Robert Peel,Conservative,1834-12-10,1835-04-08,0.3,William IV,1788-02-05,1850-07-02,First term; Tamworth Manifesto; modern Conservatism
+30,Viscount Melbourne,Whig,1835-04-18,1841-08-30,6.4,William IV / Victoria,1779-03-15,1848-11-24,Second term; young Victoria's mentor
+31,Sir Robert Peel,Conservative,1841-08-30,1846-06-27,4.8,Victoria,1788-02-05,1850-07-02,Second term; Corn Laws repeal; income tax introduced; died from fall
+32,Lord John Russell,Whig / Liberal,1846-06-30,1852-02-21,5.6,Victoria,1792-08-18,1878-05-28,First term; Irish Famine response; Jewish relief
+33,Earl of Derby,Conservative,1852-02-23,1852-12-17,0.8,Victoria,1799-03-29,1869-10-23,First term of three; minority government
+34,Earl of Aberdeen,Peelite,1852-12-19,1855-02-06,2.1,Victoria,1784-01-28,1860-12-14,Crimean War; coalition government
+35,Viscount Palmerston,Liberal,1855-02-06,1858-02-19,3.0,Victoria,1784-10-20,1865-10-18,First term; Crimean War; Don Pacifico affair
+36,Earl of Derby,Conservative,1858-02-26,1859-06-12,1.3,Victoria,1799-03-29,1869-10-23,Second term; India Act; reform bill
+37,Viscount Palmerston,Liberal,1859-06-12,1865-10-18,6.4,Victoria,1784-10-20,1865-10-18,Second term; died in office; American Civil War
+38,Earl Russell (Lord John Russell),Liberal,1865-10-29,1866-06-26,0.7,Victoria,1792-08-18,1878-05-28,Second term; reform bill failure
+39,Earl of Derby,Conservative,1866-06-28,1868-02-25,1.7,Victoria,1799-03-29,1869-10-23,Third term; Reform Act 1867
+40,Benjamin Disraeli,Conservative,1868-02-27,1868-12-01,0.8,Victoria,1804-12-21,1881-04-19,First term; Jewish-born PM; Reform Act
+41,William Gladstone,Liberal,1868-12-03,1874-02-17,5.2,Victoria,1809-12-29,1898-05-19,First term; Irish church; education; ballot act
+42,Benjamin Disraeli,Conservative,1874-02-20,1880-04-23,6.2,Victoria,1804-12-21,1881-04-19,Second term; Queen made Empress of India; Congress of Berlin
+43,William Gladstone,Liberal,1880-04-23,1885-06-09,5.1,Victoria,1809-12-29,1898-05-19,Second term; Irish Land Acts; Kilmainham Treaty
+44,Marquess of Salisbury,Conservative,1885-06-23,1886-01-28,0.6,Victoria,1830-02-03,1903-08-22,First term; minority government
+45,William Gladstone,Liberal,1886-02-01,1886-07-20,0.4,Victoria,1809-12-29,1898-05-19,Third term; First Irish Home Rule Bill defeated
+46,Marquess of Salisbury,Conservative,1886-07-25,1892-08-11,6.0,Victoria,1830-02-03,1903-08-22,Second term; Unionists; Scramble for Africa
+47,William Gladstone,Liberal,1892-08-15,1894-03-02,1.6,Victoria,1809-12-29,1898-05-19,Fourth term; Second Irish Home Rule Bill
+48,Earl of Rosebery,Liberal,1894-03-05,1895-06-22,1.3,Victoria,1847-05-07,1929-05-21,Liberal; Derby winner as PM
+49,Marquess of Salisbury,Conservative,1895-06-25,1902-07-11,7.1,Victoria / Edward VII,1830-02-03,1903-08-22,Third term; Boer War; Victorian imperialism
+50,Arthur Balfour,Conservative,1902-07-12,1905-12-04,3.4,Edward VII,1848-07-25,1930-03-19,Balfour Declaration (1917 letter); Education Act 1902
+51,Sir Henry Campbell-Bannerman,Liberal,1905-12-05,1908-04-03,2.3,Edward VII,1836-09-07,1908-04-22,South African self-government; died in office
+52,Herbert Henry Asquith,Liberal,1908-04-08,1916-12-05,8.6,Edward VII / George V,1852-09-12,1928-02-15,WWI; Parliament Act 1911; women's suffrage crisis
+53,David Lloyd George,Liberal,1916-12-07,1922-10-19,5.9,George V,1863-01-17,1945-03-26,WWI victory; Irish War of Independence; Coalition
+54,Andrew Bonar Law,Conservative,1922-10-23,1923-05-20,0.6,George V,1858-09-16,1923-10-30,Resigned due to illness; died months later
+55,Stanley Baldwin,Conservative,1923-05-22,1924-01-22,0.7,George V,1867-08-03,1947-12-14,First term of three; first Labour government followed
+56,Ramsay MacDonald,Labour,1924-01-22,1924-11-04,0.8,George V,1866-10-12,1937-11-09,First Labour PM; minority government
+57,Stanley Baldwin,Conservative,1924-11-04,1929-06-05,4.6,George V,1867-08-03,1947-12-14,Second term; General Strike 1926
+58,Ramsay MacDonald,Labour / National,1929-06-05,1935-06-07,6.1,George V,1866-10-12,1937-11-09,Second term; Great Depression; National Government
+59,Stanley Baldwin,Conservative,1935-06-07,1937-05-28,1.9,George V / Edward VIII / George VI,1867-08-03,1947-12-14,Third term; Abdication Crisis; rearmament
+60,Neville Chamberlain,Conservative,1937-05-28,1940-05-10,3.0,George VI,1869-03-18,1940-11-09,Appeasement; Munich Agreement; WWII began
+61,Winston Churchill,Conservative,1940-05-10,1945-07-26,5.2,George VI,1874-11-30,1965-01-24,First term; WWII; wartime leader; V-E Day; Nobel Prize in Literature
+62,Clement Attlee,Labour,1945-07-26,1951-10-26,6.3,George VI,1883-01-03,1967-10-08,NHS founded; Indian independence; NATO; welfare state
+63,Winston Churchill,Conservative,1951-10-26,1955-04-05,3.5,George VI / Elizabeth II,1874-11-30,1965-01-24,Second term; Korean War armistice; resigned aged 80
+64,Sir Anthony Eden,Conservative,1955-04-06,1957-01-09,1.8,Elizabeth II,1897-06-12,1977-01-14,Suez Crisis; resigned in disgrace
+65,Harold Macmillan,Conservative,1957-01-10,1963-10-18,6.7,Elizabeth II,1894-02-10,1986-12-29,Winds of Change; economic boom; Profumo scandal
+66,Sir Alec Douglas-Home,Conservative,1963-10-18,1964-10-16,1.0,Elizabeth II,1903-07-02,1995-10-09,Renounced earldom to become PM; Wilson defeated him
+67,Harold Wilson,Labour,1964-10-16,1970-06-18,5.7,Elizabeth II,1916-03-11,1995-05-24,First term; White Heat of Technology; devalued pound
+68,Edward Heath,Conservative,1970-06-19,1974-03-04,3.7,Elizabeth II,1916-07-09,2005-07-17,UK joined EEC; miners' strikes; 3-day week
+69,Harold Wilson,Labour,1974-03-04,1976-04-05,2.1,Elizabeth II,1916-03-11,1995-05-24,Second term; EEC referendum; resigned unexpectedly
+70,James Callaghan,Labour,1976-04-05,1979-05-04,3.1,Elizabeth II,1912-03-27,2005-03-26,Winter of Discontent; IMF crisis; lost no-confidence vote
+71,Margaret Thatcher,Conservative,1979-05-04,1990-11-28,11.6,Elizabeth II,1925-10-13,2013-04-08,First female PM; Falklands War; privatisation; Big Bang; Miners' Strike
+72,John Major,Conservative,1990-11-28,1997-05-02,6.4,Elizabeth II,1943-03-29,Alive,Gulf War; Maastricht Treaty; IRA peace process
+73,Tony Blair,Labour,1997-05-06,2007-06-27,10.2,Elizabeth II,1953-05-06,Alive,Good Friday Agreement; Iraq War; devolution; minimum wage
+74,Gordon Brown,Labour,2007-06-27,2010-05-11,2.9,Elizabeth II,1951-02-20,Alive,Global financial crisis; bank bailouts
+75,David Cameron,Conservative,2010-05-11,2016-07-13,6.2,Elizabeth II,1966-10-09,Alive,Coalition government; Brexit referendum; austerity; resigned
+76,Theresa May,Conservative,2016-07-13,2019-07-24,3.0,Elizabeth II,1956-10-01,Alive,Brexit negotiations; snap election failure; second female PM
+77,Boris Johnson,Conservative,2019-07-24,2022-09-06,2.1,Elizabeth II / Charles III,1964-06-19,Alive,Brexit delivered; COVID-19 pandemic; partygate scandal
+78,Liz Truss,Conservative,2022-09-06,2022-10-25,0.1,Charles III,1975-07-26,Alive,Shortest serving PM (45 days); mini-budget crisis
+79,Rishi Sunak,Conservative,2022-10-25,2024-07-05,1.7,Charles III,1980-05-12,Alive,First British-Asian PM; first Hindu PM; lost 2024 election
+80,Keir Starmer,Labour,2024-07-05,Present,1+,Charles III,1962-09-02,Alive,First Labour PM since 2010; won landslide; former DPP

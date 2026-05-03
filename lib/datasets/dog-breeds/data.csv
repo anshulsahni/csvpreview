@@ -1,0 +1,51 @@
+Breed,Origin,Size,Weight (kg),Height (cm),Temperament,Lifespan (years),Group,Hypoallergenic
+Labrador Retriever,Canada,Large,25-36,55-62,"Friendly, Outgoing, Active",10-12,Sporting,No
+German Shepherd,Germany,Large,22-40,55-65,"Loyal, Obedient, Courageous",9-13,Herding,No
+Golden Retriever,United Kingdom,Large,25-34,51-61,"Intelligent, Reliable, Trustworthy",10-12,Sporting,No
+French Bulldog,France,Small,8-13,28-33,"Adaptable, Playful, Easygoing",10-12,Non-Sporting,No
+Bulldog,England,Medium,18-25,31-40,"Docile, Willful, Friendly",8-10,Non-Sporting,No
+Poodle,Germany/France,Varies,2-32,24-60,"Intelligent, Active, Alert",12-15,Non-Sporting,Yes
+Beagle,England,Small-Medium,9-11,33-41,"Merry, Friendly, Curious",12-15,Hound,No
+Rottweiler,Germany,Large,35-60,56-69,"Loyal, Loving, Confident",8-10,Working,No
+German Shorthaired Pointer,Germany,Large,20-32,53-64,"Friendly, Smart, Willing",10-12,Sporting,No
+Dachshund,Germany,Small,3-14,13-18,"Clever, Stubborn, Devoted",12-16,Hound,No
+Pembroke Welsh Corgi,Wales,Small-Medium,10-14,25-30,"Affectionate, Smart, Alert",12-13,Herding,No
+Australian Shepherd,United States,Medium,18-29,46-58,"Smart, Work-oriented, Exuberant",12-15,Herding,No
+Yorkshire Terrier,England,Small,2-3,17-23,"Affectionate, Sprightly, Tomboyish",13-16,Toy,Yes
+Boxer,Germany,Large,25-32,53-63,"Fun, Bright, Active",10-12,Working,No
+Siberian Husky,Russia,Medium,16-27,50-60,"Loyal, Outgoing, Mischievous",12-14,Working,No
+Great Dane,Germany,Giant,45-90,71-86,"Friendly, Patient, Dependable",7-10,Working,No
+Miniature Schnauzer,Germany,Small,5-9,30-36,"Friendly, Smart, Obedient",12-15,Terrier,Yes
+Doberman Pinscher,Germany,Large,27-45,63-72,"Loyal, Fearless, Alert",10-13,Working,No
+Cavalier King Charles Spaniel,England,Small,5-8,30-33,"Gentle, Affectionate, Graceful",9-15,Toy,No
+Shih Tzu,China,Small,4-7,20-28,"Affectionate, Playful, Outgoing",10-16,Toy,Yes
+Border Collie,United Kingdom,Medium,14-20,46-56,"Intelligent, Energetic, Responsive",12-15,Herding,No
+Bernese Mountain Dog,Switzerland,Large,32-52,58-70,"Good-natured, Calm, Strong",6-8,Working,No
+Pomeranian,Germany/Poland,Toy,1-3,18-24,"Lively, Bold, Inquisitive",12-16,Toy,No
+Havanese,Cuba,Small,3-6,21-29,"Intelligent, Outgoing, Funny",14-16,Toy,Yes
+Maltese,Malta,Toy,2-4,20-25,"Gentle, Playful, Charming",12-15,Toy,Yes
+Chihuahua,Mexico,Toy,1-3,15-23,"Charming, Graceful, Sassy",14-16,Toy,No
+Shetland Sheepdog,Scotland,Small-Medium,6-11,33-41,"Playful, Energetic, Bright",12-14,Herding,No
+Akita,Japan,Large,32-59,61-71,"Courageous, Dignified, Profoundly Loyal",10-13,Working,No
+Weimaraner,Germany,Large,25-40,56-69,"Friendly, Fearless, Obedient",10-13,Sporting,No
+Irish Setter,Ireland,Large,25-32,63-69,"Rollicking, Trainable, Active",12-15,Sporting,No
+Bichon Frise,France/Belgium,Small,3-5,23-30,"Playful, Curious, Peppy",14-15,Non-Sporting,Yes
+Cocker Spaniel,Spain/England,Medium,9-14,36-43,"Gentle, Smart, Happy",10-14,Sporting,No
+Vizsla,Hungary,Medium,20-29,53-64,"Affectionate, Energetic, Gentle",12-14,Sporting,No
+Rhodesian Ridgeback,Zimbabwe/South Africa,Large,29-41,61-69,"Dignified, Affectionate, Even-tempered",10-12,Hound,No
+Alaskan Malamute,United States,Large,34-38,58-63,"Affectionate, Loyal, Playful",10-14,Working,No
+Saint Bernard,Switzerland,Giant,54-82,65-90,"Friendly, Gentle, Calm",8-10,Working,No
+Basset Hound,France/Belgium,Medium,18-27,30-38,"Friendly, Curious, Low-key",12-13,Hound,No
+Bull Terrier,England,Medium,18-29,45-55,"Exuberant, Affectionate, Mischievous",12-13,Terrier,No
+Samoyed,Russia,Medium,16-30,46-60,"Adaptable, Friendly, Gentle",12-14,Working,Yes
+Whippet,England,Medium,11-22,44-51,"Affectionate, Playful, Calm",12-15,Hound,No
+Basenji,Central Africa,Small,9-11,41-43,"Curious, Intelligent, Alert",13-14,Hound,No
+Chow Chow,China,Large,20-32,43-51,"Dignified, Aloof, Serious",8-12,Non-Sporting,No
+Dalmatian,Croatia,Large,22-32,48-61,"Dignified, Outgoing, Smart",11-13,Non-Sporting,No
+Afghan Hound,Afghanistan,Large,23-27,63-74,"Aloof, Clownish, Dignified",12-18,Hound,No
+Boston Terrier,United States,Small,4-11,38-43,"Friendly, Bright, Amusing",13-15,Non-Sporting,No
+Lhasa Apso,Tibet,Small,5-8,25-28,"Confident, Smart, Comical",12-15,Non-Sporting,No
+Newfoundland,Canada,Giant,45-68,63-74,"Sweet, Patient, Devoted",8-10,Working,No
+Mastiff,England,Giant,54-100,70-91,"Dignified, Courageous, Good-natured",6-10,Working,No
+Irish Wolfhound,Ireland,Giant,40-70,76-86,"Courageous, Dignified, Calm",6-8,Hound,No
+Papillon,France/Belgium,Toy,3-5,20-28,"Friendly, Alert, Curious",13-15,Toy,Yes

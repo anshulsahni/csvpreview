@@ -1,0 +1,39 @@
+System,Organ / Structure,Location in Body,Average Weight (g),Primary Function,Key Facts
+Cardiovascular,Heart,Chest (mediastinum),300,Pumps blood throughout body,Beats ~100000 times/day; ~5L blood pumped per minute at rest
+Cardiovascular,Aorta,Chest & abdomen,N/A,Largest artery; carries oxygenated blood from heart,~30 cm long; 2.5–3.5 cm diameter
+Cardiovascular,Vena Cava,Chest & abdomen,N/A,Largest veins; return deoxygenated blood to heart,Superior and inferior vena cava
+Respiratory,Lungs,Chest (thoracic cavity),500 each,Gas exchange (O2 in / CO2 out),Right has 3 lobes; left has 2 lobes; total surface area ~70 m²
+Respiratory,Diaphragm,Below lungs,N/A,Main muscle of breathing; separates thorax from abdomen,Contracts during inhalation
+Respiratory,Trachea,Neck & upper chest,N/A,Airways passage from larynx to lungs,~12 cm long; reinforced by C-shaped cartilage rings
+Digestive,Liver,Upper right abdomen,1500,Detoxification / bile production / protein synthesis / glycogen storage,Largest internal organ; only organ that can fully regenerate
+Digestive,Small Intestine,Abdomen,~1000,Nutrient absorption,~6–7 m long; lined with villi for absorption
+Digestive,Large Intestine,Abdomen (peripheral),~400,Water absorption / waste formation,~1.5 m long; houses most gut microbiome
+Digestive,Stomach,Upper left abdomen,~150 (empty),Digestion of food; acid production,Holds ~1–1.5L food; secretes HCl and pepsin
+Digestive,Pancreas,Behind stomach,~80,Produces insulin / glucagon / digestive enzymes,Both endocrine and exocrine gland
+Digestive,Gallbladder,Under liver,~60 (full),Stores and concentrates bile,Bile helps digest fats; can form gallstones
+Digestive,Oesophagus,Neck & chest,N/A,Transports food from mouth to stomach,~25 cm long; uses peristalsis
+Urinary,Kidneys,Posterior abdomen (pair),~150 each,Filters blood; produces urine; regulates electrolytes,Filter ~180L blood per day; 1 million nephrons each
+Urinary,Bladder,Pelvis,~45 (empty),Stores urine,Holds ~300–500 mL; signals urge at ~150 mL
+Urinary,Ureters,Abdomen to pelvis,N/A,Carries urine from kidneys to bladder,~25–30 cm long each
+Endocrine,Thyroid,Front of neck,~25,Regulates metabolism / growth / energy,Produces T3 and T4; requires iodine
+Endocrine,Adrenal Glands,Above kidneys (pair),~4 each,Produces adrenaline / cortisol / aldosterone,Two parts: cortex (steroid hormones) and medulla (adrenaline)
+Endocrine,Pituitary Gland,Base of brain,~0.5,Master gland; controls other hormones,Size of a pea; produces GH / TSH / FSH / LH etc.
+Endocrine,Hypothalamus,Brain,~4,Links nervous system to endocrine system; temperature regulation,Controls pituitary; involved in hunger / thirst / sleep
+Endocrine,Pineal Gland,Brain,~0.1,Produces melatonin; regulates sleep-wake cycle,Size of a grain of rice
+Reproductive (Male),Testes,Scrotum (pair),~20 each,Produce sperm and testosterone,External for lower temperature needed for sperm
+Reproductive (Female),Ovaries,Pelvis (pair),~15 each,Produce eggs / oestrogen / progesterone,Contain ~1–2 million follicles at birth
+Reproductive (Female),Uterus,Pelvis,~70 (non-pregnant),Houses and nourishes developing foetus,Expands to ~1100g during pregnancy
+Nervous,Brain,Skull,~1400,Control centre for body; cognition / emotion / motor control,~86 billion neurons; 2% of body weight; uses 20% of energy
+Nervous,Spinal Cord,Vertebral column,~35,Transmits signals between brain and body; reflex arcs,~45 cm long; 31 pairs of spinal nerves
+Nervous,Cerebellum,Back of skull,~150,Coordinates movement / balance / fine motor skills,Contains ~50% of all neurons in the brain
+Sensory,Eyes,Skull (pair),~7.5 each,Vision; detects light and converts to neural signals,Can distinguish ~10 million colours
+Sensory,Ears,Skull (pair),N/A,Hearing and balance,Cochlea converts sound waves to electrical signals
+Sensory,Nose / Olfactory,Face,N/A,Smell; also filters and warms air,~400 types of olfactory receptors
+Sensory,Tongue,Mouth,~80,Taste / speech / swallowing,~10000 taste buds; replaced every 10–14 days
+Immune / Lymphatic,Spleen,Upper left abdomen,~170,Filters blood / destroys old RBCs / immune response,Can be removed; other organs take over function
+Immune / Lymphatic,Thymus,Upper chest,~30 (child) / atrophies with age,Matures T-lymphocytes (T-cells),Most active in childhood; shrinks after puberty
+Immune / Lymphatic,Lymph Nodes,Throughout body,varies,Filter lymph fluid; house immune cells,~600–700 nodes in human body
+Musculoskeletal,Skin,Body surface,~3500–5000,Barrier / temperature regulation / sensation / vitamin D synthesis,Largest organ by area (~2 m²); shed completely every ~2–4 weeks
+Musculoskeletal,Skeletal Muscle,Throughout body,~30000 total,Movement / posture / heat generation,~640 muscles in the human body; ~40% of body weight
+Musculoskeletal,Bone (skeleton),Throughout body,~10000 total (206 bones),Support / protection / blood cell production / mineral storage,Strongest bone: femur; smallest: stapes in ear
+Musculoskeletal,Bone Marrow,Inside bones,~2600,Produces red and white blood cells,Yellow marrow stores fat; red marrow produces blood cells

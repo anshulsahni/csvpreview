@@ -1,0 +1,31 @@
+Rank,Airport,IATA Code,City,Country,Continent,Passengers (millions),Year
+1,Hartsfield-Jackson Atlanta International Airport,ATL,Atlanta,United States,North America,104.0,2023
+2,Dubai International Airport,DXB,Dubai,United Arab Emirates,Asia,86.9,2023
+3,Dallas/Fort Worth International Airport,DFW,Dallas,United States,North America,81.8,2023
+4,O'Hare International Airport,ORD,Chicago,United States,North America,80.1,2023
+5,London Heathrow Airport,LHR,London,United Kingdom,Europe,79.2,2023
+6,Tokyo Haneda Airport,HND,Tokyo,Japan,Asia,79.1,2023
+7,Los Angeles International Airport,LAX,Los Angeles,United States,North America,75.1,2023
+8,Istanbul Airport,IST,Istanbul,Turkey,Europe/Asia,75.6,2023
+9,Indira Gandhi International Airport,DEL,New Delhi,India,Asia,72.2,2023
+10,Denver International Airport,DEN,Denver,United States,North America,70.4,2023
+11,Charles de Gaulle Airport,CDG,Paris,France,Europe,67.4,2023
+12,Amsterdam Schiphol Airport,AMS,Amsterdam,Netherlands,Europe,61.9,2023
+13,Guangzhou Baiyun International Airport,CAN,Guangzhou,China,Asia,63.1,2023
+14,Chengdu Tianfu International Airport,TFU,Chengdu,China,Asia,60.0,2023
+15,Changi Airport,SIN,Singapore,Singapore,Asia,58.9,2023
+16,Chhatrapati Shivaji Maharaj International Airport,BOM,Mumbai,India,Asia,57.3,2023
+17,Incheon International Airport,ICN,Seoul,South Korea,Asia,57.1,2023
+18,Frankfurt Airport,FRA,Frankfurt,Germany,Europe,59.3,2023
+19,Shenzhen Bao'an International Airport,SZX,Shenzhen,China,Asia,52.7,2023
+20,Kuala Lumpur International Airport,KUL,Kuala Lumpur,Malaysia,Asia,49.2,2023
+21,Beijing Capital International Airport,PEK,Beijing,China,Asia,48.3,2023
+22,Madrid Barajas Airport,MAD,Madrid,Spain,Europe,57.3,2023
+23,Miami International Airport,MIA,Miami,United States,North America,50.6,2023
+24,Orlando International Airport,MCO,Orlando,United States,North America,50.0,2023
+25,Shanghai Pudong International Airport,PVG,Shanghai,China,Asia,47.3,2023
+26,Sydney Kingsford Smith Airport,SYD,Sydney,Australia,Oceania,43.6,2023
+27,Kempegowda International Airport,BLR,Bengaluru,India,Asia,37.6,2023
+28,Suvarnabhumi Airport,BKK,Bangkok,Thailand,Asia,40.2,2023
+29,Vancouver International Airport,YVR,Vancouver,Canada,North America,26.4,2023
+30,Johannesburg OR Tambo International Airport,JNB,Johannesburg,South Africa,Africa,11.0,2023

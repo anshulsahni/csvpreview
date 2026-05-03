@@ -1,0 +1,92 @@
+Airline,IATA Code,ICAO Code,Country,Alliance,Hub(s),Status
+Air India,AI,AIC,India,Star Alliance,Delhi,Active
+IndiGo,6E,IGO,India,None,Delhi,Active
+SpiceJet,SG,SEJ,India,None,Delhi,Active
+Vistara,UK,VTI,India,Star Alliance,Delhi,Active
+Air Arabia,G9,ABY,United Arab Emirates,None,Sharjah,Active
+Emirates,EK,UAE,United Arab Emirates,None,Dubai,Active
+Etihad Airways,EY,ETD,United Arab Emirates,None,Abu Dhabi,Active
+flydubai,FZ,FDB,United Arab Emirates,None,Dubai,Active
+Qatar Airways,QR,QTR,Qatar,OneWorld,Doha,Active
+Oman Air,WY,OMA,Oman,None,Muscat,Active
+Singapore Airlines,SQ,SIA,Singapore,Star Alliance,Singapore,Active
+Scoot,TR,TGW,Singapore,None,Singapore,Active
+Cathay Pacific,CX,CPA,Hong Kong,OneWorld,Hong Kong,Active
+HK Express,UO,HKE,Hong Kong,None,Hong Kong,Active
+ANA All Nippon Airways,NH,ANA,Japan,Star Alliance,Tokyo,Active
+Japan Airlines,JL,JAL,Japan,OneWorld,Tokyo,Active
+Korean Air,KE,KAL,South Korea,SkyTeam,Seoul,Active
+Asiana Airlines,OZ,AAR,South Korea,Star Alliance,Seoul,Active
+Thai Airways,TG,THA,Thailand,Star Alliance,Bangkok,Active
+Thai Lion Air,SL,TLM,Thailand,None,Bangkok,Active
+Air China,CA,CCA,China,Star Alliance,Beijing,Active
+China Eastern Airlines,MU,CES,China,SkyTeam,Shanghai,Active
+China Southern Airlines,CZ,CSN,China,SkyTeam,Guangzhou,Active
+Hainan Airlines,HU,CHH,China,None,Beijing,Active
+Xiamen Airlines,MF,CXA,China,SkyTeam,Xiamen,Active
+Shenzhen Airlines,ZH,CSZ,China,Star Alliance,Shenzhen,Active
+Malaysia Airlines,MH,MAS,Malaysia,OneWorld,Kuala Lumpur,Active
+AirAsia,AK,AXM,Malaysia,None,Kuala Lumpur,Active
+Batik Air Malaysia,OD,MXD,Malaysia,None,Kuala Lumpur,Active
+Philippine Airlines,PR,PAL,Philippines,None,Manila,Active
+Cebu Pacific,5J,CEB,Philippines,None,Manila,Active
+Garuda Indonesia,GA,GIA,Indonesia,SkyTeam,Jakarta,Active
+Lion Air,JT,LNI,Indonesia,None,Jakarta,Active
+Vietnam Airlines,VN,HVN,Vietnam,SkyTeam,Hanoi,Active
+VietJet Air,VJ,VJC,Vietnam,None,Ho Chi Minh City,Active
+Pakistan International Airlines,PK,PIA,Pakistan,None,Karachi,Active
+Sri Lankan Airlines,UL,ALK,Sri Lanka,None,Colombo,Active
+Bangladesh Biman,BG,BBC,Bangladesh,None,Dhaka,Active
+Maldivian,Q2,DQA,Maldives,None,Malé,Active
+Nepal Airlines,RA,RNA,Nepal,None,Kathmandu,Active
+British Airways,BA,BAW,United Kingdom,OneWorld,London,Active
+Ryanair,FR,RYR,Ireland,None,Dublin,Active
+EasyJet,U2,EZY,United Kingdom,None,London,Active
+Wizz Air,W6,WZZ,Hungary,None,Budapest,Active
+Lufthansa,LH,DLH,Germany,Star Alliance,Frankfurt,Active
+Air France,AF,AFR,France,SkyTeam,Paris,Active
+KLM,KL,KLM,Netherlands,SkyTeam,Amsterdam,Active
+Swiss International Air Lines,LX,SWR,Switzerland,Star Alliance,Zurich,Active
+Austrian Airlines,OS,AUA,Austria,Star Alliance,Vienna,Active
+Brussels Airlines,SN,BEL,Belgium,Star Alliance,Brussels,Active
+SAS Scandinavian Airlines,SK,SAS,Sweden/Norway/Denmark,Star Alliance,Stockholm,Active
+Finnair,AY,FIN,Finland,OneWorld,Helsinki,Active
+Iberia,IB,IBE,Spain,OneWorld,Madrid,Active
+Tap Air Portugal,TP,TAP,Portugal,Star Alliance,Lisbon,Active
+Alitalia (ITA Airways),AZ,ITY,Italy,None,Rome,Active
+Turkish Airlines,TK,THY,Turkey,Star Alliance,Istanbul,Active
+Aegean Airlines,A3,AEE,Greece,Star Alliance,Athens,Active
+Aeroflot,SU,AFL,Russia,SkyTeam,Moscow,Active
+S7 Airlines,S7,SBI,Russia,OneWorld,Novosibirsk,Active
+American Airlines,AA,AAL,United States,OneWorld,Dallas/Fort Worth,Active
+Delta Air Lines,DL,DAL,United States,SkyTeam,Atlanta,Active
+United Airlines,UA,UAL,United States,Star Alliance,Chicago,Active
+Southwest Airlines,WN,SWA,United States,None,Dallas,Active
+Alaska Airlines,AS,ASA,United States,OneWorld,Seattle,Active
+JetBlue,B6,JBU,United States,None,New York,Active
+Spirit Airlines,NK,NKS,United States,None,Fort Lauderdale,Bankruptcy/Restructuring
+Frontier Airlines,F9,FFT,United States,None,Denver,Active
+Hawaiian Airlines,HA,HAL,United States,None,Honolulu,Active
+Air Canada,AC,ACA,Canada,Star Alliance,Toronto,Active
+WestJet,WS,WJA,Canada,None,Calgary,Active
+Aeromexico,AM,AMX,Mexico,SkyTeam,Mexico City,Active
+Copa Airlines,CM,CMP,Panama,Star Alliance,Panama City,Active
+Avianca,AV,AVA,Colombia,Star Alliance,Bogotá,Active
+LATAM Airlines,LA,LAN,Chile,None,Santiago,Active
+GOL Linhas Aéreas,G3,GLO,Brazil,None,São Paulo,Active
+Azul Brazilian Airlines,AD,AZU,Brazil,None,Campinas,Active
+Air France-KLM (regional),HV,HTM,Netherlands,SkyTeam,Amsterdam,Active
+Transavia,HV,TRA,Netherlands,None,Amsterdam,Active
+EgyptAir,MS,MSR,Egypt,Star Alliance,Cairo,Active
+Ethiopian Airlines,ET,ETH,Ethiopia,Star Alliance,Addis Ababa,Active
+Kenya Airways,KQ,KQA,Kenya,SkyTeam,Nairobi,Active
+South African Airways,SA,SAA,South Africa,Star Alliance,Johannesburg,Active
+Air Mauritius,MK,MAU,Mauritius,None,Port Louis,Active
+Royal Air Maroc,AT,RAM,Morocco,OneWorld,Casablanca,Active
+Air Algérie,AH,DAH,Algeria,None,Algiers,Active
+Tunisair,TU,TAR,Tunisia,None,Tunis,Active
+Qantas,QF,QFA,Australia,OneWorld,Sydney,Active
+Jetstar Airways,JQ,JST,Australia,None,Melbourne,Active
+Virgin Australia,VA,VOZ,Australia,None,Brisbane,Active
+Air New Zealand,NZ,ANZ,New Zealand,Star Alliance,Auckland,Active
+Fiji Airways,FJ,FJI,Fiji,None,Nadi,Active

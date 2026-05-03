@@ -1,0 +1,119 @@
+Atomic Number,Symbol,Element Name,Period,Group,Block,Atomic Mass (u),State at STP,Category,Discovered,Discoverer,Key Uses
+1,H,Hydrogen,1,1,s,1.008,Gas,Nonmetal,1766,Henry Cavendish,Fuel cells / Ammonia / Rocket fuel
+2,He,Helium,1,18,s,4.003,Gas,Noble Gas,1895,William Ramsay,Balloons / MRI cooling / Diving
+3,Li,Lithium,2,1,s,6.941,Solid,Alkali Metal,1817,Johan Arfwedson,Batteries / Psychiatric drugs
+4,Be,Beryllium,2,2,s,9.012,Solid,Alkaline Earth Metal,1798,Louis Vauquelin,Aerospace alloys / X-ray windows
+5,B,Boron,2,13,p,10.81,Solid,Metalloid,1808,Gay-Lussac & Thénard,Glass / Detergents / Nuclear reactors
+6,C,Carbon,2,14,p,12.011,Solid,Nonmetal,Ancient,Unknown,Organic chemistry / Diamonds / Graphite / Steel
+7,N,Nitrogen,2,15,p,14.007,Gas,Nonmetal,1772,Daniel Rutherford,Fertilizers / Explosives / Cryogenics
+8,O,Oxygen,2,16,p,15.999,Gas,Nonmetal,1774,Carl Scheele / Priestley,Respiration / Steel / Water
+9,F,Fluorine,2,17,p,18.998,Gas,Halogen,1886,Henri Moissan,Teflon / Toothpaste / Refrigerants
+10,Ne,Neon,2,18,p,20.180,Gas,Noble Gas,1898,Ramsay & Travers,Neon signs / Lasers
+11,Na,Sodium,3,1,s,22.990,Solid,Alkali Metal,1807,Humphry Davy,Table salt / Soap / Street lights
+12,Mg,Magnesium,3,2,s,24.305,Solid,Alkaline Earth Metal,1755,Joseph Black,Alloys / Fireworks / Antacids
+13,Al,Aluminium,3,13,p,26.982,Solid,Post-transition Metal,1825,Hans Ørsted,Packaging / Aircraft / Electrical wiring
+14,Si,Silicon,3,14,p,28.086,Solid,Metalloid,1824,Jöns Berzelius,Semiconductors / Glass / Solar cells
+15,P,Phosphorus,3,15,p,30.974,Solid,Nonmetal,1669,Hennig Brandt,Fertilizers / Matches / DNA backbone
+16,S,Sulfur,3,16,p,32.06,Solid,Nonmetal,Ancient,Unknown,Gunpowder / Rubber vulcanization / H2SO4
+17,Cl,Chlorine,3,17,p,35.45,Gas,Halogen,1774,Carl Scheele,Disinfectants / PVC / Water treatment
+18,Ar,Argon,3,18,p,39.948,Gas,Noble Gas,1894,Ramsay & Strutt,Welding / Incandescent bulbs / Lasers
+19,K,Potassium,4,1,s,39.098,Solid,Alkali Metal,1807,Humphry Davy,Fertilizers / Gunpowder / Body electrolytes
+20,Ca,Calcium,4,2,s,40.078,Solid,Alkaline Earth Metal,1808,Humphry Davy,Cement / Bones / Cheese
+21,Sc,Scandium,4,3,d,44.956,Solid,Transition Metal,1879,Lars Nilson,Aerospace alloys / Sports equipment
+22,Ti,Titanium,4,4,d,47.867,Solid,Transition Metal,1791,William Gregor,Aircraft / Medical implants / Pigments
+23,V,Vanadium,4,5,d,50.942,Solid,Transition Metal,1801,Andrés del Río,Steel alloys / Catalysts
+24,Cr,Chromium,4,6,d,51.996,Solid,Transition Metal,1798,Louis Vauquelin,Stainless steel / Chrome plating / Pigments
+25,Mn,Manganese,4,7,d,54.938,Solid,Transition Metal,1774,Johan Gahn,Steel / Dry cell batteries / Pigments
+26,Fe,Iron,4,8,d,55.845,Solid,Transition Metal,Ancient,Unknown,Steel / Construction / Magnets / Hemoglobin
+27,Co,Cobalt,4,9,d,58.933,Solid,Transition Metal,1735,Georg Brandt,Batteries / Magnets / Blue pigments
+28,Ni,Nickel,4,10,d,58.693,Solid,Transition Metal,1751,Axel Cronstedt,Stainless steel / Coins / Batteries
+29,Cu,Copper,4,11,d,63.546,Solid,Transition Metal,Ancient,Unknown,Electrical wiring / Plumbing / Coins / Alloys
+30,Zn,Zinc,4,12,d,65.38,Solid,Transition Metal,Ancient,Unknown,Galvanizing / Brass / Sunscreen / Supplements
+31,Ga,Gallium,4,13,p,69.723,Solid,Post-transition Metal,1875,Paul Lecoq de Boisbaudran,LEDs / Semiconductors / Solar cells
+32,Ge,Germanium,4,14,p,72.630,Solid,Metalloid,1886,Clemens Winkler,Semiconductors / Fiber optics / Infrared optics
+33,As,Arsenic,4,15,p,74.922,Solid,Metalloid,Ancient,Unknown,Semiconductors / Pesticides / Poison (historical)
+34,Se,Selenium,4,16,p,78.971,Solid,Nonmetal,1817,Jöns Berzelius,Solar cells / Photocopiers / Supplements
+35,Br,Bromine,4,17,p,79.904,Liquid,Halogen,1826,Antoine Balard,Flame retardants / Photography / Disinfectants
+36,Kr,Krypton,4,18,p,83.798,Gas,Noble Gas,1898,Ramsay & Travers,Lighting / Lasers / Standard of length (historical)
+37,Rb,Rubidium,4,1,s,85.468,Solid,Alkali Metal,1861,Bunsen & Kirchhoff,Atomic clocks / Research / GPS
+38,Sr,Strontium,4,2,s,87.62,Solid,Alkaline Earth Metal,1790,William Cruickshank,Fireworks / CRT displays / Medical imaging
+39,Y,Yttrium,4,3,d,88.906,Solid,Transition Metal,1794,Johan Gadolin,LEDs / Superconductors / Cancer treatment
+40,Zr,Zirconium,4,4,d,91.224,Solid,Transition Metal,1789,Martin Klaproth,Nuclear reactors / Ceramics / Jewelry
+41,Nb,Niobium,4,5,d,92.906,Solid,Transition Metal,1801,Charles Hatchett,Steel alloys / Superconductors / Jewelry
+42,Mo,Molybdenum,4,6,d,95.96,Solid,Transition Metal,1778,Carl Scheele,Steel alloys / Catalysts / Lubricants
+43,Tc,Technetium,4,7,d,98,Solid,Transition Metal,1937,Perrier & Segrè,Medical imaging (nuclear medicine)
+44,Ru,Ruthenium,4,8,d,101.07,Solid,Transition Metal,1844,Karl Ernst Claus,Catalysts / Electrical contacts / Solar cells
+45,Rh,Rhodium,4,9,d,102.91,Solid,Transition Metal,1803,William Wollaston,Catalytic converters / Jewelry / Mirrors
+46,Pd,Palladium,4,10,d,106.42,Solid,Transition Metal,1803,William Wollaston,Catalytic converters / Hydrogen storage / Jewelry
+47,Ag,Silver,4,11,d,107.87,Solid,Transition Metal,Ancient,Unknown,Jewelry / Electronics / Photography / Antimicrobial
+48,Cd,Cadmium,4,12,d,112.41,Solid,Transition Metal,1817,Stromeyer & Hermann,Batteries / Pigments / Plating
+49,In,Indium,4,13,p,114.82,Solid,Post-transition Metal,1863,Reich & Richter,LCD screens / Solar cells / Bearings
+50,Sn,Tin,4,14,p,118.71,Solid,Post-transition Metal,Ancient,Unknown,Solder / Cans / Bronze alloys / Coatings
+51,Sb,Antimony,4,15,p,121.76,Solid,Metalloid,Ancient,Unknown,Flame retardants / Batteries / Semiconductors
+52,Te,Tellurium,4,16,p,127.60,Solid,Metalloid,1782,Franz-Joseph Müller,Solar cells / Alloys / Semiconductors
+53,I,Iodine,4,17,p,126.90,Solid,Halogen,1811,Bernard Courtois,Antiseptics / Thyroid supplements / Dyes
+54,Xe,Xenon,4,18,p,131.29,Gas,Noble Gas,1898,Ramsay & Travers,Ion propulsion / Lighting / Anesthesia
+55,Cs,Caesium,5,1,s,132.91,Solid,Alkali Metal,1860,Bunsen & Kirchhoff,Atomic clocks / Drilling fluids / GPS
+56,Ba,Barium,5,2,s,137.33,Solid,Alkaline Earth Metal,1808,Humphry Davy,Medical imaging / Fireworks / Drilling mud
+57,La,Lanthanum,5,3,f,138.91,Solid,Lanthanide,1839,Carl Mosander,Camera lenses / Hydrogen storage / Catalysts
+58,Ce,Cerium,5,4,f,140.12,Solid,Lanthanide,1803,Berzelius & Hisinger,Catalytic converters / Glass polishing / Lighters
+59,Pr,Praseodymium,5,5,f,140.91,Solid,Lanthanide,1885,Carl Auer,Magnets / Goggles / Aircraft engines
+60,Nd,Neodymium,5,6,f,144.24,Solid,Lanthanide,1885,Carl Auer,NdFeB magnets / Lasers / Electric motors
+61,Pm,Promethium,5,7,f,145,Solid,Lanthanide,1945,Marinsky et al.,Nuclear batteries / Pacemakers (historical)
+62,Sm,Samarium,5,8,f,150.36,Solid,Lanthanide,1879,Paul Lecoq de Boisbaudran,Magnets / Cancer treatment / Lasers
+63,Eu,Europium,5,9,f,151.96,Solid,Lanthanide,1901,Eugène-Anatole Demarçay,Phosphors / Anti-counterfeiting / Red LEDs
+64,Gd,Gadolinium,5,10,f,157.25,Solid,Lanthanide,1880,Jean Charles Galissard,MRI contrast agents / Nuclear reactors
+65,Tb,Terbium,5,11,f,158.93,Solid,Lanthanide,1843,Carl Mosander,Green phosphors / Actuators
+66,Dy,Dysprosium,5,12,f,162.50,Solid,Lanthanide,1886,Paul Lecoq de Boisbaudran,Magnets / Lasers / Nuclear reactors
+67,Ho,Holmium,5,13,f,164.93,Solid,Lanthanide,1878,Soret & Delafontaine,Magnets / Nuclear reactors / Lasers
+68,Er,Erbium,5,14,f,167.26,Solid,Lanthanide,1843,Carl Mosander,Fiber optic amplifiers / Lasers / Pink glass
+69,Tm,Thulium,5,15,f,168.93,Solid,Lanthanide,1879,Per Teodor Cleve,Portable X-ray devices / Lasers
+70,Yb,Ytterbium,5,16,f,173.04,Solid,Lanthanide,1878,Jean Charles Galissard,Atomic clocks / Fiber optic amplifiers
+71,Lu,Lutetium,5,17,f,174.97,Solid,Lanthanide,1907,Georges Urbain,PET scans / Catalysts / LED phosphors
+72,Hf,Hafnium,5,4,d,178.49,Solid,Transition Metal,1923,Dirk Coster & de Hevesy,Nuclear reactors / Microchip gates / Alloys
+73,Ta,Tantalum,5,5,d,180.95,Solid,Transition Metal,1802,Anders Gustaf Ekeberg,Capacitors / Surgical implants / Carbide tools
+74,W,Tungsten,5,6,d,183.84,Solid,Transition Metal,1783,Juan and Fausto Elhuyar,Light filaments / Drill bits / Alloys
+75,Re,Rhenium,5,7,d,186.21,Solid,Transition Metal,1925,Noddack / Berg / Tacke,Jet engines / Catalysts / Thermocouples
+76,Os,Osmium,5,8,d,190.23,Solid,Transition Metal,1803,Smithson Tennant,Pen nibs / Electrical contacts / Catalysts
+77,Ir,Iridium,5,9,d,192.22,Solid,Transition Metal,1803,Smithson Tennant,Spark plugs / Crucibles / K-Pg boundary marker
+78,Pt,Platinum,5,10,d,195.08,Solid,Transition Metal,1748,Antonio de Ulloa,Catalytic converters / Jewelry / Cancer drugs
+79,Au,Gold,5,11,d,196.97,Solid,Transition Metal,Ancient,Unknown,Jewelry / Electronics / Currency / Medicine
+80,Hg,Mercury,5,12,d,200.59,Liquid,Transition Metal,Ancient,Unknown,Thermometers / Fluorescent lamps / Dental amalgams
+81,Tl,Thallium,5,13,p,204.38,Solid,Post-transition Metal,1861,William Crookes,Electronics / Medical imaging / Poison (historical)
+82,Pb,Lead,5,14,p,207.2,Solid,Post-transition Metal,Ancient,Unknown,Batteries / Radiation shielding / Historical pipes
+83,Bi,Bismuth,5,15,p,208.98,Solid,Post-transition Metal,Ancient,Unknown,Cosmetics / Fire sprinklers / Pepto-Bismol
+84,Po,Polonium,5,16,p,209,Solid,Post-transition Metal,1898,Marie & Pierre Curie,Nuclear triggers / Anti-static devices / Research
+85,At,Astatine,5,17,p,210,Solid,Halogen,1940,Corson / MacKenzie / Segrè,Cancer treatment (research)
+86,Rn,Radon,5,18,p,222,Gas,Noble Gas,1900,Friedrich Ernst Dorn,Cancer treatment (historical) / Indoor air hazard
+87,Fr,Francium,6,1,s,223,Solid,Alkali Metal,1939,Marguerite Perey,Research only (extremely rare)
+88,Ra,Radium,6,2,s,226,Solid,Alkaline Earth Metal,1898,Marie & Pierre Curie,Cancer treatment (historical) / Luminescent paint
+89,Ac,Actinium,6,3,f,227,Solid,Actinide,1899,André-Louis Debierne,Cancer treatment / Neutron sources
+90,Th,Thorium,6,4,f,232.04,Solid,Actinide,1829,Jöns Berzelius,Nuclear fuel / Lantern mantles / Alloys
+91,Pa,Protactinium,6,5,f,231.04,Solid,Actinide,1913,Fajans & Göhring,Research / Nuclear fuel cycle
+92,U,Uranium,6,6,f,238.03,Solid,Actinide,1789,Martin Klaproth,Nuclear fuel / Weapons / Yellowcake
+93,Np,Neptunium,6,7,f,237,Solid,Actinide,1940,McMillan & Abelson,Nuclear research / Detectors
+94,Pu,Plutonium,6,8,f,244,Solid,Actinide,1940,Glenn Seaborg et al.,Nuclear weapons / Reactor fuel / RTGs
+95,Am,Americium,6,9,f,243,Solid,Actinide,1944,Glenn Seaborg et al.,Smoke detectors / Medical diagnostics
+96,Cm,Curium,6,10,f,247,Solid,Actinide,1944,Glenn Seaborg et al.,Space probes (alpha source) / Research
+97,Bk,Berkelium,6,11,f,247,Solid,Actinide,1949,Seaborg / Thompson / Ghiorso,Research / Synthesis of heavier elements
+98,Cf,Californium,6,12,f,251,Solid,Actinide,1950,Seaborg / Thompson / Street / Ghiorso,Neutron sources / Oil well logging / Cancer treatment
+99,Es,Einsteinium,6,13,f,252,Solid,Actinide,1952,Lawrence Berkeley Lab,Research only
+100,Fm,Fermium,6,14,f,257,Solid,Actinide,1952,Lawrence Berkeley Lab,Research only
+101,Md,Mendelevium,6,15,f,258,Solid,Actinide,1955,Seaborg et al.,Research only
+102,No,Nobelium,6,16,f,259,Solid,Actinide,1966,Flerov et al.,Research only
+103,Lr,Lawrencium,6,17,f,266,Solid,Actinide,1961,Ghiorso et al.,Research only
+104,Rf,Rutherfordium,7,4,d,267,Solid,Transition Metal,1969,Flerov / Ghiorso,Research only
+105,Db,Dubnium,7,5,d,268,Solid,Transition Metal,1970,Flerov / Ghiorso,Research only
+106,Sg,Seaborgium,7,6,d,271,Solid,Transition Metal,1974,Ghiorso et al.,Research only
+107,Bh,Bohrium,7,7,d,272,Solid,Transition Metal,1981,Münzenberg et al.,Research only
+108,Hs,Hassium,7,8,d,270,Solid,Transition Metal,1984,Münzenberg et al.,Research only
+109,Mt,Meitnerium,7,9,d,278,Solid,Unknown,1982,Münzenberg et al.,Research only
+110,Ds,Darmstadtium,7,10,d,281,Solid,Unknown,1994,Hofmann et al.,Research only
+111,Rg,Roentgenium,7,11,d,282,Solid,Unknown,1994,Hofmann et al.,Research only
+112,Cn,Copernicium,7,12,d,285,Liquid(?),Transition Metal,1996,Hofmann et al.,Research only
+113,Nh,Nihonium,7,13,p,286,Solid,Post-transition Metal,2004,RIKEN,Research only
+114,Fl,Flerovium,7,14,p,289,Solid(?),Post-transition Metal,1999,Flerov Lab,Research only
+115,Mc,Moscovium,7,15,p,290,Solid,Post-transition Metal,2003,Flerov / Livermore,Research only
+116,Lv,Livermorium,7,16,p,293,Solid,Post-transition Metal,2000,Flerov / Livermore,Research only
+117,Ts,Tennessine,7,17,p,294,Solid,Halogen(?),2010,Flerov / Oak Ridge / Vanderbilt,Research only
+118,Og,Oganesson,7,18,p,294,Gas(?),Noble Gas(?),2002,Flerov / Livermore,Research only; heaviest confirmed element

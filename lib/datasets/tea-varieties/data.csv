@@ -1,0 +1,36 @@
+Tea Name,Country/Region,Type,Oxidation Level (%),Caffeine (mg per cup),Flavour Profile,Processing Method,GI/Protected Status,Brew Temp (°C),Steep Time (min)
+Darjeeling First Flush,India (West Bengal),Black / White,85–90,40–70,Floral / Muscatel / Light,Orthodox,GI Tagged (India),90–95,3–5
+Darjeeling Second Flush,India (West Bengal),Black,90–95,50–80,Muscatel / Full-bodied / Fruity,Orthodox,GI Tagged (India),95,4–5
+Assam CTC,India (Assam),Black,95–100,60–90,Malty / Strong / Brisk,CTC (Crush-Tear-Curl),GI Tagged (India),95–100,3–5
+Nilgiri,India (Tamil Nadu),Black,90–95,50–75,Brisk / Fragrant / Floral,Orthodox / CTC,No,90–95,3–4
+Kangra,India (Himachal Pradesh),Black / Green,60–90,30–60,Delicate / Earthy / Mild,Orthodox,GI Tagged (India),85–90,3–4
+Munnar,India (Kerala),Black,90–95,55–80,Bold / Earthy / Malty,CTC,No,95–100,3–4
+Ceylon (Uva),Sri Lanka,Black,90–95,50–75,Menthol / Brisk / Astringent,Orthodox,No,95,3–5
+Ceylon (Nuwara Eliya),Sri Lanka,Black,85–90,40–65,Delicate / Floral / Light,Orthodox,No,90,3–4
+Longjing (Dragon Well),China (Zhejiang),Green,0,30–40,Vegetal / Nutty / Sweet,Pan-fired,Protected (China),75–80,2–3
+Biluochun,China (Jiangsu),Green,0,30–40,Fruity / Floral / Delicate,Hand-rolled,No,75,2–3
+Huangshan Maofeng,China (Anhui),Green,0,30–40,Sweet / Orchid-like / Gentle,Hand-rolled,No,75,2–3
+Keemun,China (Anhui),Black,90–95,40–60,Wine-like / Smoky / Fruity,Orthodox,No,90–95,3–5
+Yunnan Pu-erh (Ripe),China (Yunnan),Fermented/Dark,Post-fermented,60–70,Earthy / Musty / Smooth,Pile fermentation,No,95–100,3–5
+Yunnan Pu-erh (Raw),China (Yunnan),Fermented/Dark,Post-fermented,60–80,Astringent / Fresh / Complex,Sun-dried,No,90–95,3–5
+Silver Needle (Bai Hao Yinzhen),China (Fujian),White,15–20,15–30,Delicate / Melon / Honey,Minimal / Sun-dried,No,70–75,5–10
+White Peony (Bai Mu Dan),China (Fujian),White,15–25,20–35,Floral / Light / Subtly Sweet,Minimal processing,No,70–75,4–6
+Tieguanyin (Iron Goddess),China (Fujian/Taiwan),Oolong,30–40,30–50,Floral / Roasted / Orchid,Twisted / Semi-oxidised,No,85–90,3–5
+Da Hong Pao,China (Fujian),Oolong,60–70,30–50,Roasted / Mineral / Complex,Rock-roasted,No,90–95,3–5
+Gyokuro,Japan,Green (shaded),0,70–130,Umami / Sweet / Vegetal,Shading / Steaming,No,50–60,2–3
+Sencha,Japan,Green,0,30–50,Grassy / Brisk / Vegetal,Steamed,No,70–80,1–2
+Matcha,Japan,Green (powdered),0,70–80,Umami / Grassy / Slightly Bitter,Stone-ground shade-grown,No,70–75,N/A (whisked)
+Hojicha,Japan,Green (roasted),0,10–30,Roasted / Woody / Caramel,Roasting Sencha/Bancha,No,90–95,1–2
+Genmaicha,Japan,Green + Roasted Rice,0,20–30,Nutty / Toasty / Mild,Blend,No,80,2–3
+Iri-Bancha,Japan,Green (aged/roasted),0,5–15,Earthy / Mellow / Woody,Extended roasting,No,90–95,2–3
+Dong Ding,Taiwan,Oolong,20–40,30–50,Buttery / Floral / Roasted,Ball-rolled oolong,No,85–90,3–5
+Oriental Beauty (Bai Hao),Taiwan,Oolong,70–85,30–50,Honey / Fruity / Spice,Leafhopper-bitten,No,85–90,4–5
+Earl Grey,UK (blend),Black (flavoured),90–95,50–70,Bergamot / Floral / Citrusy,CTC/Orthodox + Bergamot oil,No,95,3–5
+English Breakfast,UK (blend),Black,90–95,60–80,Malty / Robust / Full,CTC blend,No,95,4–5
+Rooibos,South Africa,Herbal (tisane),0 (no oxidation),0,Sweet / Vanilla / Earthy,Oxidised / Unoxidised,No,95–100,5–7
+Chamomile,Various (Central Europe),Herbal (tisane),N/A,0,Apple-like / Floral / Calming,Dried flowers,No,90–95,5–10
+Peppermint,Various (Europe/USA),Herbal (tisane),N/A,0,Cool / Refreshing / Minty,Dried leaves,No,90–95,5–7
+Yerba Maté,South America (Argentina/Brazil),Herbal,N/A,80–120,Earthy / Bitter / Grassy,Sun-dried / Smoked,No,70–75,3–5
+Hibiscus (Rosella),Global (tropical),Herbal (tisane),N/A,0,Tart / Cranberry-like / Floral,Dried calyces,No,95–100,5–10
+Kenyan Purple Tea,Kenya,Purple,30–60,20–40,Mild / Fruity / Subtle,Orthodox,No,80–90,3–4
+Moonlight White,China (Yunnan),White,20–30,20–35,Honey / Fruity / Mellow,Sun-dried large leaf,No,75,5–8

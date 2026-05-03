@@ -1,0 +1,249 @@
+Country or Area,M49 Code,ISO Alpha-2,ISO Alpha-3,Region,Subregion,Intermediate Region,LDC,LLDC,SIDS
+Afghanistan,004,AF,AFG,Asia,Southern Asia,,Yes,Yes,No
+Åland Islands,248,AX,ALA,Europe,Northern Europe,,No,No,No
+Albania,008,AL,ALB,Europe,Southern Europe,,No,No,No
+Algeria,012,DZ,DZA,Africa,Northern Africa,,No,No,No
+American Samoa,016,AS,ASM,Oceania,Polynesia,,No,No,Yes
+Andorra,020,AD,AND,Europe,Southern Europe,,No,No,No
+Angola,024,AO,AGO,Africa,Sub-Saharan Africa,Middle Africa,Yes,No,No
+Anguilla,660,AI,AIA,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Antarctica,010,AQ,ATA,,,,No,No,No
+Antigua and Barbuda,028,AG,ATG,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Argentina,032,AR,ARG,Americas,Latin America and the Caribbean,South America,No,No,No
+Armenia,051,AM,ARM,Asia,Western Asia,,No,Yes,No
+Aruba,533,AW,ABW,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Australia,036,AU,AUS,Oceania,Australia and New Zealand,,No,No,No
+Austria,040,AT,AUT,Europe,Western Europe,,No,No,No
+Azerbaijan,031,AZ,AZE,Asia,Western Asia,,No,Yes,No
+Bahamas,044,BS,BHS,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Bahrain,048,BH,BHR,Asia,Western Asia,,No,No,No
+Bangladesh,050,BD,BGD,Asia,Southern Asia,,Yes,No,No
+Barbados,052,BB,BRB,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Belarus,112,BY,BLR,Europe,Eastern Europe,,No,No,No
+Belgium,056,BE,BEL,Europe,Western Europe,,No,No,No
+Belize,084,BZ,BLZ,Americas,Latin America and the Caribbean,Central America,No,No,Yes
+Benin,204,BJ,BEN,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Bermuda,060,BM,BMU,Americas,Northern America,,No,No,No
+Bhutan,064,BT,BTN,Asia,Southern Asia,,No,Yes,No
+Bolivia (Plurinational State of),068,BO,BOL,Americas,Latin America and the Caribbean,South America,No,Yes,No
+"Bonaire, Sint Eustatius and Saba",535,BQ,BES,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Bosnia and Herzegovina,070,BA,BIH,Europe,Southern Europe,,No,No,No
+Botswana,072,BW,BWA,Africa,Sub-Saharan Africa,Southern Africa,No,Yes,No
+Bouvet Island,074,BV,BVT,Americas,Latin America and the Caribbean,South America,No,No,No
+Brazil,076,BR,BRA,Americas,Latin America and the Caribbean,South America,No,No,No
+British Indian Ocean Territory,086,IO,IOT,Africa,Sub-Saharan Africa,Eastern Africa,No,No,No
+British Virgin Islands,092,VG,VGB,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Brunei Darussalam,096,BN,BRN,Asia,South-eastern Asia,,No,No,No
+Bulgaria,100,BG,BGR,Europe,Eastern Europe,,No,No,No
+Burkina Faso,854,BF,BFA,Africa,Sub-Saharan Africa,Western Africa,Yes,Yes,No
+Burundi,108,BI,BDI,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Cabo Verde,132,CV,CPV,Africa,Sub-Saharan Africa,Western Africa,No,No,Yes
+Cambodia,116,KH,KHM,Asia,South-eastern Asia,,Yes,No,No
+Cameroon,120,CM,CMR,Africa,Sub-Saharan Africa,Middle Africa,No,No,No
+Canada,124,CA,CAN,Americas,Northern America,,No,No,No
+Cayman Islands,136,KY,CYM,Americas,Latin America and the Caribbean,Caribbean,No,No,No
+Central African Republic,140,CF,CAF,Africa,Sub-Saharan Africa,Middle Africa,Yes,Yes,No
+Chad,148,TD,TCD,Africa,Sub-Saharan Africa,Middle Africa,Yes,Yes,No
+Chile,152,CL,CHL,Americas,Latin America and the Caribbean,South America,No,No,No
+China,156,CN,CHN,Asia,Eastern Asia,,No,No,No
+"China, Hong Kong Special Administrative Region",344,HK,HKG,Asia,Eastern Asia,,No,No,No
+"China, Macao Special Administrative Region",446,MO,MAC,Asia,Eastern Asia,,No,No,No
+Christmas Island,162,CX,CXR,Oceania,Australia and New Zealand,,No,No,No
+Cocos (Keeling) Islands,166,CC,CCK,Oceania,Australia and New Zealand,,No,No,No
+Colombia,170,CO,COL,Americas,Latin America and the Caribbean,South America,No,No,No
+Comoros,174,KM,COM,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,Yes
+Congo,178,CG,COG,Africa,Sub-Saharan Africa,Middle Africa,No,No,No
+Cook Islands,184,CK,COK,Oceania,Polynesia,,No,No,Yes
+Costa Rica,188,CR,CRI,Americas,Latin America and the Caribbean,Central America,No,No,No
+Côte d’Ivoire,384,CI,CIV,Africa,Sub-Saharan Africa,Western Africa,No,No,No
+Croatia,191,HR,HRV,Europe,Southern Europe,,No,No,No
+Cuba,192,CU,CUB,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Curaçao,531,CW,CUW,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Cyprus,196,CY,CYP,Asia,Western Asia,,No,No,No
+Czechia,203,CZ,CZE,Europe,Eastern Europe,,No,No,No
+Democratic People's Republic of Korea,408,KP,PRK,Asia,Eastern Asia,,No,No,No
+Democratic Republic of the Congo,180,CD,COD,Africa,Sub-Saharan Africa,Middle Africa,Yes,No,No
+Denmark,208,DK,DNK,Europe,Northern Europe,,No,No,No
+Djibouti,262,DJ,DJI,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,No
+Dominica,212,DM,DMA,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Dominican Republic,214,DO,DOM,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Ecuador,218,EC,ECU,Americas,Latin America and the Caribbean,South America,No,No,No
+Egypt,818,EG,EGY,Africa,Northern Africa,,No,No,No
+El Salvador,222,SV,SLV,Americas,Latin America and the Caribbean,Central America,No,No,No
+Equatorial Guinea,226,GQ,GNQ,Africa,Sub-Saharan Africa,Middle Africa,No,No,No
+Eritrea,232,ER,ERI,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,No
+Estonia,233,EE,EST,Europe,Northern Europe,,No,No,No
+Eswatini,748,SZ,SWZ,Africa,Sub-Saharan Africa,Southern Africa,No,Yes,No
+Ethiopia,231,ET,ETH,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Falkland Islands (Malvinas),238,FK,FLK,Americas,Latin America and the Caribbean,South America,No,No,No
+Faroe Islands,234,FO,FRO,Europe,Northern Europe,,No,No,No
+Fiji,242,FJ,FJI,Oceania,Melanesia,,No,No,Yes
+Finland,246,FI,FIN,Europe,Northern Europe,,No,No,No
+France,250,FR,FRA,Europe,Western Europe,,No,No,No
+French Guiana,254,GF,GUF,Americas,Latin America and the Caribbean,South America,No,No,No
+French Polynesia,258,PF,PYF,Oceania,Polynesia,,No,No,Yes
+French Southern Territories,260,TF,ATF,Africa,Sub-Saharan Africa,Eastern Africa,No,No,No
+Gabon,266,GA,GAB,Africa,Sub-Saharan Africa,Middle Africa,No,No,No
+Gambia,270,GM,GMB,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Georgia,268,GE,GEO,Asia,Western Asia,,No,No,No
+Germany,276,DE,DEU,Europe,Western Europe,,No,No,No
+Ghana,288,GH,GHA,Africa,Sub-Saharan Africa,Western Africa,No,No,No
+Gibraltar,292,GI,GIB,Europe,Southern Europe,,No,No,No
+Greece,300,GR,GRC,Europe,Southern Europe,,No,No,No
+Greenland,304,GL,GRL,Americas,Northern America,,No,No,No
+Grenada,308,GD,GRD,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Guadeloupe,312,GP,GLP,Americas,Latin America and the Caribbean,Caribbean,No,No,No
+Guam,316,GU,GUM,Oceania,Micronesia,,No,No,Yes
+Guatemala,320,GT,GTM,Americas,Latin America and the Caribbean,Central America,No,No,No
+Guernsey,831,GG,GGY,Europe,Northern Europe,,No,No,No
+Guinea,324,GN,GIN,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Guinea-Bissau,624,GW,GNB,Africa,Sub-Saharan Africa,Western Africa,Yes,No,Yes
+Guyana,328,GY,GUY,Americas,Latin America and the Caribbean,South America,No,No,Yes
+Haiti,332,HT,HTI,Americas,Latin America and the Caribbean,Caribbean,Yes,No,Yes
+Heard Island and McDonald Islands,334,HM,HMD,Oceania,Australia and New Zealand,,No,No,No
+Holy See,336,VA,VAT,Europe,Southern Europe,,No,No,No
+Honduras,340,HN,HND,Americas,Latin America and the Caribbean,Central America,No,No,No
+Hungary,348,HU,HUN,Europe,Eastern Europe,,No,No,No
+Iceland,352,IS,ISL,Europe,Northern Europe,,No,No,No
+India,356,IN,IND,Asia,Southern Asia,,No,No,No
+Indonesia,360,ID,IDN,Asia,South-eastern Asia,,No,No,No
+Iran (Islamic Republic of),364,IR,IRN,Asia,Southern Asia,,No,No,No
+Iraq,368,IQ,IRQ,Asia,Western Asia,,No,No,No
+Ireland,372,IE,IRL,Europe,Northern Europe,,No,No,No
+Isle of Man,833,IM,IMN,Europe,Northern Europe,,No,No,No
+Israel,376,IL,ISR,Asia,Western Asia,,No,No,No
+Italy,380,IT,ITA,Europe,Southern Europe,,No,No,No
+Jamaica,388,JM,JAM,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Japan,392,JP,JPN,Asia,Eastern Asia,,No,No,No
+Jersey,832,JE,JEY,Europe,Northern Europe,,No,No,No
+Jordan,400,JO,JOR,Asia,Western Asia,,No,No,No
+Kazakhstan,398,KZ,KAZ,Asia,Central Asia,,No,Yes,No
+Kenya,404,KE,KEN,Africa,Sub-Saharan Africa,Eastern Africa,No,No,No
+Kiribati,296,KI,KIR,Oceania,Micronesia,,Yes,No,Yes
+Kuwait,414,KW,KWT,Asia,Western Asia,,No,No,No
+Kyrgyzstan,417,KG,KGZ,Asia,Central Asia,,No,Yes,No
+Lao People's Democratic Republic,418,LA,LAO,Asia,South-eastern Asia,,Yes,Yes,No
+Latvia,428,LV,LVA,Europe,Northern Europe,,No,No,No
+Lebanon,422,LB,LBN,Asia,Western Asia,,No,No,No
+Lesotho,426,LS,LSO,Africa,Sub-Saharan Africa,Southern Africa,Yes,Yes,No
+Liberia,430,LR,LBR,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Libya,434,LY,LBY,Africa,Northern Africa,,No,No,No
+Liechtenstein,438,LI,LIE,Europe,Western Europe,,No,No,No
+Lithuania,440,LT,LTU,Europe,Northern Europe,,No,No,No
+Luxembourg,442,LU,LUX,Europe,Western Europe,,No,No,No
+Madagascar,450,MG,MDG,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,No
+Malawi,454,MW,MWI,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Malaysia,458,MY,MYS,Asia,South-eastern Asia,,No,No,No
+Maldives,462,MV,MDV,Asia,Southern Asia,,No,No,Yes
+Mali,466,ML,MLI,Africa,Sub-Saharan Africa,Western Africa,Yes,Yes,No
+Malta,470,MT,MLT,Europe,Southern Europe,,No,No,No
+Marshall Islands,584,MH,MHL,Oceania,Micronesia,,No,No,Yes
+Martinique,474,MQ,MTQ,Americas,Latin America and the Caribbean,Caribbean,No,No,No
+Mauritania,478,MR,MRT,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Mauritius,480,MU,MUS,Africa,Sub-Saharan Africa,Eastern Africa,No,No,Yes
+Mayotte,175,YT,MYT,Africa,Sub-Saharan Africa,Eastern Africa,No,No,No
+Mexico,484,MX,MEX,Americas,Latin America and the Caribbean,Central America,No,No,No
+Micronesia (Federated States of),583,FM,FSM,Oceania,Micronesia,,No,No,Yes
+Monaco,492,MC,MCO,Europe,Western Europe,,No,No,No
+Mongolia,496,MN,MNG,Asia,Eastern Asia,,No,Yes,No
+Montenegro,499,ME,MNE,Europe,Southern Europe,,No,No,No
+Montserrat,500,MS,MSR,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Morocco,504,MA,MAR,Africa,Northern Africa,,No,No,No
+Mozambique,508,MZ,MOZ,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,No
+Myanmar,104,MM,MMR,Asia,South-eastern Asia,,Yes,No,No
+Namibia,516,NA,NAM,Africa,Sub-Saharan Africa,Southern Africa,No,No,No
+Nauru,520,NR,NRU,Oceania,Micronesia,,No,No,Yes
+Nepal,524,NP,NPL,Asia,Southern Asia,,Yes,Yes,No
+Netherlands (Kingdom of the),528,NL,NLD,Europe,Western Europe,,No,No,No
+New Caledonia,540,NC,NCL,Oceania,Melanesia,,No,No,Yes
+New Zealand,554,NZ,NZL,Oceania,Australia and New Zealand,,No,No,No
+Nicaragua,558,NI,NIC,Americas,Latin America and the Caribbean,Central America,No,No,No
+Niger,562,NE,NER,Africa,Sub-Saharan Africa,Western Africa,Yes,Yes,No
+Nigeria,566,NG,NGA,Africa,Sub-Saharan Africa,Western Africa,No,No,No
+Niue,570,NU,NIU,Oceania,Polynesia,,No,No,Yes
+Norfolk Island,574,NF,NFK,Oceania,Australia and New Zealand,,No,No,No
+North Macedonia,807,MK,MKD,Europe,Southern Europe,,No,Yes,No
+Northern Mariana Islands,580,MP,MNP,Oceania,Micronesia,,No,No,Yes
+Norway,578,NO,NOR,Europe,Northern Europe,,No,No,No
+Oman,512,OM,OMN,Asia,Western Asia,,No,No,No
+Pakistan,586,PK,PAK,Asia,Southern Asia,,No,No,No
+Palau,585,PW,PLW,Oceania,Micronesia,,No,No,Yes
+Panama,591,PA,PAN,Americas,Latin America and the Caribbean,Central America,No,No,No
+Papua New Guinea,598,PG,PNG,Oceania,Melanesia,,No,No,Yes
+Paraguay,600,PY,PRY,Americas,Latin America and the Caribbean,South America,No,Yes,No
+Peru,604,PE,PER,Americas,Latin America and the Caribbean,South America,No,No,No
+Philippines,608,PH,PHL,Asia,South-eastern Asia,,No,No,No
+Pitcairn,612,PN,PCN,Oceania,Polynesia,,No,No,No
+Poland,616,PL,POL,Europe,Eastern Europe,,No,No,No
+Portugal,620,PT,PRT,Europe,Southern Europe,,No,No,No
+Puerto Rico,630,PR,PRI,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Qatar,634,QA,QAT,Asia,Western Asia,,No,No,No
+Republic of Korea,410,KR,KOR,Asia,Eastern Asia,,No,No,No
+Republic of Moldova,498,MD,MDA,Europe,Eastern Europe,,No,Yes,No
+Réunion,638,RE,REU,Africa,Sub-Saharan Africa,Eastern Africa,No,No,No
+Romania,642,RO,ROU,Europe,Eastern Europe,,No,No,No
+Russian Federation,643,RU,RUS,Europe,Eastern Europe,,No,No,No
+Rwanda,646,RW,RWA,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Saint Barthélemy,652,BL,BLM,Americas,Latin America and the Caribbean,Caribbean,No,No,No
+Saint Helena,654,SH,SHN,Africa,Sub-Saharan Africa,Western Africa,No,No,No
+Saint Kitts and Nevis,659,KN,KNA,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Saint Lucia,662,LC,LCA,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Saint Martin (French Part),663,MF,MAF,Americas,Latin America and the Caribbean,Caribbean,No,No,No
+Saint Pierre and Miquelon,666,PM,SPM,Americas,Northern America,,No,No,No
+Saint Vincent and the Grenadines,670,VC,VCT,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Samoa,882,WS,WSM,Oceania,Polynesia,,No,No,Yes
+San Marino,674,SM,SMR,Europe,Southern Europe,,No,No,No
+Sao Tome and Principe,678,ST,STP,Africa,Sub-Saharan Africa,Middle Africa,No,No,Yes
+Saudi Arabia,682,SA,SAU,Asia,Western Asia,,No,No,No
+Senegal,686,SN,SEN,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Serbia,688,RS,SRB,Europe,Southern Europe,,No,No,No
+Seychelles,690,SC,SYC,Africa,Sub-Saharan Africa,Eastern Africa,No,No,Yes
+Sierra Leone,694,SL,SLE,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Singapore,702,SG,SGP,Asia,South-eastern Asia,,No,No,Yes
+Sint Maarten (Dutch part),534,SX,SXM,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Slovakia,703,SK,SVK,Europe,Eastern Europe,,No,No,No
+Slovenia,705,SI,SVN,Europe,Southern Europe,,No,No,No
+Solomon Islands,090,SB,SLB,Oceania,Melanesia,,Yes,No,Yes
+Somalia,706,SO,SOM,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,No
+South Africa,710,ZA,ZAF,Africa,Sub-Saharan Africa,Southern Africa,No,No,No
+South Georgia and the South Sandwich Islands,239,GS,SGS,Americas,Latin America and the Caribbean,South America,No,No,No
+South Sudan,728,SS,SSD,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Spain,724,ES,ESP,Europe,Southern Europe,,No,No,No
+Sri Lanka,144,LK,LKA,Asia,Southern Asia,,No,No,No
+State of Palestine,275,PS,PSE,Asia,Western Asia,,No,No,No
+Sudan,729,SD,SDN,Africa,Northern Africa,,Yes,No,No
+Suriname,740,SR,SUR,Americas,Latin America and the Caribbean,South America,No,No,Yes
+Svalbard and Jan Mayen Islands,744,SJ,SJM,Europe,Northern Europe,,No,No,No
+Sweden,752,SE,SWE,Europe,Northern Europe,,No,No,No
+Switzerland,756,CH,CHE,Europe,Western Europe,,No,No,No
+Syrian Arab Republic,760,SY,SYR,Asia,Western Asia,,No,No,No
+Tajikistan,762,TJ,TJK,Asia,Central Asia,,No,Yes,No
+Thailand,764,TH,THA,Asia,South-eastern Asia,,No,No,No
+Timor-Leste,626,TL,TLS,Asia,South-eastern Asia,,Yes,No,Yes
+Togo,768,TG,TGO,Africa,Sub-Saharan Africa,Western Africa,Yes,No,No
+Tokelau,772,TK,TKL,Oceania,Polynesia,,No,No,No
+Tonga,776,TO,TON,Oceania,Polynesia,,No,No,Yes
+Trinidad and Tobago,780,TT,TTO,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Tunisia,788,TN,TUN,Africa,Northern Africa,,No,No,No
+Türkiye,792,TR,TUR,Asia,Western Asia,,No,No,No
+Turkmenistan,795,TM,TKM,Asia,Central Asia,,No,Yes,No
+Turks and Caicos Islands,796,TC,TCA,Americas,Latin America and the Caribbean,Caribbean,No,No,No
+Tuvalu,798,TV,TUV,Oceania,Polynesia,,Yes,No,Yes
+Uganda,800,UG,UGA,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Ukraine,804,UA,UKR,Europe,Eastern Europe,,No,No,No
+United Arab Emirates,784,AE,ARE,Asia,Western Asia,,No,No,No
+United Kingdom of Great Britain and Northern Ireland,826,GB,GBR,Europe,Northern Europe,,No,No,No
+United Republic of Tanzania,834,TZ,TZA,Africa,Sub-Saharan Africa,Eastern Africa,Yes,No,No
+United States Minor Outlying Islands,581,UM,UMI,Oceania,Micronesia,,No,No,No
+United States of America,840,US,USA,Americas,Northern America,,No,No,No
+United States Virgin Islands,850,VI,VIR,Americas,Latin America and the Caribbean,Caribbean,No,No,Yes
+Uruguay,858,UY,URY,Americas,Latin America and the Caribbean,South America,No,No,No
+Uzbekistan,860,UZ,UZB,Asia,Central Asia,,No,Yes,No
+Vanuatu,548,VU,VUT,Oceania,Melanesia,,No,No,Yes
+Venezuela (Bolivarian Republic of),862,VE,VEN,Americas,Latin America and the Caribbean,South America,No,No,No
+Viet Nam,704,VN,VNM,Asia,South-eastern Asia,,No,No,No
+Wallis and Futuna Islands,876,WF,WLF,Oceania,Polynesia,,No,No,No
+Western Sahara,732,EH,ESH,Africa,Northern Africa,,No,No,No
+Yemen,887,YE,YEM,Asia,Western Asia,,Yes,No,No
+Zambia,894,ZM,ZMB,Africa,Sub-Saharan Africa,Eastern Africa,Yes,Yes,No
+Zimbabwe,716,ZW,ZWE,Africa,Sub-Saharan Africa,Eastern Africa,No,Yes,No

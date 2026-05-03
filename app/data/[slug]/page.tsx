@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
+import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
 import { parseCSV } from "@/lib/csvParser";
 import { datasets, getDatasetBySlug } from "@/lib/datasets";
@@ -33,6 +34,13 @@ export async function generateMetadata(
       description: ds.description,
       type: "article",
       url,
+      images: brandOpenGraphImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ds.title,
+      description: ds.description,
+      images: [BRAND.logo1024],
     },
   };
 }

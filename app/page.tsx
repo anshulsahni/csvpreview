@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Navbar from "@/app/components/Navbar";
 import CsvViewer from "@/app/components/CsvViewer";
+import { BRAND, brandOpenGraphImages } from "@/lib/brand";
+
+const title = "CSV Preview – Privacy-First CSV Viewer in Your Browser";
+const description =
+  "Open and preview CSV files instantly in your browser. Your data never leaves your device — no server uploads, no signup required.";
 
 export const metadata: Metadata = {
-  title: "CSV Preview – Privacy-First CSV Viewer in Your Browser",
-  description:
-    "Open and preview CSV files instantly in your browser. Your data never leaves your device — no server uploads, no signup required.",
+  title,
+  description,
   keywords: [
     "CSV viewer",
     "CSV preview",
@@ -17,10 +21,16 @@ export const metadata: Metadata = {
   ],
   robots: { index: true, follow: true },
   openGraph: {
-    title: "CSV Preview – Privacy-First CSV Viewer in Your Browser",
-    description:
-      "Open and preview CSV files instantly in your browser. Your data never leaves your device — no server uploads, no signup required.",
+    title,
+    description,
     type: "website",
+    images: brandOpenGraphImages,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [BRAND.logo1024],
   },
 };
 

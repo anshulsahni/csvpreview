@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 import { styled } from "@linaria/react";
 import SpreadsheetGrid from "../SpreadsheetGrid";
@@ -8,10 +9,28 @@ import { useCsvViewer } from "./hooks";
 
 export default function CsvViewer() {
   const viewer = useCsvViewer();
+  const [search, setSearch] = useState("");
+
+  const filteredData =
+  viewer.csvData?.filter((row) =>
+    row.some((cell) =>
+      cell.toLowerCase().includes(search.toLowerCase())
+    )
+  ) ?? [];
+
+
+
 
   return (
     <Wrapper>
       <TopBar>
+        <input
+  type="text"
+  placeholder="Search..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
+
         <UploadButton type="button" onClick={viewer.openUpload}>
           Upload
         </UploadButton>
@@ -27,10 +46,13 @@ export default function CsvViewer() {
         {viewer.fileName && <FileLabel>File: {viewer.fileName}</FileLabel>}
       </TopBar>
       <GridArea>
+     
+
         <SpreadsheetGrid
-          data={viewer.csvData ?? []}
-          firstRowAsHeader={viewer.firstRowAsHeader}
-        />
+  data={filteredData}
+  firstRowAsHeader={viewer.firstRowAsHeader}
+/>
+
       </GridArea>
       <UploadModal
         isOpen={viewer.isUploadOpen}
@@ -97,3 +119,5 @@ const GridArea = styled.div`
   flex: 1;
   overflow: hidden;
 `;
+
+

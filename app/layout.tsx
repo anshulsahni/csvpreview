@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import "./globals.css";
 import AnalyticsProvider from "@/app/components/AnalyticsProvider";
+import { ThemeProvider } from "@/app/components/ThemeProvider";
+import { THEME_COOKIE_KEY, isTheme, type Theme } from "@/lib/theme";
+import ThemeToggle from "@/app/components/ThemeToggle";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 
 const defaultTitle = "CSV Preview – View CSV Files Instantly in Your Browser";
@@ -35,15 +39,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const stored = (await cookies()).get(THEME_COOKIE_KEY)?.value;
+  const theme: Theme = isTheme(stored) ? stored : "system";
+
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <body>
-        <AnalyticsProvider>{children}</AnalyticsProvider>
+        <ThemeProvider initialTheme={theme}>
+          <AnalyticsProvider>{children}</AnalyticsProvider>
+          <ThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );

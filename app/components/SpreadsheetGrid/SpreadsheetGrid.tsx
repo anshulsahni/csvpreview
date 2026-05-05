@@ -111,6 +111,8 @@ export default function SpreadsheetGrid({
                 {Array.from({ length: vm.numCols }, (_, ci) => (
                   <DataTd
                     key={ci}
+                    data-row={ri}
+                    data-col={ci}
                     data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
                     data-editing={vm.isEditingCell(ri, ci) ? "true" : undefined}
                     tabIndex={0}

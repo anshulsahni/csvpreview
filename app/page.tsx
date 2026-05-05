@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     "no upload CSV",
   ],
   robots: { index: true, follow: true },
+  alternates: { canonical: "https://csvpreview.com" },
   openGraph: {
     title,
     description,

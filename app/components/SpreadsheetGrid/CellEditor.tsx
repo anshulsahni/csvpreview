@@ -23,6 +23,7 @@ export default function CellEditor({
   return (
     <EditorTextarea
       value={draft}
+      aria-label="Edit cell"
       onChange={(event) => {
         const next = event.target.value;
         setDraft(next);

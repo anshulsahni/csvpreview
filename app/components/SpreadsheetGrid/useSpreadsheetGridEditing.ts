@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 
 export interface EditingCell {
@@ -51,6 +51,7 @@ export function useSpreadsheetGridEditing({
   const [focusedCell, setFocusedCell] = useState<EditingCell | null>(null);
   const [editingCell, setEditingCell] = useState<EditingCell | null>(null);
   const draftValueRef = useRef("");
+  const pendingFocusCellRef = useRef<EditingCell | null>(null);
 
   const isEditingCell = (rowIdx: number, colIdx: number) =>
     editingCell?.rowIdx === rowIdx && editingCell.colIdx === colIdx;
@@ -83,10 +84,22 @@ export function useSpreadsheetGridEditing({
       };
       setFocusedCell(clamped);
       selectSingleCell(clamped.rowIdx, clamped.colIdx);
+      pendingFocusCellRef.current = clamped;
     }
     setEditingCell(null);
     draftValueRef.current = "";
   };
+
+  useEffect(() => {
+    if (editingCell !== null) return;
+    const pending = pendingFocusCellRef.current;
+    if (pending === null) return;
+    pendingFocusCellRef.current = null;
+    const el = document.querySelector<HTMLElement>(
+      `[data-row="${pending.rowIdx}"][data-col="${pending.colIdx}"]`
+    );
+    el?.focus();
+  }, [editingCell]);
 
   const commitAndMove = (value: string, deltaRow: number, deltaCol: number) => {
     if (editingCell === null) return;
@@ -139,6 +152,9 @@ export function useSpreadsheetGridEditing({
     },
     onEditorKeyDown: (event, value) => {
       draftValueRef.current = value;
+      if (event.nativeEvent.isComposing) {
+        return;
+      }
       if (event.key === "Escape") {
         event.preventDefault();
         event.stopPropagation();

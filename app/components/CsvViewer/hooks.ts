@@ -61,6 +61,15 @@ export function useCsvViewer(): UseCsvViewerReturn {
     }
   }, []);
 
+  useEffect(() => {
+    if (csvData === null) return;
+    try {
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(csvData));
+    } catch {
+      // ignore
+    }
+  }, [csvData]);
+
   function ingest(text: string, name: string) {
     const { rows, errors } = parseCSV(text, { delimiter });
     if (errors.length > 0) {
@@ -71,7 +80,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setCsvData(rows);
     setFileName(name);
     try {
-      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, name);
     } catch {
       // localStorage may be unavailable (privacy mode, quota). Non-fatal.
@@ -127,17 +135,11 @@ export function useCsvViewer(): UseCsvViewerReturn {
       while (next.length <= dataRowIndex) {
         next.push([]);
       }
-      const row = next[dataRowIndex] ?? [];
+      const row = next[dataRowIndex]!;
       while (row.length <= colIdx) {
         row.push("");
       }
       row[colIdx] = value;
-      next[dataRowIndex] = row;
-      try {
-        localStorage.setItem(LS_KEY_DATA, JSON.stringify(next));
-      } catch {
-        // ignore
-      }
       return next;
     });
   }

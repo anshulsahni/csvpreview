@@ -246,8 +246,11 @@ function computeViewModel(
     ? MIN_ROWS
     : Math.max(MIN_ROWS, visibleRowCount);
 
-  const getSourceBodyIndexForDisplayRow = (displayRow: number): number =>
-    sourceRowIndexForDisplayRow[displayRow] ?? displayRow;
+  const getSourceBodyIndexForDisplayRow = (displayRow: number): number => {
+    const mapped = sourceRowIndexForDisplayRow[displayRow];
+    if (mapped !== undefined) return mapped;
+    return totalRowCount + Math.max(0, displayRow - visibleRowCount);
+  };
 
   let statusHint: string;
   if (isEmpty) {

@@ -1,20 +1,22 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { KeyboardEvent } from "react";
 import {
   detectColumnType,
-  sortRows,
+  sortRowsWithSourceIndices,
   type SortDirection,
   type SortState,
 } from "@/lib/sortUtils";
 import { colLabel, type CellSelection } from "./selectionUtils";
 import { useSpreadsheetGridSelection } from "./useSpreadsheetGridSelection";
 import {
-  applyFilters,
+  applyFiltersWithSourceIndices,
   getUniqueValues,
   type ColumnFilter,
   type FilterMap,
 } from "@/lib/filterUtils";
+import { useSpreadsheetGridEditing } from "./useSpreadsheetGridEditing";
 
 export const MIN_COLS = 26;
 export const MIN_ROWS = 50;
@@ -31,9 +33,17 @@ export {
 } from "./selectionUtils";
 export { useSelectionState } from "./useSpreadsheetGridSelection";
 
+export function dataRowIndexFromBodyRowIndex(
+  firstRowAsHeader: boolean,
+  bodyRowIndex: number
+): number {
+  return firstRowAsHeader ? bodyRowIndex + 1 : bodyRowIndex;
+}
+
 export interface UseSpreadsheetGridArgs {
   data: string[][];
   firstRowAsHeader: boolean;
+  onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
 }
 
 export interface SpreadsheetGridViewModel {
@@ -56,12 +66,29 @@ export interface SpreadsheetGridViewModel {
   columnTypeFor: (colIdx: number) => "numeric" | "text";
   uniqueValuesFor: (colIdx: number) => string[];
   columnDisplayName: (colIdx: number) => string;
+  sourceRowIndexForDisplayRow: number[];
+  getSourceBodyIndexForDisplayRow: (displayRow: number) => number;
   selection: CellSelection | null;
   isDragging: boolean;
+  focusedCell: { rowIdx: number; colIdx: number } | null;
+  editingCell: { rowIdx: number; colIdx: number } | null;
   isCellSelected: (rowIdx: number, colIdx: number) => boolean;
+  isEditingCell: (rowIdx: number, colIdx: number) => boolean;
   onSortArrowClick: (colIdx: number, direction: SortDirection) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
+  onCellFocus: (rowIdx: number, colIdx: number) => void;
+  onCellDoubleClick: (rowIdx: number, colIdx: number) => void;
+  onCellKeyDown: (
+    event: KeyboardEvent,
+    rowIdx: number,
+    colIdx: number
+  ) => void;
+  onEditorKeyDown: (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+    value: string
+  ) => void;
+  onDraftValueChange: (value: string) => void;
   onColumnHeaderMouseDown: (colIdx: number) => void;
   onRowGutterMouseDown: (rowIdx: number) => void;
   openDropdown: (colIdx: number) => void;
@@ -150,9 +177,17 @@ function computeViewModel(
   | "openColIdx"
   | "selection"
   | "isDragging"
+  | "focusedCell"
+  | "editingCell"
   | "isCellSelected"
+  | "isEditingCell"
   | "onCellMouseDown"
   | "onCellMouseEnter"
+  | "onCellFocus"
+  | "onCellDoubleClick"
+  | "onCellKeyDown"
+  | "onEditorKeyDown"
+  | "onDraftValueChange"
   | "onColumnHeaderMouseDown"
   | "onRowGutterMouseDown"
 > {
@@ -176,12 +211,25 @@ function computeViewModel(
   }
 
   const totalRowCount = bodyRows.length;
-  const filteredRows =
-    totalRowCount > 0 ? applyFilters(bodyRows, filters) : bodyRows;
-  const displayBodyRows =
-    sort !== null && filteredRows.length > 0
-      ? sortRows(filteredRows, sort.colIdx, sort.direction)
-      : filteredRows;
+  const baseSourceIndices = bodyRows.map((_, i) => i);
+  const filtered = applyFiltersWithSourceIndices(
+    bodyRows,
+    baseSourceIndices,
+    filters
+  );
+  let displayBodyRows = filtered.rows;
+  let sourceRowIndexForDisplayRow = filtered.sourceIndices;
+  if (sort !== null && displayBodyRows.length > 0) {
+    const sorted = sortRowsWithSourceIndices(
+      displayBodyRows,
+      sourceRowIndexForDisplayRow,
+      sort.colIdx,
+      sort.direction
+    );
+    displayBodyRows = sorted.rows;
+    sourceRowIndexForDisplayRow = sorted.sourceIndices;
+  }
+  const filteredRows = filtered.rows;
   const visibleRowCount = displayBodyRows.length;
   const activeFilterEntries = Object.entries(filters);
   const activeFilterCount = activeFilterEntries.length;
@@ -197,6 +245,9 @@ function computeViewModel(
   const numRows = isEmpty
     ? MIN_ROWS
     : Math.max(MIN_ROWS, visibleRowCount);
+
+  const getSourceBodyIndexForDisplayRow = (displayRow: number): number =>
+    sourceRowIndexForDisplayRow[displayRow] ?? displayRow;
 
   let statusHint: string;
   if (isEmpty) {
@@ -238,6 +289,8 @@ function computeViewModel(
     totalRowCount,
     visibleRowCount,
     activeFilterCount,
+    sourceRowIndexForDisplayRow,
+    getSourceBodyIndexForDisplayRow,
     columnTypeFor: (colIdx: number) => columnTypeByIdx.get(colIdx) ?? "text",
     uniqueValuesFor: (colIdx: number) => uniqueValuesByIdx.get(colIdx) ?? [],
     columnDisplayName: (colIdx: number) =>
@@ -246,7 +299,7 @@ function computeViewModel(
 }
 
 export function useSpreadsheetGrid(
-  { data, firstRowAsHeader }: UseSpreadsheetGridArgs
+  { data, firstRowAsHeader, onCellChange }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
   const { sort, onArrowClick } = useSortState();
   const {
@@ -266,15 +319,16 @@ export function useSpreadsheetGrid(
     selection,
     isDragging,
     statusHint: combinedStatusHint,
-    onCellMouseDown,
+    selectSingleCell,
+    onCellMouseDown: baseOnCellMouseDown,
     onCellMouseEnter,
     onColumnHeaderMouseDown,
     onRowGutterMouseDown,
     isCellSelected,
   } = useSpreadsheetGridSelection({
-    numRows: base.visibleRowCount,
+    numRows: base.numRows,
     numCols: base.numCols,
-    isEmpty: base.isEmpty,
+    isEmpty: false,
     rowNumberOffset: base.rowNumberOffset,
     bodyRows: base.bodyRows,
     baseStatusHint: base.statusHint,
@@ -283,16 +337,40 @@ export function useSpreadsheetGrid(
     firstRowAsHeader,
   });
 
+  const editingVm = useSpreadsheetGridEditing({
+    bodyRows: base.bodyRows,
+    numRows: base.numRows,
+    numCols: base.numCols,
+    sourceBodyIndexForDisplayRow: base.getSourceBodyIndexForDisplayRow,
+    bodyRowIndexToDataRowIndex: (bodyRowIndex) =>
+      dataRowIndexFromBodyRowIndex(firstRowAsHeader, bodyRowIndex),
+    onCellChange,
+    selectSingleCell,
+  });
+
+  const onCellMouseDown = (rowIdx: number, colIdx: number) => {
+    editingVm.onCellMouseDown(rowIdx, colIdx);
+    baseOnCellMouseDown(rowIdx, colIdx);
+  };
+
   return useMemo(
     () => ({
       ...base,
       statusHint: combinedStatusHint,
       selection,
       isDragging,
+      focusedCell: editingVm.focusedCell,
+      editingCell: editingVm.editingCell,
       isCellSelected,
+      isEditingCell: editingVm.isEditingCell,
       onSortArrowClick: onArrowClick,
       onCellMouseDown,
       onCellMouseEnter,
+      onCellFocus: editingVm.onCellFocus,
+      onCellDoubleClick: editingVm.onCellDoubleClick,
+      onCellKeyDown: editingVm.onCellKeyDown,
+      onEditorKeyDown: editingVm.onEditorKeyDown,
+      onDraftValueChange: editingVm.onDraftValueChange,
       onColumnHeaderMouseDown,
       onRowGutterMouseDown,
       openColIdx,
@@ -305,6 +383,7 @@ export function useSpreadsheetGrid(
       combinedStatusHint,
       selection,
       isDragging,
+      editingVm,
       isCellSelected,
       onArrowClick,
       onCellMouseDown,
@@ -334,9 +413,17 @@ export function computeSpreadsheetGridViewModel(
   | "openColIdx"
   | "selection"
   | "isDragging"
+  | "focusedCell"
+  | "editingCell"
   | "isCellSelected"
+  | "isEditingCell"
   | "onCellMouseDown"
   | "onCellMouseEnter"
+  | "onCellFocus"
+  | "onCellDoubleClick"
+  | "onCellKeyDown"
+  | "onEditorKeyDown"
+  | "onDraftValueChange"
   | "onColumnHeaderMouseDown"
   | "onRowGutterMouseDown"
 > {

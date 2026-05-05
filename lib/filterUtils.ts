@@ -51,25 +51,44 @@ export function matchesNumericFilter(
   }
 }
 
-export function applyFilters(
+export function applyFiltersWithSourceIndices(
   rows: readonly string[][],
+  sourceIndices: readonly number[],
   filters: FilterMap
-): string[][] {
+): { rows: string[][]; sourceIndices: number[] } {
+  if (rows.length !== sourceIndices.length) {
+    throw new Error("rows and sourceIndices length mismatch");
+  }
+
   const activeEntries = Object.entries(filters).filter(([, filter]) => {
     if (filter.kind === "set") return filter.values.size > 0;
     return Number.isFinite(filter.value);
   });
 
-  if (activeEntries.length === 0) return rows.map((row) => row.slice());
+  if (activeEntries.length === 0) {
+    return {
+      rows: rows.map((row) => row.slice()),
+      sourceIndices: [...sourceIndices],
+    };
+  }
 
-  return rows
-    .filter((row) =>
-      activeEntries.every(([colKey, filter]) => {
-        const colIdx = Number(colKey);
-        const cell = normalizeCellValue(row, colIdx);
-        if (filter.kind === "set") return filter.values.has(cell);
-        return matchesNumericFilter(cell, filter);
-      })
-    )
-    .map((row) => row.slice());
+  const outRows: string[][] = [];
+  const outSourceIndices: number[] = [];
+
+  for (let i = 0; i < rows.length; i += 1) {
+    const row = rows[i] ?? [];
+    const matches = activeEntries.every(([colKey, filter]) => {
+      const colIdx = Number(colKey);
+      const cell = normalizeCellValue(row, colIdx);
+      if (filter.kind === "set") return filter.values.has(cell);
+      return matchesNumericFilter(cell, filter);
+    });
+
+    if (matches) {
+      outRows.push(row.slice());
+      outSourceIndices.push(sourceIndices[i] ?? i);
+    }
+  }
+
+  return { rows: outRows, sourceIndices: outSourceIndices };
 }

@@ -5,17 +5,20 @@ import { styled } from "@linaria/react";
 import FilterDropdown from "../FilterDropdown";
 import { useSpreadsheetGrid } from "./hooks";
 import { SortArrows } from "./SortArrows";
+import CellEditor from "./CellEditor";
 
 export interface SpreadsheetGridProps {
   data: string[][];
   firstRowAsHeader?: boolean;
+  onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
 }
 
 export default function SpreadsheetGrid({
   data,
   firstRowAsHeader = false,
+  onCellChange,
 }: SpreadsheetGridProps) {
-  const vm = useSpreadsheetGrid({ data, firstRowAsHeader });
+  const vm = useSpreadsheetGrid({ data, firstRowAsHeader, onCellChange });
 
   return (
     <GridWrapper data-dragging={vm.isDragging ? "true" : undefined}>
@@ -109,10 +112,24 @@ export default function SpreadsheetGrid({
                   <DataTd
                     key={ci}
                     data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
+                    data-editing={vm.isEditingCell(ri, ci) ? "true" : undefined}
+                    tabIndex={0}
                     onMouseDown={() => vm.onCellMouseDown(ri, ci)}
                     onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
+                    onFocus={() => vm.onCellFocus(ri, ci)}
+                    onDoubleClick={() => vm.onCellDoubleClick(ri, ci)}
+                    onKeyDown={(event) => vm.onCellKeyDown(event, ri, ci)}
                   >
-                    {vm.bodyRows[ri]?.[ci] ?? ""}
+                    {vm.isEditingCell(ri, ci) ? (
+                      <CellEditor
+                        key={`editor-${ri}-${ci}-${vm.bodyRows[ri]?.[ci] ?? ""}`}
+                        initialValue={vm.bodyRows[ri]?.[ci] ?? ""}
+                        onDraftValueChange={vm.onDraftValueChange}
+                        onKeyDown={vm.onEditorKeyDown}
+                      />
+                    ) : (
+                      vm.bodyRows[ri]?.[ci] ?? ""
+                    )}
                   </DataTd>
                 ))}
               </tr>
@@ -292,9 +309,20 @@ const DataTd = styled.td`
   text-overflow: ellipsis;
   padding: 0 4px;
   user-select: none;
+  vertical-align: top;
 
   &[data-selected="true"] {
     background: var(--grid-selection-bg);
+  }
+
+  &[data-editing="true"] {
+    position: relative;
+    z-index: 6;
+    overflow: visible;
+    white-space: pre-wrap;
+    text-overflow: clip;
+    height: auto;
+    padding: 0;
   }
 `;
 

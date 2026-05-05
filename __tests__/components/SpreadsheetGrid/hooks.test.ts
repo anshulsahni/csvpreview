@@ -172,6 +172,26 @@ describe("computeSpreadsheetGridViewModel", () => {
     expect(vm.statusHint).toContain("Showing 2 of 3 rows");
     expect(vm.statusHint).toContain("Sorted by col A asc");
   });
+
+  it("tracks source body row index through filter + sort", () => {
+    const vm = computeSpreadsheetGridViewModel(
+      [
+        ["z", "x"],
+        ["a", "x"],
+        ["m", "y"],
+      ],
+      false,
+      { colIdx: 0, direction: "asc" },
+      {
+        1: { kind: "set", values: new Set(["x"]) },
+      }
+    );
+    expect(vm.bodyRows).toEqual([
+      ["a", "x"],
+      ["z", "x"],
+    ]);
+    expect(vm.sourceRowIndexForDisplayRow).toEqual([1, 0]);
+  });
 });
 
 describe("useSortState", () => {

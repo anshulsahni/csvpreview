@@ -106,6 +106,9 @@ export function parseCSV(input: string, options?: ParseOptions): ParseResult {
     header: false, // always return raw string[][]
   });
 
+
   // Map PapaParse result to our stable types
   return mapPapaResult(result);
+
 }
+

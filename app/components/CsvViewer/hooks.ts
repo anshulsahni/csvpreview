@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   parseCSV,
   type Delimiter,
@@ -27,6 +27,9 @@ export interface UseCsvViewerReturn {
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
   handleClear: () => void;
+  search: string;
+  setSearch: (value: string) => void;
+  filteredData: string[][];
 }
 
 function readPersistedRows(): string[][] | null {
@@ -43,6 +46,19 @@ function readPersistedRows(): string[][] | null {
 
 export function useCsvViewer(): UseCsvViewerReturn {
   const [csvData, setCsvData] = useState<string[][] | null>(null);
+  const [search, setSearch] = useState("");
+  const filteredData = useMemo(() => {
+  if (!csvData) return [];
+
+  const term = search.toLowerCase();
+  if (!term) return csvData;
+
+  return csvData.filter((row) =>
+    row.some((cell) =>
+      cell.toLowerCase().includes(term)
+    )
+  );
+}, [csvData, search]); 
   const [fileName, setFileName] = useState<string>("");
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
@@ -130,18 +146,21 @@ export function useCsvViewer(): UseCsvViewerReturn {
   }
 
   return {
-    csvData,
-    fileName,
-    isUploadOpen,
-    parseErrors,
-    delimiter,
-    firstRowAsHeader,
-    setFirstRowAsHeader,
-    openUpload,
-    closeUpload,
-    handleFilePicked,
-    handlePasteSubmit,
-    handleStartBlank,
-    handleClear,
-  };
+  csvData,
+  fileName,
+  isUploadOpen,
+  parseErrors,
+  delimiter,
+  firstRowAsHeader,
+  setFirstRowAsHeader,
+  openUpload,
+  closeUpload,
+  handleFilePicked,
+  handlePasteSubmit,
+  handleStartBlank,
+  handleClear,
+  search,
+  setSearch,
+  filteredData,
+};
 }

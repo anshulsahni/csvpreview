@@ -1,0 +1,65 @@
+# CSV Preview
+
+> Privacy-first CSV viewer for instant browser-based data inspection.
+
+CSVPreview.com offers a privacy-focused, client-side solution for viewing and interacting with CSV files directly in the user's web browser. Unlike traditional services, it requires no server-side uploads, no account creation, and no software installation, ensuring that sensitive data never leaves the user's device. This makes it an ideal tool for individuals and organizations who need to quickly inspect, analyze, or share CSV data without compromising on privacy or security.
+
+The core value proposition lies in its simplicity, speed, and robust privacy guarantees. Users can simply drag and drop a CSV file or open it via a file picker, and the data is immediately rendered in a sortable, filterable, and searchable table. This is particularly useful for data analysts, researchers, developers, and anyone working with tabular data who needs a reliable and secure way to preview datasets. The website also provides a curated collection of sample CSV files for demonstration and educational purposes, showcasing the tool's capabilities with real-world data examples.
+
+## Core Functionality
+
+- [CSV Preview – Privacy-First CSV Viewer in Your Browser](https://csvpreview.com/): Instantly view and interact with CSV files in your browser without uploading data.
+
+## About
+
+- [About CSV Preview](https://csvpreview.com/about): Learn about the privacy-first, client-side CSV viewing service and its benefits.
+
+## Sample Data Files
+
+- [Countries and Capitals Data](https://csvpreview.com/data/countries-capitals): Preview a list of countries and their corresponding capitals.
+- [US State Capitals Data](https://csvpreview.com/data/us-state-capitals): View a dataset of US states and their respective capitals.
+- [Indian States Data](https://csvpreview.com/data/indian-states): Explore a list of Indian states and their details.
+- [Country Codes Data](https://csvpreview.com/data/country-codes): Preview ISO country codes and country names.
+- [World Population Data](https://csvpreview.com/data/world-population): View data on world population by country.
+- [Country GDP Data](https://csvpreview.com/data/country-gdp): Inspect data related to Gross Domestic Product (GDP) by country.
+- [World Airports Data](https://csvpreview.com/data/world-airports): Preview a dataset of airports worldwide.
+- [S&P 500 Companies Data](https://csvpreview.com/data/sp500-companies): View a list of companies included in the S&P 500 index.
+- [Mountain Heights Data](https://csvpreview.com/data/mountain-heights): Explore data on the heights of major mountains.
+- [World Rivers Data](https://csvpreview.com/data/world-rivers): Preview data on major rivers around the world.
+- [Currency Codes Data](https://csvpreview.com/data/currency-codes): View a list of currency codes and their names.
+- [National Parks Data](https://csvpreview.com/data/national-parks): Explore a dataset of national parks.
+- [World Timezones Data](https://csvpreview.com/data/world-timezones): Preview data on world timezones.
+- [Dog Breeds Data](https://csvpreview.com/data/dog-breeds): View a list of dog breeds and their characteristics.
+- [Cat Breeds Data](https://csvpreview.com/data/cat-breeds): Explore a dataset of cat breeds.
+- [Most Spoken Languages Data](https://csvpreview.com/data/most-spoken-languages): Preview data on the most spoken languages globally.
+- [Indian Languages by State Data](https://csvpreview.com/data/indian-languages-by-state): View data on languages spoken in Indian states.
+- [US Presidents Data](https://csvpreview.com/data/us-presidents): Explore a list of US presidents and their terms.
+- [Indian Prime Ministers Data](https://csvpreview.com/data/indian-prime-ministers): Preview data on Prime Ministers of India.
+- [UK Prime Ministers Data](https://csvpreview.com/data/uk-prime-ministers): View a list of Prime Ministers of the United Kingdom.
+- [Independence Days Data](https://csvpreview.com/data/independence-days): Explore data on national independence days.
+- [UN Member States Data](https://csvpreview.com/data/un-member-states): Preview a list of United Nations member states.
+- [G20, G7, BRICS Members Data](https://csvpreview.com/data/g20-g7-brics-members): View lists of member countries for G20, G7, and BRICS.
+- [Airline Codes Data](https://csvpreview.com/data/airline-codes): Explore a dataset of airline codes.
+- [Busiest Airports Data](https://csvpreview.com/data/busiest-airports): Preview data on the world's busiest airports.
+- [High-Speed Rail Networks Data](https://csvpreview.com/data/high-speed-rail-networks): View data on major high-speed rail networks globally.
+- [World Metro Systems Data](https://csvpreview.com/data/metro-systems-world): Explore data on metro systems in cities worldwide.
+- [World Cuisines Data](https://csvpreview.com/data/world-cuisines): Preview data on various world cuisines.
+- [Top Crops Global Data](https://csvpreview.com/data/top-crops-global): View data on the world's top agricultural crops.
+- [Coffee Producing Countries Data](https://csvpreview.com/data/coffee-producing-countries): Explore data on countries that produce coffee.
+- [Tea Varieties Data](https://csvpreview.com/data/tea-varieties): Preview data on different types of tea.
+- [Indian Sweets Data](https://csvpreview.com/data/indian-sweets): View a list of popular Indian sweets.
+- [Spices Data](https://csvpreview.com/data/spices): Explore data on various culinary spices.
+- [Wine Regions Data](https://csvpreview.com/data/wine-regions): Preview data on famous wine-producing regions.
+- [Calories and Macros Data](https://csvpreview.com/data/calories-macros): View data on calories and macronutrients for various foods.
+- [Human Body Organs and Functions Data](https://csvpreview.com/data/human-body-organs-functions): Explore data on human body organs and their functions.
+- [Tallest Buildings World Data](https://csvpreview.com/data/tallest-buildings-world): Preview data on the world's tallest buildings.
+- [Major Earthquakes History Data](https://csvpreview.com/data/major-earthquakes-history): View historical data on major earthquakes.
+- [Planets and Moons Solar System Data](https://csvpreview.com/data/planets-moons-solar-system): Explore data on planets and moons in our solar system.
+- [Endangered Species IUCN Data](https://csvpreview.com/data/endangered-species-iucn): Preview data on endangered species according to IUCN.
+- [Animal Species Lifespan, Diet, Habitat Data](https://csvpreview.com/data/animal-species-lifespan-diet-habitat): View data on animal species' lifespan, diet, and habitat.
+- [Periodic Table Elements Data](https://csvpreview.com/data/periodic-table-elements): Explore data on elements in the periodic table.
+- [Longest Bridges and Tunnels Data](https://csvpreview.com/data/longest-bridges-tunnels): Preview data on the world's longest bridges and tunnels.
+
+---
+
+This file was generated for csvpreview.com using the [LLMs.txt Generator Tool](https://llmrefs.com/tools/llms-txt-generator)

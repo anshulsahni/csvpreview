@@ -105,7 +105,6 @@ export function parseCSV(input: string, options?: ParseOptions): ParseResult {
     skipEmptyLines: "greedy", // skip blank AND whitespace-only lines
     header: false, // always return raw string[][]
   });
-console.log("FINAL OUTPUT:", mapPapaResult(result));
 
 
   // Map PapaParse result to our stable types

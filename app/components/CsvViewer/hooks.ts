@@ -85,6 +85,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setParseErrors([]);
     setCsvData(rows);
     setFileName(name);
+    setSearch("");
     try {
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, name);
@@ -120,6 +121,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setParseErrors([]);
     setFirstRowAsHeader(false);
     setIsUploadOpen(false);
+    setSearch("");
   }
 
   function handleClear() {
@@ -127,6 +129,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);
+    setSearch("");
     try {
       localStorage.removeItem(LS_KEY_DATA);
       localStorage.removeItem(LS_KEY_FILE_NAME);

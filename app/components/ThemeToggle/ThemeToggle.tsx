@@ -1,8 +1,8 @@
 "use client";
 
 import { styled } from "@linaria/react";
-import { useTheme } from "@/app/components/ThemeProvider";
-import type { Theme } from "@/lib/theme";
+import { Theme } from "@/lib/theme";
+import { useThemeToggle } from "./hooks";
 
 const SunIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
@@ -35,20 +35,21 @@ const SystemIcon = () => (
   </svg>
 );
 
-const OPTIONS: Array<{ value: Theme; label: string; Icon: () => React.ReactElement }> = [
-  { value: "light", label: "Light", Icon: SunIcon },
-  { value: "system", label: "System", Icon: SystemIcon },
-  { value: "dark", label: "Dark", Icon: MoonIcon },
-];
+const OPTION_ICONS: Record<Theme, () => React.ReactElement> = {
+  [Theme.Light]: SunIcon,
+  [Theme.System]: SystemIcon,
+  [Theme.Dark]: MoonIcon,
+};
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, options } = useThemeToggle();
 
   return (
     <Wrapper>
       <Group role="radiogroup" aria-label="Color theme">
-        {OPTIONS.map(({ value, label, Icon }) => {
+        {options.map(({ value, label }) => {
           const active = theme === value;
+          const Icon = OPTION_ICONS[value];
           return (
             <Option
               key={value}

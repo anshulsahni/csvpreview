@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import AnalyticsProvider from "@/app/components/AnalyticsProvider";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
-import { THEME_COOKIE_KEY, isTheme, type Theme } from "@/lib/theme";
+import { THEME_COOKIE_KEY, isTheme, Theme } from "@/lib/theme";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 
@@ -45,7 +45,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const stored = (await cookies()).get(THEME_COOKIE_KEY)?.value;
-  const theme: Theme = isTheme(stored) ? stored : "system";
+  const theme: Theme = isTheme(stored) ? stored : Theme.System;
 
   return (
     <html lang="en" data-theme={theme}>

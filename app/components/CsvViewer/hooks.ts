@@ -27,6 +27,7 @@ export interface UseCsvViewerReturn {
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
   handleClear: () => void;
+  handleCellChange: (dataRowIndex: number, colIdx: number, value: string) => void;
 }
 
 function readPersistedRows(): string[][] | null {
@@ -60,6 +61,15 @@ export function useCsvViewer(): UseCsvViewerReturn {
     }
   }, []);
 
+  useEffect(() => {
+    if (csvData === null) return;
+    try {
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(csvData));
+    } catch {
+      // ignore
+    }
+  }, [csvData]);
+
   function ingest(text: string, name: string) {
     const { rows, errors } = parseCSV(text, { delimiter });
     if (errors.length > 0) {
@@ -70,7 +80,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setCsvData(rows);
     setFileName(name);
     try {
-      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, name);
     } catch {
       // localStorage may be unavailable (privacy mode, quota). Non-fatal.
@@ -120,6 +129,21 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setIsUploadOpen(true);
   }
 
+  function handleCellChange(dataRowIndex: number, colIdx: number, value: string) {
+    setCsvData((prev) => {
+      const next = (prev ?? []).map((row) => row.slice());
+      while (next.length <= dataRowIndex) {
+        next.push([]);
+      }
+      const row = next[dataRowIndex]!;
+      while (row.length <= colIdx) {
+        row.push("");
+      }
+      row[colIdx] = value;
+      return next;
+    });
+  }
+
   function openUpload() {
     setIsUploadOpen(true);
   }
@@ -143,5 +167,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     handlePasteSubmit,
     handleStartBlank,
     handleClear,
+    handleCellChange,
   };
 }

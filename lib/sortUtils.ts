@@ -83,15 +83,16 @@ function isSortKeyBlank(value: string, type: ColumnType): boolean {
   return value.trim() === "";
 }
 
-/**
- * Stable sort by column `colIdx`. Does not mutate `rows`.
- * Out-of-range `colIdx` treats every cell as empty (order unchanged except tie-break by index).
- */
-export function sortRows(
+export function sortRowsWithSourceIndices(
   rows: readonly string[][],
+  sourceIndices: readonly number[],
   colIdx: number,
   direction: SortDirection
-): string[][] {
+): { rows: string[][]; sourceIndices: number[] } {
+  if (rows.length !== sourceIndices.length) {
+    throw new Error("rows and sourceIndices length mismatch");
+  }
+
   const values = rows.map((r) =>
     colIdx >= 0 && colIdx < r.length ? r[colIdx] ?? "" : ""
   );
@@ -99,6 +100,7 @@ export function sortRows(
 
   const withIndex = rows.map((row, i) => ({
     row: row.slice(),
+    sourceIndex: sourceIndices[i] ?? i,
     i,
   }));
 
@@ -125,5 +127,8 @@ export function sortRows(
     return x.i - y.i;
   });
 
-  return withIndex.map((x) => x.row);
+  return {
+    rows: withIndex.map((x) => x.row),
+    sourceIndices: withIndex.map((x) => x.sourceIndex),
+  };
 }

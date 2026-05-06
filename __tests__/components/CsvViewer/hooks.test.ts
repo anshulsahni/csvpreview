@@ -348,4 +348,56 @@ describe("useCsvViewer", () => {
       expect(result.current.isUploadOpen).toBe(false);
     });
   });
+
+  describe("handleCellChange()", () => {
+    it("creates missing rows/cols and persists edits from blank state", async () => {
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handleCellChange(2, 3, "edited");
+      });
+
+      expect(result.current.csvData).toEqual([
+        [],
+        [],
+        ["", "", "", "edited"],
+      ]);
+      expect(JSON.parse(localStorage.getItem(LS_KEY_DATA) ?? "[]")).toEqual([
+        [],
+        [],
+        ["", "", "", "edited"],
+      ]);
+    });
+
+    it("updates an existing cell without mutating unrelated cells", async () => {
+      localStorage.setItem(
+        LS_KEY_DATA,
+        JSON.stringify([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() =>
+        expect(result.current.csvData).toEqual([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
+
+      act(() => {
+        result.current.handleCellChange(1, 0, "changed");
+      });
+
+      expect(result.current.csvData).toEqual([
+        ["a", "b"],
+        ["changed", "d"],
+      ]);
+      expect(JSON.parse(localStorage.getItem(LS_KEY_DATA) ?? "[]")).toEqual([
+        ["a", "b"],
+        ["changed", "d"],
+      ]);
+    });
+  });
 });

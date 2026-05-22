@@ -7,6 +7,7 @@ import { THEME_COOKIE_KEY, isTheme, Theme } from "@/lib/theme";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const defaultTitle = "CSV Preview – View CSV Files Instantly in Your Browser";
 const defaultDescription =
@@ -56,6 +57,7 @@ export default async function RootLayout({
           <ThemeToggle />
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

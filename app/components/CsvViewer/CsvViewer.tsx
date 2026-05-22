@@ -15,6 +15,7 @@ export default function CsvViewer() {
         <UploadButton type="button" onClick={viewer.openUpload}>
           Upload
         </UploadButton>
+        {viewer.fileName && <FileName>File: {viewer.fileName}</FileName>}
         <Toolbar
           firstRowAsHeader={viewer.firstRowAsHeader}
           onFirstRowAsHeaderChange={viewer.setFirstRowAsHeader}
@@ -90,4 +91,10 @@ const ClearButton = styled.button`
 const GridArea = styled.div`
   flex: 1;
   overflow: hidden;
+`;
+
+const FileName = styled.span`
+  font-size: 0.85rem;
+  color: var(--foreground);
+  opacity: 0.7;
 `;

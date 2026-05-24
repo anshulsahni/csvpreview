@@ -116,6 +116,22 @@ describe("computeSpreadsheetGridViewModel", () => {
     ]);
   });
 
+  it("header on: first body row moves when sorting column D (CSV-5)", () => {
+    const data = [
+      ["H1", "H2", "H3", "H4"],
+      ["first", "b", "c", "300"],
+      ["second", "b", "c", "100"],
+      ["third", "b", "c", "200"],
+    ];
+    const vm = computeSpreadsheetGridViewModel(data, true, {
+      colIdx: 3,
+      direction: "asc",
+    });
+    expect(vm.bodyRows[0][0]).toBe("second");
+    expect(vm.bodyRows[2][0]).toBe("first");
+    expect(vm.sourceRowIndexForDisplayRow[0]).toBe(1);
+  });
+
   it("single active filter shows filtered count status", () => {
     const vm = computeSpreadsheetGridViewModel(
       [

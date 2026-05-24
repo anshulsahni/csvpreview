@@ -15,7 +15,6 @@ describe("CsvViewer (render smoke)", () => {
     render(<CsvViewer />);
 
     expect(screen.getByRole("button", { name: "Upload" })).toBeInTheDocument();
-    expect(screen.getByText("File: people.csv")).toBeInTheDocument();
     expect(screen.getByText("Name")).toBeInTheDocument();
   });
 

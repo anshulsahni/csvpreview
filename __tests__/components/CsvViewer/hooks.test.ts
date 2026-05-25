@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import {
   LS_KEY_DATA,
   LS_KEY_FILE_NAME,
+  LS_KEY_FIRST_ROW_HEADER,
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 
@@ -314,6 +315,33 @@ describe("useCsvViewer", () => {
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
       expect(result.current.firstRowAsHeader).toBe(false);
+    });
+
+    it("restores persisted header toggle from localStorage", async () => {
+      const rows = [["Name"], ["Alice"]];
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
+      localStorage.setItem(LS_KEY_FIRST_ROW_HEADER, "true");
+
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() =>
+        expect(result.current.firstRowAsHeader).toBe(true)
+      );
+    });
+
+    it("persists header toggle changes to localStorage", async () => {
+      const rows = [["a"]];
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
+
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.csvData).toEqual(rows));
+
+      act(() => {
+        result.current.setFirstRowAsHeader(true);
+      });
+
+      await waitFor(() =>
+        expect(localStorage.getItem(LS_KEY_FIRST_ROW_HEADER)).toBe("true")
+      );
     });
   });
 

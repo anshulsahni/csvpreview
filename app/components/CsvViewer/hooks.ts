@@ -58,7 +58,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
   const [delimiter] = useState<Delimiter>(",");
   const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
-  const isFirstRender = useRef<Boolean>(true);
+  const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
     const persisted = readPersistedRows();

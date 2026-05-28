@@ -2,6 +2,7 @@ import {
   compareValues,
   detectColumnType,
   parseFiniteNumber,
+  sortRowsWithSourceIndices,
 } from "@/lib/sortUtils";
 
 describe("parseFiniteNumber", () => {
@@ -46,6 +47,41 @@ describe("compareValues numeric", () => {
   it("sorts blanks last", () => {
     expect(compareValues("", "5", "numeric")).toBeGreaterThan(0);
     expect(compareValues("5", "", "numeric")).toBeLessThan(0);
+  });
+});
+
+describe("sortRowsWithSourceIndices", () => {
+  it("reorders the first body row and tracks source indices (CSV-5)", () => {
+    const rows = [
+      ["first", "b", "c", "300"],
+      ["second", "b", "c", "100"],
+      ["third", "b", "c", "200"],
+    ];
+    const sorted = sortRowsWithSourceIndices(rows, [0, 1, 2], 3, "asc");
+    expect(sorted.rows[0]).toEqual(["second", "b", "c", "100"]);
+    expect(sorted.sourceIndices).toEqual([1, 2, 0]);
+  });
+
+  it("moves a blank sort key in the first row to the end (asc)", () => {
+    const rows = [
+      ["first", "b", "c", ""],
+      ["second", "b", "c", "100"],
+      ["third", "b", "c", "200"],
+    ];
+    const sorted = sortRowsWithSourceIndices(rows, [0, 1, 2], 3, "asc");
+    expect(sorted.rows[2][0]).toBe("first");
+    expect(sorted.sourceIndices[2]).toBe(0);
+  });
+
+  it("moves a blank sort key in the first row to the end (desc, CSV-5)", () => {
+    const rows = [
+      ["first", "b", "c", ""],
+      ["second", "b", "c", "100"],
+      ["third", "b", "c", "200"],
+    ];
+    const sorted = sortRowsWithSourceIndices(rows, [0, 1, 2], 3, "desc");
+    expect(sorted.rows[2][0]).toBe("first");
+    expect(sorted.sourceIndices[2]).toBe(0);
   });
 });
 

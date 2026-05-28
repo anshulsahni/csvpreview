@@ -24,7 +24,6 @@ export default function CsvViewer() {
             Clear
           </ClearButton>
         )}
-        {viewer.fileName && <FileLabel>File: {viewer.fileName}</FileLabel>}
       </TopBar>
       <GridArea>
         <SpreadsheetGrid
@@ -86,12 +85,6 @@ const ClearButton = styled.button`
   &:hover {
     background: var(--subtle);
   }
-`;
-
-const FileLabel = styled.span`
-  font-size: 0.85rem;
-  color: var(--foreground);
-  opacity: 0.6;
 `;
 
 const GridArea = styled.div`

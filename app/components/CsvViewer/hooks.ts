@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   parseCSV,
   type Delimiter,
@@ -9,6 +9,7 @@ import {
 
 export const LS_KEY_DATA = "csvpreview_data";
 export const LS_KEY_FILE_NAME = "csvpreview_filename";
+export const LS_KEY_FIRST_ROW_HEADER = "csvpreview_first_row_header";
 
 const PASTED_FILENAME = "pasted.csv";
 
@@ -42,6 +43,14 @@ function readPersistedRows(): string[][] | null {
   }
 }
 
+function readPersistedFirstRowAsHeader(): boolean {
+  try {
+    return localStorage.getItem(LS_KEY_FIRST_ROW_HEADER) === "true";
+  } catch {
+    return false;
+  }
+}
+
 export function useCsvViewer(): UseCsvViewerReturn {
   const [csvData, setCsvData] = useState<string[][] | null>(null);
   const [fileName, setFileName] = useState<string>("");
@@ -49,6 +58,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
   const [delimiter] = useState<Delimiter>(",");
   const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
+  const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
     const persisted = readPersistedRows();
@@ -56,10 +66,23 @@ export function useCsvViewer(): UseCsvViewerReturn {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setCsvData(persisted);
       setFileName(localStorage.getItem(LS_KEY_FILE_NAME) ?? "");
+      setFirstRowAsHeader(readPersistedFirstRowAsHeader());
     } else {
       setIsUploadOpen(true);
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+      }
+      localStorage.setItem(LS_KEY_FIRST_ROW_HEADER, String(firstRowAsHeader));
+    } catch {
+      // ignore
+    }
+  }, [firstRowAsHeader]);
 
   useEffect(() => {
     if (csvData === null) return;
@@ -123,6 +146,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     try {
       localStorage.removeItem(LS_KEY_DATA);
       localStorage.removeItem(LS_KEY_FILE_NAME);
+      localStorage.removeItem(LS_KEY_FIRST_ROW_HEADER);
     } catch {
       // ignore
     }

@@ -36,7 +36,7 @@
     "@types/react-dom": "19.2.3",
     "babel-jest": "30.3.0",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.2.3",
+    "eslint-config-next": "16.2.6",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
     "typescript": "5.9.3"

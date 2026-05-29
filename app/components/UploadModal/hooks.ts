@@ -2,13 +2,13 @@
 
 import {
   useEffect,
-  useRef,
   useState,
   type ChangeEvent,
   type DragEvent,
-  type KeyboardEvent,
   type MouseEvent,
 } from "react";
+import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import { ModifierKeys } from "@/app/components/KeyboardShortcuts/keys";
 
 export interface UseUploadModalArgs {
   isOpen: boolean;
@@ -16,6 +16,7 @@ export interface UseUploadModalArgs {
   onFilePicked: (file: File) => void;
   onPasteSubmit: (text: string) => void;
   onStartBlank: () => void;
+  pasteAreaElement?: HTMLTextAreaElement | null;
 }
 
 export interface UseUploadModalReturn {
@@ -29,7 +30,6 @@ export interface UseUploadModalReturn {
   handleDragLeave: (event: DragEvent) => void;
   handleDrop: (event: DragEvent) => void;
   handleFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  handlePasteKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
   submitPastedText: () => void;
   handleBackdropClick: (event: MouseEvent) => void;
   handleCardClick: (event: MouseEvent) => void;
@@ -38,6 +38,20 @@ export interface UseUploadModalReturn {
 }
 
 const NON_CSV_MESSAGE = "Only .csv files are accepted";
+const SUBMIT_PASTE_SHORTCUT = {
+  primaryKey: Keys.Enter,
+  modifierKey: {
+    mac: ModifierKeys.Meta,
+    windows: ModifierKeys.Ctrl,
+  },
+};
+const SUBMIT_PASTE_ALTERNATE_SHORTCUT = {
+  primaryKey: Keys.Enter,
+  modifierKey: {
+    mac: ModifierKeys.Ctrl,
+    windows: ModifierKeys.Meta,
+  },
+};
 
 function isCsvFile(file: File): boolean {
   if (file.type === "text/csv") return true;
@@ -45,18 +59,50 @@ function isCsvFile(file: File): boolean {
 }
 
 export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
-  const { isOpen, onClose, onFilePicked, onPasteSubmit, onStartBlank } = args;
+  const {
+    isOpen,
+    onClose,
+    onFilePicked,
+    onPasteSubmit,
+    onStartBlank,
+    pasteAreaElement = null,
+  } = args;
 
   const [pastedText, setPastedText] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [fileRejectionMessage, setFileRejectionMessage] = useState<string | null>(null);
 
-  // Stash latest callbacks in refs so the Escape-key effect does not re-subscribe
-  // on every parent render.
-  const onCloseRef = useRef(onClose);
-  useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
+  useKeyboardShortcuts(
+    { primaryKey: Keys.Escape },
+    () => onClose(),
+    [onClose],
+    { enabled: isOpen }
+  );
+
+  const handlePasteSubmitShortcut = (event: KeyboardEvent) => {
+    if (
+      !pasteAreaElement ||
+      (event.target !== pasteAreaElement &&
+        document.activeElement !== pasteAreaElement)
+    ) {
+      return;
+    }
+    event.preventDefault();
+    submitPastedText();
+  };
+
+  useKeyboardShortcuts(
+    SUBMIT_PASTE_SHORTCUT,
+    handlePasteSubmitShortcut,
+    [handlePasteSubmitShortcut],
+    { enabled: isOpen, allowInEditable: true }
+  );
+  useKeyboardShortcuts(
+    SUBMIT_PASTE_ALTERNATE_SHORTCUT,
+    handlePasteSubmitShortcut,
+    [handlePasteSubmitShortcut],
+    { enabled: isOpen, allowInEditable: true }
+  );
 
   useEffect(() => {
     if (!isOpen) {
@@ -64,19 +110,7 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
       setPastedText("");
       setIsDragging(false);
       setFileRejectionMessage(null);
-      return;
     }
-
-    function handleKeyDown(event: KeyboardEvent | globalThis.KeyboardEvent) {
-      if ((event as globalThis.KeyboardEvent).key === "Escape") {
-        onCloseRef.current();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown as EventListener);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown as EventListener);
-    };
   }, [isOpen]);
 
   function validateAndSubmitFile(file: File | undefined | null) {
@@ -127,13 +161,6 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
     onPasteSubmit(pastedText);
   }
 
-  function handlePasteKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    const isSubmit = event.key === "Enter" && (event.ctrlKey || event.metaKey);
-    if (!isSubmit) return;
-    event.preventDefault();
-    submitPastedText();
-  }
-
   function handleBackdropClick(event: MouseEvent) {
     if (event.target !== event.currentTarget) return;
     onClose();
@@ -161,7 +188,6 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
     handleDragLeave,
     handleDrop,
     handleFileInputChange,
-    handlePasteKeyDown,
     submitPastedText,
     handleBackdropClick,
     handleCardClick,

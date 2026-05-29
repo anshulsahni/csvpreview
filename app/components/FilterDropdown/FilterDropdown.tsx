@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { styled } from "@linaria/react";
 import type { ColumnFilter } from "@/lib/filterUtils";
+import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 import { useFilterDropdown } from "./hooks";
 
 export interface FilterDropdownProps {
@@ -33,12 +34,9 @@ export default function FilterDropdown({
   });
   const rootRef = useRef<HTMLDivElement>(null);
 
+  useKeyboardShortcuts({ primaryKey: Keys.Escape }, () => onClose(), [onClose]);
+
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
     const onPointerDown = (event: MouseEvent) => {
       if (rootRef.current?.contains(event.target as Node)) return;
       // Let the funnel's own click handler perform the toggle.
@@ -50,10 +48,8 @@ export default function FilterDropdown({
       }
       onClose();
     };
-    document.addEventListener("keydown", onKeyDown);
     document.addEventListener("mousedown", onPointerDown);
     return () => {
-      document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("mousedown", onPointerDown);
     };
   }, [onClose]);

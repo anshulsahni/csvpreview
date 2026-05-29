@@ -1,8 +1,14 @@
 import { act, renderHook, fireEvent } from "@testing-library/react";
+import React from "react";
 import {
   useUploadModal,
   type UseUploadModalArgs,
 } from "@/app/components/UploadModal/hooks";
+import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts/KeyboardShortcutsProvider";
+
+function wrapper({ children }: { children: React.ReactNode }) {
+  return React.createElement(KeyboardShortcutsProvider, null, children);
+}
 
 function makeArgs(overrides?: Partial<UseUploadModalArgs>): UseUploadModalArgs {
   return {
@@ -32,6 +38,17 @@ function makeChangeEvent(file?: File) {
     currentTarget: input,
   } as unknown as React.ChangeEvent<HTMLInputElement>;
 }
+
+function makePasteArea() {
+  const textarea = document.createElement("textarea");
+  document.body.appendChild(textarea);
+  textarea.focus();
+  return textarea;
+}
+
+afterEach(() => {
+  document.body.innerHTML = "";
+});
 
 describe("useUploadModal", () => {
   describe("drag state", () => {
@@ -141,23 +158,22 @@ describe("useUploadModal", () => {
   describe("paste submission", () => {
     it("calls onPasteSubmit on Ctrl+Enter when paste area has content", () => {
       const onPasteSubmit = jest.fn();
+      const pasteArea = makePasteArea();
       const { result } = renderHook(() =>
-        useUploadModal(makeArgs({ onPasteSubmit }))
+        useUploadModal(makeArgs({ onPasteSubmit, pasteAreaElement: pasteArea })),
+        { wrapper }
       );
 
       act(() => {
         result.current.setPastedText("a,b\nc,d");
       });
 
-      const event = {
-        key: "Enter",
-        ctrlKey: true,
-        metaKey: false,
-        preventDefault: jest.fn(),
-      } as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
-
       act(() => {
-        result.current.handlePasteKeyDown(event);
+        fireEvent.keyDown(pasteArea, {
+          key: "Enter",
+          code: "Enter",
+          ctrlKey: true,
+        });
       });
 
       expect(onPasteSubmit).toHaveBeenCalledWith("a,b\nc,d");
@@ -165,8 +181,10 @@ describe("useUploadModal", () => {
 
     it("also fires on Cmd+Enter (mac)", () => {
       const onPasteSubmit = jest.fn();
+      const pasteArea = makePasteArea();
       const { result } = renderHook(() =>
-        useUploadModal(makeArgs({ onPasteSubmit }))
+        useUploadModal(makeArgs({ onPasteSubmit, pasteAreaElement: pasteArea })),
+        { wrapper }
       );
 
       act(() => {
@@ -174,12 +192,11 @@ describe("useUploadModal", () => {
       });
 
       act(() => {
-        result.current.handlePasteKeyDown({
+        fireEvent.keyDown(pasteArea, {
           key: "Enter",
-          ctrlKey: false,
+          code: "Enter",
           metaKey: true,
-          preventDefault: jest.fn(),
-        } as unknown as React.KeyboardEvent<HTMLTextAreaElement>);
+        });
       });
 
       expect(onPasteSubmit).toHaveBeenCalledWith("x,y");
@@ -187,17 +204,18 @@ describe("useUploadModal", () => {
 
     it("does NOT call onPasteSubmit when the paste area is empty", () => {
       const onPasteSubmit = jest.fn();
-      const { result } = renderHook(() =>
-        useUploadModal(makeArgs({ onPasteSubmit }))
+      const pasteArea = makePasteArea();
+      renderHook(() =>
+        useUploadModal(makeArgs({ onPasteSubmit, pasteAreaElement: pasteArea })),
+        { wrapper }
       );
 
       act(() => {
-        result.current.handlePasteKeyDown({
+        fireEvent.keyDown(pasteArea, {
           key: "Enter",
+          code: "Enter",
           ctrlKey: true,
-          metaKey: false,
-          preventDefault: jest.fn(),
-        } as unknown as React.KeyboardEvent<HTMLTextAreaElement>);
+        });
       });
 
       expect(onPasteSubmit).not.toHaveBeenCalled();
@@ -205,8 +223,10 @@ describe("useUploadModal", () => {
 
     it("does NOT fire on plain Enter without a modifier key", () => {
       const onPasteSubmit = jest.fn();
+      const pasteArea = makePasteArea();
       const { result } = renderHook(() =>
-        useUploadModal(makeArgs({ onPasteSubmit }))
+        useUploadModal(makeArgs({ onPasteSubmit, pasteAreaElement: pasteArea })),
+        { wrapper }
       );
 
       act(() => {
@@ -214,12 +234,35 @@ describe("useUploadModal", () => {
       });
 
       act(() => {
-        result.current.handlePasteKeyDown({
+        fireEvent.keyDown(pasteArea, {
           key: "Enter",
-          ctrlKey: false,
-          metaKey: false,
-          preventDefault: jest.fn(),
-        } as unknown as React.KeyboardEvent<HTMLTextAreaElement>);
+          code: "Enter",
+        });
+      });
+
+      expect(onPasteSubmit).not.toHaveBeenCalled();
+    });
+
+    it("does NOT fire when the shortcut is pressed outside the paste area", () => {
+      const onPasteSubmit = jest.fn();
+      const pasteArea = makePasteArea();
+      const { result } = renderHook(() =>
+        useUploadModal(makeArgs({ onPasteSubmit, pasteAreaElement: pasteArea })),
+        { wrapper }
+      );
+      const otherInput = document.createElement("input");
+      document.body.appendChild(otherInput);
+      otherInput.focus();
+
+      act(() => {
+        result.current.setPastedText("a,b");
+      });
+      act(() => {
+        fireEvent.keyDown(otherInput, {
+          key: "Enter",
+          code: "Enter",
+          ctrlKey: true,
+        });
       });
 
       expect(onPasteSubmit).not.toHaveBeenCalled();
@@ -265,10 +308,10 @@ describe("useUploadModal", () => {
   describe("Escape handling", () => {
     it("fires onClose when Escape is pressed while isOpen=true", () => {
       const onClose = jest.fn();
-      renderHook(() => useUploadModal(makeArgs({ onClose })));
+      renderHook(() => useUploadModal(makeArgs({ onClose })), { wrapper });
 
       act(() => {
-        fireEvent.keyDown(window, { key: "Escape" });
+        fireEvent.keyDown(document, { key: "Escape", code: "Escape" });
       });
 
       expect(onClose).toHaveBeenCalledTimes(1);
@@ -277,11 +320,12 @@ describe("useUploadModal", () => {
     it("does NOT fire onClose when Escape is pressed while isOpen=false", () => {
       const onClose = jest.fn();
       renderHook(() =>
-        useUploadModal(makeArgs({ isOpen: false, onClose }))
+        useUploadModal(makeArgs({ isOpen: false, onClose })),
+        { wrapper }
       );
 
       act(() => {
-        fireEvent.keyDown(window, { key: "Escape" });
+        fireEvent.keyDown(document, { key: "Escape", code: "Escape" });
       });
 
       expect(onClose).not.toHaveBeenCalled();
@@ -289,13 +333,13 @@ describe("useUploadModal", () => {
 
     it("does NOT fire onClose for non-Escape keys", () => {
       const onClose = jest.fn();
-      renderHook(() => useUploadModal(makeArgs({ onClose })));
+      renderHook(() => useUploadModal(makeArgs({ onClose })), { wrapper });
 
       act(() => {
-        fireEvent.keyDown(window, { key: "Enter" });
+        fireEvent.keyDown(document, { key: "Enter", code: "Enter" });
       });
       act(() => {
-        fireEvent.keyDown(window, { key: "a" });
+        fireEvent.keyDown(document, { key: "a", code: "KeyA" });
       });
 
       expect(onClose).not.toHaveBeenCalled();

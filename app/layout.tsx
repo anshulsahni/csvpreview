@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import "./globals.css";
 import AnalyticsProvider from "@/app/components/AnalyticsProvider";
+import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { THEME_COOKIE_KEY, isTheme, Theme } from "@/lib/theme";
 import ThemeToggle from "@/app/components/ThemeToggle";
@@ -53,7 +54,9 @@ export default async function RootLayout({
     <html lang="en" data-theme={theme}>
       <body>
         <ThemeProvider initialTheme={theme}>
-          <AnalyticsProvider>{children}</AnalyticsProvider>
+          <KeyboardShortcutsProvider>
+            <AnalyticsProvider>{children}</AnalyticsProvider>
+          </KeyboardShortcutsProvider>
           <ThemeToggle />
         </ThemeProvider>
         <Analytics />

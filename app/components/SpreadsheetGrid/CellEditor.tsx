@@ -7,16 +7,11 @@ import { useState } from "react";
 export interface CellEditorProps {
   initialValue: string;
   onDraftValueChange: (value: string) => void;
-  onKeyDown: (
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-    value: string
-  ) => void;
 }
 
 export default function CellEditor({
   initialValue,
   onDraftValueChange,
-  onKeyDown,
 }: CellEditorProps) {
   const [draft, setDraft] = useState(initialValue);
 
@@ -29,7 +24,6 @@ export default function CellEditor({
         setDraft(next);
         onDraftValueChange(next);
       }}
-      onKeyDown={(event) => onKeyDown(event, event.currentTarget.value)}
       onFocus={(event) => {
         const el = event.currentTarget;
         const end = el.value.length;

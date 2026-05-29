@@ -120,14 +120,12 @@ export default function SpreadsheetGrid({
                     onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
                     onFocus={() => vm.onCellFocus(ri, ci)}
                     onDoubleClick={() => vm.onCellDoubleClick(ri, ci)}
-                    onKeyDown={(event) => vm.onCellKeyDown(event, ri, ci)}
                   >
                     {vm.isEditingCell(ri, ci) ? (
                       <CellEditor
                         key={`editor-${ri}-${ci}-${vm.bodyRows[ri]?.[ci] ?? ""}`}
                         initialValue={vm.bodyRows[ri]?.[ci] ?? ""}
                         onDraftValueChange={vm.onDraftValueChange}
-                        onKeyDown={vm.onEditorKeyDown}
                       />
                     ) : (
                       vm.bodyRows[ri]?.[ci] ?? ""

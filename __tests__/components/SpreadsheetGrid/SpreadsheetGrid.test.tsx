@@ -1,7 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
+import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
+
+function renderWithShortcuts(ui: ReactElement) {
+  return render(<KeyboardShortcutsProvider>{ui}</KeyboardShortcutsProvider>);
+}
 
 function EditableGridHarness({
   initialData,
@@ -36,7 +41,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["Name", "City"],
       ["Alice", "NYC"],
     ];
-    render(
+    renderWithShortcuts(
       <SpreadsheetGrid data={data} firstRowAsHeader />
     );
 
@@ -51,7 +56,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["z", "1"],
       ["a", "2"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const ascColA = screen.getByRole("button", {
       name: "Sort column A ascending",
@@ -70,7 +75,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["a", "b"],
       ["c", "d"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const ascColB = screen.getByRole("button", {
       name: "Sort column B ascending",
@@ -87,7 +92,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["Alice", "Mumbai"],
       ["Bob", "Delhi"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const filterA = screen.getAllByRole("button", {
       name: "Filter column A",
@@ -111,7 +116,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["Bob", "Delhi"],
       ["Carol", "Pune"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const filterCity = screen.getAllByRole("button", {
       name: "Filter column B",
@@ -133,7 +138,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["A1", "B1"],
       ["A2", "B2"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
     const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -159,7 +164,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["r2c1", "r2c2"],
       ["r3c1", "r3c2"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const headers = screen.getAllByRole("columnheader");
     fireEvent.mouseDown(headers[2]);
@@ -176,7 +181,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["r1c1", "r1c2"],
       ["r2c1", "r2c2"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
     const secondRowGutter = table.querySelector("tbody tr:nth-child(2) th");
@@ -194,7 +199,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["1", "2"],
       ["3", "4"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
     const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -220,7 +225,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["foo", "bar"],
       ["baz", "7"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
     const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -247,7 +252,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
       ["z", "1"],
       ["a", "2"],
     ];
-    render(<SpreadsheetGrid data={data} />);
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const ascColA = screen.getByRole("button", {
       name: "Sort column A ascending",
@@ -261,7 +266,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
 
   it("double-click opens editor and Enter commits then moves down", async () => {
     const user = userEvent.setup();
-    render(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
+    renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
 
     const table = screen.getByRole("table");
     const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -281,7 +286,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
 
   it("Shift+Enter inserts newline and Escape commits without moving", async () => {
     const user = userEvent.setup();
-    render(<EditableGridHarness initialData={[["A1", "B1"]]} />);
+    renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"]]} />);
 
     const table = screen.getByRole("table");
     const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -302,7 +307,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
 
   it("Tab commits and moves focus/selection right", async () => {
     const user = userEvent.setup();
-    render(<EditableGridHarness initialData={[["A1", "B1"]]} />);
+    renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"]]} />);
 
     const table = screen.getByRole("table");
     const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -321,7 +326,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
 
   it("places the cursor at the end when entering edit mode", async () => {
     const user = userEvent.setup();
-    render(<EditableGridHarness initialData={[["Existing"]]} />);
+    renderWithShortcuts(<EditableGridHarness initialData={[["Existing"]]} />);
 
     const table = screen.getByRole("table");
     const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
@@ -336,7 +341,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
 
   it("clicking another cell commits the active edit and selects the clicked cell", async () => {
     const user = userEvent.setup();
-    render(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
+    renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
 
     const table = screen.getByRole("table");
     const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");

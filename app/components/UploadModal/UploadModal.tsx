@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { styled } from "@linaria/react";
 import type { ParseError } from "@/lib/csvParser";
 import { useUploadModal } from "./hooks";
@@ -15,7 +15,12 @@ export interface UploadModalProps {
 }
 
 export default function UploadModal(props: UploadModalProps) {
-  const modal = useUploadModal(props);
+  const [pasteAreaElement, setPasteAreaElement] =
+    useState<HTMLTextAreaElement | null>(null);
+  const setPasteAreaRef = useCallback((element: HTMLTextAreaElement | null) => {
+    setPasteAreaElement(element);
+  }, []);
+  const modal = useUploadModal({ ...props, pasteAreaElement });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!props.isOpen) return null;
@@ -69,9 +74,9 @@ export default function UploadModal(props: UploadModalProps) {
 
         <PasteSection>
           <PasteArea
+            ref={setPasteAreaRef}
             value={modal.pastedText}
             onChange={(event) => modal.setPastedText(event.target.value)}
-            onKeyDown={modal.handlePasteKeyDown}
             placeholder="Paste your CSV content here… (Ctrl+V)"
             rows={5}
             aria-label="Paste CSV content"

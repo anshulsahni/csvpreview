@@ -1,4 +1,6 @@
 import { render, screen } from "@testing-library/react";
+import { fireEvent } from "@testing-library/react";
+import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts/KeyboardShortcutsProvider";
 import UploadModal from "@/app/components/UploadModal/UploadModal";
 
 function noop() {}
@@ -72,5 +74,24 @@ describe("UploadModal (render smoke)", () => {
 
     expect(screen.getByText("Line 3: bad quote")).toBeInTheDocument();
     expect(screen.getByText("Line 7: missing field")).toBeInTheDocument();
+  });
+
+  it("closes on Escape through the keyboard shortcut provider", () => {
+    const onClose = jest.fn();
+    render(
+      <KeyboardShortcutsProvider>
+        <UploadModal
+          isOpen
+          onClose={onClose}
+          onFilePicked={noop}
+          onPasteSubmit={noop}
+          onStartBlank={noop}
+          errors={[]}
+        />
+      </KeyboardShortcutsProvider>
+    );
+
+    fireEvent.keyDown(document, { key: "Escape", code: "Escape" });
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

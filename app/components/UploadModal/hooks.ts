@@ -2,13 +2,15 @@
 
 import {
   useEffect,
-  useRef,
   useState,
   type ChangeEvent,
   type DragEvent,
   type KeyboardEvent,
   type MouseEvent,
 } from "react";
+import { Keys, ModifierKeys } from "@/app/components/KeyboardShortcuts/keys";
+import { useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import { matchesShortcut } from "@/app/components/KeyboardShortcuts/utils";
 
 export interface UseUploadModalArgs {
   isOpen: boolean;
@@ -51,12 +53,12 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
   const [isDragging, setIsDragging] = useState(false);
   const [fileRejectionMessage, setFileRejectionMessage] = useState<string | null>(null);
 
-  // Stash latest callbacks in refs so the Escape-key effect does not re-subscribe
-  // on every parent render.
-  const onCloseRef = useRef(onClose);
-  useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
+  useKeyboardShortcuts(
+    { primaryKey: Keys.Escape },
+    () => onClose(),
+    [onClose],
+    { enabled: isOpen }
+  );
 
   useEffect(() => {
     if (!isOpen) {
@@ -64,19 +66,7 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
       setPastedText("");
       setIsDragging(false);
       setFileRejectionMessage(null);
-      return;
     }
-
-    function handleKeyDown(event: KeyboardEvent | globalThis.KeyboardEvent) {
-      if ((event as globalThis.KeyboardEvent).key === "Escape") {
-        onCloseRef.current();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown as EventListener);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown as EventListener);
-    };
   }, [isOpen]);
 
   function validateAndSubmitFile(file: File | undefined | null) {
@@ -128,7 +118,17 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
   }
 
   function handlePasteKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    const isSubmit = event.key === "Enter" && (event.ctrlKey || event.metaKey);
+    const nativeEvent = event.nativeEvent ?? event;
+    const submitShortcut = {
+      primaryKey: Keys.Enter,
+      modifierKey: {
+        mac: ModifierKeys.Meta,
+        windows: ModifierKeys.Ctrl,
+      },
+    };
+    const isSubmit =
+      matchesShortcut(nativeEvent, submitShortcut, "mac") ||
+      matchesShortcut(nativeEvent, submitShortcut, "windows");
     if (!isSubmit) return;
     event.preventDefault();
     submitPastedText();

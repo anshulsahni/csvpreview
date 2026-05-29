@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
+import { Keys } from "@/app/components/KeyboardShortcuts/keys";
+import { matchesShortcut } from "@/app/components/KeyboardShortcuts/utils";
 
 export interface EditingCell {
   rowIdx: number;
@@ -145,7 +147,7 @@ export function useSpreadsheetGridEditing({
       startEditing(rowIdx, colIdx);
     },
     onCellKeyDown: (event, rowIdx, colIdx) => {
-      if (event.key === "Enter" && !event.shiftKey) {
+      if (matchesShortcut(event.nativeEvent, { primaryKey: Keys.Enter })) {
         event.preventDefault();
         startEditing(rowIdx, colIdx);
       }
@@ -155,19 +157,19 @@ export function useSpreadsheetGridEditing({
       if (event.nativeEvent.isComposing) {
         return;
       }
-      if (event.key === "Escape") {
+      if (matchesShortcut(event.nativeEvent, { primaryKey: Keys.Escape })) {
         event.preventDefault();
         event.stopPropagation();
         commitAndStay(value);
         return;
       }
-      if (event.key === "Tab") {
+      if (matchesShortcut(event.nativeEvent, { primaryKey: Keys.Tab })) {
         event.preventDefault();
         event.stopPropagation();
         commitAndMove(value, 0, 1);
         return;
       }
-      if (event.key === "Enter" && !event.shiftKey) {
+      if (matchesShortcut(event.nativeEvent, { primaryKey: Keys.Enter })) {
         event.preventDefault();
         event.stopPropagation();
         commitAndMove(value, 1, 0);

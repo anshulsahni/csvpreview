@@ -1,8 +1,14 @@
 import { act, renderHook, fireEvent } from "@testing-library/react";
+import React from "react";
 import {
   useUploadModal,
   type UseUploadModalArgs,
 } from "@/app/components/UploadModal/hooks";
+import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts";
+
+function wrapper({ children }: { children: React.ReactNode }) {
+  return React.createElement(KeyboardShortcutsProvider, null, children);
+}
 
 function makeArgs(overrides?: Partial<UseUploadModalArgs>): UseUploadModalArgs {
   return {
@@ -265,10 +271,10 @@ describe("useUploadModal", () => {
   describe("Escape handling", () => {
     it("fires onClose when Escape is pressed while isOpen=true", () => {
       const onClose = jest.fn();
-      renderHook(() => useUploadModal(makeArgs({ onClose })));
+      renderHook(() => useUploadModal(makeArgs({ onClose })), { wrapper });
 
       act(() => {
-        fireEvent.keyDown(window, { key: "Escape" });
+        fireEvent.keyDown(document, { key: "Escape", code: "Escape" });
       });
 
       expect(onClose).toHaveBeenCalledTimes(1);
@@ -277,11 +283,12 @@ describe("useUploadModal", () => {
     it("does NOT fire onClose when Escape is pressed while isOpen=false", () => {
       const onClose = jest.fn();
       renderHook(() =>
-        useUploadModal(makeArgs({ isOpen: false, onClose }))
+        useUploadModal(makeArgs({ isOpen: false, onClose })),
+        { wrapper }
       );
 
       act(() => {
-        fireEvent.keyDown(window, { key: "Escape" });
+        fireEvent.keyDown(document, { key: "Escape", code: "Escape" });
       });
 
       expect(onClose).not.toHaveBeenCalled();
@@ -289,13 +296,13 @@ describe("useUploadModal", () => {
 
     it("does NOT fire onClose for non-Escape keys", () => {
       const onClose = jest.fn();
-      renderHook(() => useUploadModal(makeArgs({ onClose })));
+      renderHook(() => useUploadModal(makeArgs({ onClose })), { wrapper });
 
       act(() => {
-        fireEvent.keyDown(window, { key: "Enter" });
+        fireEvent.keyDown(document, { key: "Enter", code: "Enter" });
       });
       act(() => {
-        fireEvent.keyDown(window, { key: "a" });
+        fireEvent.keyDown(document, { key: "a", code: "KeyA" });
       });
 
       expect(onClose).not.toHaveBeenCalled();

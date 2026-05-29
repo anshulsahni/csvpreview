@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { styled } from "@linaria/react";
-import { LS_KEY_DATA, LS_KEY_FILE_NAME } from "@/app/components/CsvViewer/hooks";
+import {
+  LS_KEY_DATA,
+  LS_KEY_FILE_NAME,
+  LS_KEY_FIRST_ROW_HEADER,
+} from "@/app/components/CsvViewer/hooks";
 
 interface Props {
   rows: string[][];
@@ -16,6 +20,7 @@ export default function OpenInEditorButton({ rows, filename }: Props) {
     try {
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, filename);
+      localStorage.setItem(LS_KEY_FIRST_ROW_HEADER, "true");
     } catch {
       // localStorage may be unavailable; navigate anyway — the editor will open the upload modal.
     }

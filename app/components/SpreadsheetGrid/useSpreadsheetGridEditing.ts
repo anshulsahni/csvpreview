@@ -170,6 +170,18 @@ export function useSpreadsheetGridEditing({
   );
 
   useKeyboardShortcuts(
+    { primaryKey: Keys.Escape },
+    (event) => {
+      if (event.isComposing || !isEditorActive()) return;
+      event.preventDefault();
+      event.stopPropagation();
+      commitAndStay(draftValueRef.current);
+    },
+    [editingCell],
+    { allowInEditable: true }
+  );
+
+  useKeyboardShortcuts(
     { primaryKey: Keys.Tab },
     (event) => {
       if (event.isComposing || !isEditorActive()) return;

@@ -27,7 +27,6 @@ export function useSpreadsheetGridNavigation({
   bodyRows,
 }: UseSpreadsheetGridNavigationArgs): void {
   const ctrlArrow = { mac: ModifierKeys.Meta, windows: ModifierKeys.Ctrl };
-  const shiftKey = { mac: ModifierKeys.Shift, windows: ModifierKeys.Shift };
 
   const move =
     (deltaRow: number, deltaCol: number) => (event: KeyboardEvent) => {
@@ -111,11 +110,6 @@ export function useSpreadsheetGridNavigation({
   );
   const homeKey = useManualKeyboardShortcuts({ primaryKey: Keys.Home }, home);
   const endKey = useManualKeyboardShortcuts({ primaryKey: Keys.End }, end);
-  const tab = useManualKeyboardShortcuts({ primaryKey: Keys.Tab }, move(0, 1));
-  const shiftTab = useManualKeyboardShortcuts(
-    { primaryKey: Keys.Tab, modifierKey: shiftKey },
-    move(0, -1),
-  );
 
   const allControls = [
     arrowUp,
@@ -128,8 +122,6 @@ export function useSpreadsheetGridNavigation({
     ctrlRight,
     homeKey,
     endKey,
-    tab,
-    shiftTab,
   ];
 
   const controlsRef = useRef(allControls);

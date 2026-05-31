@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   detectColumnType,
   sortRowsWithSourceIndices,
@@ -39,10 +39,18 @@ export function dataRowIndexFromBodyRowIndex(
   return firstRowAsHeader ? bodyRowIndex + 1 : bodyRowIndex;
 }
 
+export interface GridExportState {
+  headerRow: string[] | null;
+  visibleRows: string[][];
+  rowNumberOffset: number;
+  selection: CellSelection | null;
+}
+
 export interface UseSpreadsheetGridArgs {
   data: string[][];
   firstRowAsHeader: boolean;
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
+  onExportStateChange?: (state: GridExportState) => void;
 }
 
 export interface SpreadsheetGridViewModel {
@@ -290,7 +298,7 @@ function computeViewModel(
 }
 
 export function useSpreadsheetGrid(
-  { data, firstRowAsHeader, onCellChange }: UseSpreadsheetGridArgs
+  { data, firstRowAsHeader, onCellChange, onExportStateChange }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
   const { sort, onArrowClick } = useSortState();
   const {
@@ -339,10 +347,25 @@ export function useSpreadsheetGrid(
     selectSingleCell,
   });
 
-  const onCellMouseDown = (rowIdx: number, colIdx: number) => {
+  const onCellMouseDown = useCallback((rowIdx: number, colIdx: number) => {
     editingVm.onCellMouseDown(rowIdx, colIdx);
     baseOnCellMouseDown(rowIdx, colIdx);
-  };
+  }, [baseOnCellMouseDown, editingVm]);
+
+  useEffect(() => {
+    onExportStateChange?.({
+      headerRow: base.headerRowCells,
+      visibleRows: base.bodyRows,
+      rowNumberOffset: base.rowNumberOffset,
+      selection,
+    });
+  }, [
+    base.bodyRows,
+    base.headerRowCells,
+    base.rowNumberOffset,
+    selection,
+    onExportStateChange,
+  ]);
 
   return useMemo(
     () => ({

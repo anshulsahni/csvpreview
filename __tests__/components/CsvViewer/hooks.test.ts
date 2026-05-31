@@ -3,6 +3,7 @@ import {
   LS_KEY_DATA,
   LS_KEY_FILE_NAME,
   LS_KEY_FIRST_ROW_HEADER,
+  computeDownloadRows,
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 
@@ -64,6 +65,55 @@ afterEach(() => {
 });
 
 describe("useCsvViewer", () => {
+  describe("computeDownloadRows", () => {
+    it("returns visible rows plus header row for full export", () => {
+      expect(
+        computeDownloadRows(
+          [
+            ["Alice", "30"],
+            ["Bob", "25"],
+          ],
+          ["Name", "Age"],
+          null,
+          "full"
+        )
+      ).toEqual([
+        ["Name", "Age"],
+        ["Alice", "30"],
+        ["Bob", "25"],
+      ]);
+    });
+
+    it("returns full visible rows without a header row", () => {
+      expect(
+        computeDownloadRows([["a", "b"]], null, null, "full")
+      ).toEqual([["a", "b"]]);
+    });
+
+    it("returns only the selected rectangle for range export", () => {
+      expect(
+        computeDownloadRows(
+          [
+            ["r1c1", "r1c2", "r1c3"],
+            ["r2c1", "r2c2", "r2c3"],
+          ],
+          ["h1", "h2", "h3"],
+          { anchorRow: 1, anchorCol: 2, activeRow: 0, activeCol: 1 },
+          "range"
+        )
+      ).toEqual([
+        ["r1c2", "r1c3"],
+        ["r2c2", "r2c3"],
+      ]);
+    });
+
+    it("falls back to full export when range scope has no selection", () => {
+      expect(
+        computeDownloadRows([["a"]], ["h"], null, "range")
+      ).toEqual([["h"], ["a"]]);
+    });
+  });
+
   describe("mount behavior", () => {
     it("auto-opens the upload modal when localStorage is empty", async () => {
       const { result } = renderHook(() => useCsvViewer());

@@ -1,11 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   parseCSV,
   type Delimiter,
   type ParseError,
 } from "@/lib/csvParser";
+import { exportCSV } from "@/lib/csvExporter";
+import type { GridExportState } from "../SpreadsheetGrid";
+import {
+  cellRangeLabel,
+  getSelectionBounds,
+  type CellSelection,
+} from "../SpreadsheetGrid/selectionUtils";
+import {
+  computeDefaultFilename,
+  ensureCsvExtension,
+  type DownloadOptions,
+} from "../DownloadModal/hooks";
 
 export const LS_KEY_DATA = "csvpreview_data";
 export const LS_KEY_FILE_NAME = "csvpreview_filename";
@@ -13,17 +25,74 @@ export const LS_KEY_FIRST_ROW_HEADER = "csvpreview_first_row_header";
 
 const PASTED_FILENAME = "pasted.csv";
 
+/**
+ * Build the 2D array to export from the currently visible grid state.
+ *
+ * - `scope === "full"` returns the visible header, when present, plus all
+ *   visible rows (post sort/filter).
+ * - `scope === "range"` returns the rectangular slice bounded by the active
+ *   selection. Falls back to the full visible rows when there is no selection.
+ *
+ * Pure and exported for unit testing.
+ */
+export function computeDownloadRows(
+  visibleRows: string[][],
+  headerRow: string[] | null,
+  selection: CellSelection | null,
+  scope: "full" | "range"
+): string[][] {
+  if (scope === "full") {
+    return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
+  }
+
+  const bounds = getSelectionBounds(selection);
+  if (bounds === null) {
+    return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
+  }
+
+  const result: string[][] = [];
+  for (let r = bounds.top; r <= bounds.bottom; r += 1) {
+    const row = visibleRows[r] ?? [];
+    const slice: string[] = [];
+    for (let c = bounds.left; c <= bounds.right; c += 1) {
+      slice.push(row[c] ?? "");
+    }
+    result.push(slice);
+  }
+  return result;
+}
+
+function triggerCsvDownload(csv: string, filename: string): void {
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+}
+
 export interface UseCsvViewerReturn {
   csvData: string[][] | null;
   fileName: string;
   isUploadOpen: boolean;
+  isDownloadOpen: boolean;
+  defaultDownloadFilename: string;
   parseErrors: ParseError[];
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
+  hasSelection: boolean;
+  selectionLabel?: string;
   setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
   closeUpload: () => void;
+  openDownload: () => void;
+  closeDownload: () => void;
+  handleExportStateChange: (state: GridExportState) => void;
+  handleDownload: (options: DownloadOptions) => void;
   handleFilePicked: (file: File) => void;
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
@@ -55,9 +124,19 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [csvData, setCsvData] = useState<string[][] | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
+  const [isDownloadOpen, setIsDownloadOpen] = useState<boolean>(false);
+  const [downloadFilename, setDownloadFilename] = useState<string>(() =>
+    computeDefaultFilename()
+  );
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
   const [delimiter] = useState<Delimiter>(",");
   const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
+  const [exportState, setExportState] = useState<GridExportState>({
+    headerRow: null,
+    visibleRows: [],
+    rowNumberOffset: 1,
+    selection: null,
+  });
   const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
@@ -143,6 +222,12 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);
+    setExportState({
+      headerRow: null,
+      visibleRows: [],
+      rowNumberOffset: 1,
+      selection: null,
+    });
     try {
       localStorage.removeItem(LS_KEY_DATA);
       localStorage.removeItem(LS_KEY_FILE_NAME);
@@ -177,16 +262,55 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setIsUploadOpen(false);
   }
 
+  function openDownload() {
+    setDownloadFilename(computeDefaultFilename());
+    setIsDownloadOpen(true);
+  }
+
+  function closeDownload() {
+    setIsDownloadOpen(false);
+  }
+
+  const handleExportStateChange = useCallback((state: GridExportState) => {
+    setExportState(state);
+  }, []);
+
+  function handleDownload(options: DownloadOptions) {
+    const rows = computeDownloadRows(
+      exportState.visibleRows,
+      exportState.headerRow,
+      exportState.selection,
+      options.scope
+    );
+    const csv = exportCSV(rows, delimiter);
+    triggerCsvDownload(csv, ensureCsvExtension(options.filename));
+    setIsDownloadOpen(false);
+  }
+
+  const selectionLabel =
+    exportState.selection === null
+      ? undefined
+      : cellRangeLabel(exportState.selection, exportState.rowNumberOffset) ??
+        undefined;
+
   return {
     csvData,
     fileName,
     isUploadOpen,
+    isDownloadOpen,
+    defaultDownloadFilename: downloadFilename,
     parseErrors,
     delimiter,
     firstRowAsHeader,
+    hasSelection: exportState.selection !== null,
+    selectionLabel,
     setFirstRowAsHeader,
     openUpload,
     closeUpload,
+    openDownload,
+    closeDownload,
+    handleExportStateChange,
+    handleDownload,
     handleFilePicked,
     handlePasteSubmit,
     handleStartBlank,

@@ -4,6 +4,7 @@ import { styled } from "@linaria/react";
 import SpreadsheetGrid from "../SpreadsheetGrid";
 import Toolbar from "../Toolbar";
 import UploadModal from "../UploadModal";
+import DownloadModal from "../DownloadModal";
 import { useCsvViewer } from "./hooks";
 
 export default function CsvViewer() {
@@ -20,6 +21,11 @@ export default function CsvViewer() {
           onFirstRowAsHeaderChange={viewer.setFirstRowAsHeader}
         />
         {viewer.csvData && (
+          <DownloadButton type="button" onClick={viewer.openDownload}>
+            Download
+          </DownloadButton>
+        )}
+        {viewer.csvData && (
           <ClearButton type="button" onClick={viewer.handleClear}>
             Clear
           </ClearButton>
@@ -30,6 +36,7 @@ export default function CsvViewer() {
           data={viewer.csvData ?? []}
           firstRowAsHeader={viewer.firstRowAsHeader}
           onCellChange={viewer.handleCellChange}
+          onExportStateChange={viewer.handleExportStateChange}
         />
       </GridArea>
       <UploadModal
@@ -40,6 +47,16 @@ export default function CsvViewer() {
         onStartBlank={viewer.handleStartBlank}
         errors={viewer.parseErrors}
       />
+      {viewer.isDownloadOpen && (
+        <DownloadModal
+          isOpen
+          onClose={viewer.closeDownload}
+          defaultFilename={viewer.defaultDownloadFilename}
+          hasSelection={viewer.hasSelection}
+          selectionLabel={viewer.selectionLabel}
+          onDownload={viewer.handleDownload}
+        />
+      )}
     </Wrapper>
   );
 }
@@ -74,6 +91,20 @@ const UploadButton = styled.button`
 `;
 
 const ClearButton = styled.button`
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--subtle);
+  }
+`;
+
+const DownloadButton = styled.button`
   background: transparent;
   color: var(--foreground);
   border: 1px solid var(--border);

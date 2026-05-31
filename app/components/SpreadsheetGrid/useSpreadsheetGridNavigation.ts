@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useRef, type RefObject } from "react";
-import { Keys, useManualKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import {
+  Keys,
+  useManualKeyboardShortcuts,
+} from "@/app/components/KeyboardShortcuts";
 import { ModifierKeys } from "@/app/components/KeyboardShortcuts/keys";
-import { clampCell, findDataBlockEdge, lastNonEmptyColInRow } from "./navigationUtils";
+import {
+  clampCell,
+  findDataBlockEdge,
+  lastNonEmptyColInRow,
+} from "./navigationUtils";
 import { getActiveCellFromDom, focusCellAt } from "./gridDomUtils";
 
 interface UseSpreadsheetGridNavigationArgs {
@@ -22,13 +29,19 @@ export function useSpreadsheetGridNavigation({
   const ctrlArrow = { mac: ModifierKeys.Meta, windows: ModifierKeys.Ctrl };
   const shiftKey = { mac: ModifierKeys.Shift, windows: ModifierKeys.Shift };
 
-  const move = (deltaRow: number, deltaCol: number) => (event: KeyboardEvent) => {
-    const cell = getActiveCellFromDom();
-    if (!cell) return;
-    event.preventDefault();
-    const target = clampCell(cell.rowIdx + deltaRow, cell.colIdx + deltaCol, numRows, numCols);
-    focusCellAt(target.rowIdx, target.colIdx);
-  };
+  const move =
+    (deltaRow: number, deltaCol: number) => (event: KeyboardEvent) => {
+      const cell = getActiveCellFromDom();
+      if (!cell) return;
+      event.preventDefault();
+      const target = clampCell(
+        cell.rowIdx + deltaRow,
+        cell.colIdx + deltaCol,
+        numRows,
+        numCols,
+      );
+      focusCellAt(target.rowIdx, target.colIdx);
+    };
 
   const jump =
     (rowDelta: number, colDelta: number) => (event: KeyboardEvent) => {
@@ -105,9 +118,18 @@ export function useSpreadsheetGridNavigation({
   );
 
   const allControls = [
-    arrowUp, arrowDown, arrowLeft, arrowRight,
-    ctrlUp, ctrlDown, ctrlLeft, ctrlRight,
-    homeKey, endKey, tab, shiftTab,
+    arrowUp,
+    arrowDown,
+    arrowLeft,
+    arrowRight,
+    ctrlUp,
+    ctrlDown,
+    ctrlLeft,
+    ctrlRight,
+    homeKey,
+    endKey,
+    tab,
+    shiftTab,
   ];
 
   const controlsRef = useRef(allControls);
@@ -120,13 +142,19 @@ export function useSpreadsheetGridNavigation({
     if (!el) return;
 
     const onFocusIn = (event: FocusEvent) => {
-      if (event.target instanceof HTMLElement && event.target.matches("[data-row][data-col]")) {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches("[data-row][data-col]")
+      ) {
         controlsRef.current.forEach((control) => control.attach());
       }
     };
 
     const onFocusOut = (event: FocusEvent) => {
-      if (event.target instanceof HTMLElement && event.target.matches("[data-row][data-col]")) {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches("[data-row][data-col]")
+      ) {
         controlsRef.current.forEach((control) => control.detach());
       }
     };

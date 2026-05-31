@@ -20,6 +20,8 @@ const KEY_FALLBACKS: Partial<Record<Keys, string>> = {
   [Keys.Enter]: "Enter",
   [Keys.Tab]: "Tab",
   [Keys.Space]: " ",
+  [Keys.Home]: "Home",
+  [Keys.End]: "End",
   [Keys.ArrowUp]: "ArrowUp",
   [Keys.ArrowDown]: "ArrowDown",
   [Keys.ArrowLeft]: "ArrowLeft",

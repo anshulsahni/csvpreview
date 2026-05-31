@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import { focusCellAt, getActiveCellFromDom } from "./gridDomUtils";
 
 export interface EditingCell {
   rowIdx: number;
@@ -90,10 +91,7 @@ export function useSpreadsheetGridEditing({
     const pending = pendingFocusCellRef.current;
     if (pending === null) return;
     pendingFocusCellRef.current = null;
-    const el = document.querySelector<HTMLElement>(
-      `[data-row="${pending.rowIdx}"][data-col="${pending.colIdx}"]`
-    );
-    el?.focus();
+    focusCellAt(pending.rowIdx, pending.colIdx);
   }, [editingCell]);
 
   const commitAndMove = (value: string, deltaRow: number, deltaCol: number) => {
@@ -123,16 +121,7 @@ export function useSpreadsheetGridEditing({
     setFocusedCell({ rowIdx, colIdx });
   };
 
-  const activeFocusedCell = (): EditingCell | null => {
-    const activeElement = document.activeElement;
-    if (!(activeElement instanceof HTMLElement)) return null;
-    if (!activeElement.matches("[data-row][data-col]")) return null;
-
-    const rowIdx = Number(activeElement.dataset.row);
-    const colIdx = Number(activeElement.dataset.col);
-    if (!Number.isInteger(rowIdx) || !Number.isInteger(colIdx)) return null;
-    return { rowIdx, colIdx };
-  };
+  const activeFocusedCell = (): EditingCell | null => getActiveCellFromDom();
 
   const isEditorActive = () => {
     if (editingCell === null) return false;

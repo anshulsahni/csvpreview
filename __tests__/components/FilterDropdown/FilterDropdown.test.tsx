@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts";
 import FilterDropdown from "@/app/components/FilterDropdown";
 
 describe("FilterDropdown", () => {
@@ -64,5 +65,25 @@ describe("FilterDropdown", () => {
 
     await user.click(screen.getByRole("button", { name: "Clear" }));
     expect(onClear).toHaveBeenCalled();
+  });
+
+  it("closes on Escape through the keyboard shortcut provider", () => {
+    const onClose = jest.fn();
+    render(
+      <KeyboardShortcutsProvider>
+        <FilterDropdown
+          title="City"
+          columnType="text"
+          uniqueValues={["Delhi"]}
+          currentFilter={null}
+          onApply={jest.fn()}
+          onClear={jest.fn()}
+          onClose={onClose}
+        />
+      </KeyboardShortcutsProvider>
+    );
+
+    fireEvent.keyDown(document, { key: "Escape", code: "Escape" });
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

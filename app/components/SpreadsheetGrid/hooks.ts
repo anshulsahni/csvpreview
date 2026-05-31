@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { KeyboardEvent } from "react";
 import {
   detectColumnType,
   sortRowsWithSourceIndices,
@@ -79,15 +78,6 @@ export interface SpreadsheetGridViewModel {
   onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
   onCellFocus: (rowIdx: number, colIdx: number) => void;
   onCellDoubleClick: (rowIdx: number, colIdx: number) => void;
-  onCellKeyDown: (
-    event: KeyboardEvent,
-    rowIdx: number,
-    colIdx: number
-  ) => void;
-  onEditorKeyDown: (
-    event: KeyboardEvent<HTMLTextAreaElement>,
-    value: string
-  ) => void;
   onDraftValueChange: (value: string) => void;
   onColumnHeaderMouseDown: (colIdx: number) => void;
   onRowGutterMouseDown: (rowIdx: number) => void;
@@ -185,8 +175,6 @@ function computeViewModel(
   | "onCellMouseEnter"
   | "onCellFocus"
   | "onCellDoubleClick"
-  | "onCellKeyDown"
-  | "onEditorKeyDown"
   | "onDraftValueChange"
   | "onColumnHeaderMouseDown"
   | "onRowGutterMouseDown"
@@ -371,8 +359,6 @@ export function useSpreadsheetGrid(
       onCellMouseEnter,
       onCellFocus: editingVm.onCellFocus,
       onCellDoubleClick: editingVm.onCellDoubleClick,
-      onCellKeyDown: editingVm.onCellKeyDown,
-      onEditorKeyDown: editingVm.onEditorKeyDown,
       onDraftValueChange: editingVm.onDraftValueChange,
       onColumnHeaderMouseDown,
       onRowGutterMouseDown,
@@ -424,8 +410,6 @@ export function computeSpreadsheetGridViewModel(
   | "onCellMouseEnter"
   | "onCellFocus"
   | "onCellDoubleClick"
-  | "onCellKeyDown"
-  | "onEditorKeyDown"
   | "onDraftValueChange"
   | "onColumnHeaderMouseDown"
   | "onRowGutterMouseDown"

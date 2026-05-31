@@ -8,6 +8,7 @@ const customConfig: Config = {
   testEnvironment: "jest-environment-jsdom",
   moduleNameMapper: {
     "^.+\\.css$": "<rootDir>/__mocks__/styleMock.ts",
+    "^uuid$": "<rootDir>/__mocks__/uuid.ts",
   },
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",

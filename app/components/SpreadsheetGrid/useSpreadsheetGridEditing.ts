@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { KeyboardEvent } from "react";
+import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 
 export interface EditingCell {
   rowIdx: number;
@@ -26,11 +26,6 @@ export interface SpreadsheetGridEditingVm {
   onCellFocus: (rowIdx: number, colIdx: number) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellDoubleClick: (rowIdx: number, colIdx: number) => void;
-  onCellKeyDown: (event: KeyboardEvent, rowIdx: number, colIdx: number) => void;
-  onEditorKeyDown: (
-    event: KeyboardEvent<HTMLTextAreaElement>,
-    value: string
-  ) => void;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -128,6 +123,88 @@ export function useSpreadsheetGridEditing({
     setFocusedCell({ rowIdx, colIdx });
   };
 
+  const activeFocusedCell = (): EditingCell | null => {
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLElement)) return null;
+    if (!activeElement.matches("[data-row][data-col]")) return null;
+
+    const rowIdx = Number(activeElement.dataset.row);
+    const colIdx = Number(activeElement.dataset.col);
+    if (!Number.isInteger(rowIdx) || !Number.isInteger(colIdx)) return null;
+    return { rowIdx, colIdx };
+  };
+
+  const isEditorActive = () => {
+    if (editingCell === null) return false;
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLTextAreaElement)) return false;
+
+    const editingCellElement = activeElement.closest<HTMLElement>(
+      "[data-row][data-col]"
+    );
+    return (
+      editingCellElement?.dataset.row === String(editingCell.rowIdx) &&
+      editingCellElement.dataset.col === String(editingCell.colIdx)
+    );
+  };
+
+  useKeyboardShortcuts(
+    { primaryKey: Keys.Enter },
+    (event) => {
+      if (event.isComposing) return;
+      if (isEditorActive()) {
+        event.preventDefault();
+        event.stopPropagation();
+        commitAndMove(draftValueRef.current, 1, 0);
+        return;
+      }
+
+      if (editingCell !== null) return;
+      const cell = activeFocusedCell();
+      if (cell === null) return;
+      event.preventDefault();
+      startEditing(cell.rowIdx, cell.colIdx);
+    },
+    [editingCell],
+    { allowInEditable: true }
+  );
+
+  useKeyboardShortcuts(
+    { primaryKey: Keys.Escape },
+    (event) => {
+      if (event.isComposing || !isEditorActive()) return;
+      event.preventDefault();
+      event.stopPropagation();
+      commitAndStay(draftValueRef.current);
+    },
+    [editingCell],
+    { allowInEditable: true }
+  );
+
+  useKeyboardShortcuts(
+    { primaryKey: Keys.Tab },
+    (event) => {
+      if (event.isComposing || !isEditorActive()) return;
+      event.preventDefault();
+      event.stopPropagation();
+      commitAndStay(draftValueRef.current);
+    },
+    [editingCell],
+    { allowInEditable: true }
+  );
+
+  useKeyboardShortcuts(
+    { primaryKey: Keys.Tab },
+    (event) => {
+      if (event.isComposing || !isEditorActive()) return;
+      event.preventDefault();
+      event.stopPropagation();
+      commitAndMove(draftValueRef.current, 0, 1);
+    },
+    [editingCell],
+    { allowInEditable: true }
+  );
+
   return {
     focusedCell,
     editingCell,
@@ -143,35 +220,6 @@ export function useSpreadsheetGridEditing({
     },
     onCellDoubleClick: (rowIdx, colIdx) => {
       startEditing(rowIdx, colIdx);
-    },
-    onCellKeyDown: (event, rowIdx, colIdx) => {
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        startEditing(rowIdx, colIdx);
-      }
-    },
-    onEditorKeyDown: (event, value) => {
-      draftValueRef.current = value;
-      if (event.nativeEvent.isComposing) {
-        return;
-      }
-      if (event.key === "Escape") {
-        event.preventDefault();
-        event.stopPropagation();
-        commitAndStay(value);
-        return;
-      }
-      if (event.key === "Tab") {
-        event.preventDefault();
-        event.stopPropagation();
-        commitAndMove(value, 0, 1);
-        return;
-      }
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        event.stopPropagation();
-        commitAndMove(value, 1, 0);
-      }
     },
   };
 }

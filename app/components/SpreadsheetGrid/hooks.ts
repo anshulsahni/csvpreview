@@ -42,6 +42,8 @@ export function dataRowIndexFromBodyRowIndex(
 export interface GridExportState {
   headerRow: string[] | null;
   visibleRows: string[][];
+  unfilteredRows: string[][];
+  hasActiveFilter: boolean;
 }
 
 export interface UseSpreadsheetGridArgs {
@@ -58,6 +60,8 @@ export interface SpreadsheetGridViewModel {
   numRows: number;
   /** Body rows after optional sort (display order). */
   bodyRows: string[][];
+  /** All body rows after optional sort but ignoring active column filters. */
+  unfilteredBodyRows: string[][];
   headerRowCells: string[] | null;
   rowNumberOffset: number;
   colLabel: (idx: number) => string;
@@ -223,6 +227,16 @@ function computeViewModel(
     displayBodyRows = sorted.rows;
     sourceRowIndexForDisplayRow = sorted.sourceIndices;
   }
+  let unfilteredBodyRows = bodyRows;
+  if (sort !== null && bodyRows.length > 0) {
+    const sortedAll = sortRowsWithSourceIndices(
+      bodyRows,
+      baseSourceIndices,
+      sort.colIdx,
+      sort.direction
+    );
+    unfilteredBodyRows = sortedAll.rows;
+  }
   const filteredRows = filtered.rows;
   const visibleRowCount = displayBodyRows.length;
   const activeFilterEntries = Object.entries(filters);
@@ -277,6 +291,7 @@ function computeViewModel(
     numCols,
     numRows,
     bodyRows: displayBodyRows,
+    unfilteredBodyRows,
     headerRowCells,
     rowNumberOffset,
     colLabel,
@@ -354,8 +369,16 @@ export function useSpreadsheetGrid(
     onExportStateChange?.({
       headerRow: base.headerRowCells,
       visibleRows: base.bodyRows,
+      unfilteredRows: base.unfilteredBodyRows,
+      hasActiveFilter: base.activeFilterCount > 0,
     });
-  }, [base.bodyRows, base.headerRowCells, onExportStateChange]);
+  }, [
+    base.bodyRows,
+    base.unfilteredBodyRows,
+    base.activeFilterCount,
+    base.headerRowCells,
+    onExportStateChange,
+  ]);
 
   return useMemo(
     () => ({

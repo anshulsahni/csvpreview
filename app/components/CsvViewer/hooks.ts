@@ -54,11 +54,13 @@ export interface UseCsvViewerReturn {
   parseErrors: ParseError[];
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
+  hasActiveFilter: boolean;
   setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
   closeUpload: () => void;
   openDownload: () => void;
+  openDownloadAllRows: () => void;
   closeDownload: () => void;
   handleExportStateChange: (state: GridExportState) => void;
   handleDownload: (options: DownloadOptions) => void;
@@ -103,7 +105,10 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [exportState, setExportState] = useState<GridExportState>({
     headerRow: null,
     visibleRows: [],
+    unfilteredRows: [],
+    hasActiveFilter: false,
   });
+  const [downloadIgnoreFilter, setDownloadIgnoreFilter] = useState<boolean>(false);
   const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
@@ -192,6 +197,8 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setExportState({
       headerRow: null,
       visibleRows: [],
+      unfilteredRows: [],
+      hasActiveFilter: false,
     });
     try {
       localStorage.removeItem(LS_KEY_DATA);
@@ -229,6 +236,13 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function openDownload() {
     setDownloadFilename(computeDefaultFilename());
+    setDownloadIgnoreFilter(false);
+    setIsDownloadOpen(true);
+  }
+
+  function openDownloadAllRows() {
+    setDownloadFilename(computeDefaultFilename());
+    setDownloadIgnoreFilter(true);
     setIsDownloadOpen(true);
   }
 
@@ -241,10 +255,10 @@ export function useCsvViewer(): UseCsvViewerReturn {
   }, []);
 
   function handleDownload(options: DownloadOptions) {
-    const rows = computeDownloadRows(
-      exportState.visibleRows,
-      exportState.headerRow
-    );
+    const sourceRows = downloadIgnoreFilter
+      ? exportState.unfilteredRows
+      : exportState.visibleRows;
+    const rows = computeDownloadRows(sourceRows, exportState.headerRow);
     const csv = exportCSV(rows, delimiter);
     triggerCsvDownload(csv, ensureCsvExtension(options.filename));
     setIsDownloadOpen(false);
@@ -259,10 +273,12 @@ export function useCsvViewer(): UseCsvViewerReturn {
     parseErrors,
     delimiter,
     firstRowAsHeader,
+    hasActiveFilter: exportState.hasActiveFilter,
     setFirstRowAsHeader,
     openUpload,
     closeUpload,
     openDownload,
+    openDownloadAllRows,
     closeDownload,
     handleExportStateChange,
     handleDownload,

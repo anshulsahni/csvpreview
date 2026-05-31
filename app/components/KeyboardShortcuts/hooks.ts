@@ -72,7 +72,7 @@ export function useManualKeyboardShortcuts(
 
   useEffect(() => {
     handlerRef.current = handler;
-  });
+  }, [handler]);
 
   const attach = () => {
     if (!context || attachedRef.current) return;

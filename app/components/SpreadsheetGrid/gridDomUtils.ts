@@ -5,6 +5,7 @@ export function getActiveCellFromDom(): { rowIdx: number; colIdx: number } | nul
   const rowIdx = Number(el.dataset.row);
   const colIdx = Number(el.dataset.col);
   if (!Number.isInteger(rowIdx) || !Number.isInteger(colIdx)) return null;
+  if (rowIdx < 0 || colIdx < 0) return null;
   return { rowIdx, colIdx };
 }
 

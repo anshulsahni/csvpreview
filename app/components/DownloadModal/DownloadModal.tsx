@@ -10,10 +10,6 @@ export default function DownloadModal(props: DownloadModalProps) {
 
   if (!props.isOpen) return null;
 
-  const rangeLabel = props.selectionLabel
-    ? `Selected range only - ${props.selectionLabel}`
-    : "Selected range only";
-
   return (
     <Backdrop onClick={modal.handleBackdropClick} role="presentation">
       <Card
@@ -44,31 +40,6 @@ export default function DownloadModal(props: DownloadModalProps) {
               aria-label="Download filename"
             />
           </Field>
-
-          <Fieldset>
-            <Legend>What to export</Legend>
-            <RadioOption>
-              <input
-                type="radio"
-                name="download-scope"
-                value="full"
-                checked={modal.scope === "full"}
-                onChange={() => modal.setScope("full")}
-              />
-              <span>Full CSV</span>
-            </RadioOption>
-            <RadioOption data-disabled={!props.hasSelection ? "true" : undefined}>
-              <input
-                type="radio"
-                name="download-scope"
-                value="range"
-                checked={modal.scope === "range"}
-                disabled={!props.hasSelection}
-                onChange={() => modal.setScope("range")}
-              />
-              <span>{rangeLabel}</span>
-            </RadioOption>
-          </Fieldset>
 
           <Footer>
             <CancelButton type="button" onClick={modal.handleCloseClick}>
@@ -172,36 +143,6 @@ const FilenameInput = styled.input`
   &:focus {
     outline: 2px solid var(--primary);
     outline-offset: 1px;
-  }
-`;
-
-const Fieldset = styled.fieldset`
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.6rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin: 0;
-`;
-
-const Legend = styled.legend`
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0 0.35rem;
-  opacity: 0.8;
-`;
-
-const RadioOption = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-
-  &[data-disabled="true"] {
-    opacity: 0.45;
-    cursor: not-allowed;
   }
 `;
 

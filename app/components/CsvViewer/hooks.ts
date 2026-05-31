@@ -9,11 +9,6 @@ import {
 import { exportCSV } from "@/lib/csvExporter";
 import type { GridExportState } from "../SpreadsheetGrid";
 import {
-  cellRangeLabel,
-  getSelectionBounds,
-  type CellSelection,
-} from "../SpreadsheetGrid/selectionUtils";
-import {
   computeDefaultFilename,
   ensureCsvExtension,
   type DownloadOptions,
@@ -26,40 +21,16 @@ export const LS_KEY_FIRST_ROW_HEADER = "csvpreview_first_row_header";
 const PASTED_FILENAME = "pasted.csv";
 
 /**
- * Build the 2D array to export from the currently visible grid state.
- *
- * - `scope === "full"` returns the visible header, when present, plus all
- *   visible rows (post sort/filter).
- * - `scope === "range"` returns the rectangular slice bounded by the active
- *   selection. Falls back to the full visible rows when there is no selection.
+ * Build the 2D array to export from the currently visible grid state: the
+ * visible header, when present, plus all visible rows (post sort/filter).
  *
  * Pure and exported for unit testing.
  */
 export function computeDownloadRows(
   visibleRows: string[][],
-  headerRow: string[] | null,
-  selection: CellSelection | null,
-  scope: "full" | "range"
+  headerRow: string[] | null
 ): string[][] {
-  if (scope === "full") {
-    return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
-  }
-
-  const bounds = getSelectionBounds(selection);
-  if (bounds === null) {
-    return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
-  }
-
-  const result: string[][] = [];
-  for (let r = bounds.top; r <= bounds.bottom; r += 1) {
-    const row = visibleRows[r] ?? [];
-    const slice: string[] = [];
-    for (let c = bounds.left; c <= bounds.right; c += 1) {
-      slice.push(row[c] ?? "");
-    }
-    result.push(slice);
-  }
-  return result;
+  return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
 }
 
 function triggerCsvDownload(csv: string, filename: string): void {
@@ -83,8 +54,6 @@ export interface UseCsvViewerReturn {
   parseErrors: ParseError[];
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
-  hasSelection: boolean;
-  selectionLabel?: string;
   setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
@@ -134,8 +103,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [exportState, setExportState] = useState<GridExportState>({
     headerRow: null,
     visibleRows: [],
-    rowNumberOffset: 1,
-    selection: null,
   });
   const isFirstRender = useRef<boolean>(true);
 
@@ -225,8 +192,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setExportState({
       headerRow: null,
       visibleRows: [],
-      rowNumberOffset: 1,
-      selection: null,
     });
     try {
       localStorage.removeItem(LS_KEY_DATA);
@@ -278,20 +243,12 @@ export function useCsvViewer(): UseCsvViewerReturn {
   function handleDownload(options: DownloadOptions) {
     const rows = computeDownloadRows(
       exportState.visibleRows,
-      exportState.headerRow,
-      exportState.selection,
-      options.scope
+      exportState.headerRow
     );
     const csv = exportCSV(rows, delimiter);
     triggerCsvDownload(csv, ensureCsvExtension(options.filename));
     setIsDownloadOpen(false);
   }
-
-  const selectionLabel =
-    exportState.selection === null
-      ? undefined
-      : cellRangeLabel(exportState.selection, exportState.rowNumberOffset) ??
-        undefined;
 
   return {
     csvData,
@@ -302,8 +259,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     parseErrors,
     delimiter,
     firstRowAsHeader,
-    hasSelection: exportState.selection !== null,
-    selectionLabel,
     setFirstRowAsHeader,
     openUpload,
     closeUpload,

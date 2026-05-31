@@ -3,28 +3,21 @@
 import { useCallback, useState } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 
-export type DownloadScope = "full" | "range";
-
 export interface DownloadOptions {
   filename: string;
-  scope: DownloadScope;
 }
 
 export interface DownloadModalRenderProps {
   isOpen: boolean;
   onClose: () => void;
   defaultFilename: string;
-  hasSelection: boolean;
-  selectionLabel?: string;
   onDownload: (options: DownloadOptions) => void;
 }
 
 export interface UseDownloadModalReturn {
   filename: string;
-  scope: DownloadScope;
   canDownload: boolean;
   setFilename: (value: string) => void;
-  setScope: (value: DownloadScope) => void;
   handleBackdropClick: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleCardClick: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleCloseClick: () => void;
@@ -56,11 +49,9 @@ export function useDownloadModal({
   isOpen,
   onClose,
   defaultFilename,
-  hasSelection,
   onDownload,
 }: DownloadModalRenderProps): UseDownloadModalReturn {
   const [filename, setFilename] = useState(defaultFilename);
-  const [scope, setScope] = useState<DownloadScope>("full");
 
   const handleBackdropClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -85,14 +76,9 @@ export function useDownloadModal({
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const effectiveScope: DownloadScope =
-        scope === "range" && !hasSelection ? "full" : scope;
-      onDownload({
-        filename: ensureCsvExtension(filename),
-        scope: effectiveScope,
-      });
+      onDownload({ filename: ensureCsvExtension(filename) });
     },
-    [filename, scope, hasSelection, onDownload]
+    [filename, onDownload]
   );
 
   useKeyboardShortcuts(
@@ -104,10 +90,8 @@ export function useDownloadModal({
 
   return {
     filename,
-    scope,
     canDownload: filename.trim() !== "",
     setFilename,
-    setScope,
     handleBackdropClick,
     handleCardClick,
     handleCloseClick,

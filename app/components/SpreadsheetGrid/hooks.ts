@@ -42,8 +42,6 @@ export function dataRowIndexFromBodyRowIndex(
 export interface GridExportState {
   headerRow: string[] | null;
   visibleRows: string[][];
-  rowNumberOffset: number;
-  selection: CellSelection | null;
 }
 
 export interface UseSpreadsheetGridArgs {
@@ -356,16 +354,8 @@ export function useSpreadsheetGrid(
     onExportStateChange?.({
       headerRow: base.headerRowCells,
       visibleRows: base.bodyRows,
-      rowNumberOffset: base.rowNumberOffset,
-      selection,
     });
-  }, [
-    base.bodyRows,
-    base.headerRowCells,
-    base.rowNumberOffset,
-    selection,
-    onExportStateChange,
-  ]);
+  }, [base.bodyRows, base.headerRowCells, onExportStateChange]);
 
   return useMemo(
     () => ({

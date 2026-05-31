@@ -52,8 +52,6 @@ export default function CsvViewer() {
           isOpen
           onClose={viewer.closeDownload}
           defaultFilename={viewer.defaultDownloadFilename}
-          hasSelection={viewer.hasSelection}
-          selectionLabel={viewer.selectionLabel}
           onDownload={viewer.handleDownload}
         />
       )}

@@ -19,7 +19,6 @@ function makeArgs(
     isOpen: true,
     onClose: jest.fn(),
     defaultFilename: "csvpreview-export-2026-05-31.csv",
-    hasSelection: false,
     onDownload: jest.fn(),
     ...overrides,
   };
@@ -51,25 +50,41 @@ describe("DownloadModal hooks", () => {
   });
 
   describe("useDownloadModal", () => {
-    it("defaults to full scope and the provided filename", () => {
+    it("defaults to the provided filename", () => {
       const { result } = renderHook(() => useDownloadModal(makeArgs()), {
         wrapper,
       });
 
       expect(result.current.filename).toBe("csvpreview-export-2026-05-31.csv");
-      expect(result.current.scope).toBe("full");
     });
 
-    it("submits the edited filename and selected range scope", () => {
+    it("submits the edited filename", () => {
       const onDownload = jest.fn();
       const { result } = renderHook(
-        () => useDownloadModal(makeArgs({ hasSelection: true, onDownload })),
+        () => useDownloadModal(makeArgs({ onDownload })),
         { wrapper }
       );
 
       act(() => {
-        result.current.setFilename("range-export");
-        result.current.setScope("range");
+        result.current.setFilename("my-export");
+      });
+
+      act(() => {
+        result.current.handleSubmit(makeSubmitEvent());
+      });
+
+      expect(onDownload).toHaveBeenCalledWith({ filename: "my-export.csv" });
+    });
+
+    it("falls back to the default filename when the field is blank", () => {
+      const onDownload = jest.fn();
+      const { result } = renderHook(
+        () => useDownloadModal(makeArgs({ onDownload })),
+        { wrapper }
+      );
+
+      act(() => {
+        result.current.setFilename("   ");
       });
 
       act(() => {
@@ -77,29 +92,7 @@ describe("DownloadModal hooks", () => {
       });
 
       expect(onDownload).toHaveBeenCalledWith({
-        filename: "range-export.csv",
-        scope: "range",
-      });
-    });
-
-    it("falls back to full scope when range is selected without a selection", () => {
-      const onDownload = jest.fn();
-      const { result } = renderHook(
-        () => useDownloadModal(makeArgs({ hasSelection: false, onDownload })),
-        { wrapper }
-      );
-
-      act(() => {
-        result.current.setScope("range");
-      });
-
-      act(() => {
-        result.current.handleSubmit(makeSubmitEvent());
-      });
-
-      expect(onDownload).toHaveBeenCalledWith({
-        filename: "csvpreview-export-2026-05-31.csv",
-        scope: "full",
+        filename: expect.stringMatching(/^csvpreview-export-\d{4}-\d{2}-\d{2}\.csv$/),
       });
     });
   });

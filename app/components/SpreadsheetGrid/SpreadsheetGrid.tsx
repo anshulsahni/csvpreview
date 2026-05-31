@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { styled } from "@linaria/react";
 import FilterDropdown from "../FilterDropdown";
 import { useSpreadsheetGrid } from "./hooks";
 import { SortArrows } from "./SortArrows";
 import CellEditor from "./CellEditor";
+import { useSpreadsheetGridNavigation } from "./useSpreadsheetGridNavigation";
+import FocusOverlay from "./FocusOverlay";
 
 export interface SpreadsheetGridProps {
   data: string[][];
@@ -19,10 +21,25 @@ export default function SpreadsheetGrid({
   onCellChange,
 }: SpreadsheetGridProps) {
   const vm = useSpreadsheetGrid({ data, firstRowAsHeader, onCellChange });
+  const gridRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  useSpreadsheetGridNavigation({
+    gridRef,
+    numRows: vm.numRows,
+    numCols: vm.numCols,
+    bodyRows: vm.bodyRows,
+  });
 
   return (
-    <GridWrapper data-dragging={vm.isDragging ? "true" : undefined}>
-      <TableScroller>
+    <GridWrapper ref={gridRef} data-dragging={vm.isDragging ? "true" : undefined}>
+      <TableScroller ref={scrollerRef}>
+        <FocusOverlay
+          scrollerRef={scrollerRef}
+          focusedCell={vm.focusedCell}
+          editingCell={vm.editingCell}
+          layoutDeps={[vm.numRows, vm.numCols, vm.sort, vm.filters, firstRowAsHeader, vm.bodyRows.length]}
+        />
         <table>
           <thead>
             <tr>
@@ -158,6 +175,8 @@ const TableScroller = styled.div`
   flex: 1;
   overflow: auto;
   position: relative;
+  scroll-padding-top: var(--grid-col-header-height);
+  scroll-padding-left: 40px;
 
   table {
     border-collapse: collapse;
@@ -310,6 +329,11 @@ const DataTd = styled.td`
   padding: 0 4px;
   user-select: none;
   vertical-align: top;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
 
   &[data-selected="true"] {
     background: var(--grid-selection-bg);

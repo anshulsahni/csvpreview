@@ -48,6 +48,61 @@ export function useKeyboardShortcuts(
   }, [allowInEditable, context, enabled, id, shortcut]);
 }
 
+export interface ManualKeyboardShortcutControls {
+  attach: () => void;
+  detach: () => void;
+}
+
+/**
+ * Like useKeyboardShortcuts but does NOT auto-register on mount.
+ * Returns attach/detach callbacks so the consumer decides when the shortcut is live.
+ * The shortcut definition must be a stable (module-level) constant.
+ * The handler may be re-created on every render — the latest closure is always invoked.
+ */
+export function useManualKeyboardShortcuts(
+  shortcut: ShortcutDefinition,
+  handler: KeyboardShortcutHandler,
+  options: { allowInEditable?: boolean } = {}
+): ManualKeyboardShortcutControls {
+  const context = useContext(KeyboardShortcutsContext);
+  const [id] = useState(() => uuidv4());
+  const handlerRef = useRef(handler);
+  const attachedRef = useRef(false);
+  const allowInEditable = options.allowInEditable ?? false;
+
+  useEffect(() => {
+    handlerRef.current = handler;
+  });
+
+  const attach = () => {
+    if (!context || attachedRef.current) return;
+    attachedRef.current = true;
+    context.registerShortcut({
+      id,
+      shortcut,
+      handler: (event) => handlerRef.current(event),
+      allowInEditable,
+    });
+  };
+
+  const detach = () => {
+    if (!context || !attachedRef.current) return;
+    attachedRef.current = false;
+    context.unregisterShortcut(id, shortcut);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (context && attachedRef.current) {
+        attachedRef.current = false;
+        context.unregisterShortcut(id, shortcut);
+      }
+    };
+  }, [context, id, shortcut]);
+
+  return { attach, detach };
+}
+
 // Used for sequential keybpard shortcuts like G then I, etc.
 // Heavily used in application for navigation
 // Currently we don't have any, but still keeping it here

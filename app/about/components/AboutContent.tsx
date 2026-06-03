@@ -1,6 +1,91 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
-import { datasets } from "@/lib/datasets";
+import { getDatasetBySlug } from "@/lib/datasets";
+
+const DATASET_CATEGORIES: { label: string; slugs: string[] }[] = [
+  {
+    label: "Geography & Places",
+    slugs: [
+      "countries-capitals",
+      "us-state-capitals",
+      "indian-states",
+      "country-codes",
+      "world-population",
+      "world-timezones",
+      "mountain-heights",
+      "world-rivers",
+      "national-parks",
+    ],
+  },
+  {
+    label: "Transport",
+    slugs: [
+      "world-airports",
+      "airline-codes",
+      "busiest-airports",
+      "high-speed-rail-networks",
+      "metro-systems-world",
+    ],
+  },
+  {
+    label: "Economics & Finance",
+    slugs: [
+      "country-gdp",
+      "sp500-companies",
+      "currency-codes",
+      "g20-g7-brics-members",
+    ],
+  },
+  {
+    label: "History & Politics",
+    slugs: [
+      "us-presidents",
+      "indian-prime-ministers",
+      "uk-prime-ministers",
+      "independence-days",
+      "un-member-states",
+    ],
+  },
+  {
+    label: "Food & Drink",
+    slugs: [
+      "world-cuisines",
+      "top-crops-global",
+      "coffee-producing-countries",
+      "tea-varieties",
+      "indian-sweets",
+      "spices",
+      "wine-regions",
+      "calories-macros",
+    ],
+  },
+  {
+    label: "Animals & Nature",
+    slugs: [
+      "dog-breeds",
+      "cat-breeds",
+      "endangered-species-iucn",
+      "animal-species-lifespan-diet-habitat",
+    ],
+  },
+  {
+    label: "Science",
+    slugs: [
+      "human-body-organs-functions",
+      "planets-moons-solar-system",
+      "periodic-table-elements",
+      "major-earthquakes-history",
+    ],
+  },
+  {
+    label: "Language & Culture",
+    slugs: ["most-spoken-languages", "indian-languages-by-state"],
+  },
+  {
+    label: "Architecture",
+    slugs: ["tallest-buildings-world", "longest-bridges-tunnels"],
+  },
+];
 
 const FEATURES = [
   <>
@@ -61,18 +146,29 @@ export default function AboutContent() {
       </Wrapper>
 
       <SeoFooter aria-label="Sample CSV datasets">
-        <SeoInner>
-          <SeoLabel>sample datasets</SeoLabel>
-          <SeoLinks>
-            {datasets.map((dataset) => (
-              <li key={dataset.slug}>
-                <Link href={`/data/${dataset.slug}`} prefetch={false}>
-                  {dataset.title}
-                </Link>
-              </li>
-            ))}
-          </SeoLinks>
-        </SeoInner>
+        <SeoLabel>sample datasets</SeoLabel>
+        <SeoCategoryGrid>
+          {DATASET_CATEGORIES.map((cat) => {
+            const items = cat.slugs
+              .map((slug) => getDatasetBySlug(slug))
+              .filter(Boolean);
+            if (!items.length) return null;
+            return (
+              <SeoCategory key={cat.label}>
+                <SeoCategoryLabel>{cat.label}</SeoCategoryLabel>
+                <SeoLinks>
+                  {items.map((dataset) => (
+                    <li key={dataset!.slug}>
+                      <Link href={`/data/${dataset!.slug}`} prefetch={false}>
+                        {dataset!.title}
+                      </Link>
+                    </li>
+                  ))}
+                </SeoLinks>
+              </SeoCategory>
+            );
+          })}
+        </SeoCategoryGrid>
       </SeoFooter>
     </>
   );
@@ -196,15 +292,24 @@ const Chip = styled.span`
 const SeoFooter = styled.footer`
   border-top: 1px solid var(--border);
   background: var(--surface);
-  padding: var(--s-8) var(--s-8);
-`;
-
-const SeoInner = styled.div`
-  max-width: 680px;
-  margin: 0 auto;
+  padding: var(--s-8) var(--s-10);
   display: flex;
   flex-direction: column;
-  gap: var(--s-4);
+  gap: var(--s-5);
+`;
+
+const SeoCategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-8) var(--s-10);
+
+  @media (max-width: 760px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const SeoLabel = styled.span`
@@ -213,6 +318,19 @@ const SeoLabel = styled.span`
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--fg-subtle);
+`;
+
+const SeoCategory = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+`;
+
+const SeoCategoryLabel = styled.span`
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--fg-subtle);
+  letter-spacing: 0.3px;
 `;
 
 const SeoLinks = styled.ul`

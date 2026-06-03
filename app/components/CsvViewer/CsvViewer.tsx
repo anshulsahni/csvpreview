@@ -4,6 +4,8 @@ import { styled } from "@linaria/react";
 import SpreadsheetGrid from "../SpreadsheetGrid";
 import Toolbar from "../Toolbar";
 import UploadModal from "../UploadModal";
+import DownloadModal from "../DownloadModal";
+import DownloadControl from "./DownloadControl";
 import { useCsvViewer } from "./hooks";
 
 export default function CsvViewer() {
@@ -20,6 +22,13 @@ export default function CsvViewer() {
           onFirstRowAsHeaderChange={viewer.setFirstRowAsHeader}
         />
         {viewer.csvData && (
+          <DownloadControl
+            hasActiveFilter={viewer.hasActiveFilter}
+            onDownload={viewer.openDownload}
+            onDownloadAll={viewer.openDownloadAllRows}
+          />
+        )}
+        {viewer.csvData && (
           <ClearButton type="button" onClick={viewer.handleClear}>
             Clear
           </ClearButton>
@@ -30,6 +39,7 @@ export default function CsvViewer() {
           data={viewer.csvData ?? []}
           firstRowAsHeader={viewer.firstRowAsHeader}
           onCellChange={viewer.handleCellChange}
+          onExportStateChange={viewer.handleExportStateChange}
         />
       </GridArea>
       <UploadModal
@@ -40,6 +50,14 @@ export default function CsvViewer() {
         onStartBlank={viewer.handleStartBlank}
         errors={viewer.parseErrors}
       />
+      {viewer.isDownloadOpen && (
+        <DownloadModal
+          isOpen
+          onClose={viewer.closeDownload}
+          defaultFilename={viewer.defaultDownloadFilename}
+          onDownload={viewer.handleDownload}
+        />
+      )}
     </Wrapper>
   );
 }
@@ -86,6 +104,7 @@ const ClearButton = styled.button`
     background: var(--subtle);
   }
 `;
+
 
 const GridArea = styled.div`
   flex: 1;

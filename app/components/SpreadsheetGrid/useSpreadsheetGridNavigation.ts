@@ -20,14 +20,31 @@ interface UseSpreadsheetGridNavigationArgs {
   bodyRows: readonly string[][];
 }
 
+// `useManualKeyboardShortcuts` requires stable (module-level) shortcut
+// definitions — re-creating these objects on every render would re-run the
+// hook's cleanup effect and unregister the shortcut while a cell is focused.
+const ctrlArrow = { mac: ModifierKeys.Meta, windows: ModifierKeys.Ctrl };
+const shiftKey = { mac: ModifierKeys.Shift, windows: ModifierKeys.Shift };
+
+const ARROW_UP = { primaryKey: Keys.ArrowUp };
+const ARROW_DOWN = { primaryKey: Keys.ArrowDown };
+const ARROW_LEFT = { primaryKey: Keys.ArrowLeft };
+const ARROW_RIGHT = { primaryKey: Keys.ArrowRight };
+const CTRL_UP = { primaryKey: Keys.ArrowUp, modifierKey: ctrlArrow };
+const CTRL_DOWN = { primaryKey: Keys.ArrowDown, modifierKey: ctrlArrow };
+const CTRL_LEFT = { primaryKey: Keys.ArrowLeft, modifierKey: ctrlArrow };
+const CTRL_RIGHT = { primaryKey: Keys.ArrowRight, modifierKey: ctrlArrow };
+const HOME = { primaryKey: Keys.Home };
+const END = { primaryKey: Keys.End };
+const TAB = { primaryKey: Keys.Tab };
+const SHIFT_TAB = { primaryKey: Keys.Tab, modifierKey: shiftKey };
+
 export function useSpreadsheetGridNavigation({
   gridRef,
   numRows,
   numCols,
   bodyRows,
 }: UseSpreadsheetGridNavigationArgs): void {
-  const ctrlArrow = { mac: ModifierKeys.Meta, windows: ModifierKeys.Ctrl };
-
   const move =
     (deltaRow: number, deltaCol: number) => (event: KeyboardEvent) => {
       const cell = getActiveCellFromDom();
@@ -76,40 +93,18 @@ export function useSpreadsheetGridNavigation({
     );
   };
 
-  const arrowUp = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowUp },
-    move(-1, 0),
-  );
-  const arrowDown = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowDown },
-    move(1, 0),
-  );
-  const arrowLeft = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowLeft },
-    move(0, -1),
-  );
-  const arrowRight = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowRight },
-    move(0, 1),
-  );
-  const ctrlUp = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowUp, modifierKey: ctrlArrow },
-    jump(-1, 0),
-  );
-  const ctrlDown = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowDown, modifierKey: ctrlArrow },
-    jump(1, 0),
-  );
-  const ctrlLeft = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowLeft, modifierKey: ctrlArrow },
-    jump(0, -1),
-  );
-  const ctrlRight = useManualKeyboardShortcuts(
-    { primaryKey: Keys.ArrowRight, modifierKey: ctrlArrow },
-    jump(0, 1),
-  );
-  const homeKey = useManualKeyboardShortcuts({ primaryKey: Keys.Home }, home);
-  const endKey = useManualKeyboardShortcuts({ primaryKey: Keys.End }, end);
+  const arrowUp = useManualKeyboardShortcuts(ARROW_UP, move(-1, 0));
+  const arrowDown = useManualKeyboardShortcuts(ARROW_DOWN, move(1, 0));
+  const arrowLeft = useManualKeyboardShortcuts(ARROW_LEFT, move(0, -1));
+  const arrowRight = useManualKeyboardShortcuts(ARROW_RIGHT, move(0, 1));
+  const ctrlUp = useManualKeyboardShortcuts(CTRL_UP, jump(-1, 0));
+  const ctrlDown = useManualKeyboardShortcuts(CTRL_DOWN, jump(1, 0));
+  const ctrlLeft = useManualKeyboardShortcuts(CTRL_LEFT, jump(0, -1));
+  const ctrlRight = useManualKeyboardShortcuts(CTRL_RIGHT, jump(0, 1));
+  const homeKey = useManualKeyboardShortcuts(HOME, home);
+  const endKey = useManualKeyboardShortcuts(END, end);
+  const tab = useManualKeyboardShortcuts(TAB, move(0, 1));
+  const shiftTab = useManualKeyboardShortcuts(SHIFT_TAB, move(0, -1));
 
   const allControls = [
     arrowUp,
@@ -122,6 +117,8 @@ export function useSpreadsheetGridNavigation({
     ctrlRight,
     homeKey,
     endKey,
+    tab,
+    shiftTab,
   ];
 
   const controlsRef = useRef(allControls);

@@ -1,11 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   parseCSV,
   type Delimiter,
   type ParseError,
 } from "@/lib/csvParser";
+import { exportCSV } from "@/lib/csvExporter";
+import type { GridExportState } from "../SpreadsheetGrid";
+import {
+  computeDefaultFilename,
+  ensureCsvExtension,
+  type DownloadOptions,
+} from "../DownloadModal/hooks";
 
 export const LS_KEY_DATA = "csvpreview_data";
 export const LS_KEY_FILE_NAME = "csvpreview_filename";
@@ -13,22 +20,59 @@ export const LS_KEY_FIRST_ROW_HEADER = "csvpreview_first_row_header";
 
 const PASTED_FILENAME = "pasted.csv";
 
+/**
+ * Build the 2D array to export from the currently visible grid state: the
+ * visible header, when present, plus all visible rows (post sort/filter).
+ *
+ * Pure and exported for unit testing.
+ */
+export function computeDownloadRows(
+  visibleRows: string[][],
+  headerRow: string[] | null
+): string[][] {
+  return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
+}
+
+function triggerCsvDownload(csv: string, filename: string): void {
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+}
+
 export interface UseCsvViewerReturn {
   csvData: string[][] | null;
   fileName: string;
   isUploadOpen: boolean;
+  isDownloadOpen: boolean;
+  defaultDownloadFilename: string;
   parseErrors: ParseError[];
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
+  hasActiveFilter: boolean;
   setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
   closeUpload: () => void;
+  openDownload: () => void;
+  openDownloadAllRows: () => void;
+  closeDownload: () => void;
+  handleExportStateChange: (state: GridExportState) => void;
+  handleDownload: (options: DownloadOptions) => void;
   handleFilePicked: (file: File) => void;
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
   handleClear: () => void;
-  handleCellChange: (dataRowIndex: number, colIdx: number, value: string) => void;
+  handleCellChange: (
+    dataRowIndex: number,
+    colIdx: number,
+    value: string,
+  ) => void;
 }
 
 function readPersistedRows(): string[][] | null {
@@ -55,9 +99,20 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [csvData, setCsvData] = useState<string[][] | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
+  const [isDownloadOpen, setIsDownloadOpen] = useState<boolean>(false);
+  const [downloadFilename, setDownloadFilename] = useState<string>(() =>
+    computeDefaultFilename()
+  );
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
   const [delimiter] = useState<Delimiter>(",");
   const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
+  const [exportState, setExportState] = useState<GridExportState>({
+    headerRow: null,
+    visibleRows: [],
+    unfilteredRows: [],
+    hasActiveFilter: false,
+  });
+  const [downloadIgnoreFilter, setDownloadIgnoreFilter] = useState<boolean>(false);
   const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
@@ -143,6 +198,12 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);
+    setExportState({
+      headerRow: null,
+      visibleRows: [],
+      unfilteredRows: [],
+      hasActiveFilter: false,
+    });
     try {
       localStorage.removeItem(LS_KEY_DATA);
       localStorage.removeItem(LS_KEY_FILE_NAME);
@@ -177,16 +238,54 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setIsUploadOpen(false);
   }
 
+  function openDownload() {
+    setDownloadFilename(computeDefaultFilename());
+    setDownloadIgnoreFilter(false);
+    setIsDownloadOpen(true);
+  }
+
+  function openDownloadAllRows() {
+    setDownloadFilename(computeDefaultFilename());
+    setDownloadIgnoreFilter(true);
+    setIsDownloadOpen(true);
+  }
+
+  function closeDownload() {
+    setIsDownloadOpen(false);
+  }
+
+  const handleExportStateChange = useCallback((state: GridExportState) => {
+    setExportState(state);
+  }, []);
+
+  function handleDownload(options: DownloadOptions) {
+    const sourceRows = downloadIgnoreFilter
+      ? exportState.unfilteredRows
+      : exportState.visibleRows;
+    const rows = computeDownloadRows(sourceRows, exportState.headerRow);
+    const csv = exportCSV(rows, delimiter);
+    triggerCsvDownload(csv, ensureCsvExtension(options.filename));
+    setIsDownloadOpen(false);
+  }
+
   return {
     csvData,
     fileName,
     isUploadOpen,
+    isDownloadOpen,
+    defaultDownloadFilename: downloadFilename,
     parseErrors,
     delimiter,
     firstRowAsHeader,
+    hasActiveFilter: exportState.hasActiveFilter,
     setFirstRowAsHeader,
     openUpload,
     closeUpload,
+    openDownload,
+    openDownloadAllRows,
+    closeDownload,
+    handleExportStateChange,
+    handleDownload,
     handleFilePicked,
     handlePasteSubmit,
     handleStartBlank,

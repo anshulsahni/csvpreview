@@ -3,6 +3,7 @@ import {
   LS_KEY_DATA,
   LS_KEY_FILE_NAME,
   LS_KEY_FIRST_ROW_HEADER,
+  computeDownloadRows,
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 
@@ -64,6 +65,28 @@ afterEach(() => {
 });
 
 describe("useCsvViewer", () => {
+  describe("computeDownloadRows", () => {
+    it("returns visible rows plus header row when a header exists", () => {
+      expect(
+        computeDownloadRows(
+          [
+            ["Alice", "30"],
+            ["Bob", "25"],
+          ],
+          ["Name", "Age"]
+        )
+      ).toEqual([
+        ["Name", "Age"],
+        ["Alice", "30"],
+        ["Bob", "25"],
+      ]);
+    });
+
+    it("returns visible rows as-is without a header row", () => {
+      expect(computeDownloadRows([["a", "b"]], null)).toEqual([["a", "b"]]);
+    });
+  });
+
   describe("mount behavior", () => {
     it("auto-opens the upload modal when localStorage is empty", async () => {
       const { result } = renderHook(() => useCsvViewer());

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   detectColumnType,
   sortRowsWithSourceIndices,
@@ -39,10 +39,18 @@ export function dataRowIndexFromBodyRowIndex(
   return firstRowAsHeader ? bodyRowIndex + 1 : bodyRowIndex;
 }
 
+export interface GridExportState {
+  headerRow: string[] | null;
+  visibleRows: string[][];
+  unfilteredRows: string[][];
+  hasActiveFilter: boolean;
+}
+
 export interface UseSpreadsheetGridArgs {
   data: string[][];
   firstRowAsHeader: boolean;
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
+  onExportStateChange?: (state: GridExportState) => void;
 }
 
 export interface SpreadsheetGridViewModel {
@@ -52,6 +60,8 @@ export interface SpreadsheetGridViewModel {
   numRows: number;
   /** Body rows after optional sort (display order). */
   bodyRows: string[][];
+  /** All body rows after optional sort but ignoring active column filters. */
+  unfilteredBodyRows: string[][];
   headerRowCells: string[] | null;
   rowNumberOffset: number;
   colLabel: (idx: number) => string;
@@ -217,6 +227,16 @@ function computeViewModel(
     displayBodyRows = sorted.rows;
     sourceRowIndexForDisplayRow = sorted.sourceIndices;
   }
+  let unfilteredBodyRows = bodyRows;
+  if (sort !== null && bodyRows.length > 0) {
+    const sortedAll = sortRowsWithSourceIndices(
+      bodyRows,
+      baseSourceIndices,
+      sort.colIdx,
+      sort.direction
+    );
+    unfilteredBodyRows = sortedAll.rows;
+  }
   const filteredRows = filtered.rows;
   const visibleRowCount = displayBodyRows.length;
   const activeFilterEntries = Object.entries(filters);
@@ -271,6 +291,7 @@ function computeViewModel(
     numCols,
     numRows,
     bodyRows: displayBodyRows,
+    unfilteredBodyRows,
     headerRowCells,
     rowNumberOffset,
     colLabel,
@@ -290,7 +311,7 @@ function computeViewModel(
 }
 
 export function useSpreadsheetGrid(
-  { data, firstRowAsHeader, onCellChange }: UseSpreadsheetGridArgs
+  { data, firstRowAsHeader, onCellChange, onExportStateChange }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
   const { sort, onArrowClick } = useSortState();
   const {
@@ -339,10 +360,25 @@ export function useSpreadsheetGrid(
     selectSingleCell,
   });
 
-  const onCellMouseDown = (rowIdx: number, colIdx: number) => {
+  const onCellMouseDown = useCallback((rowIdx: number, colIdx: number) => {
     editingVm.onCellMouseDown(rowIdx, colIdx);
     baseOnCellMouseDown(rowIdx, colIdx);
-  };
+  }, [baseOnCellMouseDown, editingVm]);
+
+  useEffect(() => {
+    onExportStateChange?.({
+      headerRow: base.headerRowCells,
+      visibleRows: base.bodyRows,
+      unfilteredRows: base.unfilteredBodyRows,
+      hasActiveFilter: base.activeFilterCount > 0,
+    });
+  }, [
+    base.bodyRows,
+    base.unfilteredBodyRows,
+    base.activeFilterCount,
+    base.headerRowCells,
+    onExportStateChange,
+  ]);
 
   return useMemo(
     () => ({

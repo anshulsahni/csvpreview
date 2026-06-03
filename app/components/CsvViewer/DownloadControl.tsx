@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { styled } from "@linaria/react";
+import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+
+const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
 
 export interface DownloadControlProps {
   hasActiveFilter: boolean;
@@ -15,28 +18,13 @@ export default function DownloadControl({
   onDownloadAll,
 }: DownloadControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    function handleDocumentMouseDown(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsMenuOpen(false);
-      }
-    }
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsMenuOpen(false);
-    }
-    document.addEventListener("mousedown", handleDocumentMouseDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", handleDocumentMouseDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isMenuOpen]);
+  useKeyboardShortcuts(
+    ESCAPE_SHORTCUT,
+    () => setIsMenuOpen(false),
+    [],
+    { enabled: isMenuOpen }
+  );
 
   if (!hasActiveFilter) {
     return (
@@ -47,7 +35,13 @@ export default function DownloadControl({
   }
 
   return (
-    <Split ref={containerRef}>
+    <Split
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setIsMenuOpen(false);
+        }
+      }}
+    >
       <Primary type="button" onClick={onDownload}>
         Download filtered rows
       </Primary>

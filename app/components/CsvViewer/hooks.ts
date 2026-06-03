@@ -68,7 +68,11 @@ export interface UseCsvViewerReturn {
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
   handleClear: () => void;
-  handleCellChange: (dataRowIndex: number, colIdx: number, value: string) => void;
+  handleCellChange: (
+    dataRowIndex: number,
+    colIdx: number,
+    value: string,
+  ) => void;
 }
 
 function readPersistedRows(): string[][] | null {

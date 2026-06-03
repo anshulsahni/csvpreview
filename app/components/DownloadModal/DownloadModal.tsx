@@ -38,6 +38,7 @@ export default function DownloadModal(props: DownloadModalProps) {
               value={modal.filename}
               onChange={(event) => modal.setFilename(event.target.value)}
               aria-label="Download filename"
+              autoFocus={true}
             />
           </Field>
 

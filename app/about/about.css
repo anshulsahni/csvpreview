@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+.about-theme {
+  /* ── Brand colors ─────────────────────────────── */
+  --green-700:   #234F2C;
+  --green-600:   #2F6B3A;
+  --green-500:   #3F8849;
+  --green-100:   #DDE7D8;
+
+  --mustard-700: #B08816;
+  --mustard-600: #E8B931;
+  --mustard-500: #F0C757;
+  --mustard-100: #F8EAC4;
+
+  --red-600:     #C0392B;
+  --red-100:     #F4D7D2;
+
+  /* ── Neutrals ─────────────────────────────────── */
+  --ink:         #14211A;
+  --ink-2:       rgba(20, 33, 26, 0.72);
+  --ink-3:       rgba(20, 33, 26, 0.55);
+  --ink-4:       rgba(20, 33, 26, 0.32);
+  --hairline:    rgba(20, 33, 26, 0.08);
+  --hairline-2:  rgba(20, 33, 26, 0.16);
+
+  --cream:       #F4EFD9;
+  --paper:       #EFE8CD;
+  --cloud:       #E2DAB7;
+
+  /* ── Semantic colors ──────────────────────────── */
+  --bg:          var(--cream);
+  --surface:     var(--paper);
+  --surface-2:   var(--cloud);
+  --fg:          var(--ink);
+  --fg-muted:    var(--ink-2);
+  --fg-subtle:   var(--ink-3);
+  --border:      var(--hairline);
+  --border-strong: var(--hairline-2);
+
+  --primary:     var(--green-600);
+  --primary-hover: var(--green-700);
+  --on-primary:  var(--cream);
+
+  --secondary:   var(--mustard-600);
+
+  /* ── Type ─────────────────────────────────────── */
+  --font-serif:  'DM Serif Display', 'Bookman Old Style', Georgia, serif;
+  --font-sans:   ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:   'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-md:   15px;
+  --text-lg:   18px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+  --text-3xl:  44px;
+  --text-4xl:  64px;
+
+  /* ── Spacing (4-px base) ──────────────────────── */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-10: 40px;
+  --s-14: 56px;
+  --s-18: 72px;
+
+  /* ── Radii ────────────────────────────────────── */
+  --r-sm:    4px;
+  --r-md:    8px;
+  --r-lg:    10px;
+  --r-xl:    14px;
+  --r-pill:  999px;
+
+  /* ── Shadows ──────────────────────────────────── */
+  --shadow-card: inset 0 0 0 1px var(--border);
+  --shadow-lift: 0 12px 30px rgba(20,33,26,0.18), inset 0 0 0 1px var(--border);
+
+  /* ── Texture ──────────────────────────────────── */
+  --paper-dots: radial-gradient(rgba(20,33,26,0.04) 1px, transparent 1px);
+  --paper-dots-size: 6px 6px;
+
+  /* ── Page-level resets ────────────────────────── */
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  flex: 1;
+  min-height: 100vh;
+}
+
+.about-theme h1 {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  line-height: 1.0;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+.about-theme h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.about-theme p {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.about-theme a {
+  color: inherit;
+  text-decoration: none;
+}

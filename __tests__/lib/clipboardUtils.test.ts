@@ -60,8 +60,8 @@ describe("selectedCellsToCopyText", () => {
     );
   });
 
-  it("handles missing row gracefully (out-of-bounds)", () => {
+  it("clamps to available rows when selection exceeds data bounds", () => {
     const result = selectedCellsToCopyText(rows, sel(2, 0, 5, 0));
-    expect(result).toBe("g\n\n\n");
+    expect(result).toBe("g");
   });
 });

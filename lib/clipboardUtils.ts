@@ -14,11 +14,8 @@ export function selectedCellsToCopyText(
 ): string {
   const bounds = getSelectionBounds(selection);
   if (bounds === null) return "";
-
-  const selectedRows: string[][] = [];
-  for (let r = bounds.top; r <= bounds.bottom; r++) {
-    const row = bodyRows[r] ?? [];
-    selectedRows.push(row.slice(bounds.left, bounds.right + 1));
-  }
-  return exportCSV(selectedRows);
+  const slice = bodyRows
+    .slice(bounds.top, bounds.bottom + 1)
+    .map((row) => row.slice(bounds.left, bounds.right + 1));
+  return exportCSV(slice);
 }

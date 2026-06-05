@@ -433,7 +433,7 @@ const Chip = styled.span`
   letter-spacing: 0.5px;
   color: var(--primary);
   background: var(--green-100);
-  border: 1px solid rgba(47, 107, 58, 0.2);
+  border: 1px solid var(--chip-border);
   border-radius: var(--r-pill);
   padding: var(--s-1) var(--s-3);
 `;

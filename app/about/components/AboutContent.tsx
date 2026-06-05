@@ -242,7 +242,7 @@ export default function AboutContent() {
                 Stack Overflow
               </SocialLink>
               <SocialLink
-                href="http://reddit.com/u/zeroansh"
+                href="https://reddit.com/u/zeroansh"
                 aria-label="Reddit"
               >
                 <SocialIcon>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/app/components/Navbar";
+import AboutNavbar from "./components/AboutNavbar";
 import AboutContent from "./components/AboutContent";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Navbar />
+      <AboutNavbar />
       <main>
         <AboutContent />
       </main>

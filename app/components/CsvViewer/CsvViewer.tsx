@@ -22,15 +22,14 @@ export default function CsvViewer() {
           firstRowAsHeader={viewer.firstRowAsHeader}
           onFirstRowAsHeaderChange={viewer.setFirstRowAsHeader}
         />
-        {viewer.csvData && (
-          <CopyControl
-            hasSelection={viewer.hasSelection}
-            hasActiveFilter={viewer.hasActiveFilter}
-            onCopyAll={viewer.handleCopyAll}
-            onCopySelected={viewer.handleCopySelected}
-            onCopyFiltered={viewer.handleCopyFiltered}
-          />
-        )}
+        <CopyControl
+          disabled={!viewer.csvData}
+          hasSelection={viewer.hasSelection}
+          hasActiveFilter={viewer.hasActiveFilter}
+          onCopyAll={viewer.handleCopyAll}
+          onCopySelected={viewer.handleCopySelected}
+          onCopyFiltered={viewer.handleCopyFiltered}
+        />
         {viewer.csvData && (
           <DownloadControl
             hasActiveFilter={viewer.hasActiveFilter}

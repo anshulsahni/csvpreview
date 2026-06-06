@@ -7,6 +7,7 @@ import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
 
 export interface CopyControlProps {
+  disabled?: boolean;
   hasSelection: boolean;
   hasActiveFilter: boolean;
   onCopyAll: () => void;
@@ -15,6 +16,7 @@ export interface CopyControlProps {
 }
 
 export default function CopyControl({
+  disabled = false,
   hasSelection,
   hasActiveFilter,
   onCopyAll,
@@ -32,9 +34,9 @@ export default function CopyControl({
 
   const hasContextualOption = hasSelection || hasActiveFilter;
 
-  if (!hasContextualOption) {
+  if (disabled || !hasContextualOption) {
     return (
-      <SimpleButton type="button" onClick={onCopyAll}>
+      <SimpleButton type="button" onClick={onCopyAll} disabled={disabled}>
         Copy
       </SimpleButton>
     );
@@ -108,8 +110,13 @@ const SimpleButton = styled.button`
   font-size: 0.85rem;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: var(--subtle);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 `;
 

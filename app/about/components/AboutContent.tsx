@@ -321,13 +321,12 @@ export default function AboutContent() {
             <SeoCategoryLabel>Featured</SeoCategoryLabel>
             <SeoLinks>
               <li>
-                <a
+                <Link
                   href="https://zeroansh.raindrop.page/productivity-13255295"
                   target="_blank"
-                  rel="noopener noreferrer"
                 >
                   raindrop page
-                </a>
+                </Link>
               </li>
             </SeoLinks>
           </SeoCategory>

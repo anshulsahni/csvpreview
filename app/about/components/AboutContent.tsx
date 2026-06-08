@@ -295,20 +295,6 @@ export default function AboutContent() {
       </Wrapper>
 
       <SeoFooter aria-label="Sample CSV datasets">
-        <FeaturedSection>
-          <SeoLabel>featured</SeoLabel>
-          <FeaturedLinks>
-            <li>
-              <a
-                href="https://zeroansh.raindrop.page/productivity-13255295"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                raindrop page
-              </a>
-            </li>
-          </FeaturedLinks>
-        </FeaturedSection>
         <SeoLabel>sample datasets</SeoLabel>
         <SeoCategoryGrid>
           {DATASET_CATEGORIES.map((cat) => {
@@ -331,6 +317,20 @@ export default function AboutContent() {
               </SeoCategory>
             );
           })}
+          <SeoCategory>
+            <SeoCategoryLabel>Featured</SeoCategoryLabel>
+            <SeoLinks>
+              <li>
+                <a
+                  href="https://zeroansh.raindrop.page/productivity-13255295"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  raindrop page
+                </a>
+              </li>
+            </SeoLinks>
+          </SeoCategory>
         </SeoCategoryGrid>
       </SeoFooter>
     </>
@@ -553,40 +553,6 @@ const SeoCategoryLabel = styled.span`
 `;
 
 const SeoLinks = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2);
-
-  a {
-    display: inline-block;
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: var(--fg-subtle);
-    background: var(--bg);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--r-pill);
-    padding: var(--s-1) var(--s-3);
-    transition: color 0.15s, border-color 0.15s;
-
-    &:hover {
-      color: var(--fg);
-      border-color: var(--ink-4);
-    }
-  }
-`;
-
-const FeaturedSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-3);
-  padding-bottom: var(--s-5);
-  border-bottom: 1px solid var(--border);
-`;
-
-const FeaturedLinks = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;

@@ -317,6 +317,19 @@ export default function AboutContent() {
               </SeoCategory>
             );
           })}
+          <SeoCategory>
+            <SeoCategoryLabel>Featured</SeoCategoryLabel>
+            <SeoLinks>
+              <li>
+                <Link
+                  href="https://zeroansh.raindrop.page/productivity-13255295"
+                  target="_blank"
+                >
+                  raindrop page
+                </Link>
+              </li>
+            </SeoLinks>
+          </SeoCategory>
         </SeoCategoryGrid>
       </SeoFooter>
     </>

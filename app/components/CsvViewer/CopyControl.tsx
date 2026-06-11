@@ -1,18 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { styled } from "@linaria/react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 
 const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
+const FEEDBACK_DURATION_MS = 1500;
+
+type CopyStatus = "idle" | "success" | "error";
 
 export interface CopyControlProps {
   disabled?: boolean;
   hasSelection: boolean;
   hasActiveFilter: boolean;
-  onCopyAll: () => void;
-  onCopySelected: () => void;
-  onCopyFiltered: () => void;
+  onCopyAll: () => Promise<void>;
+  onCopySelected: () => Promise<void>;
+  onCopyFiltered: () => Promise<void>;
 }
 
 export default function CopyControl({
@@ -24,6 +27,8 @@ export default function CopyControl({
   onCopyFiltered,
 }: CopyControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useKeyboardShortcuts(
     ESCAPE_SHORTCUT,
@@ -32,17 +37,38 @@ export default function CopyControl({
     { enabled: isMenuOpen }
   );
 
+  async function triggerCopy(action: () => Promise<void>) {
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    try {
+      await action();
+      setCopyStatus("success");
+    } catch {
+      setCopyStatus("error");
+    }
+    resetTimer.current = setTimeout(() => setCopyStatus("idle"), FEEDBACK_DURATION_MS);
+  }
+
+  const isBusy = copyStatus !== "idle";
   const hasContextualOption = hasSelection || hasActiveFilter;
 
   if (disabled || !hasContextualOption) {
+    const label = copyStatus === "success" ? "Copied!" : copyStatus === "error" ? "Failed" : "Copy";
     return (
-      <SimpleButton type="button" onClick={onCopyAll} disabled={disabled}>
-        Copy
+      <SimpleButton
+        type="button"
+        onClick={() => triggerCopy(onCopyAll)}
+        disabled={disabled}
+        data-status={copyStatus}
+      >
+        {label}
       </SimpleButton>
     );
   }
 
-  const primaryLabel = hasSelection ? "Copy selected cells" : "Copy filtered rows";
+  const primaryLabel =
+    copyStatus === "success" ? "Copied!" :
+    copyStatus === "error" ? "Failed" :
+    hasSelection ? "Copy selected cells" : "Copy filtered rows";
   const primaryAction = hasSelection ? onCopySelected : onCopyFiltered;
 
   return (
@@ -56,9 +82,11 @@ export default function CopyControl({
       <Primary
         type="button"
         onClick={() => {
-          primaryAction();
+          triggerCopy(primaryAction);
           setIsMenuOpen(false);
         }}
+        disabled={isBusy}
+        data-status={copyStatus}
       >
         {primaryLabel}
       </Primary>
@@ -68,6 +96,7 @@ export default function CopyControl({
         aria-haspopup="menu"
         aria-expanded={isMenuOpen}
         onClick={() => setIsMenuOpen((prev) => !prev)}
+        disabled={isBusy}
       >
         <CaretIcon aria-hidden="true">▾</CaretIcon>
       </Caret>
@@ -79,7 +108,7 @@ export default function CopyControl({
               role="menuitem"
               onClick={() => {
                 setIsMenuOpen(false);
-                onCopyFiltered();
+                triggerCopy(onCopyFiltered);
               }}
             >
               Copy filtered rows
@@ -90,7 +119,7 @@ export default function CopyControl({
             role="menuitem"
             onClick={() => {
               setIsMenuOpen(false);
-              onCopyAll();
+              triggerCopy(onCopyAll);
             }}
           >
             Copy all rows
@@ -109,6 +138,7 @@ const SimpleButton = styled.button`
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
   cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
 
   &:hover:not(:disabled) {
     background: var(--subtle);
@@ -117,6 +147,16 @@ const SimpleButton = styled.button`
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  &[data-status="success"] {
+    color: var(--success, #22c55e);
+    border-color: var(--success, #22c55e);
+  }
+
+  &[data-status="error"] {
+    color: var(--error, #ef4444);
+    border-color: var(--error, #ef4444);
   }
 `;
 
@@ -135,9 +175,24 @@ const Primary = styled.button`
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
   cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: var(--subtle);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &[data-status="success"] {
+    color: var(--success, #22c55e);
+    border-color: var(--success, #22c55e);
+  }
+
+  &[data-status="error"] {
+    color: var(--error, #ef4444);
+    border-color: var(--error, #ef4444);
   }
 `;
 
@@ -153,8 +208,13 @@ const Caret = styled.button`
   align-items: center;
   justify-content: center;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: var(--subtle);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 `;
 

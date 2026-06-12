@@ -6,6 +6,7 @@ import Toolbar from "../Toolbar";
 import UploadModal from "../UploadModal";
 import DownloadModal from "../DownloadModal";
 import DownloadControl from "./DownloadControl";
+import CopyControl from "./CopyControl";
 import { useCsvViewer } from "./hooks";
 
 export default function CsvViewer() {
@@ -20,6 +21,14 @@ export default function CsvViewer() {
         <Toolbar
           firstRowAsHeader={viewer.firstRowAsHeader}
           onFirstRowAsHeaderChange={viewer.setFirstRowAsHeader}
+        />
+        <CopyControl
+          disabled={!viewer.csvData}
+          hasSelection={viewer.hasSelection}
+          hasActiveFilter={viewer.hasActiveFilter}
+          onCopyAll={viewer.handleCopyAll}
+          onCopySelected={viewer.handleCopySelected}
+          onCopyFiltered={viewer.handleCopyFiltered}
         />
         {viewer.csvData && (
           <DownloadControl
@@ -40,6 +49,7 @@ export default function CsvViewer() {
           firstRowAsHeader={viewer.firstRowAsHeader}
           onCellChange={viewer.handleCellChange}
           onExportStateChange={viewer.handleExportStateChange}
+          onSelectionChange={viewer.handleSelectionChange}
         />
       </GridArea>
       <UploadModal

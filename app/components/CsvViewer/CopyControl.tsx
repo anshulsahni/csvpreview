@@ -9,6 +9,11 @@ const FEEDBACK_DURATION_MS = 1500;
 
 type CopyStatus = "idle" | "success" | "error";
 
+interface ToastCoords {
+  centerX: number;
+  top: number;
+}
+
 export interface CopyControlProps {
   disabled?: boolean;
   hasSelection: boolean;
@@ -28,6 +33,8 @@ export default function CopyControl({
 }: CopyControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
+  const [toastCoords, setToastCoords] = useState<ToastCoords | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -45,6 +52,12 @@ export default function CopyControl({
 
   async function triggerCopy(action: () => Promise<void>) {
     if (resetTimer.current) clearTimeout(resetTimer.current);
+
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      setToastCoords({ centerX: rect.left + rect.width / 2, top: rect.top });
+    }
+
     try {
       await action();
       setCopyStatus("success");
@@ -52,19 +65,27 @@ export default function CopyControl({
       console.error("Copy failed:", err);
       setCopyStatus("error");
     }
-    resetTimer.current = setTimeout(() => setCopyStatus("idle"), FEEDBACK_DURATION_MS);
+    resetTimer.current = setTimeout(() => {
+      setCopyStatus("idle");
+      setToastCoords(null);
+    }, FEEDBACK_DURATION_MS);
   }
 
   const hasContextualOption = hasSelection || hasActiveFilter;
 
-  if (disabled || !hasContextualOption) {
-    return (
-      <Wrapper>
-        {copyStatus !== "idle" && (
-          <Toast data-status={copyStatus} role="status">
-            {copyStatus === "success" ? "Copied!" : "Failed to copy"}
-          </Toast>
-        )}
+  return (
+    <Wrapper ref={wrapperRef}>
+      {copyStatus !== "idle" && toastCoords && (
+        <Toast
+          data-status={copyStatus}
+          role="status"
+          style={{ left: toastCoords.centerX, top: toastCoords.top }}
+        >
+          {copyStatus === "success" ? "Copied!" : "Failed to copy"}
+        </Toast>
+      )}
+
+      {disabled || !hasContextualOption ? (
         <SimpleButton
           type="button"
           onClick={() => triggerCopy(onCopyAll)}
@@ -72,72 +93,61 @@ export default function CopyControl({
         >
           Copy
         </SimpleButton>
-      </Wrapper>
-    );
-  }
-
-  const primaryLabel = hasSelection ? "Copy selected cells" : "Copy filtered rows";
-  const primaryAction = hasSelection ? onCopySelected : onCopyFiltered;
-
-  return (
-    <Wrapper
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-          setIsMenuOpen(false);
-        }
-      }}
-    >
-      {copyStatus !== "idle" && (
-        <Toast data-status={copyStatus} role="status">
-          {copyStatus === "success" ? "Copied!" : "Failed to copy"}
-        </Toast>
-      )}
-      <Split>
-        <Primary
-          type="button"
-          onClick={() => {
-            triggerCopy(primaryAction);
-            setIsMenuOpen(false);
-          }}
-        >
-          {primaryLabel}
-        </Primary>
-        <Caret
-          type="button"
-          aria-label="More copy options"
-          aria-haspopup="menu"
-          aria-expanded={isMenuOpen}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-        >
-          <CaretIcon aria-hidden="true">▾</CaretIcon>
-        </Caret>
-        {isMenuOpen && (
-          <Menu role="menu">
-            {hasSelection && hasActiveFilter && (
+      ) : (
+        <Split>
+          <Primary
+            type="button"
+            onClick={() => {
+              triggerCopy(hasSelection ? onCopySelected : onCopyFiltered);
+              setIsMenuOpen(false);
+            }}
+          >
+            {hasSelection ? "Copy selected cells" : "Copy filtered rows"}
+          </Primary>
+          <Caret
+            type="button"
+            aria-label="More copy options"
+            aria-haspopup="menu"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+          >
+            <CaretIcon aria-hidden="true">▾</CaretIcon>
+          </Caret>
+          {isMenuOpen && (
+            <Menu
+              role="menu"
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                  setIsMenuOpen(false);
+                }
+              }}
+            >
+              {hasSelection && hasActiveFilter && (
+                <MenuItem
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    triggerCopy(onCopyFiltered);
+                  }}
+                >
+                  Copy filtered rows
+                </MenuItem>
+              )}
               <MenuItem
                 type="button"
                 role="menuitem"
                 onClick={() => {
                   setIsMenuOpen(false);
-                  triggerCopy(onCopyFiltered);
+                  triggerCopy(onCopyAll);
                 }}
               >
-                Copy filtered rows
+                Copy all rows
               </MenuItem>
-            )}
-            <MenuItem
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setIsMenuOpen(false);
-                triggerCopy(onCopyAll);
-              }}
-            >
-              Copy all rows
-            </MenuItem>
-          </Menu>
-        )}
-      </Split>
+            </Menu>
+          )}
+        </Split>
+      )}
     </Wrapper>
   );
 }
@@ -149,17 +159,16 @@ const Wrapper = styled.div`
 `;
 
 const Toast = styled.div`
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  transform: translate(-50%, calc(-100% - 8px));
   white-space: nowrap;
   font-size: 0.75rem;
   font-weight: 500;
   padding: 0.25rem 0.6rem;
   border-radius: 4px;
   pointer-events: none;
-  animation: fadeIn 0.1s ease;
+  z-index: 9999;
+  animation: fadeInUp 0.12s ease;
 
   &[data-status="success"] {
     background: var(--success, #22c55e);
@@ -171,9 +180,9 @@ const Toast = styled.div`
     color: #fff;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
-    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translate(-50%, calc(-100% - 4px)); }
+    to   { opacity: 1; transform: translate(-50%, calc(-100% - 8px)); }
   }
 `;
 

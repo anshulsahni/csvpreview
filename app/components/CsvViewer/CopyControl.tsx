@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "@linaria/react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 
@@ -30,6 +30,12 @@ export default function CopyControl({
   const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
   useKeyboardShortcuts(
     ESCAPE_SHORTCUT,
     () => setIsMenuOpen(false),
@@ -42,7 +48,8 @@ export default function CopyControl({
     try {
       await action();
       setCopyStatus("success");
-    } catch {
+    } catch (err) {
+      console.error("Copy failed:", err);
       setCopyStatus("error");
     }
     resetTimer.current = setTimeout(() => setCopyStatus("idle"), FEEDBACK_DURATION_MS);

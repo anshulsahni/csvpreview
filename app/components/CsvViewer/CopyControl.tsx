@@ -55,87 +55,127 @@ export default function CopyControl({
     resetTimer.current = setTimeout(() => setCopyStatus("idle"), FEEDBACK_DURATION_MS);
   }
 
-  const isBusy = copyStatus !== "idle";
   const hasContextualOption = hasSelection || hasActiveFilter;
 
   if (disabled || !hasContextualOption) {
-    const label = copyStatus === "success" ? "Copied!" : copyStatus === "error" ? "Failed" : "Copy";
     return (
-      <SimpleButton
-        type="button"
-        onClick={() => triggerCopy(onCopyAll)}
-        disabled={disabled}
-        data-status={copyStatus}
-      >
-        {label}
-      </SimpleButton>
+      <Wrapper>
+        {copyStatus !== "idle" && (
+          <Toast data-status={copyStatus} role="status">
+            {copyStatus === "success" ? "Copied!" : "Failed to copy"}
+          </Toast>
+        )}
+        <SimpleButton
+          type="button"
+          onClick={() => triggerCopy(onCopyAll)}
+          disabled={disabled}
+        >
+          Copy
+        </SimpleButton>
+      </Wrapper>
     );
   }
 
-  const primaryLabel =
-    copyStatus === "success" ? "Copied!" :
-    copyStatus === "error" ? "Failed" :
-    hasSelection ? "Copy selected cells" : "Copy filtered rows";
+  const primaryLabel = hasSelection ? "Copy selected cells" : "Copy filtered rows";
   const primaryAction = hasSelection ? onCopySelected : onCopyFiltered;
 
   return (
-    <Split
+    <Wrapper
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node)) {
           setIsMenuOpen(false);
         }
       }}
     >
-      <Primary
-        type="button"
-        onClick={() => {
-          triggerCopy(primaryAction);
-          setIsMenuOpen(false);
-        }}
-        disabled={isBusy}
-        data-status={copyStatus}
-      >
-        {primaryLabel}
-      </Primary>
-      <Caret
-        type="button"
-        aria-label="More copy options"
-        aria-haspopup="menu"
-        aria-expanded={isMenuOpen}
-        onClick={() => setIsMenuOpen((prev) => !prev)}
-        disabled={isBusy}
-      >
-        <CaretIcon aria-hidden="true">▾</CaretIcon>
-      </Caret>
-      {isMenuOpen && (
-        <Menu role="menu">
-          {hasSelection && hasActiveFilter && (
+      {copyStatus !== "idle" && (
+        <Toast data-status={copyStatus} role="status">
+          {copyStatus === "success" ? "Copied!" : "Failed to copy"}
+        </Toast>
+      )}
+      <Split>
+        <Primary
+          type="button"
+          onClick={() => {
+            triggerCopy(primaryAction);
+            setIsMenuOpen(false);
+          }}
+        >
+          {primaryLabel}
+        </Primary>
+        <Caret
+          type="button"
+          aria-label="More copy options"
+          aria-haspopup="menu"
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+        >
+          <CaretIcon aria-hidden="true">▾</CaretIcon>
+        </Caret>
+        {isMenuOpen && (
+          <Menu role="menu">
+            {hasSelection && hasActiveFilter && (
+              <MenuItem
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  triggerCopy(onCopyFiltered);
+                }}
+              >
+                Copy filtered rows
+              </MenuItem>
+            )}
             <MenuItem
               type="button"
               role="menuitem"
               onClick={() => {
                 setIsMenuOpen(false);
-                triggerCopy(onCopyFiltered);
+                triggerCopy(onCopyAll);
               }}
             >
-              Copy filtered rows
+              Copy all rows
             </MenuItem>
-          )}
-          <MenuItem
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setIsMenuOpen(false);
-              triggerCopy(onCopyAll);
-            }}
-          >
-            Copy all rows
-          </MenuItem>
-        </Menu>
-      )}
-    </Split>
+          </Menu>
+        )}
+      </Split>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+`;
+
+const Toast = styled.div`
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  pointer-events: none;
+  animation: fadeIn 0.1s ease;
+
+  &[data-status="success"] {
+    background: var(--success, #22c55e);
+    color: #fff;
+  }
+
+  &[data-status="error"] {
+    background: var(--error, #ef4444);
+    color: #fff;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+`;
 
 const SimpleButton = styled.button`
   background: transparent;
@@ -145,7 +185,6 @@ const SimpleButton = styled.button`
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
 
   &:hover:not(:disabled) {
     background: var(--subtle);
@@ -155,20 +194,9 @@ const SimpleButton = styled.button`
     opacity: 0.4;
     cursor: not-allowed;
   }
-
-  &[data-status="success"] {
-    color: var(--success, #22c55e);
-    border-color: var(--success, #22c55e);
-  }
-
-  &[data-status="error"] {
-    color: var(--error, #ef4444);
-    border-color: var(--error, #ef4444);
-  }
 `;
 
 const Split = styled.div`
-  position: relative;
   display: inline-flex;
   align-items: stretch;
 `;
@@ -182,24 +210,9 @@ const Primary = styled.button`
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
 
-  &:hover:not(:disabled) {
+  &:hover {
     background: var(--subtle);
-  }
-
-  &:disabled {
-    cursor: default;
-  }
-
-  &[data-status="success"] {
-    color: var(--success, #22c55e);
-    border-color: var(--success, #22c55e);
-  }
-
-  &[data-status="error"] {
-    color: var(--error, #ef4444);
-    border-color: var(--error, #ef4444);
   }
 `;
 
@@ -215,13 +228,8 @@ const Caret = styled.button`
   align-items: center;
   justify-content: center;
 
-  &:hover:not(:disabled) {
+  &:hover {
     background: var(--subtle);
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
   }
 `;
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { styled } from "@linaria/react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import { Dropdown, DropdownItem } from "@/app/components/Dropdown";
 
 const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
 
@@ -55,18 +56,16 @@ export default function DownloadControl({
         <CaretIcon aria-hidden="true">▾</CaretIcon>
       </Caret>
       {isMenuOpen && (
-        <Menu role="menu">
-          <MenuItem
-            type="button"
-            role="menuitem"
+        <Dropdown>
+          <DropdownItem
             onClick={() => {
               setIsMenuOpen(false);
               onDownloadAll();
             }}
           >
             Download all rows
-          </MenuItem>
-        </Menu>
+          </DropdownItem>
+        </Dropdown>
       )}
     </Split>
   );
@@ -126,34 +125,4 @@ const Caret = styled.button`
 
 const CaretIcon = styled.span`
   line-height: 1;
-`;
-
-const Menu = styled.div`
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  min-width: 180px;
-  padding: 0.25rem;
-  z-index: 100;
-`;
-
-const MenuItem = styled.button`
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  color: var(--foreground);
-  border: none;
-  border-radius: 4px;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--subtle);
-  }
 `;

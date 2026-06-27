@@ -51,6 +51,7 @@ export interface UseSpreadsheetGridArgs {
   firstRowAsHeader: boolean;
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
   onExportStateChange?: (state: GridExportState) => void;
+  onSelectionChange?: (selection: CellSelection | null) => void;
 }
 
 export interface SpreadsheetGridViewModel {
@@ -311,7 +312,7 @@ function computeViewModel(
 }
 
 export function useSpreadsheetGrid(
-  { data, firstRowAsHeader, onCellChange, onExportStateChange }: UseSpreadsheetGridArgs
+  { data, firstRowAsHeader, onCellChange, onExportStateChange, onSelectionChange }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
   const { sort, onArrowClick } = useSortState();
   const {
@@ -379,6 +380,10 @@ export function useSpreadsheetGrid(
     base.headerRowCells,
     onExportStateChange,
   ]);
+
+  useEffect(() => {
+    onSelectionChange?.(selection);
+  }, [selection, onSelectionChange]);
 
   return useMemo(
     () => ({

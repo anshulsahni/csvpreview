@@ -7,7 +7,9 @@ import {
   type ParseError,
 } from "@/lib/csvParser";
 import { exportCSV } from "@/lib/csvExporter";
+import { rowsToCopyText, selectedCellsToCopyText } from "@/lib/clipboardUtils";
 import type { GridExportState } from "../SpreadsheetGrid";
+import type { CellSelection } from "../SpreadsheetGrid/selectionUtils";
 import {
   computeDefaultFilename,
   ensureCsvExtension,
@@ -55,6 +57,7 @@ export interface UseCsvViewerReturn {
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
   hasActiveFilter: boolean;
+  hasSelection: boolean;
   setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
@@ -63,7 +66,11 @@ export interface UseCsvViewerReturn {
   openDownloadAllRows: () => void;
   closeDownload: () => void;
   handleExportStateChange: (state: GridExportState) => void;
+  handleSelectionChange: (selection: CellSelection | null) => void;
   handleDownload: (options: DownloadOptions) => void;
+  handleCopyAll: () => Promise<void>;
+  handleCopyFiltered: () => Promise<void>;
+  handleCopySelected: () => Promise<void>;
   handleFilePicked: (file: File) => void;
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
@@ -113,6 +120,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     hasActiveFilter: false,
   });
   const [downloadIgnoreFilter, setDownloadIgnoreFilter] = useState<boolean>(false);
+  const [currentSelection, setCurrentSelection] = useState<CellSelection | null>(null);
   const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
@@ -229,6 +237,26 @@ export function useCsvViewer(): UseCsvViewerReturn {
     });
   }
 
+  function handleSelectionChange(selection: CellSelection | null) {
+    setCurrentSelection(selection);
+  }
+
+  async function handleCopyAll() {
+    const rows = computeDownloadRows(exportState.unfilteredRows, exportState.headerRow);
+    await navigator.clipboard.writeText(rowsToCopyText(rows));
+  }
+
+  async function handleCopyFiltered() {
+    const rows = computeDownloadRows(exportState.visibleRows, exportState.headerRow);
+    await navigator.clipboard.writeText(rowsToCopyText(rows));
+  }
+
+  async function handleCopySelected() {
+    if (!currentSelection) return;
+    const text = selectedCellsToCopyText(exportState.visibleRows, currentSelection);
+    await navigator.clipboard.writeText(text);
+  }
+
   function openUpload() {
     setIsUploadOpen(true);
   }
@@ -278,6 +306,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     delimiter,
     firstRowAsHeader,
     hasActiveFilter: exportState.hasActiveFilter,
+    hasSelection: currentSelection !== null,
     setFirstRowAsHeader,
     openUpload,
     closeUpload,
@@ -285,7 +314,11 @@ export function useCsvViewer(): UseCsvViewerReturn {
     openDownloadAllRows,
     closeDownload,
     handleExportStateChange,
+    handleSelectionChange,
     handleDownload,
+    handleCopyAll,
+    handleCopyFiltered,
+    handleCopySelected,
     handleFilePicked,
     handlePasteSubmit,
     handleStartBlank,

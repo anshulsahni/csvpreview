@@ -59,23 +59,22 @@ const Item = styled.div`
   border-radius: 8px;
   background: var(--background);
   color: var(--foreground);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--info, #0070f3);
+  border: 1px solid var(--info, #0070f3);
   box-shadow: var(--dropdown-shadow, 0 8px 24px rgba(0, 0, 0, 0.18));
   font-size: 0.85rem;
   line-height: 1.3;
   animation: toastSlideIn 0.22s ease;
 
   &[data-variant="success"] {
-    border-left-color: var(--success, #16a34a);
+    border-color: var(--success, #16a34a);
   }
 
   &[data-variant="error"] {
-    border-left-color: var(--error, #dc2626);
+    border-color: var(--error, #dc2626);
   }
 
   &[data-variant="info"] {
-    border-left-color: var(--info, #0070f3);
+    border-color: var(--info, #0070f3);
   }
 
   @keyframes toastSlideIn {

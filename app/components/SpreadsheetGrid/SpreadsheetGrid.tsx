@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { styled } from "@linaria/react";
 import FilterDropdown from "../FilterDropdown";
 import { useSpreadsheetGrid, type GridExportState } from "./hooks";
+import type { CellSelection } from "./selectionUtils";
 import { SortArrows } from "./SortArrows";
 import CellEditor from "./CellEditor";
 import { useSpreadsheetGridNavigation } from "./useSpreadsheetGridNavigation";
@@ -14,6 +15,7 @@ export interface SpreadsheetGridProps {
   firstRowAsHeader?: boolean;
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
   onExportStateChange?: (state: GridExportState) => void;
+  onSelectionChange?: (selection: CellSelection | null) => void;
 }
 
 export default function SpreadsheetGrid({
@@ -21,12 +23,14 @@ export default function SpreadsheetGrid({
   firstRowAsHeader = false,
   onCellChange,
   onExportStateChange,
+  onSelectionChange,
 }: SpreadsheetGridProps) {
   const vm = useSpreadsheetGrid({
     data,
     firstRowAsHeader,
     onCellChange,
     onExportStateChange,
+    onSelectionChange,
   });
   const gridRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);

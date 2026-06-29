@@ -12,22 +12,38 @@ export interface ToastItemProps {
 export default function ToastItem({ toast, onDismiss }: ToastItemProps) {
   const [paused, setPaused] = useState(false);
   const onDismissRef = useRef(onDismiss);
+  // Track time left so pausing on hover resumes the countdown rather than
+  // restarting it from the full duration.
+  const remainingMsRef = useRef(toast.durationMs);
+  const startedAtRef = useRef<number | null>(null);
 
   useEffect(() => {
     onDismissRef.current = onDismiss;
   }, [onDismiss]);
 
   useEffect(() => {
+    remainingMsRef.current = toast.durationMs;
+    startedAtRef.current = null;
+  }, [toast.id, toast.durationMs]);
+
+  useEffect(() => {
     // durationMs <= 0 => sticky (dismiss only on user action).
-    // While paused (pointer over the toast) we skip arming the timer; leaving
-    // the toast re-arms it, resuming the countdown.
     if (toast.durationMs <= 0 || paused) return;
 
+    startedAtRef.current = Date.now();
     const timer = setTimeout(() => {
       onDismissRef.current(toast.id, "auto");
-    }, toast.durationMs);
+    }, remainingMsRef.current);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (startedAtRef.current !== null) {
+        remainingMsRef.current = Math.max(
+          0,
+          remainingMsRef.current - (Date.now() - startedAtRef.current)
+        );
+      }
+    };
   }, [toast.id, toast.durationMs, paused]);
 
   return (

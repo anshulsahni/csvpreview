@@ -83,8 +83,10 @@ describe("ToastItem", () => {
     render(<ToastItem toast={makeToast({ durationMs: 5000 })} onDismiss={onDismiss} />);
     const item = screen.getByRole("status");
 
-    // Hover first so the paused state is applied and the timer is cleared,
-    // then advance time well past the duration.
+    // Let part of the countdown elapse, then hover to pause it.
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
     act(() => {
       fireEvent.mouseEnter(item);
     });
@@ -93,11 +95,17 @@ describe("ToastItem", () => {
     });
     expect(onDismiss).not.toHaveBeenCalled();
 
+    // After leaving, only the remaining 3000ms should be required — not a
+    // fresh full duration.
     act(() => {
       fireEvent.mouseLeave(item);
     });
     act(() => {
-      jest.advanceTimersByTime(5000);
+      jest.advanceTimersByTime(2999);
+    });
+    expect(onDismiss).not.toHaveBeenCalled();
+    act(() => {
+      jest.advanceTimersByTime(1);
     });
     expect(onDismiss).toHaveBeenCalledWith("t1", "auto");
 

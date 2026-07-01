@@ -11,6 +11,9 @@
   --background: light-dark(#ffffff, #0a0a0a);
   --foreground: light-dark(#171717, #ededed);
   --primary: #0070f3;
+  --success: light-dark(#16a34a, #22c55e);
+  --error: light-dark(#dc2626, #ef4444);
+  --info: light-dark(#0070f3, #3b82f6);
   --border: light-dark(#e5e7eb, #2a2a2a);
   --subtle: light-dark(#f3f4f6, #1a1a1a);
   --grid-header-bg: light-dark(#f0f2f5, #161b22);

@@ -4,6 +4,7 @@ import "./globals.css";
 import AnalyticsProvider from "@/app/components/AnalyticsProvider";
 import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
+import ToastAnalyticsProvider from "@/app/components/ToastAnalyticsProvider";
 import { THEME_COOKIE_KEY, isTheme, Theme } from "@/lib/theme";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
@@ -54,10 +55,12 @@ export default async function RootLayout({
     <html lang="en" data-theme={theme}>
       <body>
         <ThemeProvider initialTheme={theme}>
-          <KeyboardShortcutsProvider>
-            <AnalyticsProvider>{children}</AnalyticsProvider>
-          </KeyboardShortcutsProvider>
-          <ThemeToggle />
+          <ToastAnalyticsProvider>
+            <KeyboardShortcutsProvider>
+              <AnalyticsProvider>{children}</AnalyticsProvider>
+            </KeyboardShortcutsProvider>
+            <ThemeToggle />
+          </ToastAnalyticsProvider>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { styled } from "@linaria/react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 import { Dropdown, DropdownItem } from "@/app/components/Dropdown";
+import { useToast } from "@/app/components/Toast";
 
 const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
-const FEEDBACK_DURATION_MS = 1500;
-
-type CopyStatus = "idle" | "success" | "error";
-
-interface ToastCoords {
-  centerX: number;
-  top: number;
-}
 
 export interface CopyControlProps {
   disabled?: boolean;
@@ -33,16 +26,7 @@ export default function CopyControl({
   onCopyFiltered,
 }: CopyControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
-  const [toastCoords, setToastCoords] = useState<ToastCoords | null>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (resetTimer.current) clearTimeout(resetTimer.current);
-    };
-  }, []);
+  const { success, error } = useToast();
 
   useKeyboardShortcuts(
     ESCAPE_SHORTCUT,
@@ -52,40 +36,19 @@ export default function CopyControl({
   );
 
   async function triggerCopy(action: () => Promise<void>) {
-    if (resetTimer.current) clearTimeout(resetTimer.current);
-
-    if (wrapperRef.current) {
-      const rect = wrapperRef.current.getBoundingClientRect();
-      setToastCoords({ centerX: rect.left + rect.width / 2, top: rect.top });
-    }
-
     try {
       await action();
-      setCopyStatus("success");
+      success("Copied to clipboard");
     } catch (err) {
       console.error("Copy failed:", err);
-      setCopyStatus("error");
+      error("Failed to copy");
     }
-    resetTimer.current = setTimeout(() => {
-      setCopyStatus("idle");
-      setToastCoords(null);
-    }, FEEDBACK_DURATION_MS);
   }
 
   const hasContextualOption = hasSelection || hasActiveFilter;
 
   return (
-    <Wrapper ref={wrapperRef}>
-      {copyStatus !== "idle" && toastCoords && (
-        <Toast
-          data-status={copyStatus}
-          role="status"
-          style={{ left: toastCoords.centerX, top: toastCoords.top }}
-        >
-          {copyStatus === "success" ? "Copied!" : "Failed to copy"}
-        </Toast>
-      )}
-
+    <Wrapper>
       {disabled || !hasContextualOption ? (
         <SimpleButton
           type="button"
@@ -152,34 +115,6 @@ const Wrapper = styled.div`
   position: relative;
   display: inline-flex;
   align-items: stretch;
-`;
-
-const Toast = styled.div`
-  position: fixed;
-  transform: translate(-50%, calc(-100% - 8px));
-  white-space: nowrap;
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.6rem;
-  border-radius: 4px;
-  pointer-events: none;
-  z-index: 9999;
-  animation: fadeInUp 0.12s ease;
-
-  &[data-status="success"] {
-    background: var(--success, #22c55e);
-    color: #fff;
-  }
-
-  &[data-status="error"] {
-    background: var(--error, #ef4444);
-    color: #fff;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translate(-50%, calc(-100% - 4px)); }
-    to   { opacity: 1; transform: translate(-50%, calc(-100% - 8px)); }
-  }
 `;
 
 const SimpleButton = styled.button`

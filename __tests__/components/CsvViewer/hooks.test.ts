@@ -156,7 +156,7 @@ describe("useCsvViewer", () => {
       ]);
     });
 
-    it("surfaces parse errors with line numbers and keeps modal open on malformed CSV", async () => {
+    it("loads the parseable rows and surfaces errors (closing the modal) on partially-malformed CSV", async () => {
       mockFileReaderWithText('a,b\nc,d\n"unclosed');
       const { result } = renderHook(() => useCsvViewer());
 
@@ -171,17 +171,24 @@ describe("useCsvViewer", () => {
       expect(result.current.parseErrors.length).toBeGreaterThan(0);
       expect(result.current.parseErrors[0].line).toBeGreaterThan(0);
       expect(typeof result.current.parseErrors[0].message).toBe("string");
-      expect(result.current.isUploadOpen).toBe(true);
-      expect(result.current.csvData).toBeNull();
-      expect(localStorage.getItem(LS_KEY_DATA)).toBeNull();
+      // Valid rows are loaded and the modal closes; the errors are flagged.
+      expect(result.current.isUploadOpen).toBe(false);
+      expect(result.current.csvData).toEqual(
+        expect.arrayContaining([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
+      expect(localStorage.getItem(LS_KEY_DATA)).not.toBeNull();
     });
 
-    it("does not overwrite already-loaded data when a new upload has parse errors", async () => {
+    it("keeps already-loaded data and reports 'No data found' when a new upload has no parseable rows", async () => {
       const rows = [["keep", "me"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, "existing.csv");
 
-      mockFileReaderWithText('"unclosed');
+      // A file with only blank/whitespace lines yields zero rows.
+      mockFileReaderWithText("\n   \n");
       const { result } = renderHook(() => useCsvViewer());
 
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
@@ -192,11 +199,14 @@ describe("useCsvViewer", () => {
 
       act(() => {
         result.current.handleFilePicked(
-          new File(["ignored"], "bad.csv", { type: "text/csv" })
+          new File(["ignored"], "empty.csv", { type: "text/csv" })
         );
       });
 
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      expect(result.current.parseErrors).toEqual([
+        { line: 0, message: "No data found" },
+      ]);
+      expect(result.current.isUploadOpen).toBe(true);
       expect(result.current.csvData).toEqual(rows);
       expect(result.current.fileName).toBe("existing.csv");
     });
@@ -254,7 +264,7 @@ describe("useCsvViewer", () => {
       expect(result.current.isUploadOpen).toBe(true);
     });
 
-    it("surfaces parse errors for malformed pasted CSV", async () => {
+    it("loads rows and surfaces parse errors (closing the modal) for malformed pasted CSV", async () => {
       const { result } = renderHook(() => useCsvViewer());
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -264,7 +274,33 @@ describe("useCsvViewer", () => {
 
       expect(result.current.parseErrors.length).toBeGreaterThan(0);
       expect(result.current.parseErrors[0].line).toBe(1);
-      expect(result.current.isUploadOpen).toBe(true);
+      expect(result.current.isUploadOpen).toBe(false);
+      expect(result.current.csvData).not.toBeNull();
+    });
+
+    it("flags ragged rows via rowErrors and the error banner while loading the data", async () => {
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d,e\nf,g");
+      });
+
+      // All three rows load; the middle (ragged) row is flagged.
+      expect(result.current.csvData).toEqual([
+        ["a", "b"],
+        ["c", "d", "e"],
+        ["f", "g"],
+      ]);
+      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      expect(result.current.rowErrors.has(1)).toBe(true);
+      expect(result.current.showErrorBanner).toBe(true);
+      expect(result.current.isUploadOpen).toBe(false);
+
+      act(() => {
+        result.current.dismissErrorBanner();
+      });
+      expect(result.current.showErrorBanner).toBe(false);
     });
   });
 

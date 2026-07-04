@@ -47,8 +47,7 @@ export function computeCsvCounts(
   const rowCount = firstRowAsHeader
     ? Math.max(0, data.length - 1)
     : data.length;
-  const columnCount =
-    data.length === 0 ? 0 : Math.max(0, ...data.map((row) => row.length));
+  const columnCount = data.reduce((max, row) => Math.max(max, row.length), 0);
   return {
     rowCount,
     totalRowCount: rowCount,

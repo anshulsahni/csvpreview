@@ -48,14 +48,14 @@ export function computeGridCounts(state: GridExportState): {
   totalRowCount: number;
   columnCount: number;
 } {
+  const columnCount = state.unfilteredRows.reduce(
+    (max, row) => Math.max(max, row.length),
+    state.headerRow?.length ?? 0
+  );
   return {
     visibleRowCount: state.visibleRows.length,
     totalRowCount: state.unfilteredRows.length,
-    columnCount: Math.max(
-      0,
-      state.headerRow?.length ?? 0,
-      ...state.unfilteredRows.map((r) => r.length)
-    ),
+    columnCount,
   };
 }
 

@@ -5,7 +5,6 @@ import { styled } from "@linaria/react";
 import FilterDropdown from "../FilterDropdown";
 import {
   useSpreadsheetGrid,
-  dataRowIndexFromBodyRowIndex,
   type GridExportState,
 } from "./hooks";
 import type { CellSelection } from "./selectionUtils";
@@ -17,11 +16,6 @@ import FocusOverlay from "./FocusOverlay";
 export interface SpreadsheetGridProps {
   data: string[][];
   firstRowAsHeader?: boolean;
-  /**
-   * Data-row index → error message for rows that failed validation. Keys index
-   * into `data`; matching rows are highlighted (and follow sort/filter).
-   */
-  rowErrors?: ReadonlyMap<number, string>;
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
   onExportStateChange?: (state: GridExportState) => void;
   onSelectionChange?: (selection: CellSelection | null) => void;
@@ -30,7 +24,6 @@ export interface SpreadsheetGridProps {
 export default function SpreadsheetGrid({
   data,
   firstRowAsHeader = false,
-  rowErrors,
   onCellChange,
   onExportStateChange,
   onSelectionChange,
@@ -142,20 +135,9 @@ export default function SpreadsheetGrid({
           </thead>
           <tbody>
             {Array.from({ length: vm.numRows }, (_, ri) => {
-              const rowError =
-                rowErrors && ri < vm.visibleRowCount
-                  ? rowErrors.get(
-                      dataRowIndexFromBodyRowIndex(
-                        firstRowAsHeader,
-                        vm.getSourceBodyIndexForDisplayRow(ri)
-                      )
-                    )
-                  : undefined;
               return (
                 <tr key={ri}>
                   <RowTh
-                    data-error={rowError ? "true" : undefined}
-                    title={rowError}
                     onMouseDown={() => vm.onRowGutterMouseDown(ri)}
                   >
                     {vm.rowNumberOffset + ri}
@@ -165,10 +147,8 @@ export default function SpreadsheetGrid({
                       key={ci}
                       data-row={ri}
                       data-col={ci}
-                      data-error={rowError ? "true" : undefined}
                       data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
                       data-editing={vm.isEditingCell(ri, ci) ? "true" : undefined}
-                      title={rowError}
                       tabIndex={0}
                       onMouseDown={() => vm.onCellMouseDown(ri, ci)}
                       onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
@@ -353,12 +333,6 @@ const RowTh = styled.th`
   padding: 3px 4px;
   user-select: none;
   cursor: pointer;
-
-  &[data-error="true"] {
-    background: var(--grid-error-gutter-bg);
-    color: var(--grid-error-gutter-text);
-    font-weight: 700;
-  }
 `;
 
 const DataTd = styled.td`
@@ -377,10 +351,6 @@ const DataTd = styled.td`
   &:focus,
   &:focus-visible {
     outline: none;
-  }
-
-  &[data-error="true"] {
-    background: var(--grid-error-row-bg);
   }
 
   &[data-selected="true"] {

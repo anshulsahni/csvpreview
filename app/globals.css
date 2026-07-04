@@ -30,9 +30,6 @@
   --grid-filter-icon-idle: light-dark(#9ca3af, #6b7280);
   --grid-filter-icon-active: light-dark(#d97706, #f59e0b);
   --grid-selection-bg: light-dark(#cfe2ff, #1e3a5f);
-  --grid-error-row-bg: light-dark(#fdecec, #3b1213);
-  --grid-error-gutter-bg: light-dark(#f7b4b4, #7f1d1d);
-  --grid-error-gutter-text: light-dark(#7f1d1d, #fecaca);
   --dropdown-bg: var(--background);
   --dropdown-border: var(--border);
   --dropdown-shadow: light-dark(

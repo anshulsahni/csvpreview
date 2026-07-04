@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   parseCSV,
   type Delimiter,
@@ -35,27 +35,6 @@ export function computeDownloadRows(
   return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
 }
 
-/**
- * Build a map from data-row index → combined error message for the rows that
- * have parse errors. Keys index into the parsed `rows` array (i.e. `csvData`),
- * which the grid uses to highlight the offending rows. Errors without a
- * `rowIndex` (e.g. empty-input messages) are ignored here.
- *
- * Pure and exported for unit testing.
- */
-export function computeRowErrors(
-  errors: ParseError[]
-): Map<number, string> {
-  const map = new Map<number, string>();
-  for (const error of errors) {
-    if (error.rowIndex === undefined) continue;
-    const entry = `Line ${error.line}: ${error.message}`;
-    const existing = map.get(error.rowIndex);
-    map.set(error.rowIndex, existing ? `${existing}; ${entry}` : entry);
-  }
-  return map;
-}
-
 function triggerCsvDownload(csv: string, filename: string): void {
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -75,9 +54,6 @@ export interface UseCsvViewerReturn {
   isDownloadOpen: boolean;
   defaultDownloadFilename: string;
   parseErrors: ParseError[];
-  rowErrors: Map<number, string>;
-  showErrorBanner: boolean;
-  dismissErrorBanner: () => void;
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
   hasActiveFilter: boolean;
@@ -135,7 +111,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     computeDefaultFilename()
   );
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
-  const [errorBannerDismissed, setErrorBannerDismissed] = useState<boolean>(false);
   const [delimiter] = useState<Delimiter>(",");
   const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
   const [exportState, setExportState] = useState<GridExportState>({
@@ -183,18 +158,19 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function ingest(text: string, name: string) {
     const { rows, errors } = parseCSV(text, { delimiter });
-    // Nothing parseable: keep the modal open and show the errors there so the
-    // user can fix the input. There is no data to load in this case.
-    if (rows.length === 0) {
-      setParseErrors(
-        errors.length > 0 ? errors : [{ line: 0, message: "No data found" }]
-      );
+    // Malformed input: keep the upload modal open and list the errors there so
+    // the user sees exactly which lines are bad. Nothing is loaded until the
+    // input parses cleanly — the modal is the single place errors are shown.
+    if (errors.length > 0) {
+      setParseErrors(errors);
       return;
     }
-    // Load the valid rows and surface any errors as flags: the offending lines
-    // are highlighted in the grid and listed in a dismissible banner.
-    setParseErrors(errors);
-    setErrorBannerDismissed(false);
+    if (rows.length === 0) {
+      setParseErrors([{ line: 0, message: "No data found" }]);
+      return;
+    }
+    // Clean parse: load the rows and close the modal.
+    setParseErrors([]);
     setCsvData(rows);
     setFileName(name);
     try {
@@ -289,15 +265,10 @@ export function useCsvViewer(): UseCsvViewerReturn {
     await navigator.clipboard.writeText(text);
   }
 
-  function dismissErrorBanner() {
-    setErrorBannerDismissed(true);
-  }
-
   function openUpload() {
-    // Starting a fresh upload clears flags from the currently loaded data so
-    // the modal only shows errors relevant to the new input.
+    // Starting a fresh upload clears any errors from a previous attempt so the
+    // modal only shows errors relevant to the new input.
     setParseErrors([]);
-    setErrorBannerDismissed(false);
     setIsUploadOpen(true);
   }
 
@@ -326,11 +297,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setExportState(state);
   }, []);
 
-  const rowErrors = useMemo(
-    () => computeRowErrors(parseErrors),
-    [parseErrors]
-  );
-
   function handleDownload(options: DownloadOptions) {
     const sourceRows = downloadIgnoreFilter
       ? exportState.unfilteredRows
@@ -348,12 +314,6 @@ export function useCsvViewer(): UseCsvViewerReturn {
     isDownloadOpen,
     defaultDownloadFilename: downloadFilename,
     parseErrors,
-    rowErrors,
-    // The banner surfaces flags on already-loaded data; while the upload modal
-    // is open it shows errors itself, so suppress the banner to avoid dupes.
-    showErrorBanner:
-      parseErrors.length > 0 && !errorBannerDismissed && !isUploadOpen,
-    dismissErrorBanner,
     delimiter,
     firstRowAsHeader,
     hasActiveFilter: exportState.hasActiveFilter,

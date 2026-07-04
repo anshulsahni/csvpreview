@@ -5,7 +5,6 @@ import SpreadsheetGrid from "../SpreadsheetGrid";
 import Toolbar from "../Toolbar";
 import UploadModal from "../UploadModal";
 import DownloadModal from "../DownloadModal";
-import ParseErrorBanner from "../ParseErrorBanner";
 import DownloadControl from "./DownloadControl";
 import CopyControl from "./CopyControl";
 import { useCsvViewer } from "./hooks";
@@ -44,17 +43,10 @@ export default function CsvViewer() {
           </ClearButton>
         )}
       </TopBar>
-      {viewer.showErrorBanner && (
-        <ParseErrorBanner
-          errors={viewer.parseErrors}
-          onDismiss={viewer.dismissErrorBanner}
-        />
-      )}
       <GridArea>
         <SpreadsheetGrid
           data={viewer.csvData ?? []}
           firstRowAsHeader={viewer.firstRowAsHeader}
-          rowErrors={viewer.rowErrors}
           onCellChange={viewer.handleCellChange}
           onExportStateChange={viewer.handleExportStateChange}
           onSelectionChange={viewer.handleSelectionChange}

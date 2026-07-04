@@ -95,11 +95,17 @@ export default function UploadModal(props: UploadModalProps) {
 
         {props.errors.length > 0 && (
           <ErrorPanel role="alert">
-            {props.errors.map((error, index) => (
-              <ErrorLine key={`${error.line}-${index}`}>
-                Line {error.line}: {error.message}
-              </ErrorLine>
-            ))}
+            <ErrorHeading>
+              {props.errors.length}{" "}
+              {props.errors.length === 1 ? "issue" : "issues"} found.
+            </ErrorHeading>
+            <ErrorList>
+              {props.errors.map((error, index) => (
+                <ErrorLine key={`${error.line}-${index}`}>
+                  Line {error.line}: {error.message}
+                </ErrorLine>
+              ))}
+            </ErrorList>
           </ErrorPanel>
         )}
 
@@ -291,13 +297,26 @@ const ErrorPanel = styled.div`
   font-size: 0.85rem;
   display: flex;
   flex-direction: column;
+  gap: 0.35rem;
+`;
+
+const ErrorHeading = styled.p`
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.35;
+`;
+
+const ErrorList = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 0.15rem;
-  max-height: 140px;
+  max-height: 160px;
   overflow: auto;
 `;
 
 const ErrorLine = styled.div`
   line-height: 1.35;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 `;
 
 const Footer = styled.div`

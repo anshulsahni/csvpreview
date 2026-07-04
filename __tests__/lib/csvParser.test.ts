@@ -218,24 +218,23 @@ describe("parseCSV", () => {
       expect(result.errors).toEqual([]);
     });
 
-    it("flags a row with too many columns and reports its line and rowIndex", () => {
+    it("flags a row with too many columns and reports its line", () => {
       const result = parseCSV("a,b\nc,d,e\nf,g");
-      const mismatch = result.errors.find((e) => e.rowIndex === 1);
+      const mismatch = result.errors.find((e) => e.line === 2);
       expect(mismatch).toBeDefined();
-      expect(mismatch?.line).toBe(2);
       expect(mismatch?.message).toBe("Expected 2 columns but found 3");
     });
 
     it("flags a row with too few columns", () => {
       const result = parseCSV("a,b,c\nd,e\nf,g,h");
-      const mismatch = result.errors.find((e) => e.rowIndex === 1);
+      const mismatch = result.errors.find((e) => e.line === 2);
       expect(mismatch).toBeDefined();
       expect(mismatch?.message).toBe("Expected 3 columns but found 2");
     });
 
     it("uses singular 'column' when the reference row has one column", () => {
       const result = parseCSV("a\nb,c");
-      const mismatch = result.errors.find((e) => e.rowIndex === 1);
+      const mismatch = result.errors.find((e) => e.line === 2);
       expect(mismatch?.message).toBe("Expected 1 column but found 2");
     });
 
@@ -250,19 +249,10 @@ describe("parseCSV", () => {
 
     it("computes the correct line for a ragged row after a blank line", () => {
       const result = parseCSV("a,b\n\nc,d,e");
-      const mismatch = result.errors.find((e) => e.rowIndex === 1);
-      expect(mismatch?.line).toBe(3);
-    });
-  });
-
-  describe("rowIndex on parse errors", () => {
-    it("points at the row in the returned rows array", () => {
-      const result = parseCSV('a,b\nc,d\n"unclosed');
-      const withRowIndex = result.errors.find(
-        (e) => e.rowIndex !== undefined
+      const mismatch = result.errors.find((e) =>
+        e.message.startsWith("Expected")
       );
-      expect(withRowIndex?.rowIndex).toBe(2);
-      expect(result.rows[withRowIndex!.rowIndex!]).toBeDefined();
+      expect(mismatch?.line).toBe(3);
     });
   });
 

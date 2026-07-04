@@ -18,15 +18,10 @@ export type Delimiter = "," | "|" | " ";
  * Line numbers are 1-indexed (human-friendly) and refer to the physical
  * line in the original input (accounting for skipped blank lines and
  * multi-line quoted fields).
- *
- * `rowIndex`, when present, is the index into `ParseResult.rows` of the row
- * the error belongs to. It is used to highlight the offending row in the UI.
- * Errors not tied to a specific data row (e.g. "empty input") omit it.
  */
 export interface ParseError {
   line: number;
   message: string;
-  rowIndex?: number;
 }
 
 /**
@@ -76,7 +71,6 @@ function detectFieldMismatches(
     if (found !== expected) {
       errors.push({
         line: lineOfRow[i]!,
-        rowIndex: i,
         message: `Expected ${expected} ${
           expected === 1 ? "column" : "columns"
         } but found ${found}`,
@@ -160,11 +154,10 @@ export function parseCSV(input: string, options?: ParseOptions): ParseResult {
         return;
       }
 
-      const rowIndex = rows.length;
       rows.push(row);
       lineOfRow.push(startLine);
       for (const err of results.errors) {
-        errors.push({ line: startLine, message: err.message, rowIndex });
+        errors.push({ line: startLine, message: err.message });
       }
     },
   });

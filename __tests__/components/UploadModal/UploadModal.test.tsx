@@ -74,6 +74,7 @@ describe("UploadModal (render smoke)", () => {
 
     expect(screen.getByText("Line 3: bad quote")).toBeInTheDocument();
     expect(screen.getByText("Line 7: missing field")).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("2 issues found");
   });
 
   it("closes on Escape through the keyboard shortcut provider", () => {

@@ -3,7 +3,10 @@
 import React, { useRef } from "react";
 import { styled } from "@linaria/react";
 import FilterDropdown from "../FilterDropdown";
-import { useSpreadsheetGrid, type GridExportState } from "./hooks";
+import {
+  useSpreadsheetGrid,
+  type GridExportState,
+} from "./hooks";
 import type { CellSelection } from "./selectionUtils";
 import { SortArrows } from "./SortArrows";
 import CellEditor from "./CellEditor";
@@ -131,37 +134,41 @@ export default function SpreadsheetGrid({
             )}
           </thead>
           <tbody>
-            {Array.from({ length: vm.numRows }, (_, ri) => (
-              <tr key={ri}>
-                <RowTh onMouseDown={() => vm.onRowGutterMouseDown(ri)}>
-                  {vm.rowNumberOffset + ri}
-                </RowTh>
-                {Array.from({ length: vm.numCols }, (_, ci) => (
-                  <DataTd
-                    key={ci}
-                    data-row={ri}
-                    data-col={ci}
-                    data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
-                    data-editing={vm.isEditingCell(ri, ci) ? "true" : undefined}
-                    tabIndex={0}
-                    onMouseDown={() => vm.onCellMouseDown(ri, ci)}
-                    onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
-                    onFocus={() => vm.onCellFocus(ri, ci)}
-                    onDoubleClick={() => vm.onCellDoubleClick(ri, ci)}
+            {Array.from({ length: vm.numRows }, (_, ri) => {
+              return (
+                <tr key={ri}>
+                  <RowTh
+                    onMouseDown={() => vm.onRowGutterMouseDown(ri)}
                   >
-                    {vm.isEditingCell(ri, ci) ? (
-                      <CellEditor
-                        key={`editor-${ri}-${ci}-${vm.bodyRows[ri]?.[ci] ?? ""}`}
-                        initialValue={vm.bodyRows[ri]?.[ci] ?? ""}
-                        onDraftValueChange={vm.onDraftValueChange}
-                      />
-                    ) : (
-                      vm.bodyRows[ri]?.[ci] ?? ""
-                    )}
-                  </DataTd>
-                ))}
-              </tr>
-            ))}
+                    {vm.rowNumberOffset + ri}
+                  </RowTh>
+                  {Array.from({ length: vm.numCols }, (_, ci) => (
+                    <DataTd
+                      key={ci}
+                      data-row={ri}
+                      data-col={ci}
+                      data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
+                      data-editing={vm.isEditingCell(ri, ci) ? "true" : undefined}
+                      tabIndex={0}
+                      onMouseDown={() => vm.onCellMouseDown(ri, ci)}
+                      onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
+                      onFocus={() => vm.onCellFocus(ri, ci)}
+                      onDoubleClick={() => vm.onCellDoubleClick(ri, ci)}
+                    >
+                      {vm.isEditingCell(ri, ci) ? (
+                        <CellEditor
+                          key={`editor-${ri}-${ci}-${vm.bodyRows[ri]?.[ci] ?? ""}`}
+                          initialValue={vm.bodyRows[ri]?.[ci] ?? ""}
+                          onDraftValueChange={vm.onDraftValueChange}
+                        />
+                      ) : (
+                        vm.bodyRows[ri]?.[ci] ?? ""
+                      )}
+                    </DataTd>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </TableScroller>

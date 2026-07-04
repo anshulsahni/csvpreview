@@ -15,7 +15,9 @@ export type Delimiter = "," | "|" | " ";
 
 /**
  * Represents a single parsing error with line number and message
- * Line numbers are 1-indexed (human-friendly)
+ * Line numbers are 1-indexed (human-friendly) and refer to the physical
+ * line in the original input (accounting for skipped blank lines and
+ * multi-line quoted fields).
  */
 export interface ParseError {
   line: number;
@@ -41,24 +43,41 @@ export interface ParseOptions {
 }
 
 /**
- * Maps a PapaParse error to our ParseError interface
- * Converts 0-indexed row to 1-indexed line number
+ * True when a parsed row carries no meaningful content — an empty line or a
+ * line whose every field is blank/whitespace. Mirrors PapaParse's "greedy"
+ * empty-line behavior, which we replicate manually so we can retain accurate
+ * physical line numbers for the rows we keep.
  */
-function mapPapaError(papaError: Papa.ParseError): ParseError {
-  return {
-    line: (papaError.row ?? 0) + 1, // PapaParse uses 0-indexed rows; we use 1-indexed lines
-    message: papaError.message,
-  };
+function isEmptyRow(row: string[]): boolean {
+  return row.every((cell) => cell.trim() === "");
 }
 
 /**
- * Maps a PapaParse result to our ParseResult interface
+ * Detects rows whose column count differs from the reference (first) row.
+ *
+ * PapaParse only reports field-count mismatches when `header: true`; with
+ * `header: false` (how this app parses) ragged rows pass silently, so we
+ * detect them ourselves. `lineOfRow[i]` is the physical line of `rows[i]`.
  */
-function mapPapaResult(papaResult: Papa.ParseResult<string[]>): ParseResult {
-  return {
-    rows: papaResult.data,
-    errors: papaResult.errors.map(mapPapaError),
-  };
+function detectFieldMismatches(
+  rows: string[][],
+  lineOfRow: number[]
+): ParseError[] {
+  if (rows.length < 2) return [];
+  const expected = rows[0].length;
+  const errors: ParseError[] = [];
+  for (let i = 1; i < rows.length; i += 1) {
+    const found = rows[i].length;
+    if (found !== expected) {
+      errors.push({
+        line: lineOfRow[i]!,
+        message: `Expected ${expected} ${
+          expected === 1 ? "column" : "columns"
+        } but found ${found}`,
+      });
+    }
+  }
+  return errors;
 }
 
 // ============================================================================
@@ -97,15 +116,57 @@ export function parseCSV(input: string, options?: ParseOptions): ParseResult {
     return { rows: [], errors: [] };
   }
 
-  // Call PapaParse synchronously (Papa.parse on a string is always sync)
-  const result = Papa.parse<string[]>(input, {
+  const rows: string[][] = [];
+  const errors: ParseError[] = [];
+  // Physical (1-indexed) start line for each retained row in `rows`.
+  const lineOfRow: number[] = [];
+
+  // Cursor bookkeeping: we count newlines incrementally as PapaParse's cursor
+  // advances so each row's physical start line stays exact (O(n) overall),
+  // even with skipped blank lines or multi-line quoted fields.
+  let rowStart = 0; // character offset where the current row begins
+  let scanIndex = 0; // how far we've counted newlines
+  let newlinesBefore = 0; // newline count in input[0, scanIndex)
+
+  // We parse with skipEmptyLines: false so PapaParse invokes `step` for every
+  // physical row (no gaps), keeping the cursor→line mapping contiguous. Empty
+  // rows are filtered out below to preserve the previous "greedy" behavior.
+  Papa.parse<string[]>(input, {
     delimiter,
     quoteChar: '"',
     escapeChar: '"',
-    skipEmptyLines: "greedy", // skip blank AND whitespace-only lines
+    skipEmptyLines: false,
     header: false, // always return raw string[][]
+    step: (results) => {
+      while (scanIndex < rowStart) {
+        if (input.charCodeAt(scanIndex) === 10 /* \n */) newlinesBefore += 1;
+        scanIndex += 1;
+      }
+      const startLine = newlinesBefore + 1;
+      rowStart = results.meta.cursor;
+
+      const row = results.data;
+      if (isEmptyRow(row)) {
+        // Empty lines are dropped, but still surface any parser error on them.
+        for (const err of results.errors) {
+          errors.push({ line: startLine, message: err.message });
+        }
+        return;
+      }
+
+      rows.push(row);
+      lineOfRow.push(startLine);
+      for (const err of results.errors) {
+        errors.push({ line: startLine, message: err.message });
+      }
+    },
   });
 
-  // Map PapaParse result to our stable types
-  return mapPapaResult(result);
+  // Ragged-row detection (PapaParse skips this with header: false).
+  errors.push(...detectFieldMismatches(rows, lineOfRow));
+
+  // Present errors in physical-line order for a predictable reading experience.
+  errors.sort((a, b) => a.line - b.line);
+
+  return { rows, errors };
 }

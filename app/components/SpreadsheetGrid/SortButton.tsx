@@ -23,7 +23,11 @@ export function SortButton({
   return (
     <SortBtn
       type="button"
-      aria-label={`Sort column ${columnLabel}`}
+      aria-label={
+        activeDirection
+          ? `Sort column ${columnLabel}, ${activeDirection === "asc" ? "ascending" : "descending"}`
+          : `Sort column ${columnLabel}`
+      }
       data-active={activeDirection ? "true" : undefined}
       onClick={(e) => {
         e.stopPropagation();

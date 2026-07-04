@@ -211,27 +211,36 @@ describe("computeSpreadsheetGridViewModel", () => {
 });
 
 describe("useSortState", () => {
-  it("sets asc, clears on same arrow, switches column/direction", () => {
+  it("cycles a column none → asc → desc → none", () => {
     const { result } = renderHook(() => useSortState());
     expect(result.current.sort).toBeNull();
 
     act(() => {
-      result.current.onArrowClick(1, "asc");
+      result.current.onSortCycle(1);
     });
     expect(result.current.sort).toEqual({ colIdx: 1, direction: "asc" });
 
     act(() => {
-      result.current.onArrowClick(1, "asc");
+      result.current.onSortCycle(1);
     });
-    expect(result.current.sort).toBeNull();
+    expect(result.current.sort).toEqual({ colIdx: 1, direction: "desc" });
 
     act(() => {
-      result.current.onArrowClick(1, "asc");
+      result.current.onSortCycle(1);
+    });
+    expect(result.current.sort).toBeNull();
+  });
+
+  it("starts a different column at asc", () => {
+    const { result } = renderHook(() => useSortState());
+
+    act(() => {
+      result.current.onSortCycle(1);
     });
     act(() => {
-      result.current.onArrowClick(2, "desc");
+      result.current.onSortCycle(2);
     });
-    expect(result.current.sort).toEqual({ colIdx: 2, direction: "desc" });
+    expect(result.current.sort).toEqual({ colIdx: 2, direction: "asc" });
   });
 });
 
@@ -419,7 +428,7 @@ describe("useSpreadsheetGrid selection lifecycle", () => {
     expect(result.current.selection).not.toBeNull();
 
     act(() => {
-      result.current.onSortArrowClick(0, "asc");
+      result.current.onSortCycle(0);
     });
     expect(result.current.selection).toBeNull();
   });

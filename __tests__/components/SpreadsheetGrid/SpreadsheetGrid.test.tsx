@@ -50,7 +50,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
     expect(screen.getByText("Alice")).toBeInTheDocument();
   });
 
-  it("click Sort ascending on column A reorders first body row", async () => {
+  it("click sort on column A once (ascending) reorders first body row", async () => {
     const user = userEvent.setup();
     const data = [
       ["z", "1"],
@@ -58,10 +58,10 @@ describe("SpreadsheetGrid (render smoke)", () => {
     ];
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
-    const ascColA = screen.getByRole("button", {
-      name: "Sort column A ascending",
+    const sortColA = screen.getByRole("button", {
+      name: "Sort column A",
     });
-    await user.click(ascColA);
+    await user.click(sortColA);
 
     const table = screen.getByRole("table");
     const firstBodyRow = table.querySelector("tbody tr");
@@ -77,10 +77,10 @@ describe("SpreadsheetGrid (render smoke)", () => {
     ];
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
-    const ascColB = screen.getByRole("button", {
-      name: "Sort column B ascending",
+    const sortColB = screen.getByRole("button", {
+      name: "Sort column B",
     });
-    await user.click(ascColB);
+    await user.click(sortColB);
 
     const headers = screen.getAllByRole("columnheader");
     expect(headers[2]).toHaveAttribute("aria-sort", "ascending");
@@ -246,7 +246,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
     expect(screen.queryByText(/Max:/)).not.toBeInTheDocument();
   });
 
-  it("sort arrow click does not trigger column selection", async () => {
+  it("sort button click does not trigger column selection", async () => {
     const user = userEvent.setup();
     const data = [
       ["z", "1"],
@@ -254,10 +254,10 @@ describe("SpreadsheetGrid (render smoke)", () => {
     ];
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
-    const ascColA = screen.getByRole("button", {
-      name: "Sort column A ascending",
+    const sortColA = screen.getByRole("button", {
+      name: "Sort column A",
     });
-    await user.click(ascColA);
+    await user.click(sortColA);
 
     const table = screen.getByRole("table");
     const firstDataCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");

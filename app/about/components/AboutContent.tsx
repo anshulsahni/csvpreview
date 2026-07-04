@@ -147,9 +147,11 @@ export default function AboutContent() {
         <Divider />
 
         <Section>
-          <SectionLabel>the developer</SectionLabel>
           <DevCard>
-            <DevName>Anshul Sahni</DevName>
+            <DevHeader>
+              <SectionLabel>the developer</SectionLabel>
+              <DevName>Anshul Sahni</DevName>
+            </DevHeader>
             <DevBio>
               Hi, I am Anshul Sahni. I love computers, and I love building
               software.
@@ -379,7 +381,7 @@ const Divider = styled.hr`
 `;
 
 const Section = styled.section`
-  padding: var(--s-10) 0;
+  padding: 50px 0;
   display: flex;
   flex-direction: column;
   gap: var(--s-6);
@@ -455,6 +457,12 @@ const DevCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--s-5);
+`;
+
+const DevHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
 `;
 
 const DevName = styled.h2`

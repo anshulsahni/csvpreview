@@ -5,7 +5,7 @@
   --green-700:   #234F2C;
   --green-600:   #2F6B3A;
   --green-500:   #3F8849;
-  --green-100:   #DDE7D8;
+  --green-100:   light-dark(#DDE7D8, rgba(143, 208, 154, 0.16));
 
   --mustard-700: #B08816;
   --mustard-600: #E8B931;
@@ -19,31 +19,31 @@
   --ink:         #14211A;
   --ink-2:       rgba(20, 33, 26, 0.72);
   --ink-3:       rgba(20, 33, 26, 0.55);
-  --ink-4:       rgba(20, 33, 26, 0.32);
+  --ink-4:       light-dark(rgba(20, 33, 26, 0.32), rgba(244, 239, 217, 0.32));
   --hairline:    rgba(20, 33, 26, 0.08);
   --hairline-2:  rgba(20, 33, 26, 0.16);
 
   --cream:       #F4EFD9;
   --paper:       #EFE8CD;
-  --cloud:       #E2DAB7;
+  --cloud:       light-dark(#E2DAB7, rgba(244, 239, 217, 0.08));
 
   /* ── Semantic colors ──────────────────────────── */
-  --bg:          var(--cream);
-  --surface:     var(--paper);
-  --surface-2:   var(--cloud);
-  --fg:          var(--ink);
-  --fg-muted:    var(--ink-2);
-  --fg-subtle:   var(--ink-3);
-  --border:      var(--hairline);
-  --border-strong: var(--hairline-2);
+  --bg:          light-dark(var(--cream), #0E1712);
+  --surface:     light-dark(var(--paper), #14211A);
+  --surface-2:   light-dark(var(--cloud), #1B2A22);
+  --fg:          light-dark(var(--ink), #F4EFD9);
+  --fg-muted:    light-dark(var(--ink-2), rgba(244, 239, 217, 0.72));
+  --fg-subtle:   light-dark(var(--ink-3), rgba(244, 239, 217, 0.55));
+  --border:      light-dark(var(--hairline), rgba(244, 239, 217, 0.10));
+  --border-strong: light-dark(var(--hairline-2), rgba(244, 239, 217, 0.18));
 
-  --primary:     var(--green-600);
-  --primary-hover: var(--green-700);
+  --primary:     light-dark(var(--green-600), #8FD09A);
+  --primary-hover: light-dark(var(--green-700), #A6DCAE);
   --on-primary:  var(--cream);
 
   --secondary:   var(--mustard-600);
 
-  --chip-border: rgba(47, 107, 58, 0.2);
+  --chip-border: light-dark(rgba(47, 107, 58, 0.2), rgba(143, 208, 154, 0.25));
 
   /* ── Type ─────────────────────────────────────── */
   --font-serif:  'DM Serif Display', 'Bookman Old Style', georgia, serif;

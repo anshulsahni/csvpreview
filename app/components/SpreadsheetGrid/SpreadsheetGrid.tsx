@@ -9,7 +9,7 @@ import {
   type GridExportState,
 } from "./hooks";
 import type { CellSelection } from "./selectionUtils";
-import { SortArrows } from "./SortArrows";
+import { SortButton } from "./SortButton";
 import CellEditor from "./CellEditor";
 import { useSpreadsheetGridNavigation } from "./useSpreadsheetGridNavigation";
 import FocusOverlay from "./FocusOverlay";
@@ -86,27 +86,30 @@ export default function SpreadsheetGrid({
                     }
                   >
                     <ColThInner>
-                      <span>{vm.colLabel(ci)}</span>
-                      <SortArrows
-                        activeDirection={activeDir}
-                        columnLabel={vm.colLabel(ci)}
-                        onArrowClick={(dir) =>
-                          vm.onSortArrowClick(ci, dir)
-                        }
-                      />
-                      <FilterFunnelButton
-                        type="button"
-                        data-active={isFilterActive ? "true" : undefined}
-                        aria-label={`Filter column ${vm.colLabel(ci)}`}
-                        aria-pressed={isFilterActive}
-                        aria-expanded={vm.openColIdx === ci}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          vm.openDropdown(ci);
-                        }}
-                      >
-                        <FilterGlyph />
-                      </FilterFunnelButton>
+                      <SortGroup>
+                        <span>{vm.colLabel(ci)}</span>
+                        <SortButton
+                          activeDirection={activeDir}
+                          columnLabel={vm.colLabel(ci)}
+                          onClick={() => vm.onSortCycle(ci)}
+                        />
+                      </SortGroup>
+                      <FilterCell>
+                        <FilterFunnelButton
+                          type="button"
+                          data-filter-trigger="true"
+                          data-active={isFilterActive ? "true" : undefined}
+                          aria-label={`Filter column ${vm.colLabel(ci)}`}
+                          aria-pressed={isFilterActive}
+                          aria-expanded={vm.openColIdx === ci}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            vm.openDropdown(ci);
+                          }}
+                        >
+                          <FilterGlyph />
+                        </FilterFunnelButton>
+                      </FilterCell>
                     </ColThInner>
                     {vm.openColIdx === ci && (
                       <FilterDropdown
@@ -259,16 +262,33 @@ const ColTh = styled.th<{ sortActive?: boolean }>`
 const ColThInner = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 4px;
   width: 100%;
 `;
 
+const SortGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+`;
+
+const FilterCell = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  padding-left: 6px;
+  border-left: 1px solid var(--grid-border);
+`;
+
 const FilterFunnelButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  padding: 2px 4px;
   border: none;
   background: transparent;
-  padding: 0;
-  margin: 0;
   cursor: pointer;
   color: var(--grid-filter-icon-idle);
   line-height: 1;
@@ -286,19 +306,19 @@ const FilterFunnelButton = styled.button`
 const FilterGlyph = styled.span`
   position: relative;
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 6px solid currentColor;
+  width: 12px;
+  height: 12px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 9px solid currentColor;
 
   &::after {
     content: "";
     position: absolute;
     left: -1px;
-    top: -2px;
+    top: -3px;
     width: 2px;
-    height: 4px;
+    height: 6px;
     background: currentColor;
   }
 `;

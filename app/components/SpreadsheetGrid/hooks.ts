@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   detectColumnType,
   sortRowsWithSourceIndices,
-  type SortDirection,
   type SortState,
 } from "@/lib/sortUtils";
 import { colLabel, type CellSelection } from "./selectionUtils";
@@ -84,7 +83,7 @@ export interface SpreadsheetGridViewModel {
   editingCell: { rowIdx: number; colIdx: number } | null;
   isCellSelected: (rowIdx: number, colIdx: number) => boolean;
   isEditingCell: (rowIdx: number, colIdx: number) => boolean;
-  onSortArrowClick: (colIdx: number, direction: SortDirection) => void;
+  onSortCycle: (colIdx: number) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
   onCellFocus: (rowIdx: number, colIdx: number) => void;
@@ -99,24 +98,24 @@ export interface SpreadsheetGridViewModel {
 
 export function useSortState(): {
   sort: SortState | null;
-  onArrowClick: (colIdx: number, direction: SortDirection) => void;
+  onSortCycle: (colIdx: number) => void;
 } {
   const [sort, setSort] = useState<SortState | null>(null);
 
-  const onArrowClick = (colIdx: number, direction: SortDirection) => {
+  // Cycle a column through none → ascending → descending → none.
+  const onSortCycle = (colIdx: number) => {
     setSort((prev) => {
-      if (
-        prev !== null &&
-        prev.colIdx === colIdx &&
-        prev.direction === direction
-      ) {
-        return null;
+      if (prev === null || prev.colIdx !== colIdx) {
+        return { colIdx, direction: "asc" };
       }
-      return { colIdx, direction };
+      if (prev.direction === "asc") {
+        return { colIdx, direction: "desc" };
+      }
+      return null;
     });
   };
 
-  return { sort, onArrowClick };
+  return { sort, onSortCycle };
 }
 
 export function useFilterState(): {
@@ -171,7 +170,7 @@ function computeViewModel(
   filters: FilterMap
 ): Omit<
   SpreadsheetGridViewModel,
-  | "onSortArrowClick"
+  | "onSortCycle"
   | "openDropdown"
   | "closeDropdown"
   | "setFilter"
@@ -314,7 +313,7 @@ function computeViewModel(
 export function useSpreadsheetGrid(
   { data, firstRowAsHeader, onCellChange, onExportStateChange, onSelectionChange }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
-  const { sort, onArrowClick } = useSortState();
+  const { sort, onSortCycle } = useSortState();
   const {
     filters,
     openColIdx,
@@ -395,7 +394,7 @@ export function useSpreadsheetGrid(
       editingCell: editingVm.editingCell,
       isCellSelected,
       isEditingCell: editingVm.isEditingCell,
-      onSortArrowClick: onArrowClick,
+      onSortCycle,
       onCellMouseDown,
       onCellMouseEnter,
       onCellFocus: editingVm.onCellFocus,
@@ -415,7 +414,7 @@ export function useSpreadsheetGrid(
       isDragging,
       editingVm,
       isCellSelected,
-      onArrowClick,
+      onSortCycle,
       onCellMouseDown,
       onCellMouseEnter,
       onColumnHeaderMouseDown,
@@ -436,7 +435,7 @@ export function computeSpreadsheetGridViewModel(
   filters: FilterMap = {}
 ): Omit<
   SpreadsheetGridViewModel,
-  | "onSortArrowClick"
+  | "onSortCycle"
   | "openDropdown"
   | "closeDropdown"
   | "setFilter"

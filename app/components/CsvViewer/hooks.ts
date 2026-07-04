@@ -35,6 +35,30 @@ export function computeDownloadRows(
   return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
 }
 
+/**
+ * Derive the row/column counts shown in the header pills from the current grid
+ * export state. Row counts come straight from the body rows (visible = after
+ * filter, total = before filter). Column count is the true maximum width across
+ * the header and unfiltered rows — not the display-padded grid width.
+ *
+ * Pure and exported for unit testing.
+ */
+export function computeGridCounts(state: GridExportState): {
+  visibleRowCount: number;
+  totalRowCount: number;
+  columnCount: number;
+} {
+  return {
+    visibleRowCount: state.visibleRows.length,
+    totalRowCount: state.unfilteredRows.length,
+    columnCount: Math.max(
+      0,
+      state.headerRow?.length ?? 0,
+      ...state.unfilteredRows.map((r) => r.length)
+    ),
+  };
+}
+
 function triggerCsvDownload(csv: string, filename: string): void {
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -58,6 +82,11 @@ export interface UseCsvViewerReturn {
   firstRowAsHeader: boolean;
   hasActiveFilter: boolean;
   hasSelection: boolean;
+  counts: {
+    visibleRowCount: number;
+    totalRowCount: number;
+    columnCount: number;
+  };
   setFirstRowAsHeader: (value: boolean) => void;
 
   openUpload: () => void;
@@ -307,6 +336,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     firstRowAsHeader,
     hasActiveFilter: exportState.hasActiveFilter,
     hasSelection: currentSelection !== null,
+    counts: computeGridCounts(exportState),
     setFirstRowAsHeader,
     openUpload,
     closeUpload,

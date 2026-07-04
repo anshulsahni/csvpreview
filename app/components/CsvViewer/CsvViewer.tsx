@@ -3,6 +3,7 @@
 import { styled } from "@linaria/react";
 import SpreadsheetGrid from "../SpreadsheetGrid";
 import Toolbar from "../Toolbar";
+import CountPills from "../CountPills";
 import UploadModal from "../UploadModal";
 import DownloadModal from "../DownloadModal";
 import DownloadControl from "./DownloadControl";
@@ -41,6 +42,16 @@ export default function CsvViewer() {
           <ClearButton type="button" onClick={viewer.handleClear}>
             Clear
           </ClearButton>
+        )}
+        {viewer.csvData && (
+          <PillsSlot>
+            <CountPills
+              rowCount={viewer.counts.visibleRowCount}
+              totalRowCount={viewer.counts.totalRowCount}
+              columnCount={viewer.counts.columnCount}
+              hasActiveFilter={viewer.hasActiveFilter}
+            />
+          </PillsSlot>
         )}
       </TopBar>
       <GridArea>
@@ -115,6 +126,12 @@ const ClearButton = styled.button`
   }
 `;
 
+
+const PillsSlot = styled.div`
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+`;
 
 const GridArea = styled.div`
   flex: 1;

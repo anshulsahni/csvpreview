@@ -187,10 +187,18 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function ingest(text: string, name: string) {
     const { rows, errors } = parseCSV(text, { delimiter });
+    // Malformed input: keep the upload modal open and list the errors there so
+    // the user sees exactly which lines are bad. Nothing is loaded until the
+    // input parses cleanly — the modal is the single place errors are shown.
     if (errors.length > 0) {
       setParseErrors(errors);
       return;
     }
+    if (rows.length === 0) {
+      setParseErrors([{ line: 0, message: "No data found" }]);
+      return;
+    }
+    // Clean parse: load the rows and close the modal.
     setParseErrors([]);
     setCsvData(rows);
     setFileName(name);
@@ -287,6 +295,9 @@ export function useCsvViewer(): UseCsvViewerReturn {
   }
 
   function openUpload() {
+    // Starting a fresh upload clears any errors from a previous attempt so the
+    // modal only shows errors relevant to the new input.
+    setParseErrors([]);
     setIsUploadOpen(true);
   }
 

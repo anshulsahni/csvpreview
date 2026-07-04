@@ -216,7 +216,7 @@ describe("useCsvViewer", () => {
       ]);
     });
 
-    it("surfaces parse errors with line numbers and keeps modal open on malformed CSV", async () => {
+    it("blocks the upload and keeps the modal open on malformed CSV", async () => {
       mockFileReaderWithText('a,b\nc,d\n"unclosed');
       const { result } = renderHook(() => useCsvViewer());
 
@@ -231,17 +231,19 @@ describe("useCsvViewer", () => {
       expect(result.current.parseErrors.length).toBeGreaterThan(0);
       expect(result.current.parseErrors[0].line).toBeGreaterThan(0);
       expect(typeof result.current.parseErrors[0].message).toBe("string");
+      // Nothing is loaded and the modal stays open so the errors show there.
       expect(result.current.isUploadOpen).toBe(true);
       expect(result.current.csvData).toBeNull();
       expect(localStorage.getItem(LS_KEY_DATA)).toBeNull();
     });
 
-    it("does not overwrite already-loaded data when a new upload has parse errors", async () => {
+    it("keeps already-loaded data and reports 'No data found' when a new upload has no parseable rows", async () => {
       const rows = [["keep", "me"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, "existing.csv");
 
-      mockFileReaderWithText('"unclosed');
+      // A file with only blank/whitespace lines yields zero rows.
+      mockFileReaderWithText("\n   \n");
       const { result } = renderHook(() => useCsvViewer());
 
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
@@ -252,11 +254,14 @@ describe("useCsvViewer", () => {
 
       act(() => {
         result.current.handleFilePicked(
-          new File(["ignored"], "bad.csv", { type: "text/csv" })
+          new File(["ignored"], "empty.csv", { type: "text/csv" })
         );
       });
 
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      expect(result.current.parseErrors).toEqual([
+        { line: 0, message: "No data found" },
+      ]);
+      expect(result.current.isUploadOpen).toBe(true);
       expect(result.current.csvData).toEqual(rows);
       expect(result.current.fileName).toBe("existing.csv");
     });
@@ -314,7 +319,7 @@ describe("useCsvViewer", () => {
       expect(result.current.isUploadOpen).toBe(true);
     });
 
-    it("surfaces parse errors for malformed pasted CSV", async () => {
+    it("blocks the upload and keeps the modal open for malformed pasted CSV", async () => {
       const { result } = renderHook(() => useCsvViewer());
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -325,6 +330,40 @@ describe("useCsvViewer", () => {
       expect(result.current.parseErrors.length).toBeGreaterThan(0);
       expect(result.current.parseErrors[0].line).toBe(1);
       expect(result.current.isUploadOpen).toBe(true);
+      expect(result.current.csvData).toBeNull();
+    });
+
+    it("blocks the upload and reports the bad line for ragged rows", async () => {
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d,e\nf,g");
+      });
+
+      // The ragged row is reported and nothing loads until it is fixed.
+      expect(result.current.csvData).toBeNull();
+      expect(result.current.isUploadOpen).toBe(true);
+      const raggedError = result.current.parseErrors.find((e) => e.line === 2);
+      expect(raggedError).toBeDefined();
+      expect(raggedError?.message).toContain("Expected 2");
+    });
+
+    it("loads cleanly-parsed CSV and closes the modal", async () => {
+      const { result } = renderHook(() => useCsvViewer());
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d\ne,f");
+      });
+
+      expect(result.current.csvData).toEqual([
+        ["a", "b"],
+        ["c", "d"],
+        ["e", "f"],
+      ]);
+      expect(result.current.parseErrors).toEqual([]);
+      expect(result.current.isUploadOpen).toBe(false);
     });
   });
 

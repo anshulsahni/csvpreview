@@ -189,6 +189,73 @@ describe("parseCSV", () => {
     });
   });
 
+  describe("exact physical line numbers", () => {
+    it("accounts for leading blank lines skipped by the parser", () => {
+      const input = '\n\na,b\n"unclosed';
+      const result = parseCSV(input);
+      // Physical lines: 1,2 blank; 3 = a,b; 4 = unclosed quote.
+      expect(result.errors.some((e) => e.line === 4)).toBe(true);
+    });
+
+    it("accounts for blank lines between data rows", () => {
+      const input = 'a,b\n\n\nc,d\n"oops';
+      const result = parseCSV(input);
+      // Physical line of the unclosed quote is 5.
+      expect(result.errors.some((e) => e.line === 5)).toBe(true);
+    });
+
+    it("accounts for multi-line quoted fields shifting later line numbers", () => {
+      const input = '"a\nb\nc",x\n"unclosed';
+      const result = parseCSV(input);
+      // The quoted field spans physical lines 1-3; the error is on line 4.
+      expect(result.errors.some((e) => e.line === 4)).toBe(true);
+    });
+  });
+
+  describe("ragged-row (field mismatch) detection", () => {
+    it("reports no mismatch when every row has the same column count", () => {
+      const result = parseCSV("a,b\nc,d\ne,f");
+      expect(result.errors).toEqual([]);
+    });
+
+    it("flags a row with too many columns and reports its line", () => {
+      const result = parseCSV("a,b\nc,d,e\nf,g");
+      const mismatch = result.errors.find((e) => e.line === 2);
+      expect(mismatch).toBeDefined();
+      expect(mismatch?.message).toBe("Expected 2 columns but found 3");
+    });
+
+    it("flags a row with too few columns", () => {
+      const result = parseCSV("a,b,c\nd,e\nf,g,h");
+      const mismatch = result.errors.find((e) => e.line === 2);
+      expect(mismatch).toBeDefined();
+      expect(mismatch?.message).toBe("Expected 3 columns but found 2");
+    });
+
+    it("uses singular 'column' when the reference row has one column", () => {
+      const result = parseCSV("a\nb,c");
+      const mismatch = result.errors.find((e) => e.line === 2);
+      expect(mismatch?.message).toBe("Expected 1 column but found 2");
+    });
+
+    it("still returns all rows alongside ragged-row errors", () => {
+      const result = parseCSV("a,b\nc,d,e\nf,g");
+      expect(result.rows).toEqual([
+        ["a", "b"],
+        ["c", "d", "e"],
+        ["f", "g"],
+      ]);
+    });
+
+    it("computes the correct line for a ragged row after a blank line", () => {
+      const result = parseCSV("a,b\n\nc,d,e");
+      const mismatch = result.errors.find((e) =>
+        e.message.startsWith("Expected")
+      );
+      expect(mismatch?.line).toBe(3);
+    });
+  });
+
   describe("return type contract", () => {
     it("always returns rows as an array (never null or undefined)", () => {
       expect(Array.isArray(parseCSV("").rows)).toBe(true);

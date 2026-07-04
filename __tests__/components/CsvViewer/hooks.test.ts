@@ -4,6 +4,7 @@ import {
   LS_KEY_FILE_NAME,
   LS_KEY_FIRST_ROW_HEADER,
   computeDownloadRows,
+  computeGridCounts,
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 
@@ -84,6 +85,65 @@ describe("useCsvViewer", () => {
 
     it("returns visible rows as-is without a header row", () => {
       expect(computeDownloadRows([["a", "b"]], null)).toEqual([["a", "b"]]);
+    });
+  });
+
+  describe("computeGridCounts", () => {
+    it("reports equal visible/total counts when no filter is active", () => {
+      expect(
+        computeGridCounts({
+          headerRow: ["Name", "Age"],
+          visibleRows: [
+            ["Alice", "30"],
+            ["Bob", "25"],
+          ],
+          unfilteredRows: [
+            ["Alice", "30"],
+            ["Bob", "25"],
+          ],
+          hasActiveFilter: false,
+        })
+      ).toEqual({ visibleRowCount: 2, totalRowCount: 2, columnCount: 2 });
+    });
+
+    it("reports fewer visible than total rows when filtered", () => {
+      expect(
+        computeGridCounts({
+          headerRow: null,
+          visibleRows: [["Alice", "30"]],
+          unfilteredRows: [
+            ["Alice", "30"],
+            ["Bob", "25"],
+            ["Cara", "40"],
+          ],
+          hasActiveFilter: true,
+        })
+      ).toEqual({ visibleRowCount: 1, totalRowCount: 3, columnCount: 2 });
+    });
+
+    it("takes the widest of header and unfiltered rows for the column count", () => {
+      expect(
+        computeGridCounts({
+          headerRow: ["a", "b", "c", "d"],
+          visibleRows: [["x", "y"]],
+          unfilteredRows: [
+            ["x", "y"],
+            ["z"],
+          ],
+          hasActiveFilter: false,
+        }).columnCount
+      ).toBe(4);
+    });
+
+    it("returns zeros for an empty grid", () => {
+      expect(
+        computeGridCounts({
+          headerRow: null,
+          visibleRows: [],
+          unfilteredRows: [],
+          hasActiveFilter: false,
+        })
+      ).toEqual({ visibleRowCount: 0, totalRowCount: 0, columnCount: 0 });
     });
   });
 

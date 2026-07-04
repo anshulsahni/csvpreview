@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
+import CountPills from "@/app/components/CountPills";
+import { computeCsvCounts } from "@/app/components/CountPills/hooks";
 import { parseCSV } from "@/lib/csvParser";
 import { datasets, getDatasetBySlug } from "@/lib/datasets";
 import { loadDatasetCsv } from "@/lib/datasets/loadCsv";
@@ -52,6 +54,8 @@ export default async function DatasetPage({ params }: { params: Params }) {
 
   const csv = await loadDatasetCsv(ds.slug);
   const { rows } = parseCSV(csv);
+  const firstRowAsHeader = ds.firstRowAsHeader ?? true;
+  const counts = computeCsvCounts(rows, firstRowAsHeader);
 
   return (
     <>
@@ -84,6 +88,8 @@ export default async function DatasetPage({ params }: { params: Params }) {
             <h1
               style={{
                 margin: 0,
+                flex: 1,
+                minWidth: 0,
                 fontSize: "0.95rem",
                 fontWeight: 600,
                 opacity: 0.75,
@@ -94,11 +100,19 @@ export default async function DatasetPage({ params }: { params: Params }) {
             >
               {ds.title}
             </h1>
+            <div style={{ marginLeft: "auto", display: "inline-flex" }}>
+              <CountPills
+                rowCount={counts.rowCount}
+                totalRowCount={counts.totalRowCount}
+                columnCount={counts.columnCount}
+                hasActiveFilter={counts.hasActiveFilter}
+              />
+            </div>
           </div>
           <div style={{ flex: 1, overflow: "hidden" }}>
             <SpreadsheetGrid
               data={rows}
-              firstRowAsHeader={ds.firstRowAsHeader ?? true}
+              firstRowAsHeader={firstRowAsHeader}
             />
           </div>
         </div>

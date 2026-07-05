@@ -15,6 +15,8 @@ import {
   type FilterMap,
 } from "@/lib/filterUtils";
 import { useSpreadsheetGridEditing } from "./useSpreadsheetGridEditing";
+import { useRowSelection } from "./useRowSelection";
+import type { SelectAllState } from "./rowSelectionUtils";
 
 export const MIN_COLS = 26;
 export const MIN_ROWS = 50;
@@ -51,6 +53,7 @@ export interface UseSpreadsheetGridArgs {
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
   onExportStateChange?: (state: GridExportState) => void;
   onSelectionChange?: (selection: CellSelection | null) => void;
+  onRowSelectionChange?: (selectedBodyIndices: number[]) => void;
 }
 
 export interface SpreadsheetGridViewModel {
@@ -83,6 +86,14 @@ export interface SpreadsheetGridViewModel {
   editingCell: { rowIdx: number; colIdx: number } | null;
   isCellSelected: (rowIdx: number, colIdx: number) => boolean;
   isEditingCell: (rowIdx: number, colIdx: number) => boolean;
+  /** Whether the data row rendered at `displayRow` is checkbox-selected. */
+  isRowChecked: (displayRow: number) => boolean;
+  /** Toggle the checkbox selection for the data row at `displayRow`. */
+  onRowCheckToggle: (displayRow: number) => void;
+  /** Select-all checkbox state across the currently visible rows. */
+  selectAllState: SelectAllState;
+  /** Toggle all currently visible rows on/off. */
+  onToggleAllVisible: () => void;
   onSortCycle: (colIdx: number) => void;
   onCellMouseDown: (rowIdx: number, colIdx: number) => void;
   onCellMouseEnter: (rowIdx: number, colIdx: number) => void;
@@ -181,6 +192,10 @@ function computeViewModel(
   | "editingCell"
   | "isCellSelected"
   | "isEditingCell"
+  | "isRowChecked"
+  | "onRowCheckToggle"
+  | "selectAllState"
+  | "onToggleAllVisible"
   | "onCellMouseDown"
   | "onCellMouseEnter"
   | "onCellFocus"
@@ -311,7 +326,7 @@ function computeViewModel(
 }
 
 export function useSpreadsheetGrid(
-  { data, firstRowAsHeader, onCellChange, onExportStateChange, onSelectionChange }: UseSpreadsheetGridArgs
+  { data, firstRowAsHeader, onCellChange, onExportStateChange, onSelectionChange, onRowSelectionChange }: UseSpreadsheetGridArgs
 ): SpreadsheetGridViewModel {
   const { sort, onSortCycle } = useSortState();
   const {
@@ -365,6 +380,28 @@ export function useSpreadsheetGrid(
     baseOnCellMouseDown(rowIdx, colIdx);
   }, [baseOnCellMouseDown, editingVm]);
 
+  const rowSelection = useRowSelection({
+    bodyRows: base.bodyRows,
+    sourceRowIndexForDisplayRow: base.sourceRowIndexForDisplayRow,
+    visibleRowCount: base.visibleRowCount,
+    onRowSelectionChange,
+  });
+
+  const isRowChecked = useCallback(
+    (displayRow: number) =>
+      rowSelection.isBodyIndexSelected(
+        base.getSourceBodyIndexForDisplayRow(displayRow)
+      ),
+    [rowSelection, base]
+  );
+
+  const onRowCheckToggle = useCallback(
+    (displayRow: number) => {
+      rowSelection.toggleRow(base.getSourceBodyIndexForDisplayRow(displayRow));
+    },
+    [rowSelection, base]
+  );
+
   useEffect(() => {
     onExportStateChange?.({
       headerRow: base.headerRowCells,
@@ -394,6 +431,10 @@ export function useSpreadsheetGrid(
       editingCell: editingVm.editingCell,
       isCellSelected,
       isEditingCell: editingVm.isEditingCell,
+      isRowChecked,
+      onRowCheckToggle,
+      selectAllState: rowSelection.selectAllState,
+      onToggleAllVisible: rowSelection.toggleAllVisible,
       onSortCycle,
       onCellMouseDown,
       onCellMouseEnter,
@@ -414,6 +455,9 @@ export function useSpreadsheetGrid(
       isDragging,
       editingVm,
       isCellSelected,
+      isRowChecked,
+      onRowCheckToggle,
+      rowSelection,
       onSortCycle,
       onCellMouseDown,
       onCellMouseEnter,
@@ -446,6 +490,10 @@ export function computeSpreadsheetGridViewModel(
   | "editingCell"
   | "isCellSelected"
   | "isEditingCell"
+  | "isRowChecked"
+  | "onRowCheckToggle"
+  | "selectAllState"
+  | "onToggleAllVisible"
   | "onCellMouseDown"
   | "onCellMouseEnter"
   | "onCellFocus"

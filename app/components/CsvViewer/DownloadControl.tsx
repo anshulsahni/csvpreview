@@ -9,14 +9,23 @@ const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
 
 export interface DownloadControlProps {
   hasActiveFilter: boolean;
+  selectedRowCount: number;
   onDownload: () => void;
   onDownloadAll: () => void;
+  onDownloadSelected: () => void;
+}
+
+interface DownloadOption {
+  label: string;
+  action: () => void;
 }
 
 export default function DownloadControl({
   hasActiveFilter,
+  selectedRowCount,
   onDownload,
   onDownloadAll,
+  onDownloadSelected,
 }: DownloadControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -27,7 +36,20 @@ export default function DownloadControl({
     { enabled: isMenuOpen }
   );
 
-  if (!hasActiveFilter) {
+  // The primary button downloads the visible rows — the filtered set when a
+  // filter is active, otherwise every row. Extra scopes go in the dropdown.
+  const extraOptions: DownloadOption[] = [];
+  if (hasActiveFilter) {
+    extraOptions.push({ label: "Download all rows", action: onDownloadAll });
+  }
+  if (selectedRowCount > 0) {
+    extraOptions.push({
+      label: `Download selected rows (${selectedRowCount})`,
+      action: onDownloadSelected,
+    });
+  }
+
+  if (extraOptions.length === 0) {
     return (
       <SimpleButton type="button" onClick={onDownload}>
         Download
@@ -44,7 +66,7 @@ export default function DownloadControl({
       }}
     >
       <Primary type="button" onClick={onDownload}>
-        Download filtered rows
+        {hasActiveFilter ? "Download filtered rows" : "Download"}
       </Primary>
       <Caret
         type="button"
@@ -57,14 +79,17 @@ export default function DownloadControl({
       </Caret>
       {isMenuOpen && (
         <Dropdown>
-          <DropdownItem
-            onClick={() => {
-              setIsMenuOpen(false);
-              onDownloadAll();
-            }}
-          >
-            Download all rows
-          </DropdownItem>
+          {extraOptions.map((option) => (
+            <DropdownItem
+              key={option.label}
+              onClick={() => {
+                setIsMenuOpen(false);
+                option.action();
+              }}
+            >
+              {option.label}
+            </DropdownItem>
+          ))}
         </Dropdown>
       )}
     </Split>

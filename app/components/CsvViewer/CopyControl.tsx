@@ -12,18 +12,27 @@ export interface CopyControlProps {
   disabled?: boolean;
   hasSelection: boolean;
   hasActiveFilter: boolean;
+  selectedRowCount: number;
   onCopyAll: () => Promise<void>;
   onCopySelected: () => Promise<void>;
   onCopyFiltered: () => Promise<void>;
+  onCopySelectedRows: () => Promise<void>;
+}
+
+interface CopyOption {
+  label: string;
+  action: () => Promise<void>;
 }
 
 export default function CopyControl({
   disabled = false,
   hasSelection,
   hasActiveFilter,
+  selectedRowCount,
   onCopyAll,
   onCopySelected,
   onCopyFiltered,
+  onCopySelectedRows,
 }: CopyControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { success, error } = useToast();
@@ -45,11 +54,40 @@ export default function CopyControl({
     }
   }
 
-  const hasContextualOption = hasSelection || hasActiveFilter;
+  const hasRowSelection = selectedRowCount > 0;
+
+  // Build the ordered list of contextual copy options (most specific first).
+  // The first one becomes the primary button; the rest fall into the dropdown,
+  // which always ends with "Copy all rows".
+  const contextualOptions: CopyOption[] = [];
+  if (hasRowSelection) {
+    contextualOptions.push({
+      label: `Copy selected rows (${selectedRowCount})`,
+      action: onCopySelectedRows,
+    });
+  }
+  if (hasSelection) {
+    contextualOptions.push({
+      label: "Copy selected cells",
+      action: onCopySelected,
+    });
+  }
+  if (hasActiveFilter) {
+    contextualOptions.push({
+      label: "Copy filtered rows",
+      action: onCopyFiltered,
+    });
+  }
+
+  const primaryOption = contextualOptions[0];
+  const dropdownOptions: CopyOption[] = [
+    ...contextualOptions.slice(1),
+    { label: "Copy all rows", action: onCopyAll },
+  ];
 
   return (
     <Wrapper>
-      {disabled || !hasContextualOption ? (
+      {disabled || primaryOption === undefined ? (
         <SimpleButton
           type="button"
           onClick={() => triggerCopy(onCopyAll)}
@@ -62,11 +100,11 @@ export default function CopyControl({
           <Primary
             type="button"
             onClick={() => {
-              triggerCopy(hasSelection ? onCopySelected : onCopyFiltered);
+              triggerCopy(primaryOption.action);
               setIsMenuOpen(false);
             }}
           >
-            {hasSelection ? "Copy selected cells" : "Copy filtered rows"}
+            {primaryOption.label}
           </Primary>
           <Caret
             type="button"
@@ -85,24 +123,17 @@ export default function CopyControl({
                 }
               }}
             >
-              {hasSelection && hasActiveFilter && (
+              {dropdownOptions.map((option) => (
                 <DropdownItem
+                  key={option.label}
                   onClick={() => {
                     setIsMenuOpen(false);
-                    triggerCopy(onCopyFiltered);
+                    triggerCopy(option.action);
                   }}
                 >
-                  Copy filtered rows
+                  {option.label}
                 </DropdownItem>
-              )}
-              <DropdownItem
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  triggerCopy(onCopyAll);
-                }}
-              >
-                Copy all rows
-              </DropdownItem>
+              ))}
             </Dropdown>
           )}
         </Split>

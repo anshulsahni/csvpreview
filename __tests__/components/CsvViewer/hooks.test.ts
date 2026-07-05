@@ -5,8 +5,11 @@ import {
   LS_KEY_FIRST_ROW_HEADER,
   computeDownloadRows,
   computeGridCounts,
+  removeDataRows,
+  selectedBodyIndicesToDataRows,
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
+import { ToastProvider } from "@/app/components/Toast";
 
 beforeEach(() => {
   localStorage.clear();
@@ -88,6 +91,69 @@ describe("useCsvViewer", () => {
     });
   });
 
+  describe("selectedBodyIndicesToDataRows", () => {
+    const csv = [
+      ["Name", "Age"],
+      ["Alice", "30"],
+      ["Bob", "25"],
+      ["Carol", "40"],
+    ];
+
+    it("maps body indices to data rows, offset by the header when present", () => {
+      // firstRowAsHeader => body index 0 is csv[1], 2 is csv[3].
+      expect(selectedBodyIndicesToDataRows(csv, true, [0, 2])).toEqual([
+        ["Alice", "30"],
+        ["Carol", "40"],
+      ]);
+    });
+
+    it("maps body indices directly when there is no header", () => {
+      expect(selectedBodyIndicesToDataRows(csv, false, [0, 1])).toEqual([
+        ["Name", "Age"],
+        ["Alice", "30"],
+      ]);
+    });
+
+    it("preserves the given index order (display order)", () => {
+      expect(selectedBodyIndicesToDataRows(csv, true, [2, 0])).toEqual([
+        ["Carol", "40"],
+        ["Alice", "30"],
+      ]);
+    });
+
+    it("skips out-of-range indices and tolerates null data", () => {
+      expect(selectedBodyIndicesToDataRows(csv, true, [99])).toEqual([]);
+      expect(selectedBodyIndicesToDataRows(null, false, [0])).toEqual([]);
+    });
+  });
+
+  describe("removeDataRows", () => {
+    const csv = [
+      ["Name", "Age"],
+      ["Alice", "30"],
+      ["Bob", "25"],
+      ["Carol", "40"],
+    ];
+
+    it("removes the given data-row indices, keeping the rest in order", () => {
+      expect(removeDataRows(csv, [1, 3])).toEqual([
+        ["Name", "Age"],
+        ["Bob", "25"],
+      ]);
+    });
+
+    it("is order-independent and tolerates duplicate indices", () => {
+      expect(removeDataRows(csv, [3, 1, 1])).toEqual([
+        ["Name", "Age"],
+        ["Bob", "25"],
+      ]);
+    });
+
+    it("ignores out-of-range indices", () => {
+      expect(removeDataRows(csv, [99])).toEqual(csv);
+    });
+  });
+
   describe("computeGridCounts", () => {
     it("reports equal visible/total counts when no filter is active", () => {
       expect(
@@ -149,7 +215,7 @@ describe("useCsvViewer", () => {
 
   describe("mount behavior", () => {
     it("auto-opens the upload modal when localStorage is empty", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => {
         expect(result.current.isUploadOpen).toBe(true);
@@ -166,7 +232,7 @@ describe("useCsvViewer", () => {
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, "people.csv");
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => {
         expect(result.current.csvData).toEqual(rows);
@@ -178,7 +244,7 @@ describe("useCsvViewer", () => {
     it("treats malformed JSON in localStorage as no data and opens the modal", async () => {
       localStorage.setItem(LS_KEY_DATA, "not-json");
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => {
         expect(result.current.isUploadOpen).toBe(true);
@@ -190,7 +256,7 @@ describe("useCsvViewer", () => {
   describe("handleFilePicked()", () => {
     it("parses a valid .csv file, sets state, persists to localStorage, closes modal", async () => {
       mockFileReaderWithText("Name,Age\nAlice,30\nBob,25");
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -218,7 +284,7 @@ describe("useCsvViewer", () => {
 
     it("blocks the upload and keeps the modal open on malformed CSV", async () => {
       mockFileReaderWithText('a,b\nc,d\n"unclosed');
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -244,7 +310,7 @@ describe("useCsvViewer", () => {
 
       // A file with only blank/whitespace lines yields zero rows.
       mockFileReaderWithText("\n   \n");
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
@@ -268,7 +334,7 @@ describe("useCsvViewer", () => {
 
     it("reports a synthetic error when FileReader fails", async () => {
       mockFileReaderWithError();
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -287,7 +353,7 @@ describe("useCsvViewer", () => {
 
   describe("handlePasteSubmit()", () => {
     it("parses pasted CSV, sets filename to 'pasted.csv', closes modal", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
 
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
@@ -305,7 +371,7 @@ describe("useCsvViewer", () => {
     });
 
     it("reports empty-paste error when text is blank", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -320,7 +386,7 @@ describe("useCsvViewer", () => {
     });
 
     it("blocks the upload and keeps the modal open for malformed pasted CSV", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -334,7 +400,7 @@ describe("useCsvViewer", () => {
     });
 
     it("blocks the upload and reports the bad line for ragged rows", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -350,7 +416,7 @@ describe("useCsvViewer", () => {
     });
 
     it("loads cleanly-parsed CSV and closes the modal", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -369,7 +435,7 @@ describe("useCsvViewer", () => {
 
   describe("handleStartBlank()", () => {
     it("empties csvData, clears fileName and errors, closes modal", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -394,7 +460,7 @@ describe("useCsvViewer", () => {
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FILE_NAME, "data.csv");
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
       act(() => {
@@ -413,7 +479,7 @@ describe("useCsvViewer", () => {
       const rows = [["h"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
       act(() => {
@@ -433,7 +499,7 @@ describe("useCsvViewer", () => {
       const rows = [["a"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
       expect(result.current.firstRowAsHeader).toBe(false);
@@ -444,7 +510,7 @@ describe("useCsvViewer", () => {
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
       localStorage.setItem(LS_KEY_FIRST_ROW_HEADER, "true");
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() =>
         expect(result.current.firstRowAsHeader).toBe(true)
       );
@@ -454,7 +520,7 @@ describe("useCsvViewer", () => {
       const rows = [["a"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
 
       act(() => {
@@ -472,7 +538,7 @@ describe("useCsvViewer", () => {
       const rows = [["a"]];
       localStorage.setItem(LS_KEY_DATA, JSON.stringify(rows));
 
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.csvData).toEqual(rows));
       expect(result.current.isUploadOpen).toBe(false);
 
@@ -484,7 +550,7 @@ describe("useCsvViewer", () => {
     });
 
     it("closeUpload clears parseErrors", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -501,7 +567,7 @@ describe("useCsvViewer", () => {
 
   describe("handleCellChange()", () => {
     it("creates missing rows/cols and persists edits from blank state", async () => {
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
       act(() => {
@@ -528,7 +594,7 @@ describe("useCsvViewer", () => {
           ["c", "d"],
         ])
       );
-      const { result } = renderHook(() => useCsvViewer());
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() =>
         expect(result.current.csvData).toEqual([
           ["a", "b"],

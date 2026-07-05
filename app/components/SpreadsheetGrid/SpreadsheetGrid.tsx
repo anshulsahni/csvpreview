@@ -10,6 +10,7 @@ import {
 import type { CellSelection } from "./selectionUtils";
 import { SortButton } from "./SortButton";
 import CellEditor from "./CellEditor";
+import SelectAllCheckbox from "./SelectAllCheckbox";
 import { useSpreadsheetGridNavigation } from "./useSpreadsheetGridNavigation";
 import FocusOverlay from "./FocusOverlay";
 
@@ -19,6 +20,7 @@ export interface SpreadsheetGridProps {
   onCellChange?: (dataRowIndex: number, colIdx: number, value: string) => void;
   onExportStateChange?: (state: GridExportState) => void;
   onSelectionChange?: (selection: CellSelection | null) => void;
+  onRowSelectionChange?: (selectedBodyIndices: number[]) => void;
 }
 
 export default function SpreadsheetGrid({
@@ -27,6 +29,7 @@ export default function SpreadsheetGrid({
   onCellChange,
   onExportStateChange,
   onSelectionChange,
+  onRowSelectionChange,
 }: SpreadsheetGridProps) {
   const vm = useSpreadsheetGrid({
     data,
@@ -34,6 +37,7 @@ export default function SpreadsheetGrid({
     onCellChange,
     onExportStateChange,
     onSelectionChange,
+    onRowSelectionChange,
   });
   const gridRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -46,25 +50,39 @@ export default function SpreadsheetGrid({
   });
 
   return (
-    <GridWrapper ref={gridRef} data-dragging={vm.isDragging ? "true" : undefined}>
+    <GridWrapper
+      ref={gridRef}
+      data-dragging={vm.isDragging ? "true" : undefined}
+    >
       <TableScroller ref={scrollerRef}>
         <FocusOverlay
           scrollerRef={scrollerRef}
           focusedCell={vm.focusedCell}
           editingCell={vm.editingCell}
-          layoutDeps={[vm.numRows, vm.numCols, vm.sort, vm.filters, firstRowAsHeader, vm.bodyRows.length]}
+          layoutDeps={[
+            vm.numRows,
+            vm.numCols,
+            vm.sort,
+            vm.filters,
+            firstRowAsHeader,
+            vm.bodyRows.length,
+          ]}
         />
         <table>
           <thead>
             <tr>
               <CornerTh />
+              <CheckboxCornerTh>
+                <SelectAllCheckbox
+                  state={vm.selectAllState}
+                  onToggle={vm.onToggleAllVisible}
+                />
+              </CheckboxCornerTh>
               {Array.from({ length: vm.numCols }, (_, ci) => {
                 const isSortCol = vm.sort?.colIdx === ci;
                 const isFilterActive = vm.filters[ci] !== undefined;
                 const activeDir =
-                  vm.sort && vm.sort.colIdx === ci
-                    ? vm.sort.direction
-                    : null;
+                  vm.sort && vm.sort.colIdx === ci ? vm.sort.direction : null;
                 return (
                   <ColTh
                     key={ci}
@@ -128,6 +146,7 @@ export default function SpreadsheetGrid({
             {vm.headerRowCells && (
               <tr data-header-row>
                 <HeaderRowGutterTh>H</HeaderRowGutterTh>
+                <HeaderRowCheckboxTh />
                 {Array.from({ length: vm.numCols }, (_, ci) => (
                   <HeaderRowTh key={ci}>
                     {vm.headerRowCells?.[ci] ?? ""}
@@ -138,20 +157,34 @@ export default function SpreadsheetGrid({
           </thead>
           <tbody>
             {Array.from({ length: vm.numRows }, (_, ri) => {
+              const isDataRow = ri < vm.visibleRowCount;
               return (
                 <tr key={ri}>
-                  <RowTh
-                    onMouseDown={() => vm.onRowGutterMouseDown(ri)}
-                  >
+                  <RowTh onMouseDown={() => vm.onRowGutterMouseDown(ri)}>
                     {vm.rowNumberOffset + ri}
                   </RowTh>
+                  <CheckboxTd>
+                    {isDataRow && (
+                      <input
+                        type="checkbox"
+                        checked={vm.isRowChecked(ri)}
+                        aria-label={`Select row ${vm.rowNumberOffset + ri}`}
+                        onChange={() => vm.onRowCheckToggle(ri)}
+                        onMouseDown={(event) => event.stopPropagation()}
+                      />
+                    )}
+                  </CheckboxTd>
                   {Array.from({ length: vm.numCols }, (_, ci) => (
                     <DataTd
                       key={ci}
                       data-row={ri}
                       data-col={ci}
-                      data-selected={vm.isCellSelected(ri, ci) ? "true" : undefined}
-                      data-editing={vm.isEditingCell(ri, ci) ? "true" : undefined}
+                      data-selected={
+                        vm.isCellSelected(ri, ci) ? "true" : undefined
+                      }
+                      data-editing={
+                        vm.isEditingCell(ri, ci) ? "true" : undefined
+                      }
                       tabIndex={0}
                       onMouseDown={() => vm.onCellMouseDown(ri, ci)}
                       onMouseEnter={() => vm.onCellMouseEnter(ri, ci)}
@@ -165,7 +198,7 @@ export default function SpreadsheetGrid({
                           onDraftValueChange={vm.onDraftValueChange}
                         />
                       ) : (
-                        vm.bodyRows[ri]?.[ci] ?? ""
+                        (vm.bodyRows[ri]?.[ci] ?? "")
                       )}
                     </DataTd>
                   ))}
@@ -197,7 +230,7 @@ const TableScroller = styled.div`
   overflow: auto;
   position: relative;
   scroll-padding-top: var(--grid-col-header-height);
-  scroll-padding-left: 40px;
+  scroll-padding-left: 72px;
 
   table {
     border-collapse: collapse;
@@ -216,6 +249,26 @@ const CornerTh = styled.th`
   box-sizing: border-box;
   background: var(--grid-header-bg);
   border: 1px solid var(--grid-border);
+`;
+
+const CheckboxCornerTh = styled.th`
+  position: sticky;
+  top: 0;
+  left: 40px;
+  z-index: 5;
+  width: 32px;
+  min-width: 32px;
+  height: var(--grid-col-header-height);
+  box-sizing: border-box;
+  text-align: center;
+  vertical-align: middle;
+  background: var(--grid-header-bg);
+  border: 1px solid var(--grid-border);
+
+  input {
+    cursor: pointer;
+    margin: 0;
+  }
 `;
 
 const ColTh = styled.th<{ sortActive?: boolean }>`
@@ -320,6 +373,18 @@ const HeaderRowGutterTh = styled.th`
   user-select: none;
 `;
 
+const HeaderRowCheckboxTh = styled.th`
+  position: sticky;
+  top: var(--grid-col-header-height);
+  left: 40px;
+  z-index: 3;
+  width: 32px;
+  min-width: 32px;
+  box-sizing: border-box;
+  background: var(--grid-header-row-bg);
+  border: 1px solid var(--grid-border);
+`;
+
 const HeaderRowTh = styled.th`
   position: sticky;
   top: var(--grid-col-header-height);
@@ -353,6 +418,24 @@ const RowTh = styled.th`
   padding: 3px 4px;
   user-select: none;
   cursor: pointer;
+`;
+
+const CheckboxTd = styled.td`
+  position: sticky;
+  left: 40px;
+  z-index: 1;
+  width: 32px;
+  min-width: 32px;
+  text-align: center;
+  vertical-align: middle;
+  background: var(--grid-header-bg);
+  border: 1px solid var(--grid-border);
+  user-select: none;
+
+  input {
+    cursor: pointer;
+    margin: 0;
+  }
 `;
 
 const DataTd = styled.td`

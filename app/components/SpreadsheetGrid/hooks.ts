@@ -380,7 +380,12 @@ export function useSpreadsheetGrid(
     baseOnCellMouseDown(rowIdx, colIdx);
   }, [baseOnCellMouseDown, editingVm]);
 
-  const rowSelection = useRowSelection({
+  const {
+    isBodyIndexSelected,
+    toggleRow,
+    selectAllState,
+    toggleAllVisible,
+  } = useRowSelection({
     bodyRows: base.bodyRows,
     sourceRowIndexForDisplayRow: base.sourceRowIndexForDisplayRow,
     visibleRowCount: base.visibleRowCount,
@@ -389,17 +394,15 @@ export function useSpreadsheetGrid(
 
   const isRowChecked = useCallback(
     (displayRow: number) =>
-      rowSelection.isBodyIndexSelected(
-        base.getSourceBodyIndexForDisplayRow(displayRow)
-      ),
-    [rowSelection, base]
+      isBodyIndexSelected(base.getSourceBodyIndexForDisplayRow(displayRow)),
+    [isBodyIndexSelected, base]
   );
 
   const onRowCheckToggle = useCallback(
     (displayRow: number) => {
-      rowSelection.toggleRow(base.getSourceBodyIndexForDisplayRow(displayRow));
+      toggleRow(base.getSourceBodyIndexForDisplayRow(displayRow));
     },
-    [rowSelection, base]
+    [toggleRow, base]
   );
 
   useEffect(() => {
@@ -433,8 +436,8 @@ export function useSpreadsheetGrid(
       isEditingCell: editingVm.isEditingCell,
       isRowChecked,
       onRowCheckToggle,
-      selectAllState: rowSelection.selectAllState,
-      onToggleAllVisible: rowSelection.toggleAllVisible,
+      selectAllState,
+      onToggleAllVisible: toggleAllVisible,
       onSortCycle,
       onCellMouseDown,
       onCellMouseEnter,
@@ -457,7 +460,8 @@ export function useSpreadsheetGrid(
       isCellSelected,
       isRowChecked,
       onRowCheckToggle,
-      rowSelection,
+      selectAllState,
+      toggleAllVisible,
       onSortCycle,
       onCellMouseDown,
       onCellMouseEnter,

@@ -254,9 +254,13 @@ export function useCsvViewer(): UseCsvViewerReturn {
       setParseErrors([{ line: 0, message: "No data found" }]);
       return;
     }
-    // Clean parse: load the rows and close the modal.
+    // Clean parse: load the rows and close the modal. Drop any prior row
+    // selection — its body indices refer to the old data and would otherwise
+    // point at unrelated rows in the new file (the grid only auto-clears on a
+    // row-count change, so a same-length replacement would keep stale indices).
     setParseErrors([]);
     setCsvData(rows);
+    setSelectedRowBodyIndices([]);
     setFileName(name);
     try {
       localStorage.setItem(LS_KEY_FILE_NAME, name);
@@ -288,6 +292,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function handleStartBlank() {
     setCsvData([]);
+    setSelectedRowBodyIndices([]);
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);
@@ -296,6 +301,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function handleClear() {
     setCsvData(null);
+    setSelectedRowBodyIndices([]);
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);

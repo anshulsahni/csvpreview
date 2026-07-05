@@ -103,8 +103,8 @@ const CancelButton = styled.button`
 `;
 
 const ConfirmButton = styled.button`
-  background: #e11d48;
-  color: #ffffff;
+  background: var(--danger);
+  color: var(--danger-foreground);
   border: none;
   border-radius: 6px;
   padding: 0.45rem 0.9rem;
@@ -113,6 +113,6 @@ const ConfirmButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: #be123c;
+    background: var(--danger-hover);
   }
 `;

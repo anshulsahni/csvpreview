@@ -22,8 +22,8 @@ export default function DeleteSelectedControl({
 
 const DeleteButton = styled.button`
   background: transparent;
-  color: #e11d48;
-  border: 1px solid #e11d48;
+  color: var(--danger);
+  border: 1px solid var(--danger);
   border-radius: 6px;
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
@@ -31,7 +31,7 @@ const DeleteButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: #e11d48;
-    color: #ffffff;
+    background: var(--danger);
+    color: var(--danger-foreground);
   }
 `;

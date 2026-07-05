@@ -62,7 +62,7 @@ export default function CopyControl({
   const contextualOptions: CopyOption[] = [];
   if (hasRowSelection) {
     contextualOptions.push({
-      label: `Copy selected rows (${selectedRowCount})`,
+      label: `Copy selected ${selectedRowCount === 1 ? "row" : "rows"} (${selectedRowCount})`,
       action: onCopySelectedRows,
     });
   }

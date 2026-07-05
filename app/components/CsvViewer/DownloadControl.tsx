@@ -44,7 +44,7 @@ export default function DownloadControl({
   }
   if (selectedRowCount > 0) {
     extraOptions.push({
-      label: `Download selected rows (${selectedRowCount})`,
+      label: `Download selected ${selectedRowCount === 1 ? "row" : "rows"} (${selectedRowCount})`,
       action: onDownloadSelected,
     });
   }

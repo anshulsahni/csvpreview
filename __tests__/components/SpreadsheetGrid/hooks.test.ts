@@ -519,3 +519,89 @@ describe("useSpreadsheetGrid selection lifecycle", () => {
     expect(result.current.statusHint).not.toContain("Avg:");
   });
 });
+
+describe("useSpreadsheetGrid row checkbox selection", () => {
+  it("toggles a row via its display index and reports it checked", () => {
+    const data = [
+      ["Alice", "30"],
+      ["Bob", "25"],
+    ];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    expect(result.current.isRowChecked(0)).toBe(false);
+    act(() => {
+      result.current.onRowCheckToggle(0);
+    });
+    expect(result.current.isRowChecked(0)).toBe(true);
+    expect(result.current.selectAllState).toBe("some");
+  });
+
+  it("select-all toggles every visible row on and off", () => {
+    const data = [
+      ["Alice", "30"],
+      ["Bob", "25"],
+    ];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    act(() => {
+      result.current.onToggleAllVisible();
+    });
+    expect(result.current.selectAllState).toBe("all");
+    expect(result.current.isRowChecked(0)).toBe(true);
+    expect(result.current.isRowChecked(1)).toBe(true);
+
+    act(() => {
+      result.current.onToggleAllVisible();
+    });
+    expect(result.current.selectAllState).toBe("none");
+  });
+
+  it("keeps a checked row checked across a sort (identity survives)", () => {
+    const data = [
+      ["b", "2"],
+      ["a", "1"],
+    ];
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({ data, firstRowAsHeader: false })
+    );
+
+    // Check the row currently displayed first (source body index 0 = "b").
+    act(() => {
+      result.current.onRowCheckToggle(0);
+    });
+    expect(result.current.bodyRows[0]?.[0]).toBe("b");
+
+    // Sort ascending: "a" moves to the top, "b" to display row 1.
+    act(() => {
+      result.current.onSortCycle(0);
+    });
+    expect(result.current.bodyRows[0]?.[0]).toBe("a");
+    // The originally-checked "b" row is now at display index 1, still checked.
+    expect(result.current.isRowChecked(1)).toBe(true);
+    expect(result.current.isRowChecked(0)).toBe(false);
+  });
+
+  it("emits selected body indices in display order", () => {
+    const data = [
+      ["b", "2"],
+      ["a", "1"],
+    ];
+    const onRowSelectionChange = jest.fn();
+    const { result } = renderHook(() =>
+      useSpreadsheetGrid({
+        data,
+        firstRowAsHeader: false,
+        onRowSelectionChange,
+      })
+    );
+
+    act(() => {
+      result.current.onRowCheckToggle(0);
+    });
+    expect(onRowSelectionChange).toHaveBeenLastCalledWith([0]);
+  });
+});

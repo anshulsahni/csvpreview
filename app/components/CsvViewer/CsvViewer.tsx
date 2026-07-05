@@ -6,8 +6,10 @@ import Toolbar from "../Toolbar";
 import CountPills from "../CountPills";
 import UploadModal from "../UploadModal";
 import DownloadModal from "../DownloadModal";
+import ConfirmModal from "../ConfirmModal";
 import DownloadControl from "./DownloadControl";
 import CopyControl from "./CopyControl";
+import DeleteSelectedControl from "./DeleteSelectedControl";
 import { useCsvViewer } from "./hooks";
 
 export default function CsvViewer() {
@@ -27,15 +29,25 @@ export default function CsvViewer() {
           disabled={!viewer.csvData}
           hasSelection={viewer.hasSelection}
           hasActiveFilter={viewer.hasActiveFilter}
+          selectedRowCount={viewer.selectedRowCount}
           onCopyAll={viewer.handleCopyAll}
           onCopySelected={viewer.handleCopySelected}
           onCopyFiltered={viewer.handleCopyFiltered}
+          onCopySelectedRows={viewer.handleCopySelectedRows}
         />
         {viewer.csvData && (
           <DownloadControl
             hasActiveFilter={viewer.hasActiveFilter}
+            selectedRowCount={viewer.selectedRowCount}
             onDownload={viewer.openDownload}
             onDownloadAll={viewer.openDownloadAllRows}
+            onDownloadSelected={viewer.openDownloadSelected}
+          />
+        )}
+        {viewer.csvData && (
+          <DeleteSelectedControl
+            selectedRowCount={viewer.selectedRowCount}
+            onDeleteSelected={viewer.requestDeleteSelected}
           />
         )}
         {viewer.csvData && (
@@ -61,6 +73,7 @@ export default function CsvViewer() {
           onCellChange={viewer.handleCellChange}
           onExportStateChange={viewer.handleExportStateChange}
           onSelectionChange={viewer.handleSelectionChange}
+          onRowSelectionChange={viewer.handleRowSelectionChange}
         />
       </GridArea>
       <UploadModal
@@ -79,6 +92,17 @@ export default function CsvViewer() {
           onDownload={viewer.handleDownload}
         />
       )}
+      <ConfirmModal
+        isOpen={viewer.isConfirmDeleteOpen}
+        title="Delete selected rows"
+        message={`Delete ${viewer.selectedRowCount} ${
+          viewer.selectedRowCount === 1 ? "row" : "rows"
+        }? This cannot be undone.`}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        onConfirm={viewer.confirmDeleteSelected}
+        onCancel={viewer.cancelDeleteSelected}
+      />
     </Wrapper>
   );
 }

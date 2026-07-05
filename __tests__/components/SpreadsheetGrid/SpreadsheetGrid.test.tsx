@@ -65,7 +65,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
 
     const table = screen.getByRole("table");
     const firstBodyRow = table.querySelector("tbody tr");
-    const firstDataCell = firstBodyRow?.querySelectorAll("td")[0];
+    const firstDataCell = firstBodyRow?.querySelectorAll("td")[1];
     expect(firstDataCell?.textContent).toBe("a");
   });
 
@@ -83,7 +83,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
     await user.click(sortColB);
 
     const headers = screen.getAllByRole("columnheader");
-    expect(headers[2]).toHaveAttribute("aria-sort", "ascending");
+    expect(headers[3]).toHaveAttribute("aria-sort", "ascending");
   });
 
   it("opens one filter dropdown at a time", async () => {
@@ -141,9 +141,9 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
-    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
     const secondRowSecondCol = table.querySelector(
-      "tbody tr:nth-child(2) td:nth-child(3)"
+      "tbody tr:nth-child(2) td:nth-child(4)"
     );
 
     expect(firstCell).not.toBeNull();
@@ -167,13 +167,40 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const headers = screen.getAllByRole("columnheader");
-    fireEvent.mouseDown(headers[2]);
+    fireEvent.mouseDown(headers[3]);
 
     const table = screen.getByRole("table");
-    const cells = table.querySelectorAll("tbody td:nth-child(3)");
+    const cells = table.querySelectorAll("tbody td:nth-child(4)");
     expect(cells[0]).toHaveAttribute("data-selected", "true");
     expect(cells[1]).toHaveAttribute("data-selected", "true");
     expect(cells[2]).toHaveAttribute("data-selected", "true");
+  });
+
+  it("checking a row checkbox highlights the whole row", async () => {
+    const user = userEvent.setup();
+    const data = [
+      ["r1c1", "r1c2"],
+      ["r2c1", "r2c2"],
+    ];
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
+
+    const table = screen.getByRole("table");
+    const firstRowCells = table.querySelectorAll("tbody tr:nth-child(1) td");
+    // Before selecting, no cell in the row is marked as checked.
+    firstRowCells.forEach((cell) =>
+      expect(cell).not.toHaveAttribute("data-row-checked", "true")
+    );
+
+    await user.click(screen.getByRole("checkbox", { name: "Select row 1" }));
+
+    // Every cell in the row (checkbox gutter + data cells) is now highlighted.
+    firstRowCells.forEach((cell) =>
+      expect(cell).toHaveAttribute("data-row-checked", "true")
+    );
+    const secondRowCells = table.querySelectorAll("tbody tr:nth-child(2) td");
+    secondRowCells.forEach((cell) =>
+      expect(cell).not.toHaveAttribute("data-row-checked", "true")
+    );
   });
 
   it("mousedown on row gutter selects whole row", () => {
@@ -190,8 +217,8 @@ describe("SpreadsheetGrid (render smoke)", () => {
     fireEvent.mouseDown(secondRowGutter as Element);
 
     const rowCells = table.querySelectorAll("tbody tr:nth-child(2) td");
-    expect(rowCells[0]).toHaveAttribute("data-selected", "true");
     expect(rowCells[1]).toHaveAttribute("data-selected", "true");
+    expect(rowCells[2]).toHaveAttribute("data-selected", "true");
   });
 
   it("shows aggregate stats in status bar for numeric selection", () => {
@@ -202,9 +229,9 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
-    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
     const secondRowSecondCol = table.querySelector(
-      "tbody tr:nth-child(2) td:nth-child(3)"
+      "tbody tr:nth-child(2) td:nth-child(4)"
     );
 
     expect(firstCell).not.toBeNull();
@@ -228,9 +255,9 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<SpreadsheetGrid data={data} />);
 
     const table = screen.getByRole("table");
-    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const firstCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
     const secondRowSecondCol = table.querySelector(
-      "tbody tr:nth-child(2) td:nth-child(3)"
+      "tbody tr:nth-child(2) td:nth-child(4)"
     );
 
     expect(firstCell).not.toBeNull();
@@ -260,7 +287,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
     await user.click(sortColA);
 
     const table = screen.getByRole("table");
-    const firstDataCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const firstDataCell = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
     expect(firstDataCell).not.toHaveAttribute("data-selected", "true");
   });
 
@@ -269,8 +296,8 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
 
     const table = screen.getByRole("table");
-    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
-    const cellA2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(2)");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+    const cellA2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(3)");
     expect(cellA1).not.toBeNull();
     expect(cellA2).not.toBeNull();
 
@@ -289,7 +316,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"]]} />);
 
     const table = screen.getByRole("table");
-    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
     expect(cellA1).not.toBeNull();
 
     await user.dblClick(cellA1 as Element);
@@ -310,8 +337,8 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"]]} />);
 
     const table = screen.getByRole("table");
-    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
-    const cellB1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+    const cellB1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(4)");
     expect(cellA1).not.toBeNull();
     expect(cellB1).not.toBeNull();
 
@@ -329,7 +356,7 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<EditableGridHarness initialData={[["Existing"]]} />);
 
     const table = screen.getByRole("table");
-    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
     expect(cellA1).not.toBeNull();
 
     await user.dblClick(cellA1 as Element);
@@ -344,8 +371,8 @@ describe("SpreadsheetGrid (render smoke)", () => {
     renderWithShortcuts(<EditableGridHarness initialData={[["A1", "B1"], ["A2", "B2"]]} />);
 
     const table = screen.getByRole("table");
-    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(2)");
-    const cellB2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(3)");
+    const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+    const cellB2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(4)");
     expect(cellA1).not.toBeNull();
     expect(cellB2).not.toBeNull();
 

@@ -176,6 +176,33 @@ describe("SpreadsheetGrid (render smoke)", () => {
     expect(cells[2]).toHaveAttribute("data-selected", "true");
   });
 
+  it("checking a row checkbox highlights the whole row", async () => {
+    const user = userEvent.setup();
+    const data = [
+      ["r1c1", "r1c2"],
+      ["r2c1", "r2c2"],
+    ];
+    renderWithShortcuts(<SpreadsheetGrid data={data} />);
+
+    const table = screen.getByRole("table");
+    const firstRowCells = table.querySelectorAll("tbody tr:nth-child(1) td");
+    // Before selecting, no cell in the row is marked as checked.
+    firstRowCells.forEach((cell) =>
+      expect(cell).not.toHaveAttribute("data-row-checked", "true")
+    );
+
+    await user.click(screen.getByRole("checkbox", { name: "Select row 1" }));
+
+    // Every cell in the row (checkbox gutter + data cells) is now highlighted.
+    firstRowCells.forEach((cell) =>
+      expect(cell).toHaveAttribute("data-row-checked", "true")
+    );
+    const secondRowCells = table.querySelectorAll("tbody tr:nth-child(2) td");
+    secondRowCells.forEach((cell) =>
+      expect(cell).not.toHaveAttribute("data-row-checked", "true")
+    );
+  });
+
   it("mousedown on row gutter selects whole row", () => {
     const data = [
       ["r1c1", "r1c2"],

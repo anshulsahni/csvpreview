@@ -158,16 +158,20 @@ export default function SpreadsheetGrid({
           <tbody>
             {Array.from({ length: vm.numRows }, (_, ri) => {
               const isDataRow = ri < vm.visibleRowCount;
+              const isRowChecked = isDataRow && vm.isRowChecked(ri);
               return (
                 <tr key={ri}>
-                  <RowTh onMouseDown={() => vm.onRowGutterMouseDown(ri)}>
+                  <RowTh
+                    data-row-checked={isRowChecked ? "true" : undefined}
+                    onMouseDown={() => vm.onRowGutterMouseDown(ri)}
+                  >
                     {vm.rowNumberOffset + ri}
                   </RowTh>
-                  <CheckboxTd>
+                  <CheckboxTd data-row-checked={isRowChecked ? "true" : undefined}>
                     {isDataRow && (
                       <input
                         type="checkbox"
-                        checked={vm.isRowChecked(ri)}
+                        checked={isRowChecked}
                         aria-label={`Select row ${vm.rowNumberOffset + ri}`}
                         onChange={() => vm.onRowCheckToggle(ri)}
                         onMouseDown={(event) => event.stopPropagation()}
@@ -179,6 +183,7 @@ export default function SpreadsheetGrid({
                       key={ci}
                       data-row={ri}
                       data-col={ci}
+                      data-row-checked={isRowChecked ? "true" : undefined}
                       data-selected={
                         vm.isCellSelected(ri, ci) ? "true" : undefined
                       }
@@ -418,6 +423,11 @@ const RowTh = styled.th`
   padding: 3px 4px;
   user-select: none;
   cursor: pointer;
+
+  &[data-row-checked="true"] {
+    background: var(--grid-row-selected-bg);
+    color: var(--foreground);
+  }
 `;
 
 const CheckboxTd = styled.td`
@@ -435,6 +445,10 @@ const CheckboxTd = styled.td`
   input {
     cursor: pointer;
     margin: 0;
+  }
+
+  &[data-row-checked="true"] {
+    background: var(--grid-row-selected-bg);
   }
 `;
 
@@ -454,6 +468,10 @@ const DataTd = styled.td`
   &:focus,
   &:focus-visible {
     outline: none;
+  }
+
+  &[data-row-checked="true"] {
+    background: var(--grid-row-selected-bg);
   }
 
   &[data-selected="true"] {

@@ -1,19 +1,11 @@
 import type { NextConfig } from "next";
+import { withWyw } from "@wyw-in-js/nextjs";
 
-const nextConfig: NextConfig = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.(tsx|ts|js|mjs|jsx)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: "@wyw-in-js/webpack-loader",
-          options: { classNameSlug: "[title]-[hash]" },
-        },
-      ],
-    });
-    return config;
-  },
-};
+const classNameSlug = "[title]-[hash]";
 
-export default nextConfig;
+const nextConfig: NextConfig = {};
+
+export default withWyw(nextConfig, {
+  loaderOptions: { classNameSlug },
+  turbopackLoaderOptions: { classNameSlug },
+});

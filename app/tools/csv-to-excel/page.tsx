@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AboutNavbar from "@/app/about/components/AboutNavbar";
 import CsvToExcelConverter from "./components/CsvToExcelConverter";
+import Faq, { faqItems } from "./components/Faq";
 import { BRAND, BRAND_NAME, brandOpenGraphImages } from "@/lib/brand";
 
 const PAGE_URL = "https://csvpreview.com/tools/csv-to-excel";
@@ -58,32 +59,14 @@ const structuredData = {
     },
     {
       "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Is this CSV to Excel converter free?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Converting CSV files to Excel (.xlsx) is completely free, with no signup required.",
-          },
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
         },
-        {
-          "@type": "Question",
-          name: "Are my files uploaded to a server?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "No. The conversion happens entirely in your browser — your CSV files never leave your device.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I convert multiple CSV files at once?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Upload multiple CSV files and either merge them into a single Excel workbook (one sheet per CSV) or download each as a separate Excel file.",
-          },
-        },
-      ],
+      })),
     },
   ],
 };
@@ -98,6 +81,7 @@ export default function CsvToExcelPage() {
       <AboutNavbar />
       <main>
         <CsvToExcelConverter />
+        <Faq />
       </main>
     </>
   );

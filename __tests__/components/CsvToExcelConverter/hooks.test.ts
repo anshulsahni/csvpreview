@@ -159,6 +159,47 @@ describe("CsvToExcelConverter hooks", () => {
       });
     });
 
+    it("surfaces a read error and keeps the batch out when reading fails", async () => {
+      const OriginalFileReader = global.FileReader;
+      class FailingFileReader {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        error = new Error("boom");
+        readAsText() {
+          this.onerror?.();
+        }
+      }
+      global.FileReader = FailingFileReader as unknown as typeof FileReader;
+
+      try {
+        const { result } = renderHook(() => useCsvToExcelConverter());
+        await pick(result, [csvFile("a.csv")]);
+
+        expect(result.current.files).toHaveLength(0);
+        expect(result.current.rejectionMessage).toBe(
+          "Could not read one or more files. Please try again."
+        );
+      } finally {
+        global.FileReader = OriginalFileReader;
+      }
+    });
+
+    it("surfaces a conversion error and clears the converting state", async () => {
+      mockCsvSheetsToXlsxBlob.mockRejectedValueOnce(new Error("fail"));
+      const { result } = renderHook(() => useCsvToExcelConverter());
+      await pick(result, [csvFile("a.csv")]);
+
+      await act(async () => {
+        await (result.current.handleConvert() as unknown as Promise<void>);
+      });
+
+      expect(result.current.rejectionMessage).toBe(
+        "Conversion failed. Please try again."
+      );
+      expect(result.current.isConverting).toBe(false);
+      expect(mockDownloadBlob).not.toHaveBeenCalled();
+    });
+
     it("removes and clears files", async () => {
       const { result } = renderHook(() => useCsvToExcelConverter());
       await pick(result, [csvFile("a.csv"), csvFile("b.csv")]);

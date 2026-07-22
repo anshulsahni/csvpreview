@@ -44,6 +44,9 @@ export interface UseCsvToExcelConverterReturn {
 }
 
 const NON_CSV_MESSAGE = "Only .csv files are accepted";
+const READ_ERROR_MESSAGE =
+  "Could not read one or more files. Please try again.";
+const CONVERT_ERROR_MESSAGE = "Conversion failed. Please try again.";
 const DEFAULT_XLSX_FILENAME = "csvpreview-export.xlsx";
 
 /** True when the file looks like a CSV (by MIME type or `.csv` extension). */
@@ -95,20 +98,26 @@ export function useCsvToExcelConverter(): UseCsvToExcelConverterReturn {
     setRejectionMessage(csvFiles.length < incoming.length ? NON_CSV_MESSAGE : null);
     if (csvFiles.length === 0) return;
 
-    const parsed: ConvertedFile[] = await Promise.all(
-      csvFiles.map(async (file) => {
-        const text = await readFileAsText(file);
-        const { rows, errors } = parseCSV(text);
-        return {
-          id: uuidv4(),
-          name: file.name,
-          rows,
-          rowCount: rows.length,
-          columnCount: rows[0]?.length ?? 0,
-          errors,
-        };
-      })
-    );
+    let parsed: ConvertedFile[];
+    try {
+      parsed = await Promise.all(
+        csvFiles.map(async (file) => {
+          const text = await readFileAsText(file);
+          const { rows, errors } = parseCSV(text);
+          return {
+            id: uuidv4(),
+            name: file.name,
+            rows,
+            rowCount: rows.length,
+            columnCount: rows[0]?.length ?? 0,
+            errors,
+          };
+        })
+      );
+    } catch {
+      setRejectionMessage(READ_ERROR_MESSAGE);
+      return;
+    }
 
     setFiles((prev) => [...prev, ...parsed]);
     // Pre-fill the download name from the first uploaded file, unless the user
@@ -171,6 +180,7 @@ export function useCsvToExcelConverter(): UseCsvToExcelConverterReturn {
     // is always a one-sheet workbook.
     const effectiveMode: OutputMode = files.length > 1 ? mode : "merge";
     setIsConverting(true);
+    setRejectionMessage(null);
     try {
       if (effectiveMode === "separate") {
         for (const file of files) {
@@ -189,6 +199,8 @@ export function useCsvToExcelConverter(): UseCsvToExcelConverterReturn {
         fileCount: files.length,
         mode: effectiveMode,
       });
+    } catch {
+      setRejectionMessage(CONVERT_ERROR_MESSAGE);
     } finally {
       setIsConverting(false);
     }

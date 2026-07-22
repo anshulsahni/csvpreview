@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 
 export interface ConfirmModalRenderProps {
@@ -28,21 +27,18 @@ export function useConfirmModal({
     enabled: isOpen,
   });
 
-  const handleBackdropClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (event.currentTarget === event.target) {
-        onCancel();
-      }
-    },
-    [onCancel]
-  );
+  // Plain functions: both handlers are wired only to plain DOM <div>s, which
+  // never memoize on prop identity, and neither is a hook dependency — so
+  // useCallback would buy nothing here.
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.currentTarget === event.target) {
+      onCancel();
+    }
+  };
 
-  const handleCardClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      event.stopPropagation();
-    },
-    []
-  );
+  const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
 
   return { handleBackdropClick, handleCardClick };
 }

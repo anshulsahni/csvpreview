@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, type ChangeEvent, type DragEvent } from "react";
+import { useState, type ChangeEvent, type DragEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { parseCSV, type ParseError } from "@/lib/csvParser";
 import { csvSheetsToXlsxBlob } from "@/lib/xlsxExporter";
@@ -90,7 +90,11 @@ export function useCsvToExcelConverter(): UseCsvToExcelConverterReturn {
   const [isConverting, setIsConverting] = useState(false);
   const [rejectionMessage, setRejectionMessage] = useState<string | null>(null);
 
-  const handleFilesPicked = useCallback(async (picked: FileList | File[]) => {
+  // Plain functions: every handler below is consumed either by a plain DOM
+  // element (the dropzone <div>, the file <input>) or by <FileDropzone>, which
+  // is not wrapped in React.memo. Nothing compares these by identity and none
+  // is a hook dependency, so useCallback would add overhead for no benefit.
+  const handleFilesPicked = async (picked: FileList | File[]) => {
     const incoming = Array.from(picked);
     if (incoming.length === 0) return;
 
@@ -125,56 +129,50 @@ export function useCsvToExcelConverter(): UseCsvToExcelConverterReturn {
     setFilename((current) =>
       current.trim() === "" ? swapCsvExtensionForXlsx(parsed[0].name) : current
     );
-  }, []);
+  };
 
-  const handleFileInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target.files) handleFilesPicked(event.target.files);
-      // Clear so picking the same file again still re-triggers onChange.
-      event.target.value = "";
-    },
-    [handleFilesPicked]
-  );
+  const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) handleFilesPicked(event.target.files);
+    // Clear so picking the same file again still re-triggers onChange.
+    event.target.value = "";
+  };
 
-  const handleDragEnter = useCallback((event: DragEvent) => {
+  const handleDragEnter = (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(true);
-  }, []);
+  };
 
-  const handleDragOver = useCallback((event: DragEvent) => {
+  const handleDragOver = (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(true);
-  }, []);
+  };
 
-  const handleDragLeave = useCallback((event: DragEvent) => {
+  const handleDragLeave = (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDragging(false);
-  }, []);
+  };
 
-  const handleDrop = useCallback(
-    (event: DragEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      setIsDragging(false);
-      if (event.dataTransfer?.files) handleFilesPicked(event.dataTransfer.files);
-    },
-    [handleFilesPicked]
-  );
+  const handleDrop = (event: DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragging(false);
+    if (event.dataTransfer?.files) handleFilesPicked(event.dataTransfer.files);
+  };
 
-  const removeFile = useCallback((id: string) => {
+  const removeFile = (id: string) => {
     setFiles((prev) => prev.filter((file) => file.id !== id));
-  }, []);
+  };
 
-  const clearFiles = useCallback(() => {
+  const clearFiles = () => {
     setFiles([]);
     setFilename("");
     setRejectionMessage(null);
-  }, []);
+  };
 
-  const handleConvert = useCallback(async () => {
+  const handleConvert = async () => {
     if (files.length === 0 || isConverting) return;
     // The merge/separate choice only applies with multiple files; a single file
     // is always a one-sheet workbook.
@@ -204,7 +202,7 @@ export function useCsvToExcelConverter(): UseCsvToExcelConverterReturn {
     } finally {
       setIsConverting(false);
     }
-  }, [files, mode, filename, isConverting]);
+  };
 
   const showModeChoice = files.length > 1;
   const showFilenameField =

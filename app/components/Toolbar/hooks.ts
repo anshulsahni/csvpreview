@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, type ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 
 export interface UseToolbarArgs {
   firstRowAsHeader: boolean;
@@ -12,13 +12,12 @@ export interface UseToolbarReturn {
 }
 
 export function useToolbar({ onFirstRowAsHeaderChange }: UseToolbarArgs): UseToolbarReturn {
-
-  const handleFirstRowAsHeaderChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      onFirstRowAsHeaderChange(event.target.checked);
-    },
-    [onFirstRowAsHeaderChange]
-  );
+  // Plain function: this handler is only wired to a native <input onChange>,
+  // which never memoizes on prop identity, and nothing depends on it — so
+  // useCallback would add cost and noise for no benefit.
+  const handleFirstRowAsHeaderChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onFirstRowAsHeaderChange(event.target.checked);
+  };
 
   return {
     handleFirstRowAsHeaderChange,

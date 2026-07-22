@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 
 export interface DownloadOptions {
@@ -53,33 +53,28 @@ export function useDownloadModal({
 }: DownloadModalRenderProps): UseDownloadModalReturn {
   const [filename, setFilename] = useState(defaultFilename);
 
-  const handleBackdropClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (event.currentTarget === event.target) {
-        onClose();
-      }
-    },
-    [onClose]
-  );
+  // Plain functions: every handler below is wired only to a plain DOM element
+  // (the backdrop <div>, the card <div>, the close <button>, the <form>). DOM
+  // elements never memoize on prop identity, and nothing here is a hook
+  // dependency, so useCallback would add cost and noise for no benefit.
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.currentTarget === event.target) {
+      onClose();
+    }
+  };
 
-  const handleCardClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      event.stopPropagation();
-    },
-    []
-  );
+  const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
 
-  const handleCloseClick = useCallback(() => {
+  const handleCloseClick = () => {
     onClose();
-  }, [onClose]);
+  };
 
-  const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      onDownload({ filename: ensureCsvExtension(filename) });
-    },
-    [filename, onDownload]
-  );
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onDownload({ filename: ensureCsvExtension(filename) });
+  };
 
   useKeyboardShortcuts(
     { primaryKey: Keys.Escape },

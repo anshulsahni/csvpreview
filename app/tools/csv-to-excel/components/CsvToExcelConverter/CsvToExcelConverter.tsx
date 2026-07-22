@@ -1,11 +1,15 @@
 "use client";
 
+import { useRef } from "react";
 import { styled } from "@linaria/react";
 import FileDropzone from "./FileDropzone";
 import { useCsvToExcelConverter } from "./hooks";
 
 export default function CsvToExcelConverter() {
   const vm = useCsvToExcelConverter();
+  const addMoreInputRef = useRef<HTMLInputElement>(null);
+
+  const hasFiles = vm.files.length > 0;
 
   return (
     <Wrapper>
@@ -19,18 +23,20 @@ export default function CsvToExcelConverter() {
         </Lede>
       </Hero>
 
-      <FileDropzone
-        isDragging={vm.isDragging}
-        onFileInputChange={vm.handleFileInputChange}
-        onDragEnter={vm.handleDragEnter}
-        onDragOver={vm.handleDragOver}
-        onDragLeave={vm.handleDragLeave}
-        onDrop={vm.handleDrop}
-      />
+      {!hasFiles && (
+        <FileDropzone
+          isDragging={vm.isDragging}
+          onFileInputChange={vm.handleFileInputChange}
+          onDragEnter={vm.handleDragEnter}
+          onDragOver={vm.handleDragOver}
+          onDragLeave={vm.handleDragLeave}
+          onDrop={vm.handleDrop}
+        />
+      )}
 
       {vm.rejectionMessage && <ErrorText>{vm.rejectionMessage}</ErrorText>}
 
-      {vm.files.length > 0 && (
+      {hasFiles && (
         <Panel>
           <PanelHeader>
             <SectionLabel>
@@ -38,9 +44,24 @@ export default function CsvToExcelConverter() {
                 ? "1 file ready"
                 : `${vm.files.length} files ready`}
             </SectionLabel>
-            <ClearButton type="button" onClick={vm.clearFiles}>
-              Clear all
-            </ClearButton>
+            <PanelHeaderActions>
+              <AddButton
+                type="button"
+                onClick={() => addMoreInputRef.current?.click()}
+              >
+                + Add more
+              </AddButton>
+              <ClearButton type="button" onClick={vm.clearFiles}>
+                Clear all
+              </ClearButton>
+            </PanelHeaderActions>
+            <HiddenInput
+              ref={addMoreInputRef}
+              type="file"
+              accept=".csv"
+              multiple
+              onChange={vm.handleFileInputChange}
+            />
           </PanelHeader>
 
           <FileList>
@@ -220,18 +241,46 @@ const SectionLabel = styled.span`
   color: var(--fg-subtle);
 `;
 
+const PanelHeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+`;
+
+const AddButton = styled.button`
+  font-family: var(--font-mono);
+  font-size: var(--text-m);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--s-2) var(--s-3);
+
+  &:hover {
+    color: var(--primary-hover);
+  }
+`;
+
 const ClearButton = styled.button`
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
+  font-size: var(--text-m);
+  font-weight: 200;
   letter-spacing: 0.5px;
   color: var(--fg-muted);
   background: transparent;
   border: none;
   cursor: pointer;
+  padding: var(--s-2) var(--s-3);
 
   &:hover {
     color: var(--fg);
   }
+`;
+
+const HiddenInput = styled.input`
+  display: none;
 `;
 
 const FileList = styled.ul`

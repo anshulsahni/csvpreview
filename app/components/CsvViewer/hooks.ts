@@ -9,7 +9,9 @@ import {
 import { exportCSV } from "@/lib/csvExporter";
 import { rowsToCopyText, selectedCellsToCopyText } from "@/lib/clipboardUtils";
 import type { GridExportState } from "../SpreadsheetGrid";
+import { dataRowIndexFromBodyRowIndex } from "../SpreadsheetGrid/hooks";
 import type { CellSelection } from "../SpreadsheetGrid/selectionUtils";
+import { useToast } from "../Toast";
 import {
   computeDefaultFilename,
   ensureCsvExtension,
@@ -33,6 +35,45 @@ export function computeDownloadRows(
   headerRow: string[] | null
 ): string[][] {
   return headerRow === null ? visibleRows : [headerRow, ...visibleRows];
+}
+
+/**
+ * Resolve a set of source body indices (as emitted by the grid, in display
+ * order) to the actual `csvData` rows they point at, accounting for the header
+ * row offset. Out-of-range indices are skipped.
+ *
+ * Pure and exported for unit testing.
+ */
+export function selectedBodyIndicesToDataRows(
+  csvData: string[][] | null,
+  firstRowAsHeader: boolean,
+  bodyIndices: number[]
+): string[][] {
+  if (!csvData) return [];
+  const rows: string[][] = [];
+  for (const bodyIndex of bodyIndices) {
+    const dataRowIndex = dataRowIndexFromBodyRowIndex(
+      firstRowAsHeader,
+      bodyIndex
+    );
+    const row = csvData[dataRowIndex];
+    if (row !== undefined) rows.push(row);
+  }
+  return rows;
+}
+
+/**
+ * Return a new `csvData` with the given data-row indices removed. Removal is
+ * order-independent and tolerant of duplicate or out-of-range indices.
+ *
+ * Pure and exported for unit testing.
+ */
+export function removeDataRows(
+  csvData: string[][],
+  dataRowIndices: number[]
+): string[][] {
+  const toRemove = new Set(dataRowIndices);
+  return csvData.filter((_, index) => !toRemove.has(index));
 }
 
 /**
@@ -82,6 +123,8 @@ export interface UseCsvViewerReturn {
   firstRowAsHeader: boolean;
   hasActiveFilter: boolean;
   hasSelection: boolean;
+  selectedRowCount: number;
+  isConfirmDeleteOpen: boolean;
   counts: {
     visibleRowCount: number;
     totalRowCount: number;
@@ -93,13 +136,19 @@ export interface UseCsvViewerReturn {
   closeUpload: () => void;
   openDownload: () => void;
   openDownloadAllRows: () => void;
+  openDownloadSelected: () => void;
   closeDownload: () => void;
   handleExportStateChange: (state: GridExportState) => void;
   handleSelectionChange: (selection: CellSelection | null) => void;
+  handleRowSelectionChange: (selectedBodyIndices: number[]) => void;
   handleDownload: (options: DownloadOptions) => void;
   handleCopyAll: () => Promise<void>;
   handleCopyFiltered: () => Promise<void>;
   handleCopySelected: () => Promise<void>;
+  handleCopySelectedRows: () => Promise<void>;
+  requestDeleteSelected: () => void;
+  confirmDeleteSelected: () => void;
+  cancelDeleteSelected: () => void;
   handleFilePicked: (file: File) => void;
   handlePasteSubmit: (text: string) => void;
   handleStartBlank: () => void;
@@ -148,8 +197,15 @@ export function useCsvViewer(): UseCsvViewerReturn {
     unfilteredRows: [],
     hasActiveFilter: false,
   });
-  const [downloadIgnoreFilter, setDownloadIgnoreFilter] = useState<boolean>(false);
+  const [downloadSource, setDownloadSource] = useState<
+    "visible" | "all" | "selected"
+  >("visible");
   const [currentSelection, setCurrentSelection] = useState<CellSelection | null>(null);
+  const [selectedRowBodyIndices, setSelectedRowBodyIndices] = useState<number[]>(
+    []
+  );
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false);
+  const { success } = useToast();
   const isFirstRender = useRef<boolean>(true);
 
   useEffect(() => {
@@ -198,9 +254,13 @@ export function useCsvViewer(): UseCsvViewerReturn {
       setParseErrors([{ line: 0, message: "No data found" }]);
       return;
     }
-    // Clean parse: load the rows and close the modal.
+    // Clean parse: load the rows and close the modal. Drop any prior row
+    // selection — its body indices refer to the old data and would otherwise
+    // point at unrelated rows in the new file (the grid only auto-clears on a
+    // row-count change, so a same-length replacement would keep stale indices).
     setParseErrors([]);
     setCsvData(rows);
+    setSelectedRowBodyIndices([]);
     setFileName(name);
     try {
       localStorage.setItem(LS_KEY_FILE_NAME, name);
@@ -232,6 +292,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function handleStartBlank() {
     setCsvData([]);
+    setSelectedRowBodyIndices([]);
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);
@@ -240,6 +301,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function handleClear() {
     setCsvData(null);
+    setSelectedRowBodyIndices([]);
     setFileName("");
     setParseErrors([]);
     setFirstRowAsHeader(false);
@@ -278,6 +340,10 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setCurrentSelection(selection);
   }
 
+  const handleRowSelectionChange = useCallback((indices: number[]) => {
+    setSelectedRowBodyIndices(indices);
+  }, []);
+
   async function handleCopyAll() {
     const rows = computeDownloadRows(exportState.unfilteredRows, exportState.headerRow);
     await navigator.clipboard.writeText(rowsToCopyText(rows));
@@ -294,6 +360,17 @@ export function useCsvViewer(): UseCsvViewerReturn {
     await navigator.clipboard.writeText(text);
   }
 
+  async function handleCopySelectedRows() {
+    if (selectedRowBodyIndices.length === 0) return;
+    const selectedRows = selectedBodyIndicesToDataRows(
+      csvData,
+      firstRowAsHeader,
+      selectedRowBodyIndices
+    );
+    const rows = computeDownloadRows(selectedRows, exportState.headerRow);
+    await navigator.clipboard.writeText(rowsToCopyText(rows));
+  }
+
   function openUpload() {
     // Starting a fresh upload clears any errors from a previous attempt so the
     // modal only shows errors relevant to the new input.
@@ -308,13 +385,19 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function openDownload() {
     setDownloadFilename(computeDefaultFilename());
-    setDownloadIgnoreFilter(false);
+    setDownloadSource("visible");
     setIsDownloadOpen(true);
   }
 
   function openDownloadAllRows() {
     setDownloadFilename(computeDefaultFilename());
-    setDownloadIgnoreFilter(true);
+    setDownloadSource("all");
+    setIsDownloadOpen(true);
+  }
+
+  function openDownloadSelected() {
+    setDownloadFilename(computeDefaultFilename());
+    setDownloadSource("selected");
     setIsDownloadOpen(true);
   }
 
@@ -327,13 +410,46 @@ export function useCsvViewer(): UseCsvViewerReturn {
   }, []);
 
   function handleDownload(options: DownloadOptions) {
-    const sourceRows = downloadIgnoreFilter
-      ? exportState.unfilteredRows
-      : exportState.visibleRows;
+    let sourceRows: string[][];
+    if (downloadSource === "all") {
+      sourceRows = exportState.unfilteredRows;
+    } else if (downloadSource === "selected") {
+      sourceRows = selectedBodyIndicesToDataRows(
+        csvData,
+        firstRowAsHeader,
+        selectedRowBodyIndices
+      );
+    } else {
+      sourceRows = exportState.visibleRows;
+    }
     const rows = computeDownloadRows(sourceRows, exportState.headerRow);
     const csv = exportCSV(rows, delimiter);
     triggerCsvDownload(csv, ensureCsvExtension(options.filename));
     setIsDownloadOpen(false);
+  }
+
+  function requestDeleteSelected() {
+    if (selectedRowBodyIndices.length === 0) return;
+    setIsConfirmDeleteOpen(true);
+  }
+
+  function cancelDeleteSelected() {
+    setIsConfirmDeleteOpen(false);
+  }
+
+  function confirmDeleteSelected() {
+    const count = selectedRowBodyIndices.length;
+    if (count === 0) {
+      setIsConfirmDeleteOpen(false);
+      return;
+    }
+    const dataRowIndices = selectedRowBodyIndices.map((bodyIndex) =>
+      dataRowIndexFromBodyRowIndex(firstRowAsHeader, bodyIndex)
+    );
+    setCsvData((prev) => (prev === null ? prev : removeDataRows(prev, dataRowIndices)));
+    setSelectedRowBodyIndices([]);
+    setIsConfirmDeleteOpen(false);
+    success(`${count} ${count === 1 ? "row" : "rows"} deleted`);
   }
 
   return {
@@ -347,19 +463,27 @@ export function useCsvViewer(): UseCsvViewerReturn {
     firstRowAsHeader,
     hasActiveFilter: exportState.hasActiveFilter,
     hasSelection: currentSelection !== null,
+    selectedRowCount: selectedRowBodyIndices.length,
+    isConfirmDeleteOpen,
     counts: computeGridCounts(exportState),
     setFirstRowAsHeader,
     openUpload,
     closeUpload,
     openDownload,
     openDownloadAllRows,
+    openDownloadSelected,
     closeDownload,
     handleExportStateChange,
     handleSelectionChange,
+    handleRowSelectionChange,
     handleDownload,
     handleCopyAll,
     handleCopyFiltered,
     handleCopySelected,
+    handleCopySelectedRows,
+    requestDeleteSelected,
+    confirmDeleteSelected,
+    cancelDeleteSelected,
     handleFilePicked,
     handlePasteSubmit,
     handleStartBlank,

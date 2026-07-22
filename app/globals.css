@@ -13,6 +13,9 @@
   --primary: #0070f3;
   --success: light-dark(#16a34a, #22c55e);
   --error: light-dark(#dc2626, #ef4444);
+  --danger: light-dark(#e11d48, #f43f5e);
+  --danger-hover: light-dark(#be123c, #e11d48);
+  --danger-foreground: #ffffff;
   --info: light-dark(#0070f3, #3b82f6);
   --border: light-dark(#e5e7eb, #2a2a2a);
   --subtle: light-dark(#f3f4f6, #1a1a1a);
@@ -30,6 +33,7 @@
   --grid-filter-icon-idle: light-dark(#9ca3af, #6b7280);
   --grid-filter-icon-active: light-dark(#d97706, #f59e0b);
   --grid-selection-bg: light-dark(#cfe2ff, #1e3a5f);
+  --grid-row-selected-bg: light-dark(#fff8c5, #3b341a);
   --dropdown-bg: var(--background);
   --dropdown-border: var(--border);
   --dropdown-shadow: light-dark(

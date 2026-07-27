@@ -18,7 +18,7 @@
     "@vercel/speed-insights": "2.0.0",
     "@wyw-in-js/nextjs": "2.1.4",
     "mixpanel-browser": "2.76.0",
-    "next": "16.2.6",
+    "next": "16.2.12",
     "papaparse": "5.5.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -37,17 +37,19 @@
     "@types/react-dom": "19.2.3",
     "babel-jest": "30.3.0",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "16.2.12",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
     "typescript": "5.9.3"
   },
   "overrides": {
-    "postcss": "8.5.10",
+    "postcss": "8.5.23",
     "@babel/core": "7.29.7",
     "js-yaml": "4.3.0",
-    "brace-expansion@2": "2.1.2",
     "glob": "13.0.6",
-    "test-exclude": "8.0.0"
+    "test-exclude": "8.0.0",
+    "sharp": "0.35.3",
+    "minimatch": "10.2.5",
+    "brace-expansion": "5.0.8"
   }
 }

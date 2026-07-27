@@ -1,23 +1,31 @@
 "use client";
 
-import { useRef, type RefObject } from "react";
+import { useRef, useSyncExternalStore, type RefObject } from "react";
 import { styled } from "@linaria/react";
 import { useActiveCellIndicator } from "./useActiveCellIndicator";
+import type { FocusCellStore } from "./focusCellStore";
 
 interface FocusOverlayProps {
   scrollerRef: RefObject<HTMLDivElement | null>;
-  focusedCell: { rowIdx: number; colIdx: number } | null;
+  focusStore: FocusCellStore;
   editingCell: { rowIdx: number; colIdx: number } | null;
   layoutDeps: readonly unknown[];
 }
 
 export default function FocusOverlay({
   scrollerRef,
-  focusedCell,
+  focusStore,
   editingCell,
   layoutDeps,
 }: FocusOverlayProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  // Subscribe to the focused cell here so only this one-<div> overlay re-renders
+  // on focus moves — the grid body stays untouched.
+  const focusedCell = useSyncExternalStore(
+    focusStore.subscribe,
+    focusStore.get,
+    focusStore.getServerSnapshot
+  );
   useActiveCellIndicator(scrollerRef, overlayRef, focusedCell, editingCell, layoutDeps);
 
   return <Overlay ref={overlayRef} aria-hidden="true" />;

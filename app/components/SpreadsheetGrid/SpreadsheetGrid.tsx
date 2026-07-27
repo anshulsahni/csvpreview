@@ -57,7 +57,7 @@ export default function SpreadsheetGrid({
       <TableScroller ref={scrollerRef}>
         <FocusOverlay
           scrollerRef={scrollerRef}
-          focusedCell={vm.focusedCell}
+          focusStore={vm.focusStore}
           editingCell={vm.editingCell}
           layoutDeps={[
             vm.numRows,

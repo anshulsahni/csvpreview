@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 import { focusCellAt, getActiveCellFromDom } from "./gridDomUtils";
+import { createFocusCellStore, type FocusCellStore } from "./focusCellStore";
 
 export interface EditingCell {
   rowIdx: number;
@@ -20,7 +21,11 @@ interface UseSpreadsheetGridEditingArgs {
 }
 
 export interface SpreadsheetGridEditingVm {
-  focusedCell: EditingCell | null;
+  /**
+   * External store for the focused cell. Consumed only by the focus overlay so
+   * that moving focus repositions the overlay without re-rendering the grid.
+   */
+  focusStore: FocusCellStore;
   editingCell: EditingCell | null;
   isEditingCell: (rowIdx: number, colIdx: number) => boolean;
   onDraftValueChange: (value: string) => void;
@@ -44,10 +49,16 @@ export function useSpreadsheetGridEditing({
   onCellChange,
   selectSingleCell,
 }: UseSpreadsheetGridEditingArgs): SpreadsheetGridEditingVm {
-  const [focusedCell, setFocusedCell] = useState<EditingCell | null>(null);
   const [editingCell, setEditingCell] = useState<EditingCell | null>(null);
   const draftValueRef = useRef("");
   const pendingFocusCellRef = useRef<EditingCell | null>(null);
+
+  // The focused cell lives in an external store, not React state: nothing in
+  // the grid body renders based on it (only the overlay does), so keeping it out
+  // of state avoids a full-grid re-render on every focus move. `useState` with
+  // an initializer creates the store exactly once and keeps a stable identity.
+  const [focusStore] = useState(createFocusCellStore);
+  const setFocusedCell = focusStore.set;
 
   const isEditingCell = (rowIdx: number, colIdx: number) =>
     editingCell?.rowIdx === rowIdx && editingCell.colIdx === colIdx;
@@ -195,7 +206,7 @@ export function useSpreadsheetGridEditing({
   );
 
   return {
-    focusedCell,
+    focusStore,
     editingCell,
     isEditingCell,
     onDraftValueChange: (value) => {

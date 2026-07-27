@@ -17,6 +17,7 @@ import {
 import { useSpreadsheetGridEditing } from "./useSpreadsheetGridEditing";
 import { useRowSelection } from "./useRowSelection";
 import type { SelectAllState } from "./rowSelectionUtils";
+import type { FocusCellStore } from "./focusCellStore";
 
 export const MIN_COLS = 26;
 export const MIN_ROWS = 50;
@@ -82,7 +83,8 @@ export interface SpreadsheetGridViewModel {
   getSourceBodyIndexForDisplayRow: (displayRow: number) => number;
   selection: CellSelection | null;
   isDragging: boolean;
-  focusedCell: { rowIdx: number; colIdx: number } | null;
+  /** External store for the focused cell; read only by the focus overlay. */
+  focusStore: FocusCellStore;
   editingCell: { rowIdx: number; colIdx: number } | null;
   isCellSelected: (rowIdx: number, colIdx: number) => boolean;
   isEditingCell: (rowIdx: number, colIdx: number) => boolean;
@@ -188,7 +190,7 @@ function computeViewModel(
   | "openColIdx"
   | "selection"
   | "isDragging"
-  | "focusedCell"
+  | "focusStore"
   | "editingCell"
   | "isCellSelected"
   | "isEditingCell"
@@ -430,7 +432,7 @@ export function useSpreadsheetGrid(
       statusHint: combinedStatusHint,
       selection,
       isDragging,
-      focusedCell: editingVm.focusedCell,
+      focusStore: editingVm.focusStore,
       editingCell: editingVm.editingCell,
       isCellSelected,
       isEditingCell: editingVm.isEditingCell,
@@ -490,7 +492,7 @@ export function computeSpreadsheetGridViewModel(
   | "openColIdx"
   | "selection"
   | "isDragging"
-  | "focusedCell"
+  | "focusStore"
   | "editingCell"
   | "isCellSelected"
   | "isEditingCell"

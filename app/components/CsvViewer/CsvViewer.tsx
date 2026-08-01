@@ -7,6 +7,7 @@ import CountPills from "../CountPills";
 import UploadModal from "../UploadModal";
 import DownloadModal from "../DownloadModal";
 import ConfirmModal from "../ConfirmModal";
+import LoadingOverlay from "../LoadingOverlay";
 import DownloadControl from "./DownloadControl";
 import CopyControl from "./CopyControl";
 import DeleteSelectedControl from "./DeleteSelectedControl";
@@ -103,6 +104,12 @@ export default function CsvViewer() {
         onConfirm={viewer.confirmDeleteSelected}
         onCancel={viewer.cancelDeleteSelected}
       />
+      {viewer.isParsing && (
+        <LoadingOverlay
+          message="Reading & preparing your sheet…"
+          detail={viewer.loadingDetail || undefined}
+        />
+      )}
     </Wrapper>
   );
 }

@@ -361,10 +361,12 @@ describe("useCsvViewer", () => {
         result.current.handlePasteSubmit("a,b\nc,d");
       });
 
-      expect(result.current.csvData).toEqual([
-        ["a", "b"],
-        ["c", "d"],
-      ]);
+      await waitFor(() =>
+        expect(result.current.csvData).toEqual([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
       expect(result.current.fileName).toBe("pasted.csv");
       expect(result.current.parseErrors).toEqual([]);
       expect(result.current.isUploadOpen).toBe(false);
@@ -393,7 +395,9 @@ describe("useCsvViewer", () => {
         result.current.handlePasteSubmit('"unclosed');
       });
 
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
       expect(result.current.parseErrors[0].line).toBe(1);
       expect(result.current.isUploadOpen).toBe(true);
       expect(result.current.csvData).toBeNull();
@@ -408,6 +412,9 @@ describe("useCsvViewer", () => {
       });
 
       // The ragged row is reported and nothing loads until it is fixed.
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
       expect(result.current.csvData).toBeNull();
       expect(result.current.isUploadOpen).toBe(true);
       const raggedError = result.current.parseErrors.find((e) => e.line === 2);
@@ -423,11 +430,13 @@ describe("useCsvViewer", () => {
         result.current.handlePasteSubmit("a,b\nc,d\ne,f");
       });
 
-      expect(result.current.csvData).toEqual([
-        ["a", "b"],
-        ["c", "d"],
-        ["e", "f"],
-      ]);
+      await waitFor(() =>
+        expect(result.current.csvData).toEqual([
+          ["a", "b"],
+          ["c", "d"],
+          ["e", "f"],
+        ])
+      );
       expect(result.current.parseErrors).toEqual([]);
       expect(result.current.isUploadOpen).toBe(false);
     });
@@ -441,7 +450,9 @@ describe("useCsvViewer", () => {
       act(() => {
         result.current.handlePasteSubmit('"bad');
       });
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
 
       act(() => {
         result.current.handleStartBlank();
@@ -556,7 +567,9 @@ describe("useCsvViewer", () => {
       act(() => {
         result.current.handlePasteSubmit('"bad');
       });
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
 
       act(() => result.current.closeUpload());
 

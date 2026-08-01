@@ -100,6 +100,22 @@ export function computeGridCounts(state: GridExportState): {
   };
 }
 
+/**
+ * Run `callback` after the browser has had a chance to paint the current frame.
+ * Parsing a large CSV blocks the main thread synchronously, so we yield first —
+ * otherwise the loading overlay we just rendered would never appear before the
+ * freeze. Falls back to a macrotask where `requestAnimationFrame` is missing.
+ */
+function runAfterPaint(callback: () => void): void {
+  if (typeof requestAnimationFrame === "function") {
+    requestAnimationFrame(() => {
+      setTimeout(callback, 0);
+    });
+  } else {
+    setTimeout(callback, 0);
+  }
+}
+
 function triggerCsvDownload(csv: string, filename: string): void {
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -125,6 +141,10 @@ export interface UseCsvViewerReturn {
   hasSelection: boolean;
   selectedRowCount: number;
   isConfirmDeleteOpen: boolean;
+  /** True while a picked/pasted CSV is being read and parsed. */
+  isParsing: boolean;
+  /** Name of the file/source being parsed, shown in the loading overlay. */
+  loadingDetail: string;
   counts: {
     visibleRowCount: number;
     totalRowCount: number;
@@ -205,6 +225,8 @@ export function useCsvViewer(): UseCsvViewerReturn {
     []
   );
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false);
+  const [isParsing, setIsParsing] = useState<boolean>(false);
+  const [loadingDetail, setLoadingDetail] = useState<string>("");
   const { success } = useToast();
   const isFirstRender = useRef<boolean>(true);
 
@@ -271,13 +293,19 @@ export function useCsvViewer(): UseCsvViewerReturn {
   }
 
   function handleFilePicked(file: File) {
+    // Reading the file is asynchronous, so the overlay paints during the read;
+    // the parse then runs (and blocks) in `onload` while the overlay is up.
+    setLoadingDetail(file.name);
+    setIsParsing(true);
     const reader = new FileReader();
     reader.onload = function handleFileReaderLoad(event: ProgressEvent<FileReader>) {
       const text = (event.target?.result as string) ?? "";
       ingest(text, file.name);
+      setIsParsing(false);
     };
     reader.onerror = function handleFileReaderError() {
       setParseErrors([{ line: 0, message: "Could not read file" }]);
+      setIsParsing(false);
     };
     reader.readAsText(file);
   }
@@ -287,7 +315,14 @@ export function useCsvViewer(): UseCsvViewerReturn {
       setParseErrors([{ line: 0, message: "Paste area is empty" }]);
       return;
     }
-    ingest(text, PASTED_FILENAME);
+    // Pasting is synchronous, so yield after showing the overlay before the
+    // (blocking) parse runs — otherwise the spinner never gets a chance to paint.
+    setLoadingDetail(PASTED_FILENAME);
+    setIsParsing(true);
+    runAfterPaint(() => {
+      ingest(text, PASTED_FILENAME);
+      setIsParsing(false);
+    });
   }
 
   function handleStartBlank() {
@@ -465,6 +500,8 @@ export function useCsvViewer(): UseCsvViewerReturn {
     hasSelection: currentSelection !== null,
     selectedRowCount: selectedRowBodyIndices.length,
     isConfirmDeleteOpen,
+    isParsing,
+    loadingDetail,
     counts: computeGridCounts(exportState),
     setFirstRowAsHeader,
     openUpload,

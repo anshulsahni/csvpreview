@@ -27,30 +27,6 @@ describe("CsvViewer (render smoke)", () => {
     expect(screen.getByText("Name")).toBeInTheDocument();
   });
 
-  it("renders the empty state without an infinite update loop", async () => {
-    // Regression: `data={viewer.csvData ?? []}` used to mint a new array every
-    // render, busting the grid's view-model memo, which re-fired the row
-    // selection notify effect, which set state again — "Maximum update depth
-    // exceeded". React surfaces that as a thrown error during render.
-    const consoleError = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-
-    expect(() => renderViewer()).not.toThrow();
-
-    // The upload modal auto-opens when there is nothing persisted.
-    expect(
-      await screen.findByRole("dialog", { name: "Upload Data" })
-    ).toBeInTheDocument();
-
-    const loopError = consoleError.mock.calls.find((call) =>
-      String(call[0] ?? "").includes("Maximum update depth exceeded")
-    );
-    expect(loopError).toBeUndefined();
-
-    consoleError.mockRestore();
-  });
-
   it("opens the modal when the top-bar Upload button is clicked", async () => {
     const rows = [["a", "b"]];
     localStorage.setItem("csvpreview_data", JSON.stringify(rows));

@@ -13,6 +13,13 @@ import CopyControl from "./CopyControl";
 import DeleteSelectedControl from "./DeleteSelectedControl";
 import { useCsvViewer } from "./hooks";
 
+/**
+ * Stable identity for the "no CSV loaded yet" case. Inlining `?? []` here would
+ * hand the grid a brand-new array on every render, busting its view-model memo
+ * and re-firing the row-selection notify effect in a loop.
+ */
+const EMPTY_ROWS: string[][] = [];
+
 export default function CsvViewer() {
   const viewer = useCsvViewer();
 
@@ -69,7 +76,7 @@ export default function CsvViewer() {
       </TopBar>
       <GridArea>
         <SpreadsheetGrid
-          data={viewer.csvData ?? []}
+          data={viewer.csvData ?? EMPTY_ROWS}
           firstRowAsHeader={viewer.firstRowAsHeader}
           onCellChange={viewer.handleCellChange}
           onExportStateChange={viewer.handleExportStateChange}

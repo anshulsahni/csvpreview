@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { styled } from "@linaria/react";
 import type { ParseError } from "@/lib/csvParser";
+import Backdrop from "../Backdrop";
 import { useUploadModal } from "./hooks";
 
 export interface UploadModalProps {
@@ -118,17 +119,6 @@ export default function UploadModal(props: UploadModalProps) {
     </Backdrop>
   );
 }
-
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-`;
 
 const Card = styled.div`
   width: 100%;

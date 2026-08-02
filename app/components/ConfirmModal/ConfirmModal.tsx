@@ -1,6 +1,7 @@
 "use client";
 
 import { styled } from "@linaria/react";
+import Backdrop from "../Backdrop";
 import { useConfirmModal, type ConfirmModalRenderProps } from "./hooks";
 
 export type ConfirmModalProps = ConfirmModalRenderProps;
@@ -41,17 +42,6 @@ export default function ConfirmModal(props: ConfirmModalProps) {
     </Backdrop>
   );
 }
-
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-`;
 
 const Card = styled.div`
   width: 100%;

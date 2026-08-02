@@ -18,6 +18,7 @@
   --danger-foreground: #ffffff;
   --info: light-dark(#0070f3, #3b82f6);
   --border: light-dark(#e5e7eb, #2a2a2a);
+  --backdrop: rgba(0, 0, 0, 0.45);
   --subtle: light-dark(#f3f4f6, #1a1a1a);
   --grid-header-bg: light-dark(#f0f2f5, #161b22);
   --grid-header-text: light-dark(#555, #c9d1d9);

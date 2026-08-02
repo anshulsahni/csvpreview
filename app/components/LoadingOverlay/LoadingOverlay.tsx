@@ -1,6 +1,7 @@
 "use client";
 
 import { styled } from "@linaria/react";
+import Backdrop from "../Backdrop";
 
 export interface LoadingOverlayProps {
   /** Primary line shown under the spinner. */
@@ -19,7 +20,7 @@ export default function LoadingOverlay({
   detail,
 }: LoadingOverlayProps) {
   return (
-    <Backdrop role="status" aria-live="polite" aria-busy="true">
+    <Backdrop level="overlay" role="status" aria-live="polite" aria-busy="true">
       <Panel>
         <Spinner aria-hidden="true" />
         <Message>{message}</Message>
@@ -28,17 +29,6 @@ export default function LoadingOverlay({
     </Backdrop>
   );
 }
-
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.45);
-`;
 
 const Panel = styled.div`
   display: flex;

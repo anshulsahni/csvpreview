@@ -229,6 +229,28 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [loadingDetail, setLoadingDetail] = useState<string>("");
   const { success } = useToast();
   const isFirstRender = useRef<boolean>(true);
+  // Bumped whenever a parse starts or the sheet is reset. A parse only commits
+  // its result if it still holds the current generation, so a slow read that
+  // lands after a newer upload/paste/clear can't resurrect stale rows or pull
+  // the loading overlay out from under the parse that replaced it.
+  const parseGeneration = useRef<number>(0);
+  const activeReader = useRef<FileReader | null>(null);
+
+  /** Start a new parse, invalidating any in-flight one. Returns its token. */
+  function beginParse(): number {
+    // `abort` is optional-called so a stubbed reader in tests can't break the
+    // handoff; the generation check is what actually enforces correctness.
+    activeReader.current?.abort?.();
+    activeReader.current = null;
+    parseGeneration.current += 1;
+    return parseGeneration.current;
+  }
+
+  /** Discard whatever parse is in flight — used by the reset handlers. */
+  function cancelParse(): void {
+    beginParse();
+    setIsParsing(false);
+  }
 
   useEffect(() => {
     const persisted = readPersistedRows();
@@ -295,15 +317,21 @@ export function useCsvViewer(): UseCsvViewerReturn {
   function handleFilePicked(file: File) {
     // Reading the file is asynchronous, so the overlay paints during the read;
     // the parse then runs (and blocks) in `onload` while the overlay is up.
+    const generation = beginParse();
     setLoadingDetail(file.name);
     setIsParsing(true);
     const reader = new FileReader();
+    activeReader.current = reader;
     reader.onload = function handleFileReaderLoad(event: ProgressEvent<FileReader>) {
+      if (generation !== parseGeneration.current) return;
+      activeReader.current = null;
       const text = (event.target?.result as string) ?? "";
       ingest(text, file.name);
       setIsParsing(false);
     };
     reader.onerror = function handleFileReaderError() {
+      if (generation !== parseGeneration.current) return;
+      activeReader.current = null;
       setParseErrors([{ line: 0, message: "Could not read file" }]);
       setIsParsing(false);
     };
@@ -317,15 +345,18 @@ export function useCsvViewer(): UseCsvViewerReturn {
     }
     // Pasting is synchronous, so yield after showing the overlay before the
     // (blocking) parse runs — otherwise the spinner never gets a chance to paint.
+    const generation = beginParse();
     setLoadingDetail(PASTED_FILENAME);
     setIsParsing(true);
     runAfterPaint(() => {
+      if (generation !== parseGeneration.current) return;
       ingest(text, PASTED_FILENAME);
       setIsParsing(false);
     });
   }
 
   function handleStartBlank() {
+    cancelParse();
     setCsvData([]);
     setSelectedRowBodyIndices([]);
     setFileName("");
@@ -335,6 +366,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
   }
 
   function handleClear() {
+    cancelParse();
     setCsvData(null);
     setSelectedRowBodyIndices([]);
     setFileName("");

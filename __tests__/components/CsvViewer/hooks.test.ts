@@ -442,6 +442,115 @@ describe("useCsvViewer", () => {
     });
   });
 
+  describe("parsing status", () => {
+    it("raises isParsing with the paste detail, then lowers it when the parse lands", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d");
+      });
+
+      // The parse is deferred until after paint, so the overlay is up here.
+      expect(result.current.isParsing).toBe(true);
+      expect(result.current.loadingDetail).toBe("pasted.csv");
+
+      await waitFor(() => expect(result.current.isParsing).toBe(false));
+      expect(result.current.csvData).toEqual([
+        ["a", "b"],
+        ["c", "d"],
+      ]);
+    });
+
+    it("lowers isParsing even when the pasted CSV fails to parse", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit('"unclosed');
+      });
+      expect(result.current.isParsing).toBe(true);
+
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("reports the file name as the loading detail while a file is read", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      mockFileReaderWithText("a,b\nc,d");
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["a,b\nc,d"], "report.csv", { type: "text/csv" })
+        );
+      });
+
+      expect(result.current.loadingDetail).toBe("report.csv");
+      await waitFor(() => expect(result.current.isParsing).toBe(false));
+    });
+
+    it("drops a parse that is superseded by handleClear", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      // Start a paste, then clear before the deferred parse gets to run.
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d");
+      });
+      act(() => {
+        result.current.handleClear();
+      });
+
+      expect(result.current.isParsing).toBe(false);
+
+      // Give the superseded callback every chance to fire; it must not land.
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      });
+      expect(result.current.csvData).toBeNull();
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("drops a parse that is superseded by handleStartBlank", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d");
+      });
+      act(() => {
+        result.current.handleStartBlank();
+      });
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      });
+      expect(result.current.csvData).toEqual([]);
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("keeps only the newest parse when two pastes overlap", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("old,row\n1,2");
+      });
+      act(() => {
+        result.current.handlePasteSubmit("new,row\n3,4");
+      });
+
+      await waitFor(() => expect(result.current.isParsing).toBe(false));
+      expect(result.current.csvData).toEqual([
+        ["new", "row"],
+        ["3", "4"],
+      ]);
+    });
+  });
+
   describe("handleStartBlank()", () => {
     it("empties csvData, clears fileName and errors, closes modal", async () => {
       const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });

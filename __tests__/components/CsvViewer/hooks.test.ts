@@ -43,6 +43,41 @@ function mockFileReaderWithText(text: string) {
   return reader;
 }
 
+/**
+ * Like `mockFileReaderWithText`, but the read stays in flight until the caller
+ * invokes the returned `finishRead`. Needed to observe the loading state that
+ * only exists *while* a file is being read — a mock that resolves inside
+ * readAsText() has already finished before the test can assert anything.
+ */
+function mockPendingFileReader(text: string) {
+  const readAsText = jest.fn();
+  const reader: Partial<FileReader> & {
+    onload: FileReader["onload"];
+    onerror: FileReader["onerror"];
+    result: string | null;
+    abort: () => void;
+  } = {
+    onload: null,
+    onerror: null,
+    result: null,
+    readAsText,
+    abort: jest.fn(),
+  };
+  jest
+    .spyOn(global, "FileReader")
+    .mockImplementation(() => reader as FileReader);
+
+  return {
+    reader,
+    finishRead() {
+      reader.result = text;
+      (reader.onload as EventListener | null)?.({
+        target: { result: text },
+      } as unknown as ProgressEvent<FileReader>);
+    },
+  };
+}
+
 function mockFileReaderWithError() {
   const readAsText = jest.fn();
   const reader: Partial<FileReader> & {
@@ -481,15 +516,54 @@ describe("useCsvViewer", () => {
       const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
       await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
 
-      mockFileReaderWithText("a,b\nc,d");
+      const pending = mockPendingFileReader("a,b\nc,d");
       act(() => {
         result.current.handleFilePicked(
           new File(["a,b\nc,d"], "report.csv", { type: "text/csv" })
         );
       });
 
+      // The read is still in flight here, so this is the state the overlay sees.
+      expect(result.current.isParsing).toBe(true);
       expect(result.current.loadingDetail).toBe("report.csv");
-      await waitFor(() => expect(result.current.isParsing).toBe(false));
+      expect(result.current.csvData).toBeNull();
+
+      act(() => {
+        pending.finishRead();
+      });
+
+      expect(result.current.isParsing).toBe(false);
+      expect(result.current.csvData).toEqual([
+        ["a", "b"],
+        ["c", "d"],
+      ]);
+      expect(result.current.fileName).toBe("report.csv");
+    });
+
+    it("drops a file read that handleClear cancelled mid-flight", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      const pending = mockPendingFileReader("a,b\nc,d");
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["a,b\nc,d"], "report.csv", { type: "text/csv" })
+        );
+      });
+      expect(result.current.isParsing).toBe(true);
+
+      act(() => {
+        result.current.handleClear();
+      });
+      expect(pending.reader.abort).toHaveBeenCalled();
+
+      // The read completes anyway; its result must not land.
+      act(() => {
+        pending.finishRead();
+      });
+
+      expect(result.current.csvData).toBeNull();
+      expect(result.current.isParsing).toBe(false);
     });
 
     it("drops a parse that is superseded by handleClear", async () => {

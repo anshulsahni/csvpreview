@@ -40,7 +40,7 @@ const Panel = styled.div`
   border: 1px solid var(--border);
   background: var(--background);
   color: var(--foreground);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--overlay-shadow);
   max-width: min(90vw, 360px);
   text-align: center;
 `;

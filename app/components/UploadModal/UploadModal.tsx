@@ -131,7 +131,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--overlay-shadow);
   max-height: calc(100vh - 2rem);
   overflow: auto;
 `;

@@ -60,7 +60,7 @@ const Spinner = styled.div`
   }
 
   @media (prefers-reduced-motion: reduce) {
-    animation-duration: 2s;
+    animation: none;
   }
 `;
 

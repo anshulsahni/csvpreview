@@ -1,6 +1,7 @@
 "use client";
 
 import { styled } from "@linaria/react";
+import Backdrop from "../Backdrop";
 import { useDownloadModal, type DownloadModalRenderProps } from "./hooks";
 
 export type DownloadModalProps = DownloadModalRenderProps;
@@ -56,17 +57,6 @@ export default function DownloadModal(props: DownloadModalProps) {
   );
 }
 
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-`;
-
 const Card = styled.div`
   width: 100%;
   max-width: 460px;
@@ -78,7 +68,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--overlay-shadow);
   max-height: calc(100vh - 2rem);
   overflow: auto;
 `;

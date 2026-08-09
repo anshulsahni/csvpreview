@@ -12,6 +12,7 @@ import { SortButton } from "./SortButton";
 import CellEditor from "./CellEditor";
 import SelectAllCheckbox from "./SelectAllCheckbox";
 import { useSpreadsheetGridNavigation } from "./useSpreadsheetGridNavigation";
+import { useRowVirtualizer } from "./useRowVirtualizer";
 import FocusOverlay from "./FocusOverlay";
 
 export interface SpreadsheetGridProps {
@@ -49,12 +50,14 @@ export default function SpreadsheetGrid({
     bodyRows: vm.bodyRows,
   });
 
+  const { rowWindow, measureRef } = useRowVirtualizer(scrollerRef, vm.numRows);
+
   return (
     <GridWrapper
       ref={gridRef}
       data-dragging={vm.isDragging ? "true" : undefined}
     >
-      <TableScroller ref={scrollerRef}>
+      <TableScroller ref={scrollerRef} data-grid-scroller>
         <FocusOverlay
           scrollerRef={scrollerRef}
           focusedCell={vm.focusedCell}
@@ -66,6 +69,8 @@ export default function SpreadsheetGrid({
             vm.filters,
             firstRowAsHeader,
             vm.bodyRows.length,
+            rowWindow.startIndex,
+            rowWindow.endIndex,
           ]}
         />
         <table>
@@ -156,11 +161,22 @@ export default function SpreadsheetGrid({
             )}
           </thead>
           <tbody>
-            {Array.from({ length: vm.numRows }, (_, ri) => {
+            {rowWindow.topPadHeight > 0 && (
+              <tr aria-hidden="true">
+                <SpacerTd
+                  colSpan={vm.numCols + 2}
+                  style={{ height: rowWindow.topPadHeight }}
+                />
+              </tr>
+            )}
+            {Array.from(
+              { length: rowWindow.endIndex - rowWindow.startIndex },
+              (_, offset) => {
+              const ri = rowWindow.startIndex + offset;
               const isDataRow = ri < vm.visibleRowCount;
               const isRowChecked = isDataRow && vm.isRowChecked(ri);
               return (
-                <tr key={ri}>
+                <tr key={ri} ref={offset === 0 ? measureRef : undefined}>
                   <RowTh
                     data-row-checked={isRowChecked ? "true" : undefined}
                     onMouseDown={() => vm.onRowGutterMouseDown(ri)}
@@ -209,7 +225,16 @@ export default function SpreadsheetGrid({
                   ))}
                 </tr>
               );
-            })}
+              }
+            )}
+            {rowWindow.bottomPadHeight > 0 && (
+              <tr aria-hidden="true">
+                <SpacerTd
+                  colSpan={vm.numCols + 2}
+                  style={{ height: rowWindow.bottomPadHeight }}
+                />
+              </tr>
+            )}
           </tbody>
         </table>
       </TableScroller>
@@ -487,6 +512,13 @@ const DataTd = styled.td`
     height: auto;
     padding: 0;
   }
+`;
+
+const SpacerTd = styled.td`
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: var(--grid-cell-bg);
 `;
 
 const StatusBar = styled.div`

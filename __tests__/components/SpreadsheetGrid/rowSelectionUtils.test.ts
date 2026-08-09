@@ -1,6 +1,7 @@
 import {
   computeSelectAllState,
   orderedSelectedBodyIndices,
+  sameIndices,
   toggleInSet,
 } from "@/app/components/SpreadsheetGrid/rowSelectionUtils";
 
@@ -61,5 +62,29 @@ describe("orderedSelectedBodyIndices", () => {
 
   it("returns an empty array when nothing is selected", () => {
     expect(orderedSelectedBodyIndices([0, 1, 2], new Set())).toEqual([]);
+  });
+});
+
+describe("sameIndices", () => {
+  it("treats the same reference as equal", () => {
+    const list = [1, 2, 3];
+    expect(sameIndices(list, list)).toBe(true);
+  });
+
+  it("treats equal-but-distinct arrays as equal", () => {
+    // This is the case that guards against the render loop: a recomputed array
+    // with identical contents must not count as a change.
+    expect(sameIndices([1, 2, 3], [1, 2, 3])).toBe(true);
+    expect(sameIndices([], [])).toBe(true);
+  });
+
+  it("detects differing length", () => {
+    expect(sameIndices([1, 2], [1, 2, 3])).toBe(false);
+    expect(sameIndices([], [0])).toBe(false);
+  });
+
+  it("detects differing contents and ordering", () => {
+    expect(sameIndices([1, 2, 3], [1, 9, 3])).toBe(false);
+    expect(sameIndices([1, 2], [2, 1])).toBe(false);
   });
 });

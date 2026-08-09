@@ -65,6 +65,21 @@ describe("computeRowWindow", () => {
     expect(win.startIndex).toBeGreaterThanOrEqual(0);
   });
 
+  it("still renders rows when the row count shrinks under a stale scrollTop", () => {
+    const rowHeight = 26;
+    const rowCount = 20;
+    // The scroller still reports a scroll position from a 50k-row dataset.
+    const win = computeRowWindow(rowCount, rowHeight, 50000 * rowHeight, 260, 4);
+
+    expect(win.startIndex).toBeLessThan(win.endIndex);
+    expect(win.startIndex).toBeGreaterThanOrEqual(0);
+    expect(win.endIndex).toBe(rowCount);
+    const renderedHeight = (win.endIndex - win.startIndex) * rowHeight;
+    expect(win.topPadHeight + renderedHeight + win.bottomPadHeight).toBe(
+      rowCount * rowHeight
+    );
+  });
+
   it("keeps total reserved height equal to rowCount * rowHeight", () => {
     const rowHeight = 26;
     const rowCount = 4321;

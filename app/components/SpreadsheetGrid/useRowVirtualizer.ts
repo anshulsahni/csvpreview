@@ -64,7 +64,14 @@ export function computeRowWindow(
     };
   }
 
-  const first = Math.floor(scrollTop / rowHeight);
+  // Clamp to a real row: when the dataset shrinks (filter, delete, new file) the
+  // scroller can still report a `scrollTop` from the old, taller content. Left
+  // unclamped that puts `startIndex` past `endIndex` and the grid renders no
+  // rows at all until the browser corrects the scroll position.
+  const first = Math.min(
+    rowCount - 1,
+    Math.max(0, Math.floor(scrollTop / rowHeight))
+  );
   const visibleCount = Math.ceil(viewportHeight / rowHeight);
   const startIndex = Math.max(0, first - overscan);
   const endIndex = Math.min(rowCount, first + visibleCount + overscan);

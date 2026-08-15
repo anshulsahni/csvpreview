@@ -1,30 +1,38 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
 import CountPills from "@/app/components/CountPills";
 import { computeCsvCounts } from "@/app/components/CountPills/hooks";
 import { parseCSV } from "@/lib/csvParser";
-import { datasets, getDatasetBySlug } from "@/lib/datasets";
+import { getDatasetBySlug } from "@/lib/datasets";
 import { loadDatasetCsv } from "@/lib/datasets/loadCsv";
+import {
+  getCategoryForDataset,
+  getCategoryPath,
+  getDatasetPath,
+  getDatasetStaticParams,
+} from "@/lib/datasets/categories";
 import OpenInEditorButton from "./OpenInEditorButton";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return datasets.map((d) => ({ slug: d.slug }));
+  return getDatasetStaticParams();
 }
 
-type Params = Promise<{ slug: string }>;
+type Params = Promise<{ category: string; slug: string }>;
 
 export async function generateMetadata(
   { params }: { params: Params },
 ): Promise<Metadata> {
-  const { slug } = await params;
+  const { category: categorySlug, slug } = await params;
   const ds = getDatasetBySlug(slug);
-  if (!ds) return {};
-  const url = `/data/${ds.slug}`;
+  const category = getCategoryForDataset(slug);
+  if (!ds || !category || category.slug !== categorySlug) return {};
+  const url = getDatasetPath(category.slug, ds.slug);
   return {
     title: ds.title,
     description: ds.description,
@@ -48,9 +56,12 @@ export async function generateMetadata(
 }
 
 export default async function DatasetPage({ params }: { params: Params }) {
-  const { slug } = await params;
+  const { category: categorySlug, slug } = await params;
   const ds = getDatasetBySlug(slug);
-  if (!ds) notFound();
+  const category = getCategoryForDataset(slug);
+  // Guard the pair, not just the slug — otherwise the same dataset would
+  // render under any category slug and duplicate itself across URLs.
+  if (!ds || !category || category.slug !== categorySlug) notFound();
 
   const csv = await loadDatasetCsv(ds.slug);
   const { rows } = parseCSV(csv);
@@ -60,6 +71,14 @@ export default async function DatasetPage({ params }: { params: Params }) {
   return (
     <>
       <Navbar />
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Data", href: "/data" },
+          { label: category.name, href: getCategoryPath(category.slug) },
+          { label: ds.title },
+        ]}
+      />
       <main
         style={{
           flex: 1,

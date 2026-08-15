@@ -1,91 +1,7 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
 import { getDatasetBySlug } from "@/lib/datasets";
-
-const DATASET_CATEGORIES: { label: string; slugs: string[] }[] = [
-  {
-    label: "Geography & Places",
-    slugs: [
-      "countries-capitals",
-      "us-state-capitals",
-      "indian-states",
-      "country-codes",
-      "world-population",
-      "world-timezones",
-      "mountain-heights",
-      "world-rivers",
-      "national-parks",
-    ],
-  },
-  {
-    label: "Transport",
-    slugs: [
-      "world-airports",
-      "airline-codes",
-      "busiest-airports",
-      "high-speed-rail-networks",
-      "metro-systems-world",
-    ],
-  },
-  {
-    label: "Economics & Finance",
-    slugs: [
-      "country-gdp",
-      "sp500-companies",
-      "currency-codes",
-      "g20-g7-brics-members",
-    ],
-  },
-  {
-    label: "History & Politics",
-    slugs: [
-      "us-presidents",
-      "indian-prime-ministers",
-      "uk-prime-ministers",
-      "independence-days",
-      "un-member-states",
-    ],
-  },
-  {
-    label: "Food & Drink",
-    slugs: [
-      "world-cuisines",
-      "top-crops-global",
-      "coffee-producing-countries",
-      "tea-varieties",
-      "indian-sweets",
-      "spices",
-      "wine-regions",
-      "calories-macros",
-    ],
-  },
-  {
-    label: "Animals & Nature",
-    slugs: [
-      "dog-breeds",
-      "cat-breeds",
-      "endangered-species-iucn",
-      "animal-species-lifespan-diet-habitat",
-    ],
-  },
-  {
-    label: "Science",
-    slugs: [
-      "human-body-organs-functions",
-      "planets-moons-solar-system",
-      "periodic-table-elements",
-      "major-earthquakes-history",
-    ],
-  },
-  {
-    label: "Language & Culture",
-    slugs: ["most-spoken-languages", "indian-languages-by-state"],
-  },
-  {
-    label: "Architecture",
-    slugs: ["tallest-buildings-world", "longest-bridges-tunnels"],
-  },
-];
+import { categories, getDatasetPath } from "@/lib/datasets/categories";
 
 const FEATURES = [
   <>
@@ -315,18 +231,21 @@ export default function AboutContent() {
       <SeoFooter aria-label="Sample CSV datasets">
         <SeoLabel>sample datasets</SeoLabel>
         <SeoCategoryGrid>
-          {DATASET_CATEGORIES.map((cat) => {
-            const items = cat.slugs
+          {categories.map((cat) => {
+            const items = cat.datasetSlugs
               .map((slug) => getDatasetBySlug(slug))
               .filter(Boolean);
             if (!items.length) return null;
             return (
-              <SeoCategory key={cat.label}>
-                <SeoCategoryLabel>{cat.label}</SeoCategoryLabel>
+              <SeoCategory key={cat.slug}>
+                <SeoCategoryLabel>{cat.name}</SeoCategoryLabel>
                 <SeoLinks>
                   {items.map((dataset) => (
                     <li key={dataset!.slug}>
-                      <Link href={`/data/${dataset!.slug}`} prefetch={false}>
+                      <Link
+                        href={getDatasetPath(cat.slug, dataset!.slug)}
+                        prefetch={false}
+                      >
                         {dataset!.title}
                       </Link>
                     </li>

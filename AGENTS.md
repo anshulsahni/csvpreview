@@ -54,7 +54,7 @@ _Purpose:_ A standard file/folder structure improves discovery of modules while 
       │   └── AboutContent.tsx
       └── page.tsx
   ```
-- Dynamic routes follow the App Router convention, e.g. `app/data/[slug]/page.tsx`.
+- Dynamic routes follow the App Router convention, e.g. `app/data/[category]/[slug]/page.tsx`.
 
 ### 1.2 Building components
 Separate **behavior** from the **view**. This convention is also enforced via the Cursor rule in `.cursor/rules/react-component-structure.mdc` — keep the two in sync.

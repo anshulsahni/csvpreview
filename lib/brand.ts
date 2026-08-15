@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+/** Canonical production origin, without a trailing slash. */
+export const SITE_URL = "https://csvpreview.com";
+
 /** Static paths under `public/brand/`. */
 export const BRAND = {
   mark128: "/brand/mark-128.png",

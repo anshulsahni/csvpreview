@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
 import CountPills from "@/app/components/CountPills";
@@ -8,6 +9,7 @@ import { computeCsvCounts } from "@/app/components/CountPills/hooks";
 import { parseCSV } from "@/lib/csvParser";
 import { datasets, getDatasetBySlug } from "@/lib/datasets";
 import { loadDatasetCsv } from "@/lib/datasets/loadCsv";
+import { getCategoryForDataset } from "@/lib/datasets/categories";
 import OpenInEditorButton from "./OpenInEditorButton";
 
 export const dynamicParams = false;
@@ -56,10 +58,21 @@ export default async function DatasetPage({ params }: { params: Params }) {
   const { rows } = parseCSV(csv);
   const firstRowAsHeader = ds.firstRowAsHeader ?? true;
   const counts = computeCsvCounts(rows, firstRowAsHeader);
+  const category = getCategoryForDataset(ds.slug);
 
   return (
     <>
       <Navbar />
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Data", href: "/data" },
+          ...(category
+            ? [{ label: category.name, href: `/data/category/${category.slug}` }]
+            : []),
+          { label: ds.title },
+        ]}
+      />
       <main
         style={{
           flex: 1,

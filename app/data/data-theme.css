@@ -1,0 +1,9 @@
+@import '../claude-design-theme.css';
+
+/* Route-specific: category cards use a bare <h3> for the card title. */
+.data-theme h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: 1.15;
+  margin: 0;
+}

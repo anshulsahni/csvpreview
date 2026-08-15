@@ -12,6 +12,7 @@ export default function AboutNavbar() {
       </BrandLink>
       <NavLinks>
         <Link href="/">app</Link>
+        <Link href="/data">data</Link>
       </NavLinks>
     </Nav>
   );

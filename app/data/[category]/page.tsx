@@ -6,9 +6,10 @@ import { BRAND, brandOpenGraphImages } from "@/lib/brand";
 import {
   categories,
   getCategoryBySlug,
+  getCategoryPath,
   getDatasetsForCategory,
 } from "@/lib/datasets/categories";
-import "../../data-theme.css";
+import "../data-theme.css";
 import CategoryContent from "./components/CategoryContent";
 
 export const dynamicParams = false;
@@ -28,7 +29,7 @@ export async function generateMetadata(
 
   const title = `${category.name} Datasets (CSV) | CSV Preview`;
   const description = `${category.blurb} Free CSV downloads — sort, filter, and preview each dataset directly in your browser.`;
-  const url = `/data/category/${category.slug}`;
+  const url = getCategoryPath(category.slug);
 
   return {
     title,

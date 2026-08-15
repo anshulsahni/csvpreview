@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
+import { SITE_URL } from "@/lib/brand";
 import { computeBreadcrumbJsonLd } from "./hooks";
-
-const BASE_URL = "https://csvpreview.com";
 
 export interface BreadcrumbItem {
   label: string;
@@ -15,7 +14,7 @@ export interface BreadcrumbProps {
 }
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
-  const jsonLd = computeBreadcrumbJsonLd(items, BASE_URL);
+  const jsonLd = computeBreadcrumbJsonLd(items, SITE_URL);
 
   return (
     <Nav aria-label="Breadcrumb">

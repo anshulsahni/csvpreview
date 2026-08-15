@@ -35,12 +35,12 @@ describe("computeBreadcrumbJsonLd", () => {
 
   it("resolves relative hrefs against baseUrl", () => {
     const jsonLd = computeBreadcrumbJsonLd(
-      [{ label: "Geography", href: "/data/category/geography" }],
+      [{ label: "Geography", href: "/data/geography" }],
       "https://csvpreview.com",
     );
 
     expect(jsonLd.itemListElement[0].item).toBe(
-      "https://csvpreview.com/data/category/geography",
+      "https://csvpreview.com/data/geography",
     );
   });
 });

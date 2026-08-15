@@ -1,37 +1,41 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/brand";
 import { datasets } from "@/lib/datasets";
-import { categories } from "@/lib/datasets/categories";
-
-const BASE_URL = "https://csvpreview.com";
+import {
+  categories,
+  getCategoryPath,
+  getDatasetPathBySlug,
+} from "@/lib/datasets/categories";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: BASE_URL,
+      url: SITE_URL,
       changeFrequency: "daily",
     },
     {
-      url: `${BASE_URL}/about`,
+      url: `${SITE_URL}/about`,
       changeFrequency: "daily",
     },
     {
-      url: `${BASE_URL}/tools/csv-to-excel`,
+      url: `${SITE_URL}/tools/csv-to-excel`,
       changeFrequency: "monthly",
     },
     {
-      url: `${BASE_URL}/data`,
+      url: `${SITE_URL}/data`,
       changeFrequency: "weekly",
     },
   ];
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((c) => ({
-    url: `${BASE_URL}/data/category/${c.slug}`,
+    url: `${SITE_URL}${getCategoryPath(c.slug)}`,
     changeFrequency: "weekly",
   }));
 
-  const datasetPages: MetadataRoute.Sitemap = datasets.map((ds) => ({
-    url: `${BASE_URL}/data/${ds.slug}`,
-  }));
+  const datasetPages: MetadataRoute.Sitemap = datasets.flatMap((ds) => {
+    const path = getDatasetPathBySlug(ds.slug);
+    return path ? [{ url: `${SITE_URL}${path}` }] : [];
+  });
 
   return [...staticPages, ...categoryPages, ...datasetPages];
 }

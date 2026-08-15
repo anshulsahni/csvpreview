@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/app/components/ThemeProvider";
 import ToastAnalyticsProvider from "@/app/components/ToastAnalyticsProvider";
 import { THEME_COOKIE_KEY, isTheme, Theme } from "@/lib/theme";
 import ThemeToggle from "@/app/components/ThemeToggle";
-import { BRAND, brandOpenGraphImages } from "@/lib/brand";
+import { BRAND, brandOpenGraphImages, SITE_URL } from "@/lib/brand";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -16,7 +16,7 @@ const defaultDescription =
   "CSV Preview lets you open and inspect CSV files directly in your browser. Privacy-first — no server, no signup, your data stays local.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://csvpreview.com"),
+  metadataBase: new URL(SITE_URL),
   title: defaultTitle,
   description: defaultDescription,
   keywords: ["CSV viewer", "CSV preview", "open CSV online", "CSV file reader", "privacy CSV"],

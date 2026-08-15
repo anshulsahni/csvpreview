@@ -1,14 +1,19 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
-import type { CategoryMeta } from "@/lib/datasets/categories";
+import {
+  getCategoryPath,
+  type CategoryMeta,
+} from "@/lib/datasets/categories";
 
 export interface CategoryCardProps {
   category: CategoryMeta;
 }
 
 export default function CategoryCard({ category }: CategoryCardProps) {
+  const path = getCategoryPath(category.slug);
+
   return (
-    <Card href={`/data/category/${category.slug}`}>
+    <Card href={path}>
       <Header>
         <h3>{category.name}</h3>
         <SetCount>{category.datasetSlugs.length} SETS</SetCount>
@@ -19,7 +24,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
           <Chip key={slug}>{slug}</Chip>
         ))}
       </Chips>
-      <Footer>/data/category/{category.slug} →</Footer>
+      <Footer>{path} →</Footer>
     </Card>
   );
 }

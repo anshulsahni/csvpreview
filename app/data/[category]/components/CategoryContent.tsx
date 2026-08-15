@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
-import type { CategoryMeta } from "@/lib/datasets/categories";
+import {
+  getCategoryPath,
+  type CategoryMeta,
+} from "@/lib/datasets/categories";
 import type { DatasetMeta } from "@/lib/datasets/types";
 import DatasetListItem from "./DatasetListItem";
 
@@ -27,14 +30,18 @@ export default function CategoryContent({
       <Layout>
         <List>
           {datasets.map((dataset) => (
-            <DatasetListItem key={dataset.slug} dataset={dataset} />
+            <DatasetListItem
+              key={dataset.slug}
+              dataset={dataset}
+              categorySlug={category.slug}
+            />
           ))}
         </List>
         <Rail>
           <RailCard>
             <RailLabel>Browse categories</RailLabel>
             {otherCategories.map((other) => (
-              <RailRow key={other.slug} href={`/data/category/${other.slug}`}>
+              <RailRow key={other.slug} href={getCategoryPath(other.slug)}>
                 <span>{other.name}</span>
                 <RailCount>{other.datasetSlugs.length}</RailCount>
               </RailRow>

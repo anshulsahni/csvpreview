@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
 import { getDatasetBySlug } from "@/lib/datasets";
-import { categories } from "@/lib/datasets/categories";
+import { categories, getDatasetPath } from "@/lib/datasets/categories";
 
 const FEATURES = [
   <>
@@ -242,7 +242,10 @@ export default function AboutContent() {
                 <SeoLinks>
                   {items.map((dataset) => (
                     <li key={dataset!.slug}>
-                      <Link href={`/data/${dataset!.slug}`} prefetch={false}>
+                      <Link
+                        href={getDatasetPath(cat.slug, dataset!.slug)}
+                        prefetch={false}
+                      >
                         {dataset!.title}
                       </Link>
                     </li>

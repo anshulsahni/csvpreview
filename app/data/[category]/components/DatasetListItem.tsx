@@ -1,17 +1,25 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
 import type { DatasetMeta } from "@/lib/datasets/types";
+import { getDatasetPath } from "@/lib/datasets/categories";
 
 export interface DatasetListItemProps {
   dataset: DatasetMeta;
+  categorySlug: string;
 }
 
-export default function DatasetListItem({ dataset }: DatasetListItemProps) {
+export default function DatasetListItem({
+  dataset,
+  categorySlug,
+}: DatasetListItemProps) {
+  // One path for both the link and the visible text, so they can't drift.
+  const path = getDatasetPath(categorySlug, dataset.slug);
+
   return (
-    <Row href={`/data/${dataset.slug}`}>
+    <Row href={path}>
       <div>
         <Title>{dataset.title}</Title>
-        <Slug>/data/{dataset.slug}</Slug>
+        <Slug>{path}</Slug>
       </div>
       <Arrow aria-hidden="true">→</Arrow>
     </Row>

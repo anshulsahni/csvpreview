@@ -147,6 +147,68 @@ export function getRelatedDatasets(
     .slice(0, max);
 }
 
+/** Canonical path for a category index page. */
+export function getCategoryPath(categorySlug: string): string {
+  return `/data/${categorySlug}`;
+}
+
+/** Canonical path for a dataset page, nested under its category. */
+export function getDatasetPath(
+  categorySlug: string,
+  datasetSlug: string,
+): string {
+  return `/data/${categorySlug}/${datasetSlug}`;
+}
+
+/**
+ * Canonical dataset path resolved from the taxonomy.
+ * Returns undefined when the slug isn't assigned to a category.
+ */
+export function getDatasetPathBySlug(datasetSlug: string): string | undefined {
+  const category = categoryByDatasetSlug.get(datasetSlug);
+  return category ? getDatasetPath(category.slug, datasetSlug) : undefined;
+}
+
+/**
+ * `{ category, slug }` pairs for every dataset, feeding `generateStaticParams`
+ * on the nested `/data/[category]/[slug]` route.
+ */
+export function getDatasetStaticParams(): {
+  category: string;
+  slug: string;
+}[] {
+  return categories.flatMap((category) =>
+    category.datasetSlugs.map((slug) => ({ category: category.slug, slug })),
+  );
+}
+
+/** A 301 from a legacy flat `/data/{slug}` URL to its category-nested path. */
+export interface LegacyDatasetRedirect {
+  source: string;
+  destination: string;
+  statusCode: 301;
+}
+
+/**
+ * Redirects for the flat dataset URLs that shipped before datasets were nested
+ * under their category. Derived from the taxonomy so the slug → category
+ * mapping stays single-sourced. Consumed by `next.config.ts`.
+ *
+ * Sources are deliberately literal single-segment paths, never patterns — a
+ * pattern like `/data/:slug` would also match `/data/{category}` and loop.
+ */
+export function getLegacyDatasetRedirects(): LegacyDatasetRedirect[] {
+  return categories.flatMap((category) =>
+    category.datasetSlugs.map(
+      (datasetSlug): LegacyDatasetRedirect => ({
+        source: `/data/${datasetSlug}`,
+        destination: getDatasetPath(category.slug, datasetSlug),
+        statusCode: 301,
+      }),
+    ),
+  );
+}
+
 export function assertCategoryCompleteness(): void {
   const allDatasetSlugs = new Set(datasets.map((d) => d.slug));
   const categorizedSlugs = new Set(categories.flatMap((c) => c.datasetSlugs));
@@ -159,6 +221,16 @@ export function assertCategoryCompleteness(): void {
   for (const slug of categorizedSlugs) {
     if (!allDatasetSlugs.has(slug)) {
       throw new Error(`Category references unknown dataset slug "${slug}".`);
+    }
+  }
+  // Categories and datasets share a single path segment under /data, so a
+  // collision would make /data/{slug} ambiguous between the two routes.
+  for (const category of categories) {
+    if (allDatasetSlugs.has(category.slug)) {
+      throw new Error(
+        `Category slug "${category.slug}" collides with a dataset slug; ` +
+          `/data/${category.slug} would be ambiguous.`,
+      );
     }
   }
 }

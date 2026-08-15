@@ -40,9 +40,9 @@ export default function DataHubPage() {
     <>
       <Navbar />
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Data" }]} />
-      <div className="data-theme">
+      <main className="data-theme">
         <DataHubContent />
-      </div>
+      </main>
     </>
   );
 }

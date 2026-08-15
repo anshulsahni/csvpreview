@@ -74,13 +74,13 @@ export default async function CategoryPage({
           { label: category.name },
         ]}
       />
-      <div className="data-theme">
+      <main className="data-theme">
         <CategoryContent
           category={category}
           datasets={categoryDatasets}
           otherCategories={otherCategories}
         />
-      </div>
+      </main>
     </>
   );
 }

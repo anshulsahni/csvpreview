@@ -37,7 +37,7 @@ export default function CategoryContent({
             />
           ))}
         </List>
-        <Rail>
+        <Rail aria-label="Browse categories">
           <RailCard>
             <RailLabel>Browse categories</RailLabel>
             {otherCategories.map((other) => (
@@ -92,7 +92,7 @@ const List = styled.div`
   align-self: start;
 `;
 
-const Rail = styled.div`
+const Rail = styled.nav`
   align-self: start;
 `;
 

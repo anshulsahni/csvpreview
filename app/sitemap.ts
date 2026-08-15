@@ -17,6 +17,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/tools/csv-to-excel`,
       changeFrequency: "monthly",
     },
+    {
+      url: `${BASE_URL}/tools/excel-to-csv`,
+      changeFrequency: "monthly",
+    },
   ];
 
   const datasetPages: MetadataRoute.Sitemap = datasets.map((ds) => ({

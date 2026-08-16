@@ -10,10 +10,23 @@ import {
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 import { ToastProvider } from "@/app/components/Toast";
+import { downloadBlob } from "@/lib/downloadFile";
+
+jest.mock("@/lib/downloadFile", () => ({ downloadBlob: jest.fn() }));
+jest.mock("@/lib/analytics", () => ({ track: jest.fn() }));
+
+const downloadBlobMock = downloadBlob as jest.MockedFunction<typeof downloadBlob>;
 
 beforeEach(() => {
   localStorage.clear();
+  downloadBlobMock.mockClear();
 });
+
+/** Read back the text handed to the mocked `downloadBlob`. */
+async function lastDownloadedText(): Promise<string> {
+  const [blob] = downloadBlobMock.mock.calls.at(-1) ?? [];
+  return blob === undefined ? "" : blob.text();
+}
 
 /**
  * Helper to install a FileReader mock that deterministically resolves with the
@@ -758,6 +771,122 @@ describe("useCsvViewer", () => {
 
       expect(result.current.parseErrors).toEqual([]);
       expect(result.current.isUploadOpen).toBe(false);
+    });
+  });
+
+  describe("handleDownload()", () => {
+    const HEADER_ROW = ["id", "name"];
+    const VISIBLE_ROWS = [["1", "Ann"]];
+    const UNFILTERED_ROWS = [
+      ["1", "Ann"],
+      ["2", "Bob"],
+    ];
+
+    /**
+     * Mount the hook with a loaded sheet and a grid export state that has a
+     * header row and an active filter — the shape every download branch reads.
+     */
+    async function mountWithExportState() {
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(UNFILTERED_ROWS));
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+      await waitFor(() => expect(result.current.csvData).toEqual(UNFILTERED_ROWS));
+
+      act(() => {
+        result.current.handleExportStateChange({
+          headerRow: HEADER_ROW,
+          visibleRows: VISIBLE_ROWS,
+          unfilteredRows: UNFILTERED_ROWS,
+          hasActiveFilter: true,
+        });
+      });
+
+      return result;
+    }
+
+    it("exposes canDownloadJson only while the grid reports a header row", async () => {
+      const result = await mountWithExportState();
+      expect(result.current.canDownloadJson).toBe(true);
+
+      act(() => {
+        result.current.handleExportStateChange({
+          headerRow: null,
+          visibleRows: VISIBLE_ROWS,
+          unfilteredRows: UNFILTERED_ROWS,
+          hasActiveFilter: false,
+        });
+      });
+
+      expect(result.current.canDownloadJson).toBe(false);
+    });
+
+    it("openDownloadJson selects the json format, openDownload the csv one", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadJson());
+      expect(result.current.downloadFormat).toBe("json");
+      expect(result.current.isDownloadOpen).toBe(true);
+
+      act(() => result.current.closeDownload());
+      act(() => result.current.openDownload());
+      expect(result.current.downloadFormat).toBe("csv");
+    });
+
+    it("writes CSV with the header row prepended", async () => {
+      const result = await mountWithExportState();
+
+      act(() => {
+        result.current.handleDownload({ filename: "out.csv", format: "csv" });
+      });
+
+      expect(downloadBlobMock).toHaveBeenCalledTimes(1);
+      expect(downloadBlobMock.mock.calls[0][1]).toBe("out.csv");
+      expect(downloadBlobMock.mock.calls[0][0].type).toBe(
+        "text/csv;charset=utf-8"
+      );
+      await expect(lastDownloadedText()).resolves.toBe("id,name\n1,Ann");
+      expect(result.current.isDownloadOpen).toBe(false);
+    });
+
+    it("writes JSON keyed by the header row, without repeating it as a record", async () => {
+      const result = await mountWithExportState();
+
+      act(() => {
+        result.current.handleDownload({ filename: "out.json", format: "json" });
+      });
+
+      expect(downloadBlobMock.mock.calls[0][1]).toBe("out.json");
+      expect(downloadBlobMock.mock.calls[0][0].type).toBe(
+        "application/json;charset=utf-8"
+      );
+      expect(JSON.parse(await lastDownloadedText())).toEqual([
+        { id: "1", name: "Ann" },
+      ]);
+    });
+
+    it("respects the scope chosen when the modal was opened", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadAllRows());
+      act(() => {
+        result.current.handleDownload({ filename: "out.csv", format: "csv" });
+      });
+
+      await expect(lastDownloadedText()).resolves.toBe("id,name\n1,Ann\n2,Bob");
+    });
+
+    it("exports the visible rows for JSON, matching the primary button's scope", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadJson());
+      act(() => {
+        result.current.handleDownload({ filename: "out.json", format: "json" });
+      });
+
+      expect(JSON.parse(await lastDownloadedText())).toEqual([
+        { id: "1", name: "Ann" },
+      ]);
     });
   });
 

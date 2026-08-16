@@ -22,7 +22,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "How are dates and numbers formatted?",
     answer:
-      "Dates come out as YYYY-MM-DD (a full ISO timestamp when the cell also carries a time). Numbers come out plain — no currency symbols, no thousands separators — so the CSV stays easy to parse.",
+      "Dates come out as YYYY-MM-DD. Numbers come out plain — no currency symbols, no thousands separators — so the CSV stays easy to parse.",
   },
   {
     question: "Are my files uploaded to a server?",

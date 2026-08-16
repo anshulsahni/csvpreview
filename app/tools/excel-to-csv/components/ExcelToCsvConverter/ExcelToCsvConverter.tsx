@@ -132,7 +132,7 @@ const Wrapper = styled.div`
   gap: var(--s-6);
 `;
 
-const Hero = styled.div`
+const Hero = styled.header`
   display: flex;
   flex-direction: column;
   gap: var(--s-4);

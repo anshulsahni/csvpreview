@@ -60,3 +60,17 @@ export function orderedSelectedBodyIndices(
   }
   return ordered;
 }
+
+/**
+ * Element-wise equality for two index lists. Used to suppress redundant
+ * selection notifications, where re-emitting an equal-but-new array would cost
+ * the consumer a render for no actual change.
+ */
+export function sameIndices(a: readonly number[], b: readonly number[]): boolean {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i += 1) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}

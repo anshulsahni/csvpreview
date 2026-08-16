@@ -43,6 +43,41 @@ function mockFileReaderWithText(text: string) {
   return reader;
 }
 
+/**
+ * Like `mockFileReaderWithText`, but the read stays in flight until the caller
+ * invokes the returned `finishRead`. Needed to observe the loading state that
+ * only exists *while* a file is being read — a mock that resolves inside
+ * readAsText() has already finished before the test can assert anything.
+ */
+function mockPendingFileReader(text: string) {
+  const readAsText = jest.fn();
+  const reader: Partial<FileReader> & {
+    onload: FileReader["onload"];
+    onerror: FileReader["onerror"];
+    result: string | null;
+    abort: () => void;
+  } = {
+    onload: null,
+    onerror: null,
+    result: null,
+    readAsText,
+    abort: jest.fn(),
+  };
+  jest
+    .spyOn(global, "FileReader")
+    .mockImplementation(() => reader as FileReader);
+
+  return {
+    reader,
+    finishRead() {
+      reader.result = text;
+      (reader.onload as EventListener | null)?.({
+        target: { result: text },
+      } as unknown as ProgressEvent<FileReader>);
+    },
+  };
+}
+
 function mockFileReaderWithError() {
   const readAsText = jest.fn();
   const reader: Partial<FileReader> & {
@@ -361,10 +396,12 @@ describe("useCsvViewer", () => {
         result.current.handlePasteSubmit("a,b\nc,d");
       });
 
-      expect(result.current.csvData).toEqual([
-        ["a", "b"],
-        ["c", "d"],
-      ]);
+      await waitFor(() =>
+        expect(result.current.csvData).toEqual([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
       expect(result.current.fileName).toBe("pasted.csv");
       expect(result.current.parseErrors).toEqual([]);
       expect(result.current.isUploadOpen).toBe(false);
@@ -393,7 +430,9 @@ describe("useCsvViewer", () => {
         result.current.handlePasteSubmit('"unclosed');
       });
 
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
       expect(result.current.parseErrors[0].line).toBe(1);
       expect(result.current.isUploadOpen).toBe(true);
       expect(result.current.csvData).toBeNull();
@@ -408,6 +447,9 @@ describe("useCsvViewer", () => {
       });
 
       // The ragged row is reported and nothing loads until it is fixed.
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
       expect(result.current.csvData).toBeNull();
       expect(result.current.isUploadOpen).toBe(true);
       const raggedError = result.current.parseErrors.find((e) => e.line === 2);
@@ -423,13 +465,163 @@ describe("useCsvViewer", () => {
         result.current.handlePasteSubmit("a,b\nc,d\ne,f");
       });
 
+      await waitFor(() =>
+        expect(result.current.csvData).toEqual([
+          ["a", "b"],
+          ["c", "d"],
+          ["e", "f"],
+        ])
+      );
+      expect(result.current.parseErrors).toEqual([]);
+      expect(result.current.isUploadOpen).toBe(false);
+    });
+  });
+
+  describe("parsing status", () => {
+    it("raises isParsing with the paste detail, then lowers it when the parse lands", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d");
+      });
+
+      // The parse is deferred until after paint, so the overlay is up here.
+      expect(result.current.isParsing).toBe(true);
+      expect(result.current.loadingDetail).toBe("pasted.csv");
+
+      await waitFor(() => expect(result.current.isParsing).toBe(false));
       expect(result.current.csvData).toEqual([
         ["a", "b"],
         ["c", "d"],
-        ["e", "f"],
       ]);
-      expect(result.current.parseErrors).toEqual([]);
-      expect(result.current.isUploadOpen).toBe(false);
+    });
+
+    it("lowers isParsing even when the pasted CSV fails to parse", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit('"unclosed');
+      });
+      expect(result.current.isParsing).toBe(true);
+
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("reports the file name as the loading detail while a file is read", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      const pending = mockPendingFileReader("a,b\nc,d");
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["a,b\nc,d"], "report.csv", { type: "text/csv" })
+        );
+      });
+
+      // The read is still in flight here, so this is the state the overlay sees.
+      expect(result.current.isParsing).toBe(true);
+      expect(result.current.loadingDetail).toBe("report.csv");
+      expect(result.current.csvData).toBeNull();
+
+      act(() => {
+        pending.finishRead();
+      });
+
+      expect(result.current.isParsing).toBe(false);
+      expect(result.current.csvData).toEqual([
+        ["a", "b"],
+        ["c", "d"],
+      ]);
+      expect(result.current.fileName).toBe("report.csv");
+    });
+
+    it("drops a file read that handleClear cancelled mid-flight", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      const pending = mockPendingFileReader("a,b\nc,d");
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["a,b\nc,d"], "report.csv", { type: "text/csv" })
+        );
+      });
+      expect(result.current.isParsing).toBe(true);
+
+      act(() => {
+        result.current.handleClear();
+      });
+      expect(pending.reader.abort).toHaveBeenCalled();
+
+      // The read completes anyway; its result must not land.
+      act(() => {
+        pending.finishRead();
+      });
+
+      expect(result.current.csvData).toBeNull();
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("drops a parse that is superseded by handleClear", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      // Start a paste, then clear before the deferred parse gets to run.
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d");
+      });
+      act(() => {
+        result.current.handleClear();
+      });
+
+      expect(result.current.isParsing).toBe(false);
+
+      // Give the superseded callback every chance to fire; it must not land.
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      });
+      expect(result.current.csvData).toBeNull();
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("drops a parse that is superseded by handleStartBlank", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("a,b\nc,d");
+      });
+      act(() => {
+        result.current.handleStartBlank();
+      });
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      });
+      expect(result.current.csvData).toEqual([]);
+      expect(result.current.isParsing).toBe(false);
+    });
+
+    it("keeps only the newest parse when two pastes overlap", async () => {
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handlePasteSubmit("old,row\n1,2");
+      });
+      act(() => {
+        result.current.handlePasteSubmit("new,row\n3,4");
+      });
+
+      await waitFor(() => expect(result.current.isParsing).toBe(false));
+      expect(result.current.csvData).toEqual([
+        ["new", "row"],
+        ["3", "4"],
+      ]);
     });
   });
 
@@ -441,7 +633,9 @@ describe("useCsvViewer", () => {
       act(() => {
         result.current.handlePasteSubmit('"bad');
       });
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
 
       act(() => {
         result.current.handleStartBlank();
@@ -556,7 +750,9 @@ describe("useCsvViewer", () => {
       act(() => {
         result.current.handlePasteSubmit('"bad');
       });
-      expect(result.current.parseErrors.length).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(result.current.parseErrors.length).toBeGreaterThan(0)
+      );
 
       act(() => result.current.closeUpload());
 

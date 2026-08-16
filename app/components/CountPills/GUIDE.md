@@ -15,4 +15,4 @@
 
 ## Who feeds it
 - **Editor:** `CsvViewer` derives counts via `computeGridCounts` from the grid's `exportState`.
-- **Dataset pages:** `app/data/[slug]/page.tsx` uses `computeCsvCounts`.
+- **Dataset pages:** `app/data/[category]/[slug]/page.tsx` uses `computeCsvCounts`.

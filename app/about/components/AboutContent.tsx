@@ -1,91 +1,7 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
 import { getDatasetBySlug } from "@/lib/datasets";
-
-const DATASET_CATEGORIES: { label: string; slugs: string[] }[] = [
-  {
-    label: "Geography & Places",
-    slugs: [
-      "countries-capitals",
-      "us-state-capitals",
-      "indian-states",
-      "country-codes",
-      "world-population",
-      "world-timezones",
-      "mountain-heights",
-      "world-rivers",
-      "national-parks",
-    ],
-  },
-  {
-    label: "Transport",
-    slugs: [
-      "world-airports",
-      "airline-codes",
-      "busiest-airports",
-      "high-speed-rail-networks",
-      "metro-systems-world",
-    ],
-  },
-  {
-    label: "Economics & Finance",
-    slugs: [
-      "country-gdp",
-      "sp500-companies",
-      "currency-codes",
-      "g20-g7-brics-members",
-    ],
-  },
-  {
-    label: "History & Politics",
-    slugs: [
-      "us-presidents",
-      "indian-prime-ministers",
-      "uk-prime-ministers",
-      "independence-days",
-      "un-member-states",
-    ],
-  },
-  {
-    label: "Food & Drink",
-    slugs: [
-      "world-cuisines",
-      "top-crops-global",
-      "coffee-producing-countries",
-      "tea-varieties",
-      "indian-sweets",
-      "spices",
-      "wine-regions",
-      "calories-macros",
-    ],
-  },
-  {
-    label: "Animals & Nature",
-    slugs: [
-      "dog-breeds",
-      "cat-breeds",
-      "endangered-species-iucn",
-      "animal-species-lifespan-diet-habitat",
-    ],
-  },
-  {
-    label: "Science",
-    slugs: [
-      "human-body-organs-functions",
-      "planets-moons-solar-system",
-      "periodic-table-elements",
-      "major-earthquakes-history",
-    ],
-  },
-  {
-    label: "Language & Culture",
-    slugs: ["most-spoken-languages", "indian-languages-by-state"],
-  },
-  {
-    label: "Architecture",
-    slugs: ["tallest-buildings-world", "longest-bridges-tunnels"],
-  },
-];
+import { categories, getDatasetPath } from "@/lib/datasets/categories";
 
 const FEATURES = [
   <>
@@ -291,6 +207,22 @@ export default function AboutContent() {
                 </SocialIcon>
                 Facebook
               </SocialLink>
+              <SocialLink
+                href="https://in.pinterest.com/anshulsahni45/_profile/"
+                aria-label="Pinterest"
+              >
+                <SocialIcon>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345-.091.379-.293 1.194-.333 1.361-.052.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.608 7.464-6.228 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146A12 12 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+                  </svg>
+                </SocialIcon>
+                Pinterest
+              </SocialLink>
             </SocialLinks>
           </DevCard>
         </Section>
@@ -299,18 +231,21 @@ export default function AboutContent() {
       <SeoFooter aria-label="Sample CSV datasets">
         <SeoLabel>sample datasets</SeoLabel>
         <SeoCategoryGrid>
-          {DATASET_CATEGORIES.map((cat) => {
-            const items = cat.slugs
+          {categories.map((cat) => {
+            const items = cat.datasetSlugs
               .map((slug) => getDatasetBySlug(slug))
               .filter(Boolean);
             if (!items.length) return null;
             return (
-              <SeoCategory key={cat.label}>
-                <SeoCategoryLabel>{cat.label}</SeoCategoryLabel>
+              <SeoCategory key={cat.slug}>
+                <SeoCategoryLabel>{cat.name}</SeoCategoryLabel>
                 <SeoLinks>
                   {items.map((dataset) => (
                     <li key={dataset!.slug}>
-                      <Link href={`/data/${dataset!.slug}`} prefetch={false}>
+                      <Link
+                        href={getDatasetPath(cat.slug, dataset!.slug)}
+                        prefetch={false}
+                      >
                         {dataset!.title}
                       </Link>
                     </li>

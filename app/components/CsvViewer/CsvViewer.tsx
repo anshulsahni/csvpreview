@@ -7,10 +7,18 @@ import CountPills from "../CountPills";
 import UploadModal from "../UploadModal";
 import DownloadModal from "../DownloadModal";
 import ConfirmModal from "../ConfirmModal";
+import LoadingOverlay from "../LoadingOverlay";
 import DownloadControl from "./DownloadControl";
 import CopyControl from "./CopyControl";
 import DeleteSelectedControl from "./DeleteSelectedControl";
 import { useCsvViewer } from "./hooks";
+
+/**
+ * Stable identity for the "no CSV loaded yet" case. Inlining `?? []` here would
+ * hand the grid a brand-new array on every render, busting its view-model memo
+ * and re-firing the row-selection notify effect in a loop.
+ */
+const EMPTY_ROWS: string[][] = [];
 
 export default function CsvViewer() {
   const viewer = useCsvViewer();
@@ -68,7 +76,7 @@ export default function CsvViewer() {
       </TopBar>
       <GridArea>
         <SpreadsheetGrid
-          data={viewer.csvData ?? []}
+          data={viewer.csvData ?? EMPTY_ROWS}
           firstRowAsHeader={viewer.firstRowAsHeader}
           onCellChange={viewer.handleCellChange}
           onExportStateChange={viewer.handleExportStateChange}
@@ -103,6 +111,12 @@ export default function CsvViewer() {
         onConfirm={viewer.confirmDeleteSelected}
         onCancel={viewer.cancelDeleteSelected}
       />
+      {viewer.isParsing && (
+        <LoadingOverlay
+          message="Reading & preparing your sheet…"
+          detail={viewer.loadingDetail || undefined}
+        />
+      )}
     </Wrapper>
   );
 }

@@ -54,6 +54,7 @@ export default function Navbar() {
         <Brand>{BRAND_NAME}</Brand>
       </BrandLink>
       <Links>
+        <Link href="/data">Data</Link>
         <Link href="/about">About</Link>
       </Links>
     </Nav>

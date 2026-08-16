@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   computeSelectAllState,
   orderedSelectedBodyIndices,
+  sameIndices,
   toggleInSet,
   type SelectAllState,
 } from "./rowSelectionUtils";
@@ -94,10 +95,20 @@ export function useRowSelection({
     [selectedRowIds]
   );
 
+  // Notify only when the emitted selection actually changed. The consumer
+  // typically stores this array in state, so re-emitting an equal-but-new array
+  // (which happens whenever `sourceRowIndexForDisplayRow` is recomputed) would
+  // trigger a render, recompute the array again, and loop forever.
+  const lastNotifiedRef = useRef<number[] | null>(null);
   useEffect(() => {
-    onRowSelectionChange?.(
-      orderedSelectedBodyIndices(sourceRowIndexForDisplayRow, selectedRowIds)
+    const next = orderedSelectedBodyIndices(
+      sourceRowIndexForDisplayRow,
+      selectedRowIds
     );
+    const previous = lastNotifiedRef.current;
+    if (previous !== null && sameIndices(previous, next)) return;
+    lastNotifiedRef.current = next;
+    onRowSelectionChange?.(next);
   }, [selectedRowIds, sourceRowIndexForDisplayRow, onRowSelectionChange]);
 
   return {

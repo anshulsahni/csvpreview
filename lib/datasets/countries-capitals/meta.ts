@@ -13,6 +13,7 @@ const meta: DatasetMeta = {
     "world capitals list",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

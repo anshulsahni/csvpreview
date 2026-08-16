@@ -14,6 +14,7 @@ const meta: DatasetMeta = {
     "skyscraper list by height",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

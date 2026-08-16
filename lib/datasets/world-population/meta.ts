@@ -13,6 +13,7 @@ const meta: DatasetMeta = {
     "population statistics by country",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-02",
 };
 
 export default meta;

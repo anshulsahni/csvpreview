@@ -13,6 +13,7 @@ const meta: DatasetMeta = {
     "public companies csv",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

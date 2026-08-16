@@ -14,6 +14,7 @@ const meta: DatasetMeta = {
     "food nutrition facts",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

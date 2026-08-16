@@ -25,6 +25,7 @@ House tickets (CSV-16, CSV-19, CSV-22, CSV-28, CSV-32) are 1-3 plain bullets. Th
 have no headers and no filler. Match that.
 
 - Write plain `* As a <role>, I want <thing>, so that <benefit>.` bullets.
+- Use simple english words and plain language, consider writing using ASD-STE100 techniques of writing.
 - Do not add sections such as `## Context` or `## Acceptance Criteria`. Add light
   structure only when the ticket is genuinely complex. CSV-31 and CSV-15 are the
   rare examples that need it.
@@ -32,7 +33,7 @@ have no headers and no filler. Match that.
 - Set the role to whoever gets the benefit. This can be an end user, a developer,
   or even "a search engine bot" when the ticket is about crawlability or SEO
   (see CSV-32).
-- Leave the description empty when the title explains the work (see CSV-26).
+- Always try to fill the description, don't leave it empty unless you think that the title is self-sufficient and task itself is short to be explained via title only. 
 - Do not set priority or estimate. Set them only when the user asks. Most
   existing tickets have no priority.
 

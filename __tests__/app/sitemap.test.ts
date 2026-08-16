@@ -21,11 +21,11 @@ describe("hardcoded expectations are self-consistent", () => {
 });
 
 describe("sitemap", () => {
-  it("emits exactly the 56 expected URLs, in the expected order", () => {
+  it("emits exactly the 57 expected URLs, in the expected order", () => {
     expect(getUrls()).toEqual(ALL_EXPECTED_URLS);
   });
 
-  it("emits 56 URLs with no duplicates", () => {
+  it("emits 57 URLs with no duplicates", () => {
     const urls = getUrls();
     expect(urls).toHaveLength(TOTAL_URL_COUNT);
     expect(new Set(urls).size).toBe(TOTAL_URL_COUNT);
@@ -155,7 +155,7 @@ describe("sitemap", () => {
  * engines crawl, so its exact contents are pinned: a URL silently appearing,
  * disappearing, or changing shape must fail here.
  *
- * Order is meaningful and asserted: 4 static pages, then the 9 category indexes
+ * Order is meaningful and asserted: 5 static pages, then the 9 category indexes
  * in taxonomy order, then the 43 datasets in `lib/datasets` REGISTRATION order
  * (not category order).
  * ──────────────────────────────────────────────────────────────────────────── */
@@ -178,16 +178,20 @@ function expectedLastModifiedForSlug(slug: string): string {
   return SPECIAL_LAST_MODIFIED[slug] ?? DEFAULT_LAST_MODIFIED;
 }
 
-const STATIC_PAGE_COUNT = 4;
+const STATIC_PAGE_COUNT = 5;
 const CATEGORY_PAGE_COUNT = 9;
 const DATASET_PAGE_COUNT = 43;
-const TOTAL_URL_COUNT = 56;
+const TOTAL_URL_COUNT = 57;
 
 const EXPECTED_STATIC_ENTRIES = [
   { url: "https://csvpreview.com", changeFrequency: "daily" },
   { url: "https://csvpreview.com/about", changeFrequency: "daily" },
   {
     url: "https://csvpreview.com/tools/csv-to-excel",
+    changeFrequency: "monthly",
+  },
+  {
+    url: "https://csvpreview.com/tools/excel-to-csv",
     changeFrequency: "monthly",
   },
   { url: "https://csvpreview.com/data", changeFrequency: "weekly" },
@@ -197,6 +201,7 @@ const EXPECTED_STATIC_URLS = [
   "https://csvpreview.com",
   "https://csvpreview.com/about",
   "https://csvpreview.com/tools/csv-to-excel",
+  "https://csvpreview.com/tools/excel-to-csv",
   "https://csvpreview.com/data",
 ];
 

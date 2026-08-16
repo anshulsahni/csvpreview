@@ -38,6 +38,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
     },
     {
+      url: `${SITE_URL}/tools/excel-to-csv`,
+      changeFrequency: "monthly",
+    },
+    {
       url: `${SITE_URL}/data`,
       changeFrequency: "weekly",
       ...(hubLastModified ? { lastModified: hubLastModified } : {}),

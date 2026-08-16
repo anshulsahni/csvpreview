@@ -13,11 +13,25 @@ allowed-tools:
 
 # Linear tickets for CSV Preview
 
+## Draft or create — decide first
+
+Read what the user asked for before you touch Linear.
+
+- **Draft.** The user asks to draft, write, prepare, or show a ticket. Show the
+  proposed title and description in the chat. Do not call
+  `mcp__linear-server__save_issue`. Wait for the user to approve it.
+- **Create.** The user asks to create, file, open, or add the ticket. Write it to
+  Linear with `mcp__linear-server__save_issue`.
+
+When the request is unclear, draft it first. A draft costs nothing. An unwanted
+ticket needs manual cleanup.
+
 ## Team
 
 This workspace has one team: **Csvpreview** (`fadf795e-f710-4714-9c68-777f7673ca7d`).
 
-Create the ticket with `mcp__linear-server__save_issue` and `team: "Csvpreview"`.
+Pass `team: "Csvpreview"` to `mcp__linear-server__save_issue` when you create the
+ticket.
 
 ## Style — keep it terse
 

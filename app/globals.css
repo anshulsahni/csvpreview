@@ -10,6 +10,7 @@
   color-scheme: light dark;
   --background: light-dark(#ffffff, #0a0a0a);
   --foreground: light-dark(#171717, #ededed);
+  --muted-foreground: light-dark(#6b7280, #9ca3af);
   --primary: #0070f3;
   --success: light-dark(#16a34a, #22c55e);
   --error: light-dark(#dc2626, #ef4444);

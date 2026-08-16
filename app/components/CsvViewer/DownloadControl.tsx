@@ -3,16 +3,26 @@
 import { useState } from "react";
 import { styled } from "@linaria/react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
-import { Dropdown, DropdownItem } from "@/app/components/Dropdown";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownSeparator,
+} from "@/app/components/Dropdown";
 
 const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
+
+const JSON_DISABLED_REASON =
+  'Enable "First row as header" to download JSON';
 
 export interface DownloadControlProps {
   hasActiveFilter: boolean;
   selectedRowCount: number;
+  /** JSON needs a header row to key its objects by. */
+  canDownloadJson: boolean;
   onDownload: () => void;
   onDownloadAll: () => void;
   onDownloadSelected: () => void;
+  onDownloadJson: () => void;
 }
 
 interface DownloadOption {
@@ -23,9 +33,11 @@ interface DownloadOption {
 export default function DownloadControl({
   hasActiveFilter,
   selectedRowCount,
+  canDownloadJson,
   onDownload,
   onDownloadAll,
   onDownloadSelected,
+  onDownloadJson,
 }: DownloadControlProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -36,8 +48,9 @@ export default function DownloadControl({
     { enabled: isMenuOpen }
   );
 
-  // The primary button downloads the visible rows — the filtered set when a
-  // filter is active, otherwise every row. Extra scopes go in the dropdown.
+  // The primary button downloads the visible rows as CSV — the filtered set
+  // when a filter is active, otherwise every row. Extra scopes go in the
+  // dropdown, which also always carries the alternate JSON format.
   const extraOptions: DownloadOption[] = [];
   if (hasActiveFilter) {
     extraOptions.push({ label: "Download all rows", action: onDownloadAll });
@@ -47,14 +60,6 @@ export default function DownloadControl({
       label: `Download selected ${selectedRowCount === 1 ? "row" : "rows"} (${selectedRowCount})`,
       action: onDownloadSelected,
     });
-  }
-
-  if (extraOptions.length === 0) {
-    return (
-      <SimpleButton type="button" onClick={onDownload}>
-        Download
-      </SimpleButton>
-    );
   }
 
   return (
@@ -90,25 +95,26 @@ export default function DownloadControl({
               {option.label}
             </DropdownItem>
           ))}
+          {extraOptions.length > 0 && <DropdownSeparator />}
+          {/* `aria-disabled` rather than the native `disabled` attribute:
+              disabled buttons swallow mouse events, so the `title` explaining
+              *why* the option is unavailable would never surface on hover. */}
+          <DropdownItem
+            aria-disabled={!canDownloadJson}
+            title={canDownloadJson ? undefined : JSON_DISABLED_REASON}
+            onClick={() => {
+              if (!canDownloadJson) return;
+              setIsMenuOpen(false);
+              onDownloadJson();
+            }}
+          >
+            Download as JSON
+          </DropdownItem>
         </Dropdown>
       )}
     </Split>
   );
 }
-
-const SimpleButton = styled.button`
-  background: transparent;
-  color: var(--foreground);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--subtle);
-  }
-`;
 
 const Split = styled.div`
   position: relative;

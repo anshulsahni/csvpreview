@@ -1,21 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import FileDropzone, {
   type FileDropzoneProps,
-} from "@/app/tools/csv-to-excel/components/CsvToExcelConverter/FileDropzone";
-
-function makeProps(
-  overrides?: Partial<FileDropzoneProps>
-): FileDropzoneProps {
-  return {
-    isDragging: false,
-    onFileInputChange: jest.fn(),
-    onDragEnter: jest.fn(),
-    onDragOver: jest.fn(),
-    onDragLeave: jest.fn(),
-    onDrop: jest.fn(),
-    ...overrides,
-  };
-}
+} from "@/app/components/FileDropzone/FileDropzone";
 
 describe("FileDropzone", () => {
   it("omits data-dragging when not dragging", () => {
@@ -30,7 +16,7 @@ describe("FileDropzone", () => {
     expect(container.firstChild).toHaveAttribute("data-dragging");
   });
 
-  it("opens the hidden file input from the Choose CSV files button", () => {
+  it("opens the hidden file input from the picker button", () => {
     const { container } = render(<FileDropzone {...makeProps()} />);
     const input = container.querySelector(
       'input[type="file"]'
@@ -73,4 +59,48 @@ describe("FileDropzone", () => {
     expect(onDragEnter).toHaveBeenCalledTimes(1);
     expect(onDrop).toHaveBeenCalledTimes(1);
   });
+
+  it("renders the caller's label, button text and accept filter", () => {
+    const { container } = render(
+      <FileDropzone
+        {...makeProps({
+          accept: ".xlsx",
+          label: "Drag & drop Excel files here",
+          buttonLabel: "Choose Excel files",
+        })}
+      />
+    );
+
+    expect(screen.getByText("Drag & drop Excel files here")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Choose Excel files" })
+    ).toBeInTheDocument();
+    expect(container.querySelector('input[type="file"]')).toHaveAttribute(
+      "accept",
+      ".xlsx"
+    );
+  });
+
+  it("renders the hint only when one is provided", () => {
+    const { rerender } = render(<FileDropzone {...makeProps()} />);
+    expect(screen.queryByText("Up to 10 files")).not.toBeInTheDocument();
+
+    rerender(<FileDropzone {...makeProps({ hint: "Up to 10 files" })} />);
+    expect(screen.getByText("Up to 10 files")).toBeInTheDocument();
+  });
 });
+
+function makeProps(overrides?: Partial<FileDropzoneProps>): FileDropzoneProps {
+  return {
+    isDragging: false,
+    accept: ".csv",
+    label: "Drag & drop CSV files here",
+    buttonLabel: "Choose CSV files",
+    onFileInputChange: jest.fn(),
+    onDragEnter: jest.fn(),
+    onDragOver: jest.fn(),
+    onDragLeave: jest.fn(),
+    onDrop: jest.fn(),
+    ...overrides,
+  };
+}

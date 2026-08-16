@@ -52,17 +52,23 @@ describe("computePillLabels", () => {
   });
 
   it("formats large numbers with locale thousands separators", () => {
-    expect(
-      computePillLabels({
-        rowCount: 1234567,
-        totalRowCount: 1234567,
-        columnCount: 1000,
-        hasActiveFilter: false,
-      })
-    ).toEqual({
-      rowsLabel: "1,234,567 rows",
-      columnsLabel: "1,000 columns",
+    const labels = computePillLabels({
+      rowCount: 1234567,
+      totalRowCount: 1234567,
+      columnCount: 1000,
+      hasActiveFilter: false,
     });
+
+    // Grouping follows the runtime locale — en-US groups 1234567 as
+    // "1,234,567", en-IN as "12,34,567" — so the expectation is derived the
+    // same way rather than pinned to one locale's separators.
+    expect(labels).toEqual({
+      rowsLabel: `${(1234567).toLocaleString()} rows`,
+      columnsLabel: `${(1000).toLocaleString()} columns`,
+    });
+    // Derived expectations can't catch the formatting being dropped, so assert
+    // the ungrouped digits are absent too.
+    expect(labels.rowsLabel).not.toContain("1234567");
   });
 });
 

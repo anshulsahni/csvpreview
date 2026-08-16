@@ -17,11 +17,13 @@
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
     "@wyw-in-js/nextjs": "2.1.4",
+    "fflate": "0.8.3",
     "mixpanel-browser": "2.76.0",
     "next": "16.2.12",
     "papaparse": "5.5.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "read-excel-file": "9.3.8",
     "uuid": "14.0.0",
     "write-excel-file": "4.1.1"
   },

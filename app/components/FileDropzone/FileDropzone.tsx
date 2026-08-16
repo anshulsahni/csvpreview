@@ -4,7 +4,16 @@ import { useRef, type ChangeEvent, type DragEvent } from "react";
 import { styled } from "@linaria/react";
 
 export interface FileDropzoneProps {
+  /** Highlights the zone while a drag is hovering over it. */
   isDragging: boolean;
+  /** `accept` attribute for the hidden file input, e.g. `.csv` or `.xlsx`. */
+  accept: string;
+  /** Headline inside the zone, e.g. "Drag & drop CSV files here". */
+  label: string;
+  /** Label of the file-picker button, e.g. "Choose CSV files". */
+  buttonLabel: string;
+  /** Optional fine-print under the button, e.g. the upload limits. */
+  hint?: string;
   onFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onDragEnter: (event: DragEvent) => void;
   onDragOver: (event: DragEvent) => void;
@@ -12,8 +21,16 @@ export interface FileDropzoneProps {
   onDrop: (event: DragEvent) => void;
 }
 
+/**
+ * Shared drag-and-drop file picker used by the conversion tools. Presentational
+ * — all drag state and file handling lives in the owning component's hook.
+ */
 export default function FileDropzone({
   isDragging,
+  accept,
+  label,
+  buttonLabel,
+  hint,
   onFileInputChange,
   onDragEnter,
   onDragOver,
@@ -30,15 +47,16 @@ export default function FileDropzone({
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
-      <ZoneText>Drag &amp; drop CSV files here</ZoneText>
+      <ZoneText>{label}</ZoneText>
       <ZoneHint>or</ZoneHint>
       <PickButton type="button" onClick={() => inputRef.current?.click()}>
-        Choose CSV files
+        {buttonLabel}
       </PickButton>
+      {hint && <ZoneNote>{hint}</ZoneNote>}
       <HiddenInput
         ref={inputRef}
         type="file"
-        accept=".csv"
+        accept={accept}
         multiple
         onChange={onFileInputChange}
       />
@@ -75,6 +93,12 @@ const ZoneHint = styled.span`
   font-size: var(--text-xs);
   letter-spacing: 1px;
   text-transform: uppercase;
+  color: var(--fg-subtle);
+`;
+
+const ZoneNote = styled.span`
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   color: var(--fg-subtle);
 `;
 

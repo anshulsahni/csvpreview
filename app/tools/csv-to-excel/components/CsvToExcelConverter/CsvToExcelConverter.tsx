@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import { styled } from "@linaria/react";
-import FileDropzone from "./FileDropzone";
+import Link from "next/link";
+import FileDropzone from "@/app/components/FileDropzone";
 import { useCsvToExcelConverter } from "./hooks";
 
 export default function CsvToExcelConverter() {
@@ -21,11 +22,18 @@ export default function CsvToExcelConverter() {
           Upload one or many CSVs, convert them to <code>.xlsx</code>, and
           download — your data never leaves your device.
         </Lede>
+        <CrossLink>
+          Need the other direction?{" "}
+          <Link href="/tools/excel-to-csv">Convert Excel to CSV</Link>
+        </CrossLink>
       </Hero>
 
       {!hasFiles && (
         <FileDropzone
           isDragging={vm.isDragging}
+          accept=".csv"
+          label="Drag & drop CSV files here"
+          buttonLabel="Choose CSV files"
           onFileInputChange={vm.handleFileInputChange}
           onDragEnter={vm.handleDragEnter}
           onDragOver={vm.handleDragOver}
@@ -208,6 +216,21 @@ const Lede = styled.p`
     background: var(--green-100);
     padding: 1px 5px;
     border-radius: var(--r-sm);
+  }
+`;
+
+const CrossLink = styled.p`
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--fg-subtle);
+
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--primary-hover);
+    }
   }
 `;
 

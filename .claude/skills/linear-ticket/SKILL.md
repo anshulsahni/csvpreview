@@ -1,0 +1,70 @@
+---
+name: linear-ticket
+description: Create or draft a Linear ticket for CSV Preview in the house style. Use when the user asks to file an issue, open a ticket, add something to Linear, turn a bug or idea into a ticket, or draft acceptance criteria for Linear.
+user-invocable: true
+allowed-tools:
+  - mcp__linear-server__save_issue
+  - mcp__linear-server__get_issue
+  - mcp__linear-server__list_issues
+  - mcp__linear-server__list_issue_labels
+  - mcp__linear-server__create_issue_label
+  - mcp__linear-server__list_issue_statuses
+---
+
+# Linear tickets for CSV Preview
+
+## Draft or create — decide first
+
+Read what the user asked for before you touch Linear.
+
+- **Draft.** The user asks to draft, write, prepare, or show a ticket. Show the
+  proposed title and description in the chat. Do not call
+  `mcp__linear-server__save_issue`. Wait for the user to approve it.
+- **Create.** The user asks to create, file, open, or add the ticket. Write it to
+  Linear with `mcp__linear-server__save_issue`.
+
+When the request is unclear, draft it first. A draft costs nothing. An unwanted
+ticket needs manual cleanup.
+
+## Team
+
+This workspace has one team: **Csvpreview** (`fadf795e-f710-4714-9c68-777f7673ca7d`).
+
+Pass `team: "Csvpreview"` to `mcp__linear-server__save_issue` when you create the
+ticket.
+
+## Style — keep it terse
+
+House tickets (CSV-16, CSV-19, CSV-22, CSV-28, CSV-32) are 1-3 plain bullets. They
+have no headers and no filler. Match that.
+
+Full copies of every ticket named on this page live in `examples.md`, next to this
+file. Read that file to see the style. Do not fetch these tickets from Linear.
+
+- Write plain `* As a <role>, I want <thing>, so that <benefit>.` bullets.
+- Use simple english words and plain language, consider writing using ASD-STE100 techniques of writing.
+- Do not add sections such as `## Context` or `## Acceptance Criteria`. Add light
+  structure only when the ticket is genuinely complex. CSV-31 and CSV-15 are the
+  rare examples that need it.
+- One or two bullets is often enough. Do not pad the description.
+- Set the role to whoever gets the benefit. This can be an end user, a developer,
+  or even "a search engine bot" when the ticket is about crawlability or SEO
+  (see CSV-32).
+- Always try to fill the description, don't leave it empty unless you think that the title is self-sufficient and task itself is short to be explained via title only. 
+- Do not set priority or estimate. Set them only when the user asks. Anshul sets
+  priority himself, after he sees the ticket.
+
+## Labels
+
+The team already has these labels: `Improvement`, `Bug`, `Feature`, `Refactor`.
+
+1. Call `mcp__linear-server__list_issue_labels` first.
+2. Reuse an existing label when one fits.
+3. Create a new label only when nothing fits. Use
+   `mcp__linear-server__create_issue_label` and pass `teamId` for a team-scoped
+   label.
+
+## Referencing other issues
+
+Write the plain identifier, such as `CSV-17`, in the description. Linear resolves
+it and renders it as an inline issue link. Do not write a URL or any markup.

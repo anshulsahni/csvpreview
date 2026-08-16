@@ -23,10 +23,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${SITE_URL}/tools/excel-to-csv`,
-      changeFrequency: "monthly"
+      changeFrequency: "monthly",
     },
     {
-
       url: `${SITE_URL}/data`,
       changeFrequency: "weekly",
     },

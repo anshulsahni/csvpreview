@@ -4,7 +4,7 @@
    Design project (colors_and_type.css). Applied to any element carrying one
    of the route-scoping classes below — add new routes to this selector list
    rather than re-declaring the token block. */
-:where(.about-theme, .data-theme) {
+:where(.about-theme, .data-theme, .tools-theme) {
   /* ── Brand colors ─────────────────────────────── */
   --green-700:   #234F2C;
   --green-600:   #2F6B3A;
@@ -99,7 +99,7 @@
   min-height: 100vh;
 }
 
-:where(.about-theme, .data-theme) h1 {
+:where(.about-theme, .data-theme, .tools-theme) h1 {
   font-family: var(--font-serif);
   font-size: var(--text-4xl);
   line-height: 1.0;
@@ -107,21 +107,21 @@
   margin: 0;
 }
 
-:where(.about-theme, .data-theme) h2 {
+:where(.about-theme, .data-theme, .tools-theme) h2 {
   font-family: var(--font-serif);
   font-size: var(--text-2xl);
   line-height: 1.1;
   margin: 0;
 }
 
-:where(.about-theme, .data-theme) p {
+:where(.about-theme, .data-theme, .tools-theme) p {
   font-size: var(--text-md);
   line-height: 1.55;
   color: var(--fg-muted);
   margin: 0;
 }
 
-:where(.about-theme, .data-theme) a {
+:where(.about-theme, .data-theme, .tools-theme) a {
   color: inherit;
   text-decoration: none;
 }

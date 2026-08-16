@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AboutNavbar from "@/app/about/components/AboutNavbar";
+import ToolBreadcrumb from "@/app/tools/components/ToolBreadcrumb";
 import CsvToExcelConverter from "./components/CsvToExcelConverter";
 import Faq, { faqItems } from "./components/Faq";
 import { BRAND, BRAND_NAME, brandOpenGraphImages } from "@/lib/brand";
@@ -79,6 +80,7 @@ export default function CsvToExcelPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <AboutNavbar />
+      <ToolBreadcrumb slug="csv-to-excel" />
       <main>
         <CsvToExcelConverter />
         <Faq />

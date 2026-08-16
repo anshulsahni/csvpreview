@@ -46,6 +46,17 @@ export default function AboutContent() {
         <Divider />
 
         <Section>
+          <SectionLabel>free tools</SectionLabel>
+          <ToolsText>
+            Beyond the viewer, csvpreview ships a set of free file converters
+            that run entirely in your browser. See them all on the{" "}
+            <ToolsLink href="/tools">free tools page</ToolsLink>.
+          </ToolsText>
+        </Section>
+
+        <Divider />
+
+        <Section>
           <SectionLabel>privacy by default</SectionLabel>
           <PrivacyText>
             Your data never leaves your browser. There are no accounts, no
@@ -361,6 +372,19 @@ const Bullet = styled.span`
   color: var(--fg-subtle);
   flex-shrink: 0;
   /* margin-top: 1px; */
+`;
+
+const ToolsText = styled.p`
+  font-size: var(--text-md);
+  line-height: 1.65;
+  color: var(--fg-muted);
+  max-width: 520px;
+`;
+
+const ToolsLink = styled(Link)`
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
 `;
 
 const PrivacyText = styled.p`

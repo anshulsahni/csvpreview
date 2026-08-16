@@ -10,6 +10,12 @@ The core value proposition lies in its simplicity, speed, and robust privacy gua
 
 - [CSV Preview – Privacy-First CSV Viewer in Your Browser](https://csvpreview.com/): Instantly view and interact with CSV files in your browser without uploading data.
 
+## Free Tools
+
+- [Free CSV & Excel Tools](https://csvpreview.com/tools): The hub page listing every free, browser-based file tool CSV Preview offers.
+- [Free CSV to Excel Converter](https://csvpreview.com/tools/csv-to-excel): Convert one or many CSV files into an Excel (.xlsx) workbook without uploading them.
+- [Free Excel to CSV Converter](https://csvpreview.com/tools/excel-to-csv): Split an Excel workbook into CSV files, one per worksheet, entirely in the browser.
+
 ## About
 
 - [About CSV Preview](https://csvpreview.com/about): Learn about the privacy-first, client-side CSV viewing service and its benefits.

@@ -6,6 +6,7 @@ import {
   getCategoryPath,
   getDatasetPathBySlug,
 } from "@/lib/datasets/categories";
+import { getToolPath, tools } from "@/lib/tools";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
@@ -18,13 +19,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
     },
     {
-      url: `${SITE_URL}/tools/csv-to-excel`,
-      changeFrequency: "monthly",
+      url: `${SITE_URL}/tools`,
+      changeFrequency: "weekly",
     },
-    {
-      url: `${SITE_URL}/tools/excel-to-csv`,
-      changeFrequency: "monthly",
-    },
+    ...tools.map((tool) => ({
+      url: `${SITE_URL}${getToolPath(tool.slug)}`,
+      changeFrequency: "monthly" as const,
+    })),
     {
       url: `${SITE_URL}/data`,
       changeFrequency: "weekly",

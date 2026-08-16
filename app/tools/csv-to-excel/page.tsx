@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import AboutNavbar from "@/app/about/components/AboutNavbar";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import CsvToExcelConverter from "./components/CsvToExcelConverter";
 import Faq, { faqItems } from "./components/Faq";
 import { BRAND, BRAND_NAME, brandOpenGraphImages } from "@/lib/brand";
+import { requireTool } from "@/lib/tools";
+
+const tool = requireTool("csv-to-excel");
 
 const PAGE_URL = "https://csvpreview.com/tools/csv-to-excel";
 const title = "Free CSV to Excel Converter – Convert CSV to XLSX Online";
@@ -79,6 +83,13 @@ export default function CsvToExcelPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <AboutNavbar />
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Tools", href: "/tools" },
+          { label: tool.name },
+        ]}
+      />
       <main>
         <CsvToExcelConverter />
         <Faq />

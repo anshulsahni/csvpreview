@@ -115,5 +115,12 @@ This project ships with a real test suite — keep it green and grow it with the
 - **TypeScript:** the project is `strict`. Type component props and hook return shapes explicitly; avoid `any`.
 - **Imports:** use the `@/*` alias for cross-directory imports (`@/app/...`, `@/lib/...`) rather than long relative chains.
 
+## Workflow conventions (Linear tickets & PR descriptions)
+
+Two house conventions live as Claude Code skills under `.claude/skills/`. Agents that don't auto-load skills should read the relevant `SKILL.md` directly before doing that work:
+
+- `.claude/skills/linear-ticket/SKILL.md` — team, style, and label rules for filing a Linear ticket.
+- `.claude/skills/pr-description/SKILL.md` — how to write a PR description for this project.
+
 ## Change is permanent
 This document is a living reference — it will evolve as our practices improve and new standards emerge. Refer back to it frequently while writing code, and use it as the objective standard during code reviews. The Cursor rule under `.cursor/rules/` is a contextual companion to these guidelines; when you change one, check whether the other needs updating too.

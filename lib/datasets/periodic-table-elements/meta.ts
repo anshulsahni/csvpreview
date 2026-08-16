@@ -14,6 +14,7 @@ const meta: DatasetMeta = {
     "chemistry elements list",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

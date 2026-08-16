@@ -12,6 +12,7 @@ const meta: DatasetMeta = {
     "state capitals population",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-01",
 };
 
 export default meta;

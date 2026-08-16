@@ -13,6 +13,7 @@ const meta: DatasetMeta = {
     "fiat currencies",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

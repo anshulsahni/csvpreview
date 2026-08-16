@@ -13,6 +13,7 @@ const meta: DatasetMeta = {
     "national parks by country",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

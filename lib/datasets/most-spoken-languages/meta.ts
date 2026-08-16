@@ -14,6 +14,7 @@ const meta: DatasetMeta = {
     "official UN languages",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

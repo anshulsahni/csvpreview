@@ -13,6 +13,7 @@ const meta: DatasetMeta = {
     "india population by state",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-01",
 };
 
 export default meta;

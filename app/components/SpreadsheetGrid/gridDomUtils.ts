@@ -1,3 +1,6 @@
+import { computeScrollTopForRow } from "./scrollUtils";
+import { DEFAULT_ROW_HEIGHT } from "./useRowVirtualizer";
+
 export function getActiveCellFromDom(): { rowIdx: number; colIdx: number } | null {
   const el = document.activeElement;
   if (!(el instanceof HTMLElement)) return null;
@@ -32,25 +35,21 @@ function scrollRowIntoView(rowIdx: number): void {
 
   const scrollerRect = scroller.getBoundingClientRect();
   const sampleRect = sample.getBoundingClientRect();
-  const rowHeight = sampleRect.height || 26;
-  const headerHeight =
-    scroller.querySelector<HTMLElement>("thead")?.getBoundingClientRect()
-      .height ?? 0;
 
-  // Content-space top of the sample row, then extrapolate to the target row.
-  const sampleTop = sampleRect.top - scrollerRect.top + scroller.scrollTop;
-  const targetTop = sampleTop + (rowIdx - sampleIdx) * rowHeight;
+  const nextScrollTop = computeScrollTopForRow({
+    targetIdx: rowIdx,
+    sampleIdx,
+    // Content-space top of the sample row.
+    sampleTop: sampleRect.top - scrollerRect.top + scroller.scrollTop,
+    rowHeight: sampleRect.height || DEFAULT_ROW_HEIGHT,
+    headerHeight:
+      scroller.querySelector<HTMLElement>("thead")?.getBoundingClientRect()
+        .height ?? 0,
+    viewTop: scroller.scrollTop,
+    viewportHeight: scroller.clientHeight,
+  });
 
-  const viewTop = scroller.scrollTop;
-  const viewBottom = viewTop + scroller.clientHeight;
-
-  if (targetTop < viewTop + headerHeight) {
-    // Target is above the fold (or hidden under the sticky header).
-    scroller.scrollTop = Math.max(0, targetTop - headerHeight);
-  } else if (targetTop + rowHeight > viewBottom) {
-    // Target is below the fold.
-    scroller.scrollTop = targetTop + rowHeight - scroller.clientHeight;
-  }
+  if (nextScrollTop !== null) scroller.scrollTop = nextScrollTop;
 }
 
 export function focusCellAt(rowIdx: number, colIdx: number): void {

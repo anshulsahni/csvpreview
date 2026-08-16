@@ -3,21 +3,6 @@ import FileDropzone, {
   type FileDropzoneProps,
 } from "@/app/components/FileDropzone/FileDropzone";
 
-function makeProps(overrides?: Partial<FileDropzoneProps>): FileDropzoneProps {
-  return {
-    isDragging: false,
-    accept: ".csv",
-    label: "Drag & drop CSV files here",
-    buttonLabel: "Choose CSV files",
-    onFileInputChange: jest.fn(),
-    onDragEnter: jest.fn(),
-    onDragOver: jest.fn(),
-    onDragLeave: jest.fn(),
-    onDrop: jest.fn(),
-    ...overrides,
-  };
-}
-
 describe("FileDropzone", () => {
   it("omits data-dragging when not dragging", () => {
     const { container } = render(<FileDropzone {...makeProps()} />);
@@ -104,3 +89,18 @@ describe("FileDropzone", () => {
     expect(screen.getByText("Up to 10 files")).toBeInTheDocument();
   });
 });
+
+function makeProps(overrides?: Partial<FileDropzoneProps>): FileDropzoneProps {
+  return {
+    isDragging: false,
+    accept: ".csv",
+    label: "Drag & drop CSV files here",
+    buttonLabel: "Choose CSV files",
+    onFileInputChange: jest.fn(),
+    onDragEnter: jest.fn(),
+    onDragOver: jest.fn(),
+    onDragLeave: jest.fn(),
+    onDrop: jest.fn(),
+    ...overrides,
+  };
+}

@@ -74,9 +74,11 @@ describe("sitemap", () => {
 
   it("sets the expected changeFrequency on static and category pages", () => {
     const entries = getEntries();
-    expect(entries.slice(0, STATIC_PAGE_COUNT)).toEqual(
-      EXPECTED_STATIC_ENTRIES,
-    );
+    expect(
+      entries
+        .slice(0, STATIC_PAGE_COUNT)
+        .map(({ url, changeFrequency }) => ({ url, changeFrequency })),
+    ).toEqual(EXPECTED_STATIC_ENTRIES);
     for (const entry of entries.slice(
       STATIC_PAGE_COUNT,
       STATIC_PAGE_COUNT + CATEGORY_PAGE_COUNT,
@@ -92,6 +94,58 @@ describe("sitemap", () => {
       expect(entry.changeFrequency).toBeUndefined();
     }
   });
+
+  it("sets the /data hub's lastModified to the max lastModified across all datasets", () => {
+    const entries = getEntries();
+    const hubEntry = entries[STATIC_PAGE_COUNT - 1];
+    expect(hubEntry.url).toBe("https://csvpreview.com/data");
+    expect(hubEntry.lastModified).toBe(MAX_DATASET_LAST_MODIFIED);
+  });
+
+  it("leaves lastModified unset on the other static pages", () => {
+    const entries = getEntries();
+    for (const entry of entries.slice(0, STATIC_PAGE_COUNT - 1)) {
+      expect(entry.lastModified).toBeUndefined();
+    }
+  });
+
+  it("sets each category's lastModified to the max lastModified among its datasets", () => {
+    const entries = getEntries().slice(
+      STATIC_PAGE_COUNT,
+      STATIC_PAGE_COUNT + CATEGORY_PAGE_COUNT,
+    );
+    // Every category in this taxonomy happens to include at least one
+    // dataset dated 2026-05-03, so every category's max is that date.
+    for (const entry of entries) {
+      expect(entry.lastModified).toBe(MAX_DATASET_LAST_MODIFIED);
+    }
+  });
+
+  it("sets each dataset page's lastModified to its own meta.lastModified", () => {
+    const datasetEntries = getEntries().slice(
+      STATIC_PAGE_COUNT + CATEGORY_PAGE_COUNT,
+    );
+    expect(datasetEntries).toHaveLength(DATASET_PAGE_COUNT);
+    for (const entry of datasetEntries) {
+      const slug = entry.url.split("/").pop() as string;
+      expect(entry.lastModified).toBe(expectedLastModifiedForSlug(slug));
+    }
+  });
+
+  it("uses the special-cased lastModified for indian-states, us-state-capitals, and world-population", () => {
+    const datasetEntries = getEntries().slice(
+      STATIC_PAGE_COUNT + CATEGORY_PAGE_COUNT,
+    );
+    const bySlug = new Map(
+      datasetEntries.map((entry) => [
+        entry.url.split("/").pop() as string,
+        entry.lastModified,
+      ]),
+    );
+    expect(bySlug.get("indian-states")).toBe("2026-05-01");
+    expect(bySlug.get("us-state-capitals")).toBe("2026-05-01");
+    expect(bySlug.get("world-population")).toBe("2026-05-02");
+  });
 });
 
 /* ────────────────────────────────────────────────────────────────────────────
@@ -105,6 +159,24 @@ describe("sitemap", () => {
  * in taxonomy order, then the 43 datasets in `lib/datasets` REGISTRATION order
  * (not category order).
  * ──────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Real git commit dates for each dataset's data.csv, mirrored here so a
+ * regression in a dataset's meta.ts (or in how sitemap.ts derives
+ * lastModified from it) fails a pinned expectation rather than silently
+ * passing.
+ */
+const SPECIAL_LAST_MODIFIED: Record<string, string> = {
+  "indian-states": "2026-05-01",
+  "us-state-capitals": "2026-05-01",
+  "world-population": "2026-05-02",
+};
+const DEFAULT_LAST_MODIFIED = "2026-05-03";
+const MAX_DATASET_LAST_MODIFIED = "2026-05-03";
+
+function expectedLastModifiedForSlug(slug: string): string {
+  return SPECIAL_LAST_MODIFIED[slug] ?? DEFAULT_LAST_MODIFIED;
+}
 
 const STATIC_PAGE_COUNT = 5;
 const CATEGORY_PAGE_COUNT = 9;

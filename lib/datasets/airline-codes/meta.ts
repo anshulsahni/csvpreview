@@ -14,6 +14,7 @@ const meta: DatasetMeta = {
     "airline hub airports",
   ],
   firstRowAsHeader: true,
+  lastModified: "2026-05-03",
 };
 
 export default meta;

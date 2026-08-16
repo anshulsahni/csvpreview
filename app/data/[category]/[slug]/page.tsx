@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Breadcrumb from "@/app/components/Breadcrumb";
-import { BRAND, brandOpenGraphImages } from "@/lib/brand";
+import DatasetJsonLd from "@/app/components/DatasetJsonLd";
+import { BRAND, brandOpenGraphImages, SITE_URL } from "@/lib/brand";
 import SpreadsheetGrid from "@/app/components/SpreadsheetGrid";
 import CountPills from "@/app/components/CountPills";
 import { computeCsvCounts } from "@/app/components/CountPills/hooks";
@@ -67,9 +68,16 @@ export default async function DatasetPage({ params }: { params: Params }) {
   const { rows } = parseCSV(csv);
   const firstRowAsHeader = ds.firstRowAsHeader ?? true;
   const counts = computeCsvCounts(rows, firstRowAsHeader);
+  const columns = firstRowAsHeader && rows.length > 0 ? rows[0] : [];
 
   return (
     <>
+      <DatasetJsonLd
+        meta={ds}
+        path={getDatasetPath(category.slug, ds.slug)}
+        baseUrl={SITE_URL}
+        columns={columns}
+      />
       <Navbar />
       <Breadcrumb
         items={[

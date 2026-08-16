@@ -22,7 +22,7 @@ export default function ExcelToCsvConverter() {
         <Lede>
           Turn an Excel workbook into clean <code>.csv</code> files right in
           your browser. Every worksheet becomes its own CSV — rename it,
-          download it, copy it, or open it straight in the CSV Preview editor.
+          download it or copy it.
         </Lede>
         <HowItWorks>
           <li>One sheet becomes one CSV</li>

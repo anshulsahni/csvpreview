@@ -25,11 +25,9 @@ branch does. Then write the description.
   the change solves. Describe each bullet in product terms: a new page, a new nav
   entry, a new behavior. Keep filenames and internals out of the body. The code
   already shows them.
+- **Use simple language** Use simple plain english in your output, consider using ASD-STE100 inspired english
 - **Give raw markdown.** Put the whole description in a fenced ```markdown code
-  block. The user must be able to copy it straight into GitHub. Do not let the
-  chat render it.
-- **Name what is missing.** Add a short `Not included` line for work that was tried
-  and reverted, or scope that was deliberately deferred. A reviewer must not find a
-  dropped feature alone.
+  block. The user must be able to copy it straight into GitHub. Don't let chat render the markdown, otherwise user will be copying plain text without right syntax.
+- **Name what is missing.** Add a short `Not included` line for work scope that was deliberately deferred, but generally considered as an established practise while doing the current change. This is not mandatory, so consider this only when there is a genuine such case.
 - **Confirm stability.** Say that no existing URL or behavior changed, when that is
   true. Reviewers on this project check for that.

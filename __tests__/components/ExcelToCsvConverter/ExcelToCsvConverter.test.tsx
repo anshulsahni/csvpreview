@@ -77,14 +77,14 @@ describe("ExcelToCsvConverter", () => {
     expect(screen.getByText("Working…")).toBeInTheDocument();
   });
 
-  it("shows the rejection message when a file bounces", () => {
+  it("announces the rejection message when a file bounces", () => {
     renderWith({
       rejectionMessage: "old.xls is a legacy .xls file.",
     });
 
-    expect(
-      screen.getByText("old.xls is a legacy .xls file.")
-    ).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "old.xls is a legacy .xls file."
+    );
   });
 
 });

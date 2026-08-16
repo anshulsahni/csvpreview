@@ -50,7 +50,9 @@ export default function ExcelToCsvConverter() {
         />
       )}
 
-      {vm.rejectionMessage && <ErrorText>{vm.rejectionMessage}</ErrorText>}
+      {vm.rejectionMessage && (
+        <ErrorText role="alert">{vm.rejectionMessage}</ErrorText>
+      )}
 
       {hasWorkbooks && (
         <Panel>

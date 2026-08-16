@@ -221,6 +221,17 @@ export function useExcelToCsvConverter(): UseExcelToCsvConverterReturn {
     const incoming = Array.from(picked);
     if (incoming.length === 0) return;
 
+    // KNOWN GAP: this check can let the user go past the limits.
+    // `workbooks` holds the value from the last render. The loop below waits
+    // for `peekSheetNames` before it adds the files. If the user drops a
+    // second batch during this wait, the second call reads the same old
+    // value. Both batches then start from the same count and the same total
+    // size. The user can go past the limit of 10 files or 50MB.
+    // The code that adds the files is safe. It uses the function form of
+    // `setWorkbooks`. Only this check is not safe.
+    // To correct this, keep the accepted files in a ref. Then read the ref
+    // here. This code does not have the correction.
+    // https://github.com/anshulsahni/csvpreview/pull/69#discussion_r3790832254
     const { accepted, rejections } = computeAcceptance(
       workbooks,
       incoming,

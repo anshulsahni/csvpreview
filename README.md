@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CSV Preview
 
-## Getting Started
+**A privacy-first CSV viewer and editor that runs entirely in your browser.**
 
-First, run the development server:
+Live at **[csvpreview.com](https://csvpreview.com)**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Open a `.csv` file and explore it instantly — sort, filter, edit and export — without uploading anything. Parsing happens on your device. There are no accounts, no servers touching your data, and your current sheet is kept locally in your browser so you can pick up where you left off.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What the site offers
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **[The viewer](https://csvpreview.com)** — open a CSV from your computer, drag and drop one in, paste CSV straight from the clipboard, or start from a blank sheet. Toggle the first row as a header so it stays pinned while you scroll, sort any column, filter rows by value, search or numeric comparison, edit cells in place, delete rows, copy a selection, and download the result.
+- **[Free tools](https://csvpreview.com/tools)** — in-browser converters that never upload a file: [CSV to Excel](https://csvpreview.com/tools/csv-to-excel) (merge one or many CSVs into a single `.xlsx`, or convert each separately) and [Excel to CSV](https://csvpreview.com/tools/excel-to-csv) (every worksheet becomes its own CSV, downloadable as a zip).
+- **[Ready-made datasets](https://csvpreview.com/data)** — 40+ curated CSVs across nine categories (geography, transport, economics, history, food & drink, animals & nature, science, language & culture, architecture), each opening directly in the viewer.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Example datasets
 
-## Learn More
+- [World Population by Country & Territory](https://csvpreview.com/data/geography/world-population) — 239 countries and territories with population, % of world share and census dates.
+- [S&P 500 Companies](https://csvpreview.com/data/economics/sp500-companies) — 503 constituents with ticker, sector, sub-industry, headquarters and date added.
+- [Periodic Table Elements](https://csvpreview.com/data/science/periodic-table-elements) — every element with atomic number, symbol, group, block, atomic mass and discovery details.
+- [Busiest Airports](https://csvpreview.com/data/transport/busiest-airports) and [World Airports](https://csvpreview.com/data/transport/world-airports) — traffic rankings and IATA/ICAO airport codes.
 
-To learn more about Next.js, take a look at the following resources:
+## Privacy by default
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+No uploads. No accounts. No servers. Works offline.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+More on the story behind the app on the [about page](https://csvpreview.com/about).

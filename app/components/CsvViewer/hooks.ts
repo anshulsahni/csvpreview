@@ -7,14 +7,17 @@ import {
   type ParseError,
 } from "@/lib/csvParser";
 import { exportCSV } from "@/lib/csvExporter";
+import { exportJSON } from "@/lib/jsonExporter";
+import { downloadBlob } from "@/lib/downloadFile";
+import { DOWNLOAD_FORMATS, type DownloadFormat } from "@/lib/downloadFormats";
+import { track } from "@/lib/analytics";
 import { rowsToCopyText, selectedCellsToCopyText } from "@/lib/clipboardUtils";
 import type { GridExportState } from "../SpreadsheetGrid";
 import { dataRowIndexFromBodyRowIndex } from "../SpreadsheetGrid/hooks";
 import type { CellSelection } from "../SpreadsheetGrid/selectionUtils";
 import { useToast } from "../Toast";
 import {
-  computeDefaultFilename,
-  ensureCsvExtension,
+  computeDefaultFilenameStem,
   type DownloadOptions,
 } from "../DownloadModal/hooks";
 
@@ -116,24 +119,15 @@ function runAfterPaint(callback: () => void): void {
   }
 }
 
-function triggerCsvDownload(csv: string, filename: string): void {
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-  URL.revokeObjectURL(url);
-}
-
 export interface UseCsvViewerReturn {
   csvData: string[][] | null;
   fileName: string;
   isUploadOpen: boolean;
   isDownloadOpen: boolean;
-  defaultDownloadFilename: string;
+  defaultDownloadBaseName: string;
+  downloadFormat: DownloadFormat;
+  /** JSON needs a header row to key its objects by. */
+  canDownloadJson: boolean;
   parseErrors: ParseError[];
   delimiter: Delimiter;
   firstRowAsHeader: boolean;
@@ -157,6 +151,7 @@ export interface UseCsvViewerReturn {
   openDownload: () => void;
   openDownloadAllRows: () => void;
   openDownloadSelected: () => void;
+  openDownloadJson: () => void;
   closeDownload: () => void;
   handleExportStateChange: (state: GridExportState) => void;
   handleSelectionChange: (selection: CellSelection | null) => void;
@@ -205,9 +200,10 @@ export function useCsvViewer(): UseCsvViewerReturn {
   const [fileName, setFileName] = useState<string>("");
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
   const [isDownloadOpen, setIsDownloadOpen] = useState<boolean>(false);
-  const [downloadFilename, setDownloadFilename] = useState<string>(() =>
-    computeDefaultFilename()
+  const [downloadBaseName, setDownloadBaseName] = useState<string>(() =>
+    computeDefaultFilenameStem()
   );
+  const [downloadFormat, setDownloadFormat] = useState<DownloadFormat>("csv");
   const [parseErrors, setParseErrors] = useState<ParseError[]>([]);
   const [delimiter] = useState<Delimiter>(",");
   const [firstRowAsHeader, setFirstRowAsHeader] = useState(false);
@@ -450,22 +446,34 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setIsUploadOpen(false);
   }
 
-  function openDownload() {
-    setDownloadFilename(computeDefaultFilename());
-    setDownloadSource("visible");
+  /**
+   * Scope (which rows) and format (how they are serialized) are independent, so
+   * every opener resets both explicitly rather than inheriting the last choice.
+   */
+  function openDownloadWith(
+    source: "visible" | "all" | "selected",
+    format: DownloadFormat
+  ) {
+    setDownloadBaseName(computeDefaultFilenameStem());
+    setDownloadSource(source);
+    setDownloadFormat(format);
     setIsDownloadOpen(true);
+  }
+
+  function openDownload() {
+    openDownloadWith("visible", "csv");
   }
 
   function openDownloadAllRows() {
-    setDownloadFilename(computeDefaultFilename());
-    setDownloadSource("all");
-    setIsDownloadOpen(true);
+    openDownloadWith("all", "csv");
   }
 
   function openDownloadSelected() {
-    setDownloadFilename(computeDefaultFilename());
-    setDownloadSource("selected");
-    setIsDownloadOpen(true);
+    openDownloadWith("selected", "csv");
+  }
+
+  function openDownloadJson() {
+    openDownloadWith("visible", "json");
   }
 
   function closeDownload() {
@@ -489,9 +497,26 @@ export function useCsvViewer(): UseCsvViewerReturn {
     } else {
       sourceRows = exportState.visibleRows;
     }
-    const rows = computeDownloadRows(sourceRows, exportState.headerRow);
-    const csv = exportCSV(rows, delimiter);
-    triggerCsvDownload(csv, ensureCsvExtension(options.filename));
+    // JSON turns the header row into object keys, so — unlike CSV — it must not
+    // also be prepended as a record.
+    const text =
+      options.format === "json"
+        ? exportJSON(exportState.headerRow ?? [], sourceRows)
+        : exportCSV(
+            computeDownloadRows(sourceRows, exportState.headerRow),
+            delimiter
+          );
+    const blob = new Blob([text], {
+      type: DOWNLOAD_FORMATS[options.format].mimeType,
+    });
+    downloadBlob(blob, options.filename);
+    // The modal's submit button reads "Download" whatever the format, so the
+    // global click listener can't tell the two apart — track it explicitly.
+    track("Sheet Downloaded", {
+      format: options.format,
+      scope: downloadSource,
+      rowCount: sourceRows.length,
+    });
     setIsDownloadOpen(false);
   }
 
@@ -524,7 +549,9 @@ export function useCsvViewer(): UseCsvViewerReturn {
     fileName,
     isUploadOpen,
     isDownloadOpen,
-    defaultDownloadFilename: downloadFilename,
+    defaultDownloadBaseName: downloadBaseName,
+    downloadFormat,
+    canDownloadJson: exportState.headerRow !== null,
     parseErrors,
     delimiter,
     firstRowAsHeader,
@@ -541,6 +568,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     openDownload,
     openDownloadAllRows,
     openDownloadSelected,
+    openDownloadJson,
     closeDownload,
     handleExportStateChange,
     handleSelectionChange,

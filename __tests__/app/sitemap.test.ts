@@ -123,10 +123,9 @@ describe("sitemap", () => {
       STATIC_PAGE_COUNT,
       STATIC_PAGE_COUNT + CATEGORY_PAGE_COUNT,
     );
-    // Every category in this taxonomy happens to include at least one
-    // dataset dated 2026-05-03, so every category's max is that date.
     for (const entry of entries) {
-      expect(entry.lastModified).toBe(MAX_DATASET_LAST_MODIFIED);
+      const slug = entry.url.split("/").pop() as string;
+      expect(entry.lastModified).toBe(EXPECTED_CATEGORY_LAST_MODIFIED[slug]);
     }
   });
 
@@ -179,9 +178,28 @@ const SPECIAL_LAST_MODIFIED: Record<string, string> = {
   "indian-states": "2026-05-01",
   "us-state-capitals": "2026-05-01",
   "world-population": "2026-05-02",
+  "endangered-species-iucn": "2026-08-21",
 };
 const DEFAULT_LAST_MODIFIED = "2026-05-03";
-const MAX_DATASET_LAST_MODIFIED = "2026-05-03";
+const MAX_DATASET_LAST_MODIFIED = "2026-08-21";
+
+/**
+ * Expected category `lastModified`, in the taxonomy order asserted above.
+ * A category inherits the newest date among its own datasets, so only
+ * `animals-nature` (which owns endangered-species-iucn) differs from the
+ * baseline date every other category still carries.
+ */
+const EXPECTED_CATEGORY_LAST_MODIFIED: Record<string, string> = {
+  geography: DEFAULT_LAST_MODIFIED,
+  transport: DEFAULT_LAST_MODIFIED,
+  economics: DEFAULT_LAST_MODIFIED,
+  history: DEFAULT_LAST_MODIFIED,
+  "food-drink": DEFAULT_LAST_MODIFIED,
+  "animals-nature": "2026-08-21",
+  science: DEFAULT_LAST_MODIFIED,
+  "language-culture": DEFAULT_LAST_MODIFIED,
+  architecture: DEFAULT_LAST_MODIFIED,
+};
 
 function expectedLastModifiedForSlug(slug: string): string {
   return SPECIAL_LAST_MODIFIED[slug] ?? DEFAULT_LAST_MODIFIED;

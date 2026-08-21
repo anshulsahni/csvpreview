@@ -1,31 +1,374 @@
-Rank,Common Name,Scientific Name,Class,IUCN Status,Population Estimate,Primary Threats,Range / Habitat,Country / Region,Last Assessment Year
-1,Amur Leopard,Panthera pardus orientalis,Mammalia,Critically Endangered,<100,Habitat loss / Poaching,Temperate forest,Russia & China,2022
-2,Javan Rhino,Rhinoceros sondaicus,Mammalia,Critically Endangered,~76,Habitat loss / Poaching,Tropical rainforest,Indonesia,2021
-3,Sumatran Orangutan,Pongo abelii,Mammalia,Critically Endangered,<14000,Deforestation / Illegal trade,Tropical rainforest,Sumatra,2022
-4,Cross River Gorilla,Gorilla gorilla diehli,Mammalia,Critically Endangered,<300,Habitat loss / Hunting,Forest,Nigeria & Cameroon,2022
-5,Yangtze Finless Porpoise,Neophocaena asiaeorientalis,Mammalia,Critically Endangered,<1000,Pollution / Vessel strikes,Freshwater rivers,China,2022
-6,Sumatran Elephant,Elephas maximus sumatranus,Mammalia,Critically Endangered,~1300,Deforestation / Conflict,Tropical forest,Sumatra,2012
-7,Hawksbill Sea Turtle,Eretmochelys imbricata,Reptilia,Critically Endangered,~8000 nesting females,Poaching / Bycatch,Tropical reefs,Worldwide,2008
-8,Saola,Pseudoryx nghetinhensis,Mammalia,Critically Endangered,Unknown (<700 estimated),Hunting / Habitat loss,Tropical forest,Vietnam & Laos,2015
-9,Tapanuli Orangutan,Pongo tapanuliensis,Mammalia,Critically Endangered,<800,Deforestation,Tropical forest,Sumatra,2017
-10,Kakapo,Strigops habroptila,Aves,Critically Endangered,~247,Introduced predators,Forest,New Zealand,2018
-11,Black-footed Ferret,Mustela nigripes,Mammalia,Endangered,~300–400,Plague / Habitat loss,Grasslands,USA,2015
-12,Mountain Gorilla,Gorilla beringei beringei,Mammalia,Endangered,~1063,Habitat loss / Disease,Montane forest,Uganda / Rwanda / DRC,2019
-13,Amur Tiger,Panthera tigris altaica,Mammalia,Endangered,~500,Poaching / Habitat loss,Temperate forest,Russia & China,2022
-14,African Wild Dog,Lycaon pictus,Mammalia,Endangered,~6600,Habitat fragmentation / Disease,Savanna,Sub-Saharan Africa,2012
-15,Giant Panda,Ailuropoda melanoleuca,Mammalia,Vulnerable,~1864,Habitat loss,Temperate bamboo forest,China,2016
-16,Blue Whale,Balaenoptera musculus,Mammalia,Endangered,10000–25000,Ship strikes / Climate change,Open ocean,Worldwide,2018
-17,Leatherback Sea Turtle,Dermochelys coriacea,Reptilia,Vulnerable,~34000 nesting females,Bycatch / Climate change,Tropical ocean,Worldwide,2013
-18,Snow Leopard,Panthera uncia,Mammalia,Vulnerable,4000–6500,Poaching / Climate change,Mountain,Central Asia,2017
-19,African Lion,Panthera leo,Mammalia,Vulnerable,~20000,Habitat loss / Human conflict,Savanna,Africa,2014
-20,Polar Bear,Ursus maritimus,Mammalia,Vulnerable,20000–25000,Climate change / Pollution,Arctic sea ice,Arctic,2015
-21,Whale Shark,Rhincodon typus,Chondrichthyes,Endangered,Unknown,Fishing / Vessel strikes,Tropical ocean,Worldwide,2016
-22,Vaquita,Phocoena sinus,Mammalia,Critically Endangered,<10,Illegal gillnetting,Gulf of California,Mexico,2022
-23,Sumatran Tiger,Panthera tigris sumatrae,Mammalia,Critically Endangered,~400,Habitat loss / Poaching,Tropical forest,Sumatra,2022
-24,Pangolin (Sunda),Manis javanica,Mammalia,Critically Endangered,Unknown,Trafficking / Habitat loss,Forest & plantations,Southeast Asia,2019
-25,Irrawaddy Dolphin,Orcaella brevirostris,Mammalia,Endangered,~90 (Mekong pop.),Gillnets / Habitat loss,Rivers & coastal,Southeast Asia,2017
-26,Philippine Eagle,Pithecophaga jefferyi,Aves,Critically Endangered,<800,Deforestation / Hunting,Tropical rainforest,Philippines,2022
-27,Florida Manatee,Trichechus manatus latirostris,Mammalia,Vulnerable,~6300,Boat strikes / Algae bloom,Coastal waters,USA (Florida),2022
-28,Golden Lion Tamarin,Leontopithecus rosalia,Mammalia,Endangered,~3200,Deforestation / Urban expansion,Atlantic forest,Brazil,2022
-29,Orangutan (Bornean),Pongo pygmaeus,Mammalia,Critically Endangered,~100000,Deforestation / Hunting,Tropical rainforest,Borneo,2016
-30,Red Panda,Ailurus fulgens,Mammalia,Endangered,~2500,Habitat loss / Poaching,Montane forest,China / Nepal / India,2015
+Common Name,Scientific Name,Class,Order,IUCN Status,Population Trend,Population Estimate,Primary Threat,Secondary Threat,Habitat,Region,Country,Endemic,Last Assessed
+Amur Leopard,Panthera pardus orientalis,Mammalia,Carnivora,Critically Endangered,Increasing,<130,Poaching,Habitat loss,Temperate forest,Asia,Russia; China,No,2020
+Sumatran Tiger,Panthera tigris sumatrae,Mammalia,Carnivora,Critically Endangered,Decreasing,~400,Poaching,Deforestation,Tropical forest,Asia,Indonesia,Yes,2022
+Tiger,Panthera tigris,Mammalia,Carnivora,Endangered,Increasing,3700-5600,Poaching,Habitat loss,Tropical forest,Asia,India; Russia; Indonesia,No,2022
+Snow Leopard,Panthera uncia,Mammalia,Carnivora,Vulnerable,Decreasing,2710-3386,Poaching,Human-wildlife conflict,Montane,Asia,China; Mongolia; India; Nepal,No,2016
+Lion,Panthera leo,Mammalia,Carnivora,Vulnerable,Decreasing,23000-39000,Human-wildlife conflict,Habitat loss,Savanna,Africa,Kenya; Tanzania; Botswana,No,2023
+Asiatic Lion,Panthera leo persica,Mammalia,Carnivora,Endangered,Increasing,~670,Habitat loss,Disease,Shrubland,Asia,India,Yes,2008
+Leopard,Panthera pardus,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Habitat loss,Poaching,Tropical forest,Africa,Widespread Africa and Asia,No,2023
+Cheetah,Acinonyx jubatus,Mammalia,Carnivora,Vulnerable,Decreasing,~6500,Habitat loss,Human-wildlife conflict,Savanna,Africa,Namibia; Botswana; Kenya,No,2021
+Asiatic Cheetah,Acinonyx jubatus venaticus,Mammalia,Carnivora,Critically Endangered,Decreasing,<30,Habitat loss,Hunting,Desert,Asia,Iran,Yes,2021
+Iberian Lynx,Lynx pardinus,Mammalia,Carnivora,Vulnerable,Increasing,~2000,Habitat loss,Disease,Shrubland,Europe,Spain; Portugal,Yes,2024
+Clouded Leopard,Neofelis nebulosa,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Deforestation,Poaching,Tropical forest,Asia,Nepal; Myanmar; Thailand,No,2021
+Sunda Clouded Leopard,Neofelis diardi,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Deforestation,Poaching,Tropical forest,Asia,Indonesia; Malaysia,Yes,2015
+Fishing Cat,Prionailurus viverrinus,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Habitat loss,Pollution,Wetland,Asia,India; Bangladesh; Sri Lanka,No,2016
+Andean Mountain Cat,Leopardus jacobita,Mammalia,Carnivora,Endangered,Decreasing,<1400,Habitat loss,Hunting,Montane,South America,Peru; Bolivia; Chile; Argentina,Yes,2016
+Flat-headed Cat,Prionailurus planiceps,Mammalia,Carnivora,Endangered,Decreasing,<2500,Habitat loss,Pollution,Wetland,Asia,Malaysia; Indonesia; Thailand,Yes,2015
+Bornean Bay Cat,Catopuma badia,Mammalia,Carnivora,Endangered,Decreasing,<2200,Deforestation,Hunting,Tropical forest,Asia,Malaysia; Indonesia,Yes,2015
+Marbled Cat,Pardofelis marmorata,Mammalia,Carnivora,Near Threatened,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Asia,India; Myanmar; Indonesia,No,2015
+Sumatran Orangutan,Pongo abelii,Mammalia,Primates,Critically Endangered,Decreasing,~13800,Deforestation,Illegal wildlife trade,Tropical forest,Asia,Indonesia,Yes,2016
+Bornean Orangutan,Pongo pygmaeus,Mammalia,Primates,Critically Endangered,Decreasing,~104700,Deforestation,Hunting,Tropical forest,Asia,Indonesia; Malaysia,Yes,2016
+Tapanuli Orangutan,Pongo tapanuliensis,Mammalia,Primates,Critically Endangered,Decreasing,<800,Deforestation,Dams,Tropical forest,Asia,Indonesia,Yes,2017
+Cross River Gorilla,Gorilla gorilla diehli,Mammalia,Primates,Critically Endangered,Decreasing,250-300,Hunting,Habitat loss,Tropical forest,Africa,Nigeria; Cameroon,Yes,2016
+Western Lowland Gorilla,Gorilla gorilla gorilla,Mammalia,Primates,Critically Endangered,Decreasing,~316000,Disease,Hunting,Tropical forest,Africa,Gabon; Congo; Cameroon,Yes,2016
+Mountain Gorilla,Gorilla beringei beringei,Mammalia,Primates,Endangered,Increasing,~1063,Habitat loss,Disease,Montane forest,Africa,Uganda; Rwanda; DR Congo,Yes,2018
+Grauer's Gorilla,Gorilla beringei graueri,Mammalia,Primates,Critically Endangered,Decreasing,~6800,Hunting,Mining,Tropical forest,Africa,DR Congo,Yes,2016
+Eastern Chimpanzee,Pan troglodytes schweinfurthii,Mammalia,Primates,Endangered,Decreasing,180000-256000,Habitat loss,Disease,Tropical forest,Africa,Uganda; Tanzania; DR Congo,Yes,2016
+Western Chimpanzee,Pan troglodytes verus,Mammalia,Primates,Critically Endangered,Decreasing,~52800,Habitat loss,Hunting,Tropical forest,Africa,Guinea; Liberia; Ivory Coast,Yes,2016
+Nigeria-Cameroon Chimpanzee,Pan troglodytes ellioti,Mammalia,Primates,Endangered,Decreasing,~6000-9000,Habitat loss,Hunting,Tropical forest,Africa,Nigeria; Cameroon,Yes,2016
+Bonobo,Pan paniscus,Mammalia,Primates,Endangered,Decreasing,15000-20000,Hunting,Habitat loss,Tropical forest,Africa,DR Congo,Yes,2016
+Hainan Gibbon,Nomascus hainanus,Mammalia,Primates,Critically Endangered,Increasing,~37,Habitat loss,Hunting,Tropical forest,Asia,China,Yes,2020
+Cao Vit Gibbon,Nomascus nasutus,Mammalia,Primates,Critically Endangered,Stable,~120,Habitat loss,Hunting,Tropical forest,Asia,Vietnam; China,Yes,2020
+Western Hoolock Gibbon,Hoolock hoolock,Mammalia,Primates,Endangered,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Asia,India; Bangladesh; Myanmar,No,2019
+Siamang,Symphalangus syndactylus,Mammalia,Primates,Endangered,Decreasing,Unknown,Deforestation,Illegal wildlife trade,Tropical forest,Asia,Indonesia; Malaysia,No,2020
+Golden Lion Tamarin,Leontopithecus rosalia,Mammalia,Primates,Endangered,Stable,~2500,Deforestation,Disease,Tropical forest,South America,Brazil,Yes,2019
+Black Lion Tamarin,Leontopithecus chrysopygus,Mammalia,Primates,Endangered,Stable,~1600,Deforestation,Urbanisation,Tropical forest,South America,Brazil,Yes,2020
+Cotton-top Tamarin,Saguinus oedipus,Mammalia,Primates,Critically Endangered,Decreasing,~7400,Deforestation,Illegal wildlife trade,Tropical forest,South America,Colombia,Yes,2019
+Northern Muriqui,Brachyteles hypoxanthus,Mammalia,Primates,Critically Endangered,Decreasing,~1000,Deforestation,Hunting,Tropical forest,South America,Brazil,Yes,2018
+Brown Spider Monkey,Ateles hybridus,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,South America,Colombia; Venezuela,Yes,2020
+Black-and-white Ruffed Lemur,Varecia variegata,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Africa,Madagascar,Yes,2020
+Red Ruffed Lemur,Varecia rubra,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Africa,Madagascar,Yes,2020
+Indri,Indri indri,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Africa,Madagascar,Yes,2020
+Ring-tailed Lemur,Lemur catta,Mammalia,Primates,Endangered,Decreasing,2000-2400,Habitat loss,Illegal wildlife trade,Shrubland,Africa,Madagascar,Yes,2020
+Aye-aye,Daubentonia madagascariensis,Mammalia,Primates,Endangered,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Africa,Madagascar,Yes,2020
+Madame Berthe's Mouse Lemur,Microcebus berthae,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Deforestation,Habitat loss,Tropical forest,Africa,Madagascar,Yes,2020
+Silky Sifaka,Propithecus candidus,Mammalia,Primates,Critically Endangered,Decreasing,<250,Deforestation,Hunting,Tropical forest,Africa,Madagascar,Yes,2020
+Verreaux's Sifaka,Propithecus verreauxi,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Deforestation,Hunting,Shrubland,Africa,Madagascar,Yes,2020
+Proboscis Monkey,Nasalis larvatus,Mammalia,Primates,Endangered,Decreasing,Unknown,Deforestation,Hunting,Mangrove,Asia,Indonesia; Malaysia; Brunei,Yes,2020
+Golden Snub-nosed Monkey,Rhinopithecus roxellana,Mammalia,Primates,Endangered,Decreasing,~20000,Habitat loss,Hunting,Temperate forest,Asia,China,Yes,2020
+Tonkin Snub-nosed Monkey,Rhinopithecus avunculus,Mammalia,Primates,Critically Endangered,Decreasing,<250,Hunting,Habitat loss,Tropical forest,Asia,Vietnam,Yes,2020
+Cat Ba Langur,Trachypithecus poliocephalus,Mammalia,Primates,Critically Endangered,Increasing,~70,Hunting,Habitat loss,Tropical forest,Asia,Vietnam,Yes,2020
+Roloway Monkey,Cercopithecus roloway,Mammalia,Primates,Critically Endangered,Decreasing,<2000,Hunting,Deforestation,Tropical forest,Africa,Ghana; Ivory Coast,Yes,2019
+Drill,Mandrillus leucophaeus,Mammalia,Primates,Endangered,Decreasing,Unknown,Hunting,Habitat loss,Tropical forest,Africa,Nigeria; Cameroon,Yes,2019
+Lion-tailed Macaque,Macaca silenus,Mammalia,Primates,Endangered,Decreasing,3000-3500,Deforestation,Habitat loss,Tropical forest,Asia,India,Yes,2020
+Barbary Macaque,Macaca sylvanus,Mammalia,Primates,Endangered,Decreasing,8000-10000,Habitat loss,Illegal wildlife trade,Temperate forest,Africa,Morocco; Algeria,Yes,2020
+Red Slender Loris,Loris tardigradus,Mammalia,Primates,Endangered,Decreasing,Unknown,Deforestation,Illegal wildlife trade,Tropical forest,Asia,Sri Lanka,Yes,2020
+Javan Slow Loris,Nycticebus javanicus,Mammalia,Primates,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Tropical forest,Asia,Indonesia,Yes,2020
+Philippine Tarsier,Carlito syrichta,Mammalia,Primates,Near Threatened,Decreasing,Unknown,Habitat loss,Illegal wildlife trade,Tropical forest,Asia,Philippines,Yes,2019
+Javan Rhinoceros,Rhinoceros sondaicus,Mammalia,Perissodactyla,Critically Endangered,Stable,~76,Habitat loss,Poaching,Tropical forest,Asia,Indonesia,Yes,2019
+Sumatran Rhinoceros,Dicerorhinus sumatrensis,Mammalia,Perissodactyla,Critically Endangered,Decreasing,<50,Habitat loss,Poaching,Tropical forest,Asia,Indonesia,Yes,2019
+Black Rhinoceros,Diceros bicornis,Mammalia,Perissodactyla,Critically Endangered,Increasing,~6500,Poaching,Habitat loss,Savanna,Africa,Namibia; South Africa; Kenya,No,2020
+White Rhinoceros,Ceratotherium simum,Mammalia,Perissodactyla,Near Threatened,Decreasing,~15900,Poaching,Habitat loss,Savanna,Africa,South Africa; Namibia; Kenya,No,2020
+Greater One-horned Rhinoceros,Rhinoceros unicornis,Mammalia,Perissodactyla,Vulnerable,Increasing,~4014,Poaching,Habitat loss,Grassland,Asia,India; Nepal,No,2018
+Przewalski's Horse,Equus ferus przewalskii,Mammalia,Perissodactyla,Endangered,Increasing,~760,Habitat loss,Disease,Grassland,Asia,Mongolia; China,Yes,2011
+Grevy's Zebra,Equus grevyi,Mammalia,Perissodactyla,Endangered,Stable,~2000,Habitat loss,Hunting,Savanna,Africa,Kenya; Ethiopia,Yes,2016
+African Wild Ass,Equus africanus,Mammalia,Perissodactyla,Critically Endangered,Decreasing,<200,Hunting,Habitat loss,Desert,Africa,Eritrea; Ethiopia,Yes,2015
+Mountain Tapir,Tapirus pinchaque,Mammalia,Perissodactyla,Endangered,Decreasing,<2500,Habitat loss,Hunting,Montane forest,South America,Colombia; Ecuador; Peru,Yes,2016
+Malayan Tapir,Tapirus indicus,Mammalia,Perissodactyla,Endangered,Decreasing,<2500,Deforestation,Hunting,Tropical forest,Asia,Malaysia; Indonesia; Thailand,Yes,2016
+Baird's Tapir,Tapirus bairdii,Mammalia,Perissodactyla,Endangered,Decreasing,<4500,Deforestation,Hunting,Tropical forest,Central America,Mexico; Costa Rica; Panama,Yes,2016
+African Forest Elephant,Loxodonta cyclotis,Mammalia,Proboscidea,Critically Endangered,Decreasing,Unknown,Poaching,Habitat loss,Tropical forest,Africa,Gabon; Congo; Cameroon,Yes,2021
+African Savanna Elephant,Loxodonta africana,Mammalia,Proboscidea,Endangered,Decreasing,~415000,Poaching,Human-wildlife conflict,Savanna,Africa,Botswana; Zimbabwe; Tanzania,Yes,2021
+Asian Elephant,Elephas maximus,Mammalia,Proboscidea,Endangered,Decreasing,40000-50000,Habitat loss,Human-wildlife conflict,Tropical forest,Asia,India; Sri Lanka; Thailand,Yes,2019
+Sumatran Elephant,Elephas maximus sumatranus,Mammalia,Proboscidea,Critically Endangered,Decreasing,1700-2000,Deforestation,Human-wildlife conflict,Tropical forest,Asia,Indonesia,Yes,2011
+Sri Lankan Elephant,Elephas maximus maximus,Mammalia,Proboscidea,Endangered,Decreasing,~6000,Habitat loss,Human-wildlife conflict,Tropical forest,Asia,Sri Lanka,Yes,2019
+Saola,Pseudoryx nghetinhensis,Mammalia,Artiodactyla,Critically Endangered,Decreasing,<100,Hunting,Habitat loss,Tropical forest,Asia,Vietnam; Laos,Yes,2016
+Addax,Addax nasomaculatus,Mammalia,Artiodactyla,Critically Endangered,Decreasing,<100,Hunting,Habitat loss,Desert,Africa,Niger; Chad,Yes,2016
+Dama Gazelle,Nanger dama,Mammalia,Artiodactyla,Critically Endangered,Decreasing,<300,Hunting,Habitat loss,Desert,Africa,Chad; Niger; Mali,Yes,2016
+Scimitar-horned Oryx,Oryx dammah,Mammalia,Artiodactyla,Endangered,Increasing,~140,Hunting,Habitat loss,Desert,Africa,Chad,Yes,2023
+Arabian Oryx,Oryx leucoryx,Mammalia,Artiodactyla,Vulnerable,Stable,~1220,Hunting,Habitat loss,Desert,Asia,Oman; Saudi Arabia; UAE,Yes,2017
+Hirola,Beatragus hunteri,Mammalia,Artiodactyla,Critically Endangered,Decreasing,~500,Disease,Habitat loss,Grassland,Africa,Kenya; Somalia,Yes,2017
+Banteng,Bos javanicus,Mammalia,Artiodactyla,Endangered,Decreasing,5000-8000,Hunting,Habitat loss,Tropical forest,Asia,Indonesia; Malaysia; Cambodia,Yes,2016
+Kouprey,Bos sauveli,Mammalia,Artiodactyla,Critically Endangered,Decreasing,Unknown (possibly extinct),Hunting,Habitat loss,Tropical forest,Asia,Cambodia; Vietnam; Laos,Yes,2016
+Wild Yak,Bos mutus,Mammalia,Artiodactyla,Vulnerable,Decreasing,15000-20000,Hunting,Habitat loss,Montane,Asia,China; India,Yes,2016
+Gaur,Bos gaurus,Mammalia,Artiodactyla,Vulnerable,Decreasing,~21000,Hunting,Habitat loss,Tropical forest,Asia,India; Myanmar; Thailand,No,2016
+Lowland Anoa,Bubalus depressicornis,Mammalia,Artiodactyla,Endangered,Decreasing,<2500,Hunting,Habitat loss,Tropical forest,Asia,Indonesia,Yes,2016
+Tamaraw,Bubalus mindorensis,Mammalia,Artiodactyla,Critically Endangered,Stable,~600,Hunting,Habitat loss,Grassland,Asia,Philippines,Yes,2016
+Wild Water Buffalo,Bubalus arnee,Mammalia,Artiodactyla,Endangered,Decreasing,<4000,Habitat loss,Hunting,Wetland,Asia,India; Nepal; Bhutan,No,2019
+Saiga Antelope,Saiga tatarica,Mammalia,Artiodactyla,Near Threatened,Increasing,~1900000,Poaching,Disease,Grassland,Asia,Kazakhstan; Mongolia; Russia,No,2023
+Chiru,Pantholops hodgsonii,Mammalia,Artiodactyla,Near Threatened,Increasing,~100000,Poaching,Habitat loss,Montane,Asia,China; India,Yes,2016
+Pygmy Hog,Porcula salvania,Mammalia,Artiodactyla,Endangered,Increasing,<250,Habitat loss,Agriculture,Grassland,Asia,India,Yes,2019
+Bactrian Camel,Camelus ferus,Mammalia,Artiodactyla,Critically Endangered,Decreasing,~950,Hunting,Habitat loss,Desert,Asia,China; Mongolia,Yes,2008
+Vicuna,Vicugna vicugna,Mammalia,Artiodactyla,Near Threatened,Increasing,~350000,Poaching,Habitat loss,Montane,South America,Peru; Bolivia; Chile; Argentina,Yes,2018
+Pygmy Hippopotamus,Choeropsis liberiensis,Mammalia,Artiodactyla,Endangered,Decreasing,<2500,Deforestation,Hunting,Tropical forest,Africa,Liberia; Sierra Leone; Guinea,Yes,2015
+Common Hippopotamus,Hippopotamus amphibius,Mammalia,Artiodactyla,Vulnerable,Decreasing,115000-130000,Hunting,Habitat loss,Freshwater river,Africa,Zambia; Tanzania; Uganda,Yes,2016
+Okapi,Okapia johnstoni,Mammalia,Artiodactyla,Endangered,Decreasing,Unknown,Hunting,Habitat loss,Tropical forest,Africa,DR Congo,Yes,2015
+Masai Giraffe,Giraffa camelopardalis tippelskirchi,Mammalia,Artiodactyla,Endangered,Decreasing,~35000,Poaching,Habitat loss,Savanna,Africa,Kenya; Tanzania,Yes,2019
+Nubian Giraffe,Giraffa camelopardalis camelopardalis,Mammalia,Artiodactyla,Critically Endangered,Increasing,~2645,Poaching,Habitat loss,Savanna,Africa,Ethiopia; South Sudan; Uganda,Yes,2018
+Reticulated Giraffe,Giraffa camelopardalis reticulata,Mammalia,Artiodactyla,Endangered,Decreasing,~15985,Poaching,Habitat loss,Savanna,Africa,Kenya; Somalia; Ethiopia,Yes,2018
+Chinese Water Deer,Hydropotes inermis,Mammalia,Artiodactyla,Vulnerable,Decreasing,<10000,Habitat loss,Hunting,Wetland,Asia,China; South Korea,No,2015
+Pere David's Deer,Elaphurus davidianus,Mammalia,Artiodactyla,Extinct in the Wild,Increasing,0 (wild),Habitat loss,Hunting,Wetland,Asia,China,Yes,2016
+Bawean Deer,Axis kuhlii,Mammalia,Artiodactyla,Critically Endangered,Decreasing,<250,Habitat loss,Hunting,Tropical forest,Asia,Indonesia,Yes,2015
+Kashmir Stag,Cervus hanglu hanglu,Mammalia,Artiodactyla,Critically Endangered,Decreasing,<250,Habitat loss,Hunting,Temperate forest,Asia,India,Yes,2017
+Chinese Pangolin,Manis pentadactyla,Mammalia,Pholidota,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Tropical forest,Asia,China; Nepal; Myanmar,No,2019
+Sunda Pangolin,Manis javanica,Mammalia,Pholidota,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Tropical forest,Asia,Indonesia; Malaysia; Thailand,No,2019
+Indian Pangolin,Manis crassicaudata,Mammalia,Pholidota,Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Grassland,Asia,India; Pakistan; Sri Lanka,No,2019
+Philippine Pangolin,Manis culionensis,Mammalia,Pholidota,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Tropical forest,Asia,Philippines,Yes,2019
+White-bellied Pangolin,Phataginus tricuspis,Mammalia,Pholidota,Endangered,Decreasing,Unknown,Hunting,Illegal wildlife trade,Tropical forest,Africa,Nigeria; Cameroon; DR Congo,Yes,2019
+Giant Pangolin,Smutsia gigantea,Mammalia,Pholidota,Endangered,Decreasing,Unknown,Hunting,Illegal wildlife trade,Savanna,Africa,Uganda; Cameroon; Gabon,Yes,2019
+Temminck's Ground Pangolin,Smutsia temminckii,Mammalia,Pholidota,Vulnerable,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Savanna,Africa,South Africa; Zimbabwe; Kenya,Yes,2019
+Giant Panda,Ailuropoda melanoleuca,Mammalia,Carnivora,Vulnerable,Increasing,~1864,Habitat loss,Climate change,Temperate forest,Asia,China,Yes,2016
+Polar Bear,Ursus maritimus,Mammalia,Carnivora,Vulnerable,Unknown,22000-31000,Climate change,Pollution,Arctic,Arctic,Canada; Greenland; Russia; USA; Norway,No,2015
+Sloth Bear,Melursus ursinus,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Habitat loss,Human-wildlife conflict,Tropical forest,Asia,India; Sri Lanka; Nepal,No,2020
+Sun Bear,Helarctos malayanus,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Deforestation,Illegal wildlife trade,Tropical forest,Asia,Indonesia; Malaysia; Myanmar,No,2016
+Andean Bear,Tremarctos ornatus,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Habitat loss,Hunting,Montane forest,South America,Colombia; Peru; Ecuador,Yes,2016
+Asiatic Black Bear,Ursus thibetanus,Mammalia,Carnivora,Vulnerable,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Temperate forest,Asia,China; India; Japan,No,2016
+African Wild Dog,Lycaon pictus,Mammalia,Carnivora,Endangered,Decreasing,~6600,Habitat loss,Disease,Savanna,Africa,Botswana; Tanzania; Zimbabwe,Yes,2020
+Ethiopian Wolf,Canis simensis,Mammalia,Carnivora,Endangered,Decreasing,<500,Disease,Habitat loss,Montane,Africa,Ethiopia,Yes,2011
+Red Wolf,Canis rufus,Mammalia,Carnivora,Critically Endangered,Decreasing,<20 (wild),Habitat loss,Human-wildlife conflict,Temperate forest,North America,USA,Yes,2018
+Dhole,Cuon alpinus,Mammalia,Carnivora,Endangered,Decreasing,949-2215,Habitat loss,Disease,Tropical forest,Asia,India; Thailand; Indonesia,No,2015
+Darwin's Fox,Lycalopex fulvipes,Mammalia,Carnivora,Endangered,Decreasing,<1000,Habitat loss,Disease,Temperate forest,South America,Chile,Yes,2016
+Island Fox,Urocyon littoralis,Mammalia,Carnivora,Near Threatened,Stable,~5000,Disease,Invasive species,Shrubland,North America,USA,Yes,2013
+Sea Otter,Enhydra lutris,Mammalia,Carnivora,Endangered,Increasing,~125000,Pollution,Hunting,Marine - coastal,North America,USA; Russia; Canada,No,2021
+Giant Otter,Pteronura brasiliensis,Mammalia,Carnivora,Endangered,Decreasing,1000-5000,Habitat loss,Pollution,Freshwater river,South America,Brazil; Peru; Guyana,Yes,2021
+Black-footed Ferret,Mustela nigripes,Mammalia,Carnivora,Endangered,Increasing,~370,Disease,Habitat loss,Grassland,North America,USA,Yes,2015
+European Mink,Mustela lutreola,Mammalia,Carnivora,Critically Endangered,Decreasing,Unknown,Invasive species,Habitat loss,Freshwater river,Europe,Spain; Romania; Ukraine,Yes,2016
+Hairy-nosed Otter,Lutra sumatrana,Mammalia,Carnivora,Endangered,Decreasing,Unknown,Habitat loss,Hunting,Wetland,Asia,Cambodia; Vietnam; Indonesia,Yes,2015
+Marine Otter,Lontra felina,Mammalia,Carnivora,Endangered,Decreasing,<1000,Hunting,Pollution,Marine - coastal,South America,Peru; Chile,Yes,2021
+Red Panda,Ailurus fulgens,Mammalia,Carnivora,Endangered,Decreasing,<10000,Habitat loss,Poaching,Montane forest,Asia,China; Nepal; India; Bhutan,No,2015
+Fossa,Cryptoprocta ferox,Mammalia,Carnivora,Vulnerable,Decreasing,<2500,Deforestation,Human-wildlife conflict,Tropical forest,Africa,Madagascar,Yes,2015
+Malabar Civet,Viverra civettina,Mammalia,Carnivora,Critically Endangered,Decreasing,Unknown (possibly extinct),Habitat loss,Hunting,Tropical forest,Asia,India,Yes,2015
+Vaquita,Phocoena sinus,Mammalia,Cetacea,Critically Endangered,Decreasing,6-8,Bycatch,Illegal wildlife trade,Marine - coastal,North America,Mexico,Yes,2017
+Yangtze Finless Porpoise,Neophocaena asiaeorientalis,Mammalia,Cetacea,Critically Endangered,Decreasing,~1249,Pollution,Bycatch,Freshwater river,Asia,China,Yes,2012
+Baiji,Lipotes vexillifer,Mammalia,Cetacea,Critically Endangered,Decreasing,0 (possibly extinct),Bycatch,Dams,Freshwater river,Asia,China,Yes,2017
+North Atlantic Right Whale,Eubalaena glacialis,Mammalia,Cetacea,Critically Endangered,Decreasing,~370,Bycatch,Vessel strikes,Marine - coastal,North America,USA; Canada,No,2020
+North Pacific Right Whale,Eubalaena japonica,Mammalia,Cetacea,Endangered,Unknown,~500,Vessel strikes,Bycatch,Marine - open ocean,Asia,Russia; USA; Japan,No,2018
+Rice's Whale,Balaenoptera ricei,Mammalia,Cetacea,Critically Endangered,Unknown,<100,Vessel strikes,Pollution,Marine - open ocean,North America,USA,Yes,2021
+Blue Whale,Balaenoptera musculus,Mammalia,Cetacea,Endangered,Increasing,10000-25000,Vessel strikes,Climate change,Marine - open ocean,Worldwide,Worldwide,No,2018
+Fin Whale,Balaenoptera physalus,Mammalia,Cetacea,Vulnerable,Increasing,~100000,Vessel strikes,Bycatch,Marine - open ocean,Worldwide,Worldwide,No,2018
+Sei Whale,Balaenoptera borealis,Mammalia,Cetacea,Endangered,Increasing,~50000,Vessel strikes,Bycatch,Marine - open ocean,Worldwide,Worldwide,No,2018
+Sperm Whale,Physeter macrocephalus,Mammalia,Cetacea,Vulnerable,Unknown,~360000,Bycatch,Pollution,Marine - open ocean,Worldwide,Worldwide,No,2008
+Irrawaddy Dolphin,Orcaella brevirostris,Mammalia,Cetacea,Endangered,Decreasing,Unknown,Bycatch,Habitat loss,Freshwater river,Asia,Cambodia; Myanmar; Indonesia,No,2017
+South Asian River Dolphin,Platanista gangetica,Mammalia,Cetacea,Endangered,Decreasing,~3500,Dams,Bycatch,Freshwater river,Asia,India; Bangladesh; Nepal,Yes,2021
+Amazon River Dolphin,Inia geoffrensis,Mammalia,Cetacea,Endangered,Decreasing,Unknown,Bycatch,Pollution,Freshwater river,South America,Brazil; Peru; Colombia,Yes,2018
+Hector's Dolphin,Cephalorhynchus hectori,Mammalia,Cetacea,Endangered,Decreasing,~15000,Bycatch,Disease,Marine - coastal,Oceania,New Zealand,Yes,2008
+Maui Dolphin,Cephalorhynchus hectori maui,Mammalia,Cetacea,Critically Endangered,Decreasing,~54,Bycatch,Disease,Marine - coastal,Oceania,New Zealand,Yes,2008
+Atlantic Humpback Dolphin,Sousa teuszii,Mammalia,Cetacea,Critically Endangered,Decreasing,<1500,Bycatch,Habitat loss,Marine - coastal,Africa,Senegal; Guinea; Angola,Yes,2017
+Mediterranean Monk Seal,Monachus monachus,Mammalia,Carnivora,Endangered,Increasing,~700,Habitat loss,Bycatch,Marine - coastal,Europe,Greece; Turkey; Mauritania,Yes,2015
+Hawaiian Monk Seal,Neomonachus schauinslandi,Mammalia,Carnivora,Endangered,Increasing,~1570,Habitat loss,Bycatch,Marine - coastal,Oceania,USA,Yes,2021
+Saimaa Ringed Seal,Pusa hispida saimensis,Mammalia,Carnivora,Endangered,Increasing,~400,Bycatch,Climate change,Freshwater lake,Europe,Finland,Yes,2016
+Steller Sea Lion,Eumetopias jubatus,Mammalia,Carnivora,Near Threatened,Increasing,~80000,Bycatch,Climate change,Marine - coastal,North America,USA; Russia,No,2015
+Galapagos Fur Seal,Arctocephalus galapagoensis,Mammalia,Carnivora,Endangered,Decreasing,10000-15000,Climate change,Bycatch,Marine - coastal,South America,Ecuador,Yes,2015
+Dugong,Dugong dugon,Mammalia,Sirenia,Vulnerable,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,Asia,Australia; India; UAE,No,2015
+West Indian Manatee,Trichechus manatus,Mammalia,Sirenia,Vulnerable,Decreasing,~13000,Vessel strikes,Habitat loss,Marine - coastal,North America,USA; Mexico; Cuba,No,2008
+Amazonian Manatee,Trichechus inunguis,Mammalia,Sirenia,Vulnerable,Decreasing,Unknown,Hunting,Habitat loss,Freshwater river,South America,Brazil; Peru; Colombia,Yes,2008
+African Manatee,Trichechus senegalensis,Mammalia,Sirenia,Vulnerable,Decreasing,Unknown,Hunting,Bycatch,Freshwater river,Africa,Senegal; Nigeria; Cameroon,Yes,2015
+Tasmanian Devil,Sarcophilus harrisii,Mammalia,Dasyuromorphia,Endangered,Decreasing,~25000,Disease,Habitat loss,Temperate forest,Oceania,Australia,Yes,2022
+Koala,Phascolarctos cinereus,Mammalia,Diprotodontia,Vulnerable,Decreasing,Unknown,Habitat loss,Disease,Temperate forest,Oceania,Australia,Yes,2014
+Northern Hairy-nosed Wombat,Lasiorhinus krefftii,Mammalia,Diprotodontia,Critically Endangered,Increasing,~315,Habitat loss,Invasive species,Grassland,Oceania,Australia,Yes,2016
+Leadbeater's Possum,Gymnobelideus leadbeateri,Mammalia,Diprotodontia,Critically Endangered,Decreasing,~2500,Logging,Climate change,Temperate forest,Oceania,Australia,Yes,2016
+Numbat,Myrmecobius fasciatus,Mammalia,Dasyuromorphia,Near Threatened,Increasing,~2000,Invasive species,Habitat loss,Shrubland,Oceania,Australia,Yes,2025
+Gilbert's Potoroo,Potorous gilbertii,Mammalia,Diprotodontia,Critically Endangered,Stable,<100,Invasive species,Habitat loss,Shrubland,Oceania,Australia,Yes,2016
+Matschie's Tree Kangaroo,Dendrolagus matschiei,Mammalia,Diprotodontia,Endangered,Decreasing,Unknown,Hunting,Habitat loss,Tropical forest,Oceania,Papua New Guinea,Yes,2016
+Western Long-beaked Echidna,Zaglossus bruijnii,Mammalia,Monotremata,Critically Endangered,Decreasing,Unknown,Hunting,Habitat loss,Tropical forest,Oceania,Indonesia,Yes,2015
+Ili Pika,Ochotona iliensis,Mammalia,Lagomorpha,Endangered,Decreasing,<1000,Climate change,Habitat loss,Montane,Asia,China,Yes,2016
+Riverine Rabbit,Bunolagus monticularis,Mammalia,Lagomorpha,Critically Endangered,Decreasing,<250,Habitat loss,Agriculture,Shrubland,Africa,South Africa,Yes,2018
+Amami Rabbit,Pentalagus furnessi,Mammalia,Lagomorpha,Endangered,Decreasing,Unknown,Invasive species,Habitat loss,Tropical forest,Asia,Japan,Yes,2016
+Volcano Rabbit,Romerolagus diazi,Mammalia,Lagomorpha,Endangered,Decreasing,<7000,Habitat loss,Hunting,Montane forest,North America,Mexico,Yes,2019
+Hispid Hare,Caprolagus hispidus,Mammalia,Lagomorpha,Endangered,Decreasing,<2500,Habitat loss,Agriculture,Grassland,Asia,India; Nepal; Bhutan,No,2019
+Kitti's Hog-nosed Bat,Craseonycteris thonglongyai,Mammalia,Chiroptera,Near Threatened,Decreasing,Unknown,Habitat loss,Hunting,Caves,Asia,Thailand; Myanmar,Yes,2019
+Indiana Bat,Myotis sodalis,Mammalia,Chiroptera,Near Threatened,Decreasing,~530000,Disease,Habitat loss,Caves,North America,USA,Yes,2018
+Bulmer's Fruit Bat,Aproteles bulmerae,Mammalia,Chiroptera,Critically Endangered,Decreasing,<160,Hunting,Habitat loss,Caves,Oceania,Papua New Guinea,Yes,2020
+Rodrigues Flying Fox,Pteropus rodricensis,Mammalia,Chiroptera,Endangered,Increasing,~20000,Habitat loss,Climate change,Tropical forest,Africa,Mauritius,Yes,2018
+Livingstone's Fruit Bat,Pteropus livingstonii,Mammalia,Chiroptera,Critically Endangered,Decreasing,<1300,Deforestation,Climate change,Tropical forest,Africa,Comoros,Yes,2019
+Christmas Island Flying Fox,Pteropus natalis,Mammalia,Chiroptera,Critically Endangered,Decreasing,<1500,Invasive species,Habitat loss,Tropical forest,Oceania,Australia,Yes,2017
+Kakapo,Strigops habroptila,Aves,Psittaciformes,Critically Endangered,Increasing,~247,Invasive species,Disease,Temperate forest,Oceania,New Zealand,Yes,2021
+California Condor,Gymnogyps californianus,Aves,Cathartiformes,Critically Endangered,Increasing,~560,Pollution,Hunting,Shrubland,North America,USA; Mexico,Yes,2020
+Philippine Eagle,Pithecophaga jefferyi,Aves,Accipitriformes,Critically Endangered,Decreasing,~400,Deforestation,Hunting,Tropical forest,Asia,Philippines,Yes,2016
+Harpy Eagle,Harpia harpyja,Aves,Accipitriformes,Vulnerable,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,South America,Brazil; Panama; Peru,Yes,2021
+Steller's Sea Eagle,Haliaeetus pelagicus,Aves,Accipitriformes,Vulnerable,Decreasing,~4000,Habitat loss,Pollution,Marine - coastal,Asia,Russia; Japan,Yes,2018
+Madagascar Fish Eagle,Haliaeetus vociferoides,Aves,Accipitriformes,Critically Endangered,Decreasing,~250,Habitat loss,Hunting,Wetland,Africa,Madagascar,Yes,2018
+Whooping Crane,Grus americana,Aves,Gruiformes,Endangered,Increasing,~540,Habitat loss,Hunting,Wetland,North America,USA; Canada,Yes,2020
+Siberian Crane,Leucogeranus leucogeranus,Aves,Gruiformes,Critically Endangered,Decreasing,3500-4000,Habitat loss,Hunting,Wetland,Asia,Russia; China,No,2020
+Red-crowned Crane,Grus japonensis,Aves,Gruiformes,Vulnerable,Decreasing,~2800,Habitat loss,Agriculture,Wetland,Asia,Japan; China; Russia,No,2021
+Sarus Crane,Antigone antigone,Aves,Gruiformes,Vulnerable,Decreasing,15000-20000,Habitat loss,Pollution,Wetland,Asia,India; Nepal; Australia,No,2016
+Great Indian Bustard,Ardeotis nigriceps,Aves,Otidiformes,Critically Endangered,Decreasing,<150,Habitat loss,Agriculture,Grassland,Asia,India,Yes,2018
+Bengal Florican,Houbaropsis bengalensis,Aves,Otidiformes,Critically Endangered,Decreasing,<1000,Habitat loss,Agriculture,Grassland,Asia,India; Cambodia; Nepal,No,2018
+Lesser Florican,Sypheotides indicus,Aves,Otidiformes,Critically Endangered,Decreasing,<1000,Habitat loss,Agriculture,Grassland,Asia,India,Yes,2021
+Spoon-billed Sandpiper,Calidris pygmaea,Aves,Charadriiformes,Critically Endangered,Decreasing,490-1000,Habitat loss,Hunting,Wetland,Asia,Russia; Myanmar; Bangladesh,No,2022
+Slender-billed Curlew,Numenius tenuirostris,Aves,Charadriiformes,Critically Endangered,Decreasing,0 (possibly extinct),Hunting,Habitat loss,Wetland,Europe,Russia; Morocco,No,2021
+Sociable Lapwing,Vanellus gregarius,Aves,Charadriiformes,Critically Endangered,Decreasing,~11200,Habitat loss,Hunting,Grassland,Asia,Kazakhstan; Russia; India,No,2021
+Chinese Crested Tern,Thalasseus bernsteini,Aves,Charadriiformes,Critically Endangered,Increasing,<100,Habitat loss,Hunting,Marine - coastal,Asia,China; South Korea,No,2018
+Christmas Island Frigatebird,Fregata andrewsi,Aves,Suliformes,Critically Endangered,Decreasing,2400-4800,Habitat loss,Invasive species,Marine - coastal,Asia,Australia,Yes,2018
+Waved Albatross,Phoebastria irrorata,Aves,Procellariiformes,Critically Endangered,Decreasing,~50000,Bycatch,Climate change,Marine - open ocean,South America,Ecuador,Yes,2018
+Tristan Albatross,Diomedea dabbenena,Aves,Procellariiformes,Critically Endangered,Decreasing,~3400,Invasive species,Bycatch,Marine - open ocean,Africa,United Kingdom,Yes,2018
+Amsterdam Albatross,Diomedea amsterdamensis,Aves,Procellariiformes,Endangered,Increasing,~170,Bycatch,Disease,Marine - open ocean,Africa,France,Yes,2018
+Wandering Albatross,Diomedea exulans,Aves,Procellariiformes,Vulnerable,Decreasing,~20100,Bycatch,Pollution,Marine - open ocean,Antarctic,Southern Ocean,No,2018
+Northern Bald Ibis,Geronticus eremita,Aves,Pelecaniformes,Endangered,Increasing,~700,Habitat loss,Hunting,Shrubland,Africa,Morocco; Syria,No,2018
+Giant Ibis,Thaumatibis gigantea,Aves,Pelecaniformes,Critically Endangered,Decreasing,<200,Habitat loss,Hunting,Wetland,Asia,Cambodia,Yes,2018
+White-shouldered Ibis,Pseudibis davisoni,Aves,Pelecaniformes,Critically Endangered,Decreasing,<400,Habitat loss,Hunting,Wetland,Asia,Cambodia; Indonesia,No,2018
+Shoebill,Balaeniceps rex,Aves,Pelecaniformes,Vulnerable,Decreasing,5000-8000,Habitat loss,Illegal wildlife trade,Wetland,Africa,Uganda; South Sudan; Zambia,Yes,2020
+Indian Vulture,Gyps indicus,Aves,Accipitriformes,Critically Endangered,Decreasing,~30000,Pollution,Habitat loss,Grassland,Asia,India; Pakistan,No,2021
+White-rumped Vulture,Gyps bengalensis,Aves,Accipitriformes,Critically Endangered,Decreasing,~10000,Pollution,Habitat loss,Grassland,Asia,India; Nepal; Bangladesh,No,2021
+Slender-billed Vulture,Gyps tenuirostris,Aves,Accipitriformes,Critically Endangered,Decreasing,~1000,Pollution,Habitat loss,Grassland,Asia,India; Nepal; Myanmar,No,2021
+Red-headed Vulture,Sarcogyps calvus,Aves,Accipitriformes,Critically Endangered,Decreasing,<3500,Pollution,Habitat loss,Savanna,Asia,India; Nepal; Cambodia,No,2021
+Egyptian Vulture,Neophron percnopterus,Aves,Accipitriformes,Endangered,Decreasing,12000-38000,Pollution,Hunting,Desert,Africa,Spain; India; Ethiopia,No,2021
+Hooded Vulture,Necrosyrtes monachus,Aves,Accipitriformes,Critically Endangered,Decreasing,~197000,Poaching,Pollution,Savanna,Africa,Nigeria; Senegal; Kenya,Yes,2021
+White-backed Vulture,Gyps africanus,Aves,Accipitriformes,Critically Endangered,Decreasing,~270000,Poaching,Pollution,Savanna,Africa,Kenya; Tanzania; Botswana,Yes,2021
+Spix's Macaw,Cyanopsitta spixii,Aves,Psittaciformes,Extinct in the Wild,Stable,0 (wild),Habitat loss,Illegal wildlife trade,Shrubland,South America,Brazil,Yes,2019
+Hyacinth Macaw,Anodorhynchus hyacinthinus,Aves,Psittaciformes,Vulnerable,Decreasing,~4300,Illegal wildlife trade,Habitat loss,Tropical forest,South America,Brazil; Bolivia; Paraguay,Yes,2021
+Blue-throated Macaw,Ara glaucogularis,Aves,Psittaciformes,Critically Endangered,Increasing,~455,Illegal wildlife trade,Habitat loss,Savanna,South America,Bolivia,Yes,2020
+Great Green Macaw,Ara ambiguus,Aves,Psittaciformes,Critically Endangered,Decreasing,<1000,Deforestation,Illegal wildlife trade,Tropical forest,Central America,Costa Rica; Ecuador; Panama,Yes,2020
+Kea,Nestor notabilis,Aves,Psittaciformes,Endangered,Decreasing,3000-7000,Invasive species,Human-wildlife conflict,Montane,Oceania,New Zealand,Yes,2017
+Grey Parrot,Psittacus erithacus,Aves,Psittaciformes,Endangered,Decreasing,Unknown,Illegal wildlife trade,Deforestation,Tropical forest,Africa,Cameroon; DR Congo; Ghana,Yes,2018
+Yellow-crested Cockatoo,Cacatua sulphurea,Aves,Psittaciformes,Critically Endangered,Decreasing,<2500,Illegal wildlife trade,Deforestation,Tropical forest,Asia,Indonesia,Yes,2018
+Orange-bellied Parrot,Neophema chrysogaster,Aves,Psittaciformes,Critically Endangered,Decreasing,<50 (wild),Habitat loss,Disease,Shrubland,Oceania,Australia,Yes,2021
+Swift Parrot,Lathamus discolor,Aves,Psittaciformes,Critically Endangered,Decreasing,<750,Logging,Invasive species,Temperate forest,Oceania,Australia,Yes,2021
+Puerto Rican Amazon,Amazona vittata,Aves,Psittaciformes,Critically Endangered,Increasing,~600,Habitat loss,Disease,Tropical forest,North America,USA,Yes,2020
+Kagu,Rhynochetos jubatus,Aves,Gruiformes,Endangered,Increasing,~1000,Invasive species,Habitat loss,Tropical forest,Oceania,New Caledonia,Yes,2016
+Takahe,Porphyrio hochstetteri,Aves,Gruiformes,Endangered,Increasing,~500,Invasive species,Habitat loss,Grassland,Oceania,New Zealand,Yes,2020
+Guam Rail,Hypotaenidia owstoni,Aves,Gruiformes,Critically Endangered,Increasing,~200,Invasive species,Habitat loss,Grassland,Oceania,Guam,Yes,2019
+Hawaiian Crow,Corvus hawaiiensis,Aves,Passeriformes,Extinct in the Wild,Stable,0 (wild),Disease,Habitat loss,Tropical forest,Oceania,USA,Yes,2018
+Guam Kingfisher,Todiramphus cinnamominus,Aves,Coraciiformes,Extinct in the Wild,Stable,0 (wild),Invasive species,Habitat loss,Tropical forest,Oceania,Guam,Yes,2021
+Regent Honeyeater,Anthochaera phrygia,Aves,Passeriformes,Critically Endangered,Decreasing,<350,Habitat loss,Agriculture,Temperate forest,Oceania,Australia,Yes,2021
+Helmeted Honeyeater,Lichenostomus melanops cassidix,Aves,Passeriformes,Critically Endangered,Increasing,~250,Habitat loss,Climate change,Temperate forest,Oceania,Australia,Yes,2016
+Bali Myna,Leucopsar rothschildi,Aves,Passeriformes,Critically Endangered,Increasing,<50 (wild),Illegal wildlife trade,Habitat loss,Tropical forest,Asia,Indonesia,Yes,2018
+Java Sparrow,Padda oryzivora,Aves,Passeriformes,Endangered,Decreasing,Unknown,Illegal wildlife trade,Agriculture,Grassland,Asia,Indonesia,Yes,2018
+Yellow-breasted Bunting,Emberiza aureola,Aves,Passeriformes,Critically Endangered,Decreasing,Unknown,Hunting,Habitat loss,Grassland,Asia,China; Russia; Mongolia,No,2017
+Akikiki,Oreomystis bairdi,Aves,Passeriformes,Critically Endangered,Decreasing,<5,Disease,Invasive species,Tropical forest,Oceania,USA,Yes,2021
+Akekee,Loxops caeruleirostris,Aves,Passeriformes,Critically Endangered,Decreasing,<100,Disease,Invasive species,Tropical forest,Oceania,USA,Yes,2021
+Palila,Loxioides bailleui,Aves,Passeriformes,Critically Endangered,Decreasing,<1000,Invasive species,Habitat loss,Montane forest,Oceania,USA,Yes,2020
+Kirtland's Warbler,Setophaga kirtlandii,Aves,Passeriformes,Near Threatened,Increasing,~4500,Habitat loss,Invasive species,Temperate forest,North America,USA; Bahamas,No,2020
+Cebu Flowerpecker,Dicaeum quadricolor,Aves,Passeriformes,Critically Endangered,Decreasing,<100,Deforestation,Habitat loss,Tropical forest,Asia,Philippines,Yes,2020
+Rufous-headed Hornbill,Rhabdotorrhinus waldeni,Aves,Bucerotiformes,Critically Endangered,Decreasing,<1000,Deforestation,Hunting,Tropical forest,Asia,Philippines,Yes,2020
+Helmeted Hornbill,Rhinoplax vigil,Aves,Bucerotiformes,Critically Endangered,Decreasing,Unknown,Poaching,Deforestation,Tropical forest,Asia,Indonesia; Malaysia; Thailand,Yes,2018
+Great Hornbill,Buceros bicornis,Aves,Bucerotiformes,Vulnerable,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Asia,India; Thailand; Indonesia,No,2020
+Northern Rockhopper Penguin,Eudyptes moseleyi,Aves,Sphenisciformes,Endangered,Decreasing,~413000,Climate change,Overfishing,Marine - coastal,Africa,United Kingdom; South Africa,No,2020
+African Penguin,Spheniscus demersus,Aves,Sphenisciformes,Critically Endangered,Decreasing,~19800,Overfishing,Climate change,Marine - coastal,Africa,South Africa; Namibia,Yes,2024
+Galapagos Penguin,Spheniscus mendiculus,Aves,Sphenisciformes,Endangered,Decreasing,~1200,Climate change,Invasive species,Marine - coastal,South America,Ecuador,Yes,2020
+Yellow-eyed Penguin,Megadyptes antipodes,Aves,Sphenisciformes,Endangered,Decreasing,2500-3500,Disease,Bycatch,Marine - coastal,Oceania,New Zealand,Yes,2020
+Emperor Penguin,Aptenodytes forsteri,Aves,Sphenisciformes,Near Threatened,Decreasing,~256500,Climate change,Overfishing,Antarctic,Antarctic,Antarctica,Yes,2020
+Secretarybird,Sagittarius serpentarius,Aves,Accipitriformes,Endangered,Decreasing,6700-67000,Habitat loss,Agriculture,Savanna,Africa,Kenya; South Africa; Senegal,Yes,2020
+Baer's Pochard,Aythya baeri,Aves,Anseriformes,Critically Endangered,Decreasing,<1000,Habitat loss,Hunting,Wetland,Asia,China; Russia,No,2021
+Madagascar Pochard,Aythya innotata,Aves,Anseriformes,Critically Endangered,Stable,<100,Habitat loss,Invasive species,Freshwater lake,Africa,Madagascar,Yes,2018
+Forest Owlet,Athene blewitti,Aves,Strigiformes,Endangered,Decreasing,<1000,Deforestation,Hunting,Tropical forest,Asia,India,Yes,2018
+Blakiston's Fish Owl,Ketupa blakistoni,Aves,Strigiformes,Endangered,Decreasing,1500-3750,Habitat loss,Dams,Temperate forest,Asia,Russia; Japan; China,No,2020
+Rufous Fishing Owl,Scotopelia ussheri,Aves,Strigiformes,Endangered,Decreasing,Unknown,Deforestation,Habitat loss,Tropical forest,Africa,Liberia; Sierra Leone,Yes,2020
+Blue-eyed Ground Dove,Columbina cyanopis,Aves,Columbiformes,Critically Endangered,Stable,<20,Habitat loss,Agriculture,Savanna,South America,Brazil,Yes,2020
+Pink Pigeon,Nesoenas mayeri,Aves,Columbiformes,Endangered,Stable,~470,Invasive species,Habitat loss,Tropical forest,Africa,Mauritius,Yes,2021
+Hawksbill Turtle,Eretmochelys imbricata,Reptilia,Testudines,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Coral reef,Worldwide,Worldwide,No,2008
+Kemp's Ridley Turtle,Lepidochelys kempii,Reptilia,Testudines,Critically Endangered,Decreasing,~22000 nesting females,Bycatch,Habitat loss,Marine - coastal,North America,Mexico; USA,No,2019
+Leatherback Turtle,Dermochelys coriacea,Reptilia,Testudines,Vulnerable,Decreasing,Unknown,Bycatch,Climate change,Marine - open ocean,Worldwide,Worldwide,No,2013
+Loggerhead Turtle,Caretta caretta,Reptilia,Testudines,Vulnerable,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,Worldwide,Worldwide,No,2017
+Olive Ridley Turtle,Lepidochelys olivacea,Reptilia,Testudines,Vulnerable,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,Worldwide,Worldwide,No,2008
+Yangtze Giant Softshell Turtle,Rafetus swinhoei,Reptilia,Testudines,Critically Endangered,Decreasing,<5,Habitat loss,Hunting,Freshwater river,Asia,China; Vietnam,No,2021
+Ploughshare Tortoise,Astrochelys yniphora,Reptilia,Testudines,Critically Endangered,Decreasing,<100,Illegal wildlife trade,Habitat loss,Shrubland,Africa,Madagascar,Yes,2008
+Radiated Tortoise,Astrochelys radiata,Reptilia,Testudines,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Hunting,Shrubland,Africa,Madagascar,Yes,2008
+Burmese Roofed Turtle,Batagur trivittata,Reptilia,Testudines,Critically Endangered,Increasing,<10 (wild),Habitat loss,Hunting,Freshwater river,Asia,Myanmar,Yes,2019
+Northern River Terrapin,Batagur baska,Reptilia,Testudines,Critically Endangered,Decreasing,<100,Hunting,Habitat loss,Freshwater river,Asia,Bangladesh; India,No,2019
+Red-crowned Roofed Turtle,Batagur kachuga,Reptilia,Testudines,Critically Endangered,Decreasing,<500,Dams,Pollution,Freshwater river,Asia,India; Nepal,No,2019
+Chinese Three-striped Box Turtle,Cuora trifasciata,Reptilia,Testudines,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Freshwater river,Asia,China; Vietnam,No,2020
+Big-headed Turtle,Platysternon megacephalum,Reptilia,Testudines,Critically Endangered,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Freshwater river,Asia,China; Vietnam; Laos,No,2020
+Espanola Giant Tortoise,Chelonoidis hoodensis,Reptilia,Testudines,Critically Endangered,Increasing,~3000,Invasive species,Habitat loss,Shrubland,South America,Ecuador,Yes,2016
+Indian Star Tortoise,Geochelone elegans,Reptilia,Testudines,Vulnerable,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Shrubland,Asia,India; Sri Lanka; Pakistan,No,2016
+Egyptian Tortoise,Testudo kleinmanni,Reptilia,Testudines,Critically Endangered,Decreasing,<10000,Habitat loss,Illegal wildlife trade,Desert,Africa,Egypt; Libya,Yes,2019
+Gharial,Gavialis gangeticus,Reptilia,Crocodylia,Critically Endangered,Increasing,~650,Habitat loss,Bycatch,Freshwater river,Asia,India; Nepal,No,2019
+Chinese Alligator,Alligator sinensis,Reptilia,Crocodylia,Critically Endangered,Stable,<150,Habitat loss,Pollution,Wetland,Asia,China,Yes,2018
+Philippine Crocodile,Crocodylus mindorensis,Reptilia,Crocodylia,Critically Endangered,Decreasing,<100,Habitat loss,Hunting,Wetland,Asia,Philippines,Yes,2016
+Cuban Crocodile,Crocodylus rhombifer,Reptilia,Crocodylia,Critically Endangered,Decreasing,~4000,Hunting,Invasive species,Wetland,North America,Cuba,Yes,2008
+Siamese Crocodile,Crocodylus siamensis,Reptilia,Crocodylia,Critically Endangered,Decreasing,<1000,Habitat loss,Hunting,Wetland,Asia,Cambodia; Laos; Vietnam,No,2012
+Orinoco Crocodile,Crocodylus intermedius,Reptilia,Crocodylia,Critically Endangered,Decreasing,<250,Hunting,Habitat loss,Freshwater river,South America,Venezuela; Colombia,Yes,2018
+Komodo Dragon,Varanus komodoensis,Reptilia,Squamata,Endangered,Decreasing,~1380,Climate change,Habitat loss,Shrubland,Asia,Indonesia,Yes,2021
+Blue Iguana,Cyclura lewisi,Reptilia,Squamata,Endangered,Increasing,~750,Habitat loss,Invasive species,Shrubland,North America,Cayman Islands,Yes,2012
+Jamaican Iguana,Cyclura collei,Reptilia,Squamata,Critically Endangered,Increasing,<300,Invasive species,Habitat loss,Tropical forest,North America,Jamaica,Yes,2019
+Marine Iguana,Amblyrhynchus cristatus,Reptilia,Squamata,Vulnerable,Unknown,200000-300000,Invasive species,Climate change,Marine - coastal,South America,Ecuador,Yes,2020
+Round Island Boa,Casarea dussumieri,Reptilia,Squamata,Endangered,Stable,~1000,Habitat loss,Invasive species,Shrubland,Africa,Mauritius,Yes,2017
+Antiguan Racer,Alsophis antiguae,Reptilia,Squamata,Critically Endangered,Increasing,~1100,Invasive species,Habitat loss,Shrubland,North America,Antigua and Barbuda,Yes,2021
+King Cobra,Ophiophagus hannah,Reptilia,Squamata,Vulnerable,Decreasing,Unknown,Deforestation,Hunting,Tropical forest,Asia,India; Thailand; Indonesia,No,2011
+Chinese Cobra,Naja atra,Reptilia,Squamata,Vulnerable,Decreasing,Unknown,Illegal wildlife trade,Habitat loss,Shrubland,Asia,China; Vietnam,No,2011
+Aruba Island Rattlesnake,Crotalus unicolor,Reptilia,Squamata,Critically Endangered,Decreasing,<250,Habitat loss,Hunting,Shrubland,South America,Aruba,Yes,2019
+Psychedelic Rock Gecko,Cnemaspis psychedelica,Reptilia,Squamata,Endangered,Decreasing,<500,Illegal wildlife trade,Habitat loss,Tropical forest,Asia,Vietnam,Yes,2016
+Bermuda Skink,Plestiodon longirostris,Reptilia,Squamata,Critically Endangered,Decreasing,<3000,Invasive species,Habitat loss,Shrubland,North America,Bermuda,Yes,2016
+Tuatara,Sphenodon punctatus,Reptilia,Rhynchocephalia,Least Concern,Stable,~100000,Invasive species,Climate change,Shrubland,Oceania,New Zealand,Yes,2019
+Chinese Giant Salamander,Andrias davidianus,Amphibia,Caudata,Critically Endangered,Decreasing,Unknown,Hunting,Habitat loss,Freshwater river,Asia,China,Yes,2004
+Japanese Giant Salamander,Andrias japonicus,Amphibia,Caudata,Vulnerable,Decreasing,Unknown,Dams,Habitat loss,Freshwater river,Asia,Japan,Yes,2021
+Axolotl,Ambystoma mexicanum,Amphibia,Caudata,Critically Endangered,Decreasing,<1000,Pollution,Invasive species,Freshwater lake,North America,Mexico,Yes,2019
+Hellbender,Cryptobranchus alleganiensis,Amphibia,Caudata,Vulnerable,Decreasing,Unknown,Pollution,Habitat loss,Freshwater river,North America,USA,Yes,2021
+Olm,Proteus anguinus,Amphibia,Caudata,Vulnerable,Decreasing,Unknown,Pollution,Habitat loss,Caves,Europe,Slovenia; Croatia,Yes,2008
+Panamanian Golden Frog,Atelopus zeteki,Amphibia,Anura,Critically Endangered,Decreasing,0 (wild),Disease,Habitat loss,Montane forest,Central America,Panama,Yes,2019
+Variable Harlequin Frog,Atelopus varius,Amphibia,Anura,Critically Endangered,Decreasing,Unknown,Disease,Climate change,Montane forest,Central America,Costa Rica; Panama,Yes,2019
+Kihansi Spray Toad,Nectophrynoides asperginis,Amphibia,Anura,Extinct in the Wild,Stable,0 (wild),Dams,Disease,Wetland,Africa,Tanzania,Yes,2015
+Wyoming Toad,Anaxyrus baxteri,Amphibia,Anura,Extinct in the Wild,Stable,0 (wild),Disease,Habitat loss,Wetland,North America,USA,Yes,2015
+Golden Mantella,Mantella aurantiaca,Amphibia,Anura,Critically Endangered,Decreasing,Unknown,Habitat loss,Illegal wildlife trade,Tropical forest,Africa,Madagascar,Yes,2016
+Lake Titicaca Frog,Telmatobius culeus,Amphibia,Anura,Endangered,Decreasing,Unknown,Pollution,Hunting,Freshwater lake,South America,Peru; Bolivia,Yes,2020
+Mountain Chicken Frog,Leptodactylus fallax,Amphibia,Anura,Critically Endangered,Decreasing,<200,Disease,Hunting,Tropical forest,North America,Dominica; Montserrat,Yes,2017
+Purple Frog,Nasikabatrachus sahyadrensis,Amphibia,Anura,Endangered,Decreasing,Unknown,Habitat loss,Agriculture,Tropical forest,Asia,India,Yes,2004
+Malabar Tree Toad,Pedostibes tuberculosus,Amphibia,Anura,Endangered,Decreasing,Unknown,Habitat loss,Agriculture,Tropical forest,Asia,India,Yes,2004
+Archey's Frog,Leiopelma archeyi,Amphibia,Anura,Critically Endangered,Decreasing,Unknown,Disease,Invasive species,Temperate forest,Oceania,New Zealand,Yes,2017
+Southern Corroboree Frog,Pseudophryne corroboree,Amphibia,Anura,Critically Endangered,Decreasing,<50,Disease,Climate change,Montane,Oceania,Australia,Yes,2022
+Northern Darwin's Frog,Rhinoderma rufum,Amphibia,Anura,Critically Endangered,Decreasing,Unknown (possibly extinct),Disease,Habitat loss,Temperate forest,South America,Chile,Yes,2018
+Darwin's Frog,Rhinoderma darwinii,Amphibia,Anura,Endangered,Decreasing,Unknown,Disease,Deforestation,Temperate forest,South America,Chile; Argentina,Yes,2018
+Table Mountain Ghost Frog,Heleophryne rosei,Amphibia,Anura,Critically Endangered,Decreasing,Unknown,Habitat loss,Invasive species,Montane,Africa,South Africa,Yes,2016
+Lemur Leaf Frog,Agalychnis lemur,Amphibia,Anura,Critically Endangered,Decreasing,Unknown,Disease,Habitat loss,Tropical forest,Central America,Costa Rica; Panama,Yes,2020
+Golden Poison Frog,Phyllobates terribilis,Amphibia,Anura,Endangered,Decreasing,Unknown,Deforestation,Agriculture,Tropical forest,South America,Colombia,Yes,2017
+Gardiner's Seychelles Frog,Sechellophryne gardineri,Amphibia,Anura,Vulnerable,Stable,Unknown,Climate change,Habitat loss,Tropical forest,Africa,Seychelles,Yes,2013
+Sagalla Caecilian,Boulengerula niedeni,Amphibia,Gymnophiona,Endangered,Decreasing,Unknown,Habitat loss,Agriculture,Montane forest,Africa,Kenya,Yes,2013
+Whale Shark,Rhincodon typus,Chondrichthyes,Orectolobiformes,Endangered,Decreasing,Unknown,Overfishing,Vessel strikes,Marine - open ocean,Worldwide,Worldwide,No,2016
+Great Hammerhead,Sphyrna mokarran,Chondrichthyes,Carcharhiniformes,Critically Endangered,Decreasing,Unknown,Overfishing,Bycatch,Marine - coastal,Worldwide,Worldwide,No,2018
+Scalloped Hammerhead,Sphyrna lewini,Chondrichthyes,Carcharhiniformes,Critically Endangered,Decreasing,Unknown,Overfishing,Bycatch,Marine - coastal,Worldwide,Worldwide,No,2018
+Oceanic Whitetip Shark,Carcharhinus longimanus,Chondrichthyes,Carcharhiniformes,Critically Endangered,Decreasing,Unknown,Bycatch,Overfishing,Marine - open ocean,Worldwide,Worldwide,No,2018
+Shortfin Mako,Isurus oxyrinchus,Chondrichthyes,Lamniformes,Endangered,Decreasing,Unknown,Overfishing,Bycatch,Marine - open ocean,Worldwide,Worldwide,No,2018
+Basking Shark,Cetorhinus maximus,Chondrichthyes,Lamniformes,Endangered,Decreasing,Unknown,Bycatch,Vessel strikes,Marine - open ocean,Worldwide,Worldwide,No,2018
+Great White Shark,Carcharodon carcharias,Chondrichthyes,Lamniformes,Vulnerable,Unknown,Unknown,Bycatch,Overfishing,Marine - coastal,Worldwide,Worldwide,No,2018
+Angelshark,Squatina squatina,Chondrichthyes,Squatiniformes,Critically Endangered,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,Europe,Spain; Morocco,No,2019
+Ganges Shark,Glyphis gangeticus,Chondrichthyes,Carcharhiniformes,Critically Endangered,Decreasing,Unknown,Overfishing,Pollution,Freshwater river,Asia,India,Yes,2020
+Pondicherry Shark,Carcharhinus hemiodon,Chondrichthyes,Carcharhiniformes,Critically Endangered,Decreasing,Unknown,Overfishing,Habitat loss,Marine - coastal,Asia,India; Sri Lanka,No,2020
+Largetooth Sawfish,Pristis pristis,Chondrichthyes,Rhinopristiformes,Critically Endangered,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,Worldwide,Worldwide,No,2013
+Smalltooth Sawfish,Pristis pectinata,Chondrichthyes,Rhinopristiformes,Critically Endangered,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,North America,USA; Bahamas,No,2013
+Green Sawfish,Pristis zijsron,Chondrichthyes,Rhinopristiformes,Critically Endangered,Decreasing,Unknown,Bycatch,Habitat loss,Marine - coastal,Oceania,Australia,No,2013
+Giant Manta Ray,Mobula birostris,Chondrichthyes,Myliobatiformes,Endangered,Decreasing,Unknown,Overfishing,Bycatch,Marine - open ocean,Worldwide,Worldwide,No,2019
+Reef Manta Ray,Mobula alfredi,Chondrichthyes,Myliobatiformes,Vulnerable,Decreasing,Unknown,Overfishing,Bycatch,Coral reef,Worldwide,Worldwide,No,2019
+Giant Freshwater Stingray,Urogymnus polylepis,Chondrichthyes,Myliobatiformes,Endangered,Decreasing,Unknown,Habitat loss,Overfishing,Freshwater river,Asia,Thailand; Cambodia; Indonesia,No,2021
+West Indian Ocean Coelacanth,Latimeria chalumnae,Actinistia,Coelacanthiformes,Critically Endangered,Decreasing,<500,Bycatch,Habitat loss,Marine - coastal,Africa,Comoros; South Africa,No,2008
+Indonesian Coelacanth,Latimeria menadoensis,Actinistia,Coelacanthiformes,Vulnerable,Unknown,Unknown,Bycatch,Habitat loss,Marine - coastal,Asia,Indonesia,Yes,2008
+Beluga Sturgeon,Huso huso,Actinopterygii,Acipenseriformes,Critically Endangered,Decreasing,Unknown,Overfishing,Dams,Freshwater river,Europe,Russia; Iran; Azerbaijan,No,2022
+Chinese Sturgeon,Acipenser sinensis,Actinopterygii,Acipenseriformes,Critically Endangered,Decreasing,<100,Dams,Pollution,Freshwater river,Asia,China,Yes,2022
+European Sturgeon,Acipenser sturio,Actinopterygii,Acipenseriformes,Critically Endangered,Decreasing,<1000,Dams,Overfishing,Freshwater river,Europe,France; Germany,No,2022
+Russian Sturgeon,Acipenser gueldenstaedtii,Actinopterygii,Acipenseriformes,Critically Endangered,Decreasing,Unknown,Overfishing,Dams,Freshwater river,Europe,Russia; Kazakhstan,No,2022
+European Eel,Anguilla anguilla,Actinopterygii,Anguilliformes,Critically Endangered,Decreasing,Unknown,Dams,Overfishing,Freshwater river,Europe,Europe-wide,No,2020
+Japanese Eel,Anguilla japonica,Actinopterygii,Anguilliformes,Endangered,Decreasing,Unknown,Overfishing,Dams,Freshwater river,Asia,Japan; China; Taiwan,No,2020
+American Eel,Anguilla rostrata,Actinopterygii,Anguilliformes,Endangered,Decreasing,Unknown,Dams,Pollution,Freshwater river,North America,USA; Canada,No,2019
+Southern Bluefin Tuna,Thunnus maccoyii,Actinopterygii,Perciformes,Endangered,Increasing,Unknown,Overfishing,Bycatch,Marine - open ocean,Worldwide,Worldwide,No,2021
+Bigeye Tuna,Thunnus obesus,Actinopterygii,Perciformes,Vulnerable,Decreasing,Unknown,Overfishing,Bycatch,Marine - open ocean,Worldwide,Worldwide,No,2021
+Atlantic Cod,Gadus morhua,Actinopterygii,Gadiformes,Vulnerable,Unknown,Unknown,Overfishing,Climate change,Marine - coastal,Europe,Norway; Canada; Iceland,No,2019
+Nassau Grouper,Epinephelus striatus,Actinopterygii,Perciformes,Critically Endangered,Decreasing,Unknown,Overfishing,Habitat loss,Coral reef,North America,Bahamas; Cuba; Belize,No,2018
+Humphead Wrasse,Cheilinus undulatus,Actinopterygii,Labriformes,Endangered,Decreasing,Unknown,Overfishing,Habitat loss,Coral reef,Asia,Indonesia; Philippines; Australia,No,2021
+Bumphead Parrotfish,Bolbometopon muricatum,Actinopterygii,Labriformes,Vulnerable,Decreasing,Unknown,Overfishing,Habitat loss,Coral reef,Asia,Indonesia; Solomon Islands,No,2012
+Mekong Giant Catfish,Pangasianodon gigas,Actinopterygii,Siluriformes,Critically Endangered,Decreasing,Unknown,Dams,Overfishing,Freshwater river,Asia,Thailand; Cambodia; Laos,No,2011
+Devil's Hole Pupfish,Cyprinodon diabolis,Actinopterygii,Cyprinodontiformes,Critically Endangered,Stable,<200,Habitat loss,Climate change,Desert,North America,USA,Yes,2014
+Knysna Seahorse,Hippocampus capensis,Actinopterygii,Syngnathiformes,Endangered,Decreasing,Unknown,Habitat loss,Pollution,Marine - coastal,Africa,South Africa,Yes,2017
+White's Seahorse,Hippocampus whitei,Actinopterygii,Syngnathiformes,Endangered,Decreasing,Unknown,Habitat loss,Pollution,Marine - coastal,Oceania,Australia,Yes,2017
+Staghorn Coral,Acropora cervicornis,Anthozoa,Scleractinia,Critically Endangered,Decreasing,Unknown,Climate change,Disease,Coral reef,North America,Caribbean; USA,No,2022
+Elkhorn Coral,Acropora palmata,Anthozoa,Scleractinia,Critically Endangered,Decreasing,Unknown,Climate change,Disease,Coral reef,North America,Caribbean; USA,No,2022
+Pillar Coral,Dendrogyra cylindrus,Anthozoa,Scleractinia,Critically Endangered,Decreasing,Unknown,Climate change,Disease,Coral reef,North America,Caribbean,No,2022
+Migratory Monarch Butterfly,Danaus plexippus plexippus,Insecta,Lepidoptera,Vulnerable,Decreasing,Unknown,Habitat loss,Climate change,Grassland,North America,USA; Mexico; Canada,No,2022
+Queen Alexandra's Birdwing,Ornithoptera alexandrae,Insecta,Lepidoptera,Endangered,Decreasing,Unknown,Deforestation,Illegal wildlife trade,Tropical forest,Oceania,Papua New Guinea,Yes,2018
+Lord Howe Island Stick Insect,Dryococelus australis,Insecta,Phasmatodea,Critically Endangered,Stable,<50,Invasive species,Habitat loss,Island,Oceania,Australia,Yes,2017
+Rusty Patched Bumble Bee,Bombus affinis,Insecta,Hymenoptera,Critically Endangered,Decreasing,Unknown,Disease,Agriculture,Grassland,North America,USA; Canada,No,2014
+Franklin's Bumble Bee,Bombus franklini,Insecta,Hymenoptera,Critically Endangered,Decreasing,Unknown,Disease,Habitat loss,Grassland,North America,USA,Yes,2014
+Hine's Emerald Dragonfly,Somatochlora hineana,Insecta,Odonata,Endangered,Decreasing,Unknown,Habitat loss,Pollution,Wetland,North America,USA,Yes,2018
+Coconut Crab,Birgus latro,Malacostraca,Decapoda,Vulnerable,Decreasing,Unknown,Hunting,Habitat loss,Island,Oceania,Indo-Pacific islands,No,2018
+Giant Clam,Tridacna gigas,Bivalvia,Cardiida,Vulnerable,Decreasing,Unknown,Overfishing,Climate change,Coral reef,Oceania,Australia; Philippines,No,1996
+White Abalone,Haliotis sorenseni,Gastropoda,Lepetellida,Critically Endangered,Decreasing,Unknown,Overfishing,Disease,Marine - coastal,North America,USA; Mexico,No,2021
+Polynesian Tree Snail,Partula nodosa,Gastropoda,Stylommatophora,Extinct in the Wild,Stable,0 (wild),Invasive species,Habitat loss,Island,Oceania,French Polynesia,Yes,2009
+Freshwater Pearl Mussel,Margaritifera margaritifera,Bivalvia,Unionida,Endangered,Decreasing,Unknown,Pollution,Habitat loss,Freshwater river,Europe,Europe-wide; Russia,No,1996
+Kauai Cave Wolf Spider,Adelocosa anops,Arachnida,Araneae,Endangered,Decreasing,<30,Habitat loss,Invasive species,Caves,Oceania,USA,Yes,1996
+Wollemi Pine,Wollemia nobilis,Pinopsida,Araucariales,Critically Endangered,Stable,<100,Habitat loss,Disease,Temperate forest,Oceania,Australia,Yes,2011
+Monkey Puzzle Tree,Araucaria araucana,Pinopsida,Araucariales,Endangered,Decreasing,Unknown,Logging,Climate change,Temperate forest,South America,Chile; Argentina,Yes,2013
+Coast Redwood,Sequoia sempervirens,Pinopsida,Pinales,Endangered,Decreasing,Unknown,Logging,Climate change,Temperate forest,North America,USA,Yes,2013
+Giant Sequoia,Sequoiadendron giganteum,Pinopsida,Pinales,Endangered,Decreasing,Unknown,Climate change,Habitat loss,Montane forest,North America,USA,Yes,2011
+Ginkgo,Ginkgo biloba,Ginkgoopsida,Ginkgoales,Endangered,Stable,Unknown,Habitat loss,Logging,Temperate forest,Asia,China,Yes,2014
+Wood's Cycad,Encephalartos woodii,Cycadopsida,Cycadales,Extinct in the Wild,Stable,0 (wild),Habitat loss,Illegal wildlife trade,Shrubland,Africa,South Africa,Yes,2010
+Grandidier's Baobab,Adansonia grandidieri,Magnoliopsida,Malvales,Endangered,Decreasing,Unknown,Agriculture,Habitat loss,Shrubland,Africa,Madagascar,Yes,2016
+Dragon Blood Tree,Dracaena cinnabari,Liliopsida,Asparagales,Vulnerable,Decreasing,Unknown,Climate change,Agriculture,Shrubland,Asia,Yemen,Yes,2004
+Madagascar Rosewood,Dalbergia maritima,Magnoliopsida,Fabales,Critically Endangered,Decreasing,Unknown,Logging,Illegal wildlife trade,Tropical forest,Africa,Madagascar,Yes,2019
+Big Leaf Mahogany,Swietenia macrophylla,Magnoliopsida,Sapindales,Vulnerable,Decreasing,Unknown,Logging,Deforestation,Tropical forest,South America,Brazil; Peru; Bolivia,No,1998
+Brazilwood,Paubrasilia echinata,Magnoliopsida,Fabales,Endangered,Decreasing,Unknown,Logging,Habitat loss,Tropical forest,South America,Brazil,Yes,1998
+Madagascar Ebony,Diospyros perrieri,Magnoliopsida,Ericales,Critically Endangered,Decreasing,Unknown,Logging,Habitat loss,Tropical forest,Africa,Madagascar,Yes,2018
+Rajah Pitcher Plant,Nepenthes rajah,Magnoliopsida,Caryophyllales,Endangered,Stable,Unknown,Illegal wildlife trade,Habitat loss,Montane,Asia,Malaysia,Yes,2014
+Attenborough's Pitcher Plant,Nepenthes attenboroughii,Magnoliopsida,Caryophyllales,Critically Endangered,Decreasing,<1000,Illegal wildlife trade,Mining,Montane,Asia,Philippines,Yes,2014
+Corpse Flower,Amorphophallus titanum,Liliopsida,Alismatales,Endangered,Decreasing,<1000,Deforestation,Habitat loss,Tropical forest,Asia,Indonesia,Yes,2018
+Rothschild's Slipper Orchid,Paphiopedilum rothschildianum,Liliopsida,Asparagales,Critically Endangered,Decreasing,<2000,Illegal wildlife trade,Habitat loss,Montane forest,Asia,Malaysia,Yes,2014
+Chilean Wine Palm,Jubaea chilensis,Liliopsida,Arecales,Vulnerable,Decreasing,Unknown,Agriculture,Habitat loss,Shrubland,South America,Chile,Yes,1998
+Hawaiian Silversword,Argyroxiphium sandwicense,Magnoliopsida,Asterales,Vulnerable,Decreasing,Unknown,Climate change,Invasive species,Montane,Oceania,USA,Yes,2016
+Socotra Cucumber Tree,Dendrosicyos socotranus,Magnoliopsida,Cucurbitales,Vulnerable,Decreasing,Unknown,Agriculture,Climate change,Desert,Asia,Yemen,Yes,2004
+St Helena Gumwood,Commidendrum robustum,Magnoliopsida,Asterales,Critically Endangered,Stable,~4000,Invasive species,Habitat loss,Shrubland,Africa,Saint Helena,Yes,2003

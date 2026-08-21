@@ -1,5 +1,5 @@
 import type { DatasetMeta } from "@/lib/datasets/types";
-import { BRAND_NAME } from "@/lib/brand";
+import { BRAND_NAME, DATASET_LICENSE_URL } from "@/lib/brand";
 
 export interface DatasetJsonLdInput {
   meta: DatasetMeta;
@@ -16,11 +16,14 @@ export interface DatasetJsonLdInput {
  * `keywords` and `variableMeasured` are omitted entirely when there is
  * nothing to report, rather than emitted as empty arrays.
  *
- * Deliberately does NOT emit `license` (the 43 datasets come from mixed
- * upstream sources and we cannot assert one), `distribution`/`contentUrl`
- * (there is no raw-CSV download route in this app), or `creator` (CSV
- * Preview publishes these pages but did not create the underlying data —
- * only `publisher` is accurate).
+ * `creator` and `license` describe the *compilation* CSV Preview publishes,
+ * not the underlying facts (which come from mixed public sources and are not
+ * copyrightable on their own): CSV Preview curates each CSV, and the result is
+ * offered under `DATASET_LICENSE_URL` unless a dataset overrides it via
+ * `meta.license`. Search Console reports both as recommended Dataset fields.
+ *
+ * Deliberately does NOT emit `distribution`/`contentUrl` — there is no raw-CSV
+ * download route in this app.
  *
  * Pure and exported for unit testing.
  */
@@ -28,6 +31,11 @@ export function computeDatasetJsonLd(
   input: DatasetJsonLdInput,
 ): Record<string, unknown> {
   const { meta, path, baseUrl, columns } = input;
+  const organization = {
+    "@type": "Organization",
+    name: BRAND_NAME,
+    url: baseUrl,
+  };
 
   return {
     "@context": "https://schema.org",
@@ -38,11 +46,9 @@ export function computeDatasetJsonLd(
     identifier: meta.slug,
     dateModified: meta.lastModified,
     isAccessibleForFree: true,
-    publisher: {
-      "@type": "Organization",
-      name: BRAND_NAME,
-      url: baseUrl,
-    },
+    license: meta.license ?? DATASET_LICENSE_URL,
+    creator: organization,
+    publisher: organization,
     ...(meta.keywords && meta.keywords.length > 0
       ? { keywords: meta.keywords }
       : {}),

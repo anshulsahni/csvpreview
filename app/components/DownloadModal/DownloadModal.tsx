@@ -20,7 +20,7 @@ export default function DownloadModal(props: DownloadModalProps) {
         onClick={modal.handleCardClick}
       >
         <Header>
-          <Title id="download-modal-title">Download CSV</Title>
+          <Title id="download-modal-title">{modal.title}</Title>
           <CloseButton
             type="button"
             aria-label="Close download modal"
@@ -33,14 +33,23 @@ export default function DownloadModal(props: DownloadModalProps) {
         <Form onSubmit={modal.handleSubmit}>
           <Field>
             <FieldLabel htmlFor="download-filename">Filename</FieldLabel>
-            <FilenameInput
-              id="download-filename"
-              type="text"
-              value={modal.filename}
-              onChange={(event) => modal.setFilename(event.target.value)}
-              aria-label="Download filename"
-              autoFocus={true}
-            />
+            {/* The extension is fixed by the chosen format, so it sits outside
+                the input as a read-only chip — the row is styled to read as one
+                control. */}
+            <FilenameRow>
+              <FilenameInput
+                id="download-filename"
+                type="text"
+                value={modal.baseName}
+                onChange={(event) => modal.setBaseName(event.target.value)}
+                aria-label="Download filename"
+                aria-describedby="download-filename-extension"
+                autoFocus={true}
+              />
+              <ExtensionChip id="download-filename-extension">
+                {modal.extension}
+              </ExtensionChip>
+            </FilenameRow>
           </Field>
 
           <Footer>
@@ -122,19 +131,45 @@ const FieldLabel = styled.label`
   font-weight: 600;
 `;
 
-const FilenameInput = styled.input`
-  width: 100%;
+const FilenameRow = styled.div`
+  display: flex;
+  align-items: stretch;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
   background: var(--grid-cell-bg);
-  color: var(--foreground);
+  overflow: hidden;
 
-  &:focus {
+  &:focus-within {
     outline: 2px solid var(--primary);
     outline-offset: 1px;
   }
+`;
+
+const FilenameInput = styled.input`
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--foreground);
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ExtensionChip = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-left: 1px solid var(--border);
+  background: var(--subtle);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  user-select: none;
+  white-space: nowrap;
 `;
 
 const Footer = styled.div`

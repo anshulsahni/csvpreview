@@ -940,5 +940,51 @@ describe("useCsvViewer", () => {
         ["changed", "d"],
       ]);
     });
+
+    // An edit rebuilds state that flows all the way back into the grid, so it
+    // shares every row it did not touch and skips the write entirely when the
+    // value is unchanged (CSV-36).
+    it("copies only the edited row and shares the rest", async () => {
+      localStorage.setItem(
+        LS_KEY_DATA,
+        JSON.stringify([
+          ["a", "b"],
+          ["c", "d"],
+          ["e", "f"],
+        ])
+      );
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.csvData).not.toBeNull());
+      const before = result.current.csvData!;
+
+      act(() => {
+        result.current.handleCellChange(1, 0, "changed");
+      });
+
+      const after = result.current.csvData!;
+      expect(after).not.toBe(before);
+      expect(after[1]).not.toBe(before[1]);
+      expect(after[0]).toBe(before[0]);
+      expect(after[2]).toBe(before[2]);
+    });
+
+    it("leaves csvData untouched when the cell already holds that value", async () => {
+      localStorage.setItem(
+        LS_KEY_DATA,
+        JSON.stringify([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.csvData).not.toBeNull());
+      const before = result.current.csvData!;
+
+      act(() => {
+        result.current.handleCellChange(1, 1, "d");
+      });
+
+      expect(result.current.csvData).toBe(before);
+    });
   });
 });

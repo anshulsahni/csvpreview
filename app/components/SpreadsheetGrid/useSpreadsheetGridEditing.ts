@@ -47,6 +47,11 @@ export function useSpreadsheetGridEditing({
   const [focusedCell, setFocusedCell] = useState<EditingCell | null>(null);
   const [editingCell, setEditingCell] = useState<EditingCell | null>(null);
   const draftValueRef = useRef("");
+  // The value the cell held when editing started, so a commit that would write
+  // the same value back can be skipped. Rebuilding the sheet is O(rows) work all
+  // the way up to `csvData`, and opening a cell and leaving it without typing is
+  // the common case — it should cost nothing.
+  const initialValueRef = useRef("");
   const pendingFocusCellRef = useRef<EditingCell | null>(null);
 
   const isEditingCell = (rowIdx: number, colIdx: number) =>
@@ -62,11 +67,23 @@ export function useSpreadsheetGridEditing({
     onCellChange?.(dataRowIndex, colIdx, value);
   };
 
+  /** Commit only a real change — see `initialValueRef`. */
+  const commitIfChanged = (
+    rowIdx: number,
+    colIdx: number,
+    value: string
+  ) => {
+    if (value === initialValueRef.current) return;
+    commitAt(rowIdx, colIdx, value);
+  };
+
   const startEditing = (rowIdx: number, colIdx: number) => {
     setFocusedCell({ rowIdx, colIdx });
     selectSingleCell(rowIdx, colIdx);
     setEditingCell({ rowIdx, colIdx });
-    draftValueRef.current = bodyRows[rowIdx]?.[colIdx] ?? "";
+    const currentValue = bodyRows[rowIdx]?.[colIdx] ?? "";
+    draftValueRef.current = currentValue;
+    initialValueRef.current = currentValue;
   };
 
   const exitEditing = (
@@ -84,6 +101,7 @@ export function useSpreadsheetGridEditing({
     }
     setEditingCell(null);
     draftValueRef.current = "";
+    initialValueRef.current = "";
   };
 
   useEffect(() => {
@@ -96,7 +114,7 @@ export function useSpreadsheetGridEditing({
 
   const commitAndMove = (value: string, deltaRow: number, deltaCol: number) => {
     if (editingCell === null) return;
-    commitAt(editingCell.rowIdx, editingCell.colIdx, value);
+    commitIfChanged(editingCell.rowIdx, editingCell.colIdx, value);
     exitEditing({
       rowIdx: editingCell.rowIdx + deltaRow,
       colIdx: editingCell.colIdx + deltaCol,
@@ -105,7 +123,7 @@ export function useSpreadsheetGridEditing({
 
   const commitAndStay = (value: string) => {
     if (editingCell === null) return;
-    commitAt(editingCell.rowIdx, editingCell.colIdx, value);
+    commitIfChanged(editingCell.rowIdx, editingCell.colIdx, value);
     exitEditing(editingCell);
   };
 
@@ -114,9 +132,14 @@ export function useSpreadsheetGridEditing({
       editingCell !== null &&
       (editingCell.rowIdx !== rowIdx || editingCell.colIdx !== colIdx)
     ) {
-      commitAt(editingCell.rowIdx, editingCell.colIdx, draftValueRef.current);
+      commitIfChanged(
+        editingCell.rowIdx,
+        editingCell.colIdx,
+        draftValueRef.current
+      );
       setEditingCell(null);
       draftValueRef.current = "";
+      initialValueRef.current = "";
     }
     setFocusedCell({ rowIdx, colIdx });
   };

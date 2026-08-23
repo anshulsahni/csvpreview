@@ -1,5 +1,5 @@
 import { computeDatasetJsonLd } from "@/app/components/DatasetJsonLd/jsonLdUtils";
-import { BRAND_NAME } from "@/lib/brand";
+import { BRAND_NAME, DATASET_LICENSE_URL } from "@/lib/brand";
 import type { DatasetMeta } from "@/lib/datasets/types";
 
 const baseMeta: DatasetMeta = {
@@ -29,6 +29,12 @@ describe("computeDatasetJsonLd", () => {
       identifier: "world-population",
       dateModified: "2026-05-02",
       isAccessibleForFree: true,
+      license: DATASET_LICENSE_URL,
+      creator: {
+        "@type": "Organization",
+        name: BRAND_NAME,
+        url: "https://csvpreview.com",
+      },
       publisher: {
         "@type": "Organization",
         name: BRAND_NAME,
@@ -87,7 +93,50 @@ describe("computeDatasetJsonLd", () => {
     expect(jsonLd).not.toHaveProperty("variableMeasured");
   });
 
-  it("never emits license, distribution, contentUrl, or creator", () => {
+  it("falls back to the site-wide dataset license when meta.license is unset", () => {
+    const jsonLd = computeDatasetJsonLd({
+      meta: baseMeta,
+      path: "/data/geography/world-population",
+      baseUrl: "https://csvpreview.com",
+      columns: ["country"],
+    });
+
+    expect(jsonLd.license).toBe(DATASET_LICENSE_URL);
+  });
+
+  it("prefers a per-dataset license over the site-wide one", () => {
+    const meta: DatasetMeta = {
+      ...baseMeta,
+      license: "https://creativecommons.org/licenses/by-sa/4.0/",
+    };
+    const jsonLd = computeDatasetJsonLd({
+      meta,
+      path: "/data/geography/world-population",
+      baseUrl: "https://csvpreview.com",
+      columns: ["country"],
+    });
+
+    expect(jsonLd.license).toBe(
+      "https://creativecommons.org/licenses/by-sa/4.0/",
+    );
+  });
+
+  it("credits the brand as creator, using the given baseUrl", () => {
+    const jsonLd = computeDatasetJsonLd({
+      meta: baseMeta,
+      path: "/data/geography/world-population",
+      baseUrl: "https://staging.csvpreview.com",
+      columns: [],
+    });
+
+    expect(jsonLd.creator).toEqual({
+      "@type": "Organization",
+      name: BRAND_NAME,
+      url: "https://staging.csvpreview.com",
+    });
+  });
+
+  it("never emits distribution or contentUrl", () => {
     const jsonLd = computeDatasetJsonLd({
       meta: baseMeta,
       path: "/data/geography/world-population",
@@ -95,9 +144,7 @@ describe("computeDatasetJsonLd", () => {
       columns: ["country", "population"],
     });
 
-    expect(jsonLd).not.toHaveProperty("license");
     expect(jsonLd).not.toHaveProperty("distribution");
     expect(jsonLd).not.toHaveProperty("contentUrl");
-    expect(jsonLd).not.toHaveProperty("creator");
   });
 });

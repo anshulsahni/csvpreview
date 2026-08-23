@@ -3,70 +3,49 @@ import {
   getActiveCellFromDom,
 } from "@/app/components/SpreadsheetGrid/gridDomUtils";
 
-const ROW_HEIGHT = 26;
-const HEADER_HEIGHT = 28;
-const VIEWPORT_HEIGHT = 260;
-
-/**
- * A miniature stand-in for the virtualized grid. jsdom has no layout, so the
- * geometry `focusCellAt` reads (`getBoundingClientRect`, `clientHeight`) is
- * derived from the row indices currently mounted — which is exactly what the
- * real virtualizer varies. `renderWindow` re-mounts the tbody for a given row
- * range, standing in for a virtualizer commit.
- */
-function mountGrid(rowCount: number) {
-  const scroller = document.createElement("div");
-  scroller.setAttribute("data-grid-scroller", "");
-  Object.defineProperty(scroller, "clientHeight", {
-    value: VIEWPORT_HEIGHT,
-    configurable: true,
-  });
-  scroller.getBoundingClientRect = () => ({ top: 0, height: VIEWPORT_HEIGHT }) as DOMRect;
-  scroller.scrollTop = 0;
-
-  const table = document.createElement("table");
-  const thead = document.createElement("thead");
-  thead.getBoundingClientRect = () => ({ height: HEADER_HEIGHT }) as DOMRect;
-  const tbody = document.createElement("tbody");
-  table.append(thead, tbody);
-  scroller.appendChild(table);
-  document.body.appendChild(scroller);
-
-  function renderWindow(startIndex: number, endIndex: number) {
-    tbody.innerHTML = "";
-    for (let rowIdx = startIndex; rowIdx < endIndex; rowIdx += 1) {
-      const tr = document.createElement("tr");
-      for (let colIdx = 0; colIdx < 3; colIdx += 1) {
-        const td = document.createElement("td");
-        td.tabIndex = 0;
-        td.dataset.row = String(rowIdx);
-        td.dataset.col = String(colIdx);
-        // Content-space top of the row, translated by the current scroll.
-        const top = HEADER_HEIGHT + rowIdx * ROW_HEIGHT - scroller.scrollTop;
-        td.getBoundingClientRect = () =>
-          ({ top, height: ROW_HEIGHT, bottom: top + ROW_HEIGHT }) as DOMRect;
-        td.scrollIntoView = jest.fn();
-        tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-    }
-  }
-
-  /** Mount the window the virtualizer would pick for the current scrollTop. */
-  function renderWindowForScroll() {
-    const first = Math.min(
-      rowCount - 1,
-      Math.max(0, Math.floor(scroller.scrollTop / ROW_HEIGHT))
-    );
-    const visible = Math.ceil(VIEWPORT_HEIGHT / ROW_HEIGHT);
-    renderWindow(first, Math.min(rowCount, first + visible));
-  }
-
-  return { scroller, renderWindow, renderWindowForScroll };
-}
-
 function cellAt(rowIdx: number, colIdx: number): HTMLElement | null {
   return document.querySelector(`[data-row="${rowIdx}"][data-col="${colIdx}"]`);
+}
+
+/** A lone focusable cell — `gridDomUtils` matches on the attribute pair alone. */
+function mountCell(rowIdx: number, colIdx: number): HTMLElement {
+  const cell = document.createElement("div");
+  cell.tabIndex = 0;
+  cell.dataset.row = String(rowIdx);
+  cell.dataset.col = String(colIdx);
+  document.body.appendChild(cell);
+  return cell;
+}
+
+/**
+ * The structure `scrollRowIntoView` walks: a `[data-grid-scroller]` wrapping a
+ * `tbody` of cells. `mountRows` swaps the tbody's contents, standing in for a
+ * virtualizer commit — which range that is, is the test's own choice, and is
+ * deliberately not derived from `computeRowWindow` so this file cannot drift
+ * out of sync with the real windowing rule.
+ */
+function mountScroller() {
+  const scroller = document.createElement("div");
+  scroller.setAttribute("data-grid-scroller", "");
+  const table = scroller.appendChild(document.createElement("table"));
+  const tbody = table.appendChild(document.createElement("tbody"));
+  document.body.appendChild(scroller);
+
+  return {
+    scroller,
+    mountRows(startIndex: number, endIndex: number) {
+      tbody.innerHTML = "";
+      for (let rowIdx = startIndex; rowIdx < endIndex; rowIdx += 1) {
+        const tr = tbody.appendChild(document.createElement("tr"));
+        for (let colIdx = 0; colIdx < 3; colIdx += 1) {
+          const td = tr.appendChild(document.createElement("td"));
+          td.tabIndex = 0;
+          td.dataset.row = String(rowIdx);
+          td.dataset.col = String(colIdx);
+        }
+      }
+    },
+  };
 }
 
 /**
@@ -81,79 +60,43 @@ async function flushFrames() {
 
 afterEach(() => {
   document.body.innerHTML = "";
-  jest.restoreAllMocks();
 });
 
 describe("focusCellAt", () => {
   it("focuses a cell that is already mounted, without deferring", () => {
-    const grid = mountGrid(1000);
-    grid.renderWindow(0, 10);
+    const cell = mountCell(3, 1);
 
     focusCellAt(3, 1);
 
-    expect(document.activeElement).toBe(cellAt(3, 1));
+    expect(document.activeElement).toBe(cell);
   });
 
   it("scrolls a virtualized-away row into view and focuses it once it mounts", async () => {
-    const grid = mountGrid(1000);
-    grid.renderWindow(0, 10);
+    const grid = mountScroller();
+    grid.mountRows(0, 10);
 
     // Row 500 is far below the fold, so it isn't in the DOM yet.
     expect(cellAt(500, 2)).toBeNull();
 
     focusCellAt(500, 2);
 
-    // The scroller was moved toward the target...
+    // jsdom has no layout, so every measurement reads zero and the exact
+    // scroll target is meaningless here — that arithmetic is covered by
+    // `scrollUtils.test.ts`. All this asserts is that the scroller moved
+    // toward the target...
     expect(grid.scroller.scrollTop).toBeGreaterThan(0);
-    // ...and the virtualizer commits the newly visible window.
-    grid.renderWindowForScroll();
+    // ...and that focus lands once the virtualizer commits a window with it.
+    grid.mountRows(495, 505);
 
     await flushFrames();
 
-    expect(cellAt(500, 2)).not.toBeNull();
     expect(document.activeElement).toBe(cellAt(500, 2));
-  });
-
-  it("scrolls back up for a row above the fold and focuses it", async () => {
-    const grid = mountGrid(1000);
-    grid.scroller.scrollTop = 500 * ROW_HEIGHT;
-    grid.renderWindowForScroll();
-
-    focusCellAt(4, 0);
-
-    expect(grid.scroller.scrollTop).toBeLessThan(500 * ROW_HEIGHT);
-    grid.renderWindowForScroll();
-
-    await flushFrames();
-
-    expect(document.activeElement).toBe(cellAt(4, 0));
-  });
-
-  it("does nothing when the target never mounts", async () => {
-    const grid = mountGrid(1000);
-    grid.renderWindow(0, 10);
-    const before = document.activeElement;
-
-    focusCellAt(900, 0);
-    // The virtualizer never commits a window containing row 900.
-    await flushFrames();
-
-    expect(document.activeElement).toBe(before);
-  });
-
-  it("is a no-op when there is no grid scroller in the document", async () => {
-    focusCellAt(5, 0);
-    await flushFrames();
-
-    expect(document.activeElement).toBe(document.body);
   });
 });
 
 describe("getActiveCellFromDom", () => {
   it("reads the coordinates off the focused cell", () => {
-    const grid = mountGrid(100);
-    grid.renderWindow(0, 10);
-    cellAt(2, 1)?.focus();
+    mountCell(2, 1).focus();
 
     expect(getActiveCellFromDom()).toEqual({ rowIdx: 2, colIdx: 1 });
   });

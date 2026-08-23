@@ -1,4 +1,5 @@
 import sitemap from "@/app/sitemap";
+import { tools } from "@/lib/tools";
 
 // Expected values are hardcoded fixtures at the bottom of this file — they are
 // only read inside `it` bodies, which run after the module finishes evaluating.
@@ -21,14 +22,22 @@ describe("hardcoded expectations are self-consistent", () => {
 });
 
 describe("sitemap", () => {
-  it("emits exactly the 57 expected URLs, in the expected order", () => {
+  it("emits exactly the 58 expected URLs, in the expected order", () => {
     expect(getUrls()).toEqual(ALL_EXPECTED_URLS);
   });
 
-  it("emits 57 URLs with no duplicates", () => {
+  it("emits 58 URLs with no duplicates", () => {
     const urls = getUrls();
     expect(urls).toHaveLength(TOTAL_URL_COUNT);
     expect(new Set(urls).size).toBe(TOTAL_URL_COUNT);
+  });
+
+  it("includes the tools hub and every tool page", () => {
+    const urls = getUrls();
+    expect(urls).toContain("https://csvpreview.com/tools");
+    for (const tool of tools) {
+      expect(urls).toContain(`https://csvpreview.com/tools/${tool.slug}`);
+    }
   });
 
   it("includes the hub, every category index, and a nested dataset page", () => {
@@ -114,10 +123,9 @@ describe("sitemap", () => {
       STATIC_PAGE_COUNT,
       STATIC_PAGE_COUNT + CATEGORY_PAGE_COUNT,
     );
-    // Every category in this taxonomy happens to include at least one
-    // dataset dated 2026-05-03, so every category's max is that date.
     for (const entry of entries) {
-      expect(entry.lastModified).toBe(MAX_DATASET_LAST_MODIFIED);
+      const slug = entry.url.split("/").pop() as string;
+      expect(entry.lastModified).toBe(EXPECTED_CATEGORY_LAST_MODIFIED[slug]);
     }
   });
 
@@ -170,22 +178,42 @@ const SPECIAL_LAST_MODIFIED: Record<string, string> = {
   "indian-states": "2026-05-01",
   "us-state-capitals": "2026-05-01",
   "world-population": "2026-05-02",
+  "endangered-species-iucn": "2026-08-21",
 };
 const DEFAULT_LAST_MODIFIED = "2026-05-03";
-const MAX_DATASET_LAST_MODIFIED = "2026-05-03";
+const MAX_DATASET_LAST_MODIFIED = "2026-08-21";
+
+/**
+ * Expected category `lastModified`, in the taxonomy order asserted above.
+ * A category inherits the newest date among its own datasets, so only
+ * `animals-nature` (which owns endangered-species-iucn) differs from the
+ * baseline date every other category still carries.
+ */
+const EXPECTED_CATEGORY_LAST_MODIFIED: Record<string, string> = {
+  geography: DEFAULT_LAST_MODIFIED,
+  transport: DEFAULT_LAST_MODIFIED,
+  economics: DEFAULT_LAST_MODIFIED,
+  history: DEFAULT_LAST_MODIFIED,
+  "food-drink": DEFAULT_LAST_MODIFIED,
+  "animals-nature": "2026-08-21",
+  science: DEFAULT_LAST_MODIFIED,
+  "language-culture": DEFAULT_LAST_MODIFIED,
+  architecture: DEFAULT_LAST_MODIFIED,
+};
 
 function expectedLastModifiedForSlug(slug: string): string {
   return SPECIAL_LAST_MODIFIED[slug] ?? DEFAULT_LAST_MODIFIED;
 }
 
-const STATIC_PAGE_COUNT = 5;
+const STATIC_PAGE_COUNT = 6;
 const CATEGORY_PAGE_COUNT = 9;
 const DATASET_PAGE_COUNT = 43;
-const TOTAL_URL_COUNT = 57;
+const TOTAL_URL_COUNT = 58;
 
 const EXPECTED_STATIC_ENTRIES = [
   { url: "https://csvpreview.com", changeFrequency: "daily" },
   { url: "https://csvpreview.com/about", changeFrequency: "daily" },
+  { url: "https://csvpreview.com/tools", changeFrequency: "weekly" },
   {
     url: "https://csvpreview.com/tools/csv-to-excel",
     changeFrequency: "monthly",
@@ -200,6 +228,7 @@ const EXPECTED_STATIC_ENTRIES = [
 const EXPECTED_STATIC_URLS = [
   "https://csvpreview.com",
   "https://csvpreview.com/about",
+  "https://csvpreview.com/tools",
   "https://csvpreview.com/tools/csv-to-excel",
   "https://csvpreview.com/tools/excel-to-csv",
   "https://csvpreview.com/data",

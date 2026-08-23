@@ -48,7 +48,7 @@ describe("matchesNumericFilter", () => {
   });
 });
 
-describe("applyFiltersWithSourceIndices row sharing (CSV-36)", () => {
+describe("applyFiltersWithSourceIndices()", () => {
   const rows = [["NYC"], ["LA"], ["NYC"]];
 
   it("returns a new outer array but reuses the row arrays when no filter is active", () => {

@@ -100,3 +100,22 @@ describe("compareValues text (mixed)", () => {
     expect(compareValues("A", "b", "text")).toBeLessThan(0);
   });
 });
+
+describe("sortRowsWithSourceIndices row sharing (CSV-36)", () => {
+  it("returns a new outer array but reuses the caller's row arrays", () => {
+    const rows = [["b"], ["a"], ["c"]];
+    const sorted = sortRowsWithSourceIndices(rows, [0, 1, 2], 0, "asc");
+
+    expect(sorted.rows).not.toBe(rows);
+    expect(sorted.rows[0]).toBe(rows[1]);
+    expect(sorted.rows[1]).toBe(rows[0]);
+    expect(sorted.rows[2]).toBe(rows[2]);
+  });
+
+  it("leaves the caller's array untouched", () => {
+    const rows = [["b"], ["a"]];
+    sortRowsWithSourceIndices(rows, [0, 1], 0, "asc");
+
+    expect(rows).toEqual([["b"], ["a"]]);
+  });
+});

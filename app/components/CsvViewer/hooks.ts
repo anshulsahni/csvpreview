@@ -386,15 +386,30 @@ export function useCsvViewer(): UseCsvViewerReturn {
 
   function handleCellChange(dataRowIndex: number, colIdx: number, value: string) {
     setCsvData((prev) => {
-      const next = (prev ?? []).map((row) => row.slice());
+      const current = prev ?? [];
+      const existingRow = current[dataRowIndex];
+      // Writing the value a cell already holds is a no-op: returning `prev`
+      // untouched lets React skip the re-render entirely, and keeps the
+      // persist-to-localStorage effect from re-serializing the whole sheet.
+      if (existingRow !== undefined && (existingRow[colIdx] ?? "") === value) {
+        return prev;
+      }
+      // Only the outer array and the one edited row are copied — every other row
+      // is shared with the previous state, so an edit costs O(rows) pointer
+      // copies rather than one string copy per cell in the sheet.
+      // Slice creates a shallllow copy of array, so internelly
+      // all rows are just references to previous state
+      const next = current.slice();
       while (next.length <= dataRowIndex) {
         next.push([]);
       }
-      const row = next[dataRowIndex]!;
+
+      const row = next[dataRowIndex]!.slice();
       while (row.length <= colIdx) {
         row.push("");
       }
       row[colIdx] = value;
+      next[dataRowIndex] = row;
       return next;
     });
   }

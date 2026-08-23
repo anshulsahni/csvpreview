@@ -72,6 +72,13 @@ describe("rowsToJsonRecords", () => {
       ]);
     });
 
+    it("keeps a \"__proto__\" header as a real key", () => {
+      const records = rowsToJsonRecords(["__proto__", "name"], [["danger", "Ann"]]);
+
+      expect(Object.keys(records[0])).toEqual(["__proto__", "name"]);
+      expect(records[0]["__proto__"]).toBe("danger");
+    });
+
     it("does not trim or otherwise rewrite header names", () => {
       expect(rowsToJsonRecords([" id ", "Full Name"], [["1", "Ann"]])).toEqual([
         { " id ": "1", "Full Name": "Ann" },
@@ -93,6 +100,12 @@ describe("exportJSON", () => {
 
   it("does not append a trailing newline", () => {
     expect(exportJSON(["id"], [["1"]]).endsWith("\n")).toBe(false);
+  });
+
+  it("serializes a \"__proto__\" header instead of dropping the column", () => {
+    expect(JSON.parse(exportJSON(["__proto__"], [["danger"]]))).toEqual([
+      { ["__proto__"]: "danger" },
+    ]);
   });
 
   it("produces text that parses back to the same records", () => {

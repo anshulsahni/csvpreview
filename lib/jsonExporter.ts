@@ -20,6 +20,10 @@
  *   object cannot hold the same key twice);
  * - an empty header cell is kept verbatim as the key `""`.
  *
+ * Records are built with a null prototype so that reserved names survive: on a
+ * plain `{}`, assigning `"__proto__"` hits the inherited setter instead of
+ * creating an own property, which would silently drop that whole column.
+ *
  * Every value is a string, copied verbatim — no type coercion, so `"007"` stays
  * `"007"` rather than becoming `7`.
  *
@@ -34,7 +38,7 @@ export function rowsToJsonRecords(
   bodyRows: string[][]
 ): Record<string, string>[] {
   return bodyRows.map((row) => {
-    const record: Record<string, string> = {};
+    const record = Object.create(null) as Record<string, string>;
     headerRow.forEach((key, colIdx) => {
       record[key] = row[colIdx] ?? "";
     });

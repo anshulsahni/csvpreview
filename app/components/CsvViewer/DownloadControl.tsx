@@ -1,18 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { styled } from "@linaria/react";
-import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 import {
   Dropdown,
   DropdownItem,
   DropdownSeparator,
 } from "@/app/components/Dropdown";
-
-const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
-
-const JSON_DISABLED_REASON =
-  'Enable "First row as header" to download JSON';
+import { useDownloadControl } from "./useDownloadControl";
 
 export interface DownloadControlProps {
   hasActiveFilter: boolean;
@@ -25,11 +19,6 @@ export interface DownloadControlProps {
   onDownloadJson: () => void;
 }
 
-interface DownloadOption {
-  label: string;
-  action: () => void;
-}
-
 export default function DownloadControl({
   hasActiveFilter,
   selectedRowCount,
@@ -39,74 +28,47 @@ export default function DownloadControl({
   onDownloadSelected,
   onDownloadJson,
 }: DownloadControlProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useKeyboardShortcuts(
-    ESCAPE_SHORTCUT,
-    () => setIsMenuOpen(false),
-    [],
-    { enabled: isMenuOpen }
-  );
-
-  // The primary button downloads the visible rows as CSV — the filtered set
-  // when a filter is active, otherwise every row. Extra scopes go in the
-  // dropdown, which also always carries the alternate JSON format.
-  const extraOptions: DownloadOption[] = [];
-  if (hasActiveFilter) {
-    extraOptions.push({ label: "Download all rows", action: onDownloadAll });
-  }
-  if (selectedRowCount > 0) {
-    extraOptions.push({
-      label: `Download selected ${selectedRowCount === 1 ? "row" : "rows"} (${selectedRowCount})`,
-      action: onDownloadSelected,
-    });
-  }
+  const control = useDownloadControl({
+    hasActiveFilter,
+    selectedRowCount,
+    canDownloadJson,
+    onDownloadAll,
+    onDownloadSelected,
+    onDownloadJson,
+  });
 
   return (
-    <Split
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-          setIsMenuOpen(false);
-        }
-      }}
-    >
+    <Split onBlur={control.handleBlur}>
       <Primary type="button" onClick={onDownload}>
-        {hasActiveFilter ? "Download filtered rows" : "Download"}
+        {control.primaryLabel}
       </Primary>
       <Caret
         type="button"
         aria-label="More download options"
         aria-haspopup="menu"
-        aria-expanded={isMenuOpen}
-        onClick={() => setIsMenuOpen((prev) => !prev)}
+        aria-expanded={control.isMenuOpen}
+        onClick={control.toggleMenu}
       >
         <CaretIcon aria-hidden="true">▾</CaretIcon>
       </Caret>
-      {isMenuOpen && (
+      {control.isMenuOpen && (
         <Dropdown>
-          {extraOptions.map((option) => (
+          {control.extraOptions.map((option) => (
             <DropdownItem
-              key={option.label}
-              onClick={() => {
-                setIsMenuOpen(false);
-                option.action();
-              }}
+              key={option.scope}
+              onClick={() => control.handleOptionClick(option.scope)}
             >
               {option.label}
             </DropdownItem>
           ))}
-          {extraOptions.length > 0 && <DropdownSeparator />}
+          {control.extraOptions.length > 0 && <DropdownSeparator />}
           {/* `aria-disabled` rather than the native `disabled` attribute:
               disabled buttons swallow mouse events, so the `title` explaining
               *why* the option is unavailable would never surface on hover. */}
           <DropdownItem
-            aria-disabled={!canDownloadJson}
-            title={canDownloadJson ? undefined : JSON_DISABLED_REASON}
-            onClick={() => {
-              if (!canDownloadJson) return;
-              setIsMenuOpen(false);
-              onDownloadJson();
-            }}
+            aria-disabled={control.jsonDisabledReason !== undefined}
+            title={control.jsonDisabledReason}
+            onClick={control.handleJsonClick}
           >
             Download as JSON
           </DropdownItem>

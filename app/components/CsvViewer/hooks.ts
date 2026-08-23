@@ -397,10 +397,13 @@ export function useCsvViewer(): UseCsvViewerReturn {
       // Only the outer array and the one edited row are copied — every other row
       // is shared with the previous state, so an edit costs O(rows) pointer
       // copies rather than one string copy per cell in the sheet.
+      // Slice creates a shallllow copy of array, so internelly
+      // all rows are just references to previous state
       const next = current.slice();
       while (next.length <= dataRowIndex) {
         next.push([]);
       }
+
       const row = next[dataRowIndex]!.slice();
       while (row.length <= colIdx) {
         row.push("");

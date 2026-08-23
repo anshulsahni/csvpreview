@@ -47,9 +47,11 @@ export default function CsvViewer() {
           <DownloadControl
             hasActiveFilter={viewer.hasActiveFilter}
             selectedRowCount={viewer.selectedRowCount}
+            canDownloadJson={viewer.canDownloadJson}
             onDownload={viewer.openDownload}
             onDownloadAll={viewer.openDownloadAllRows}
             onDownloadSelected={viewer.openDownloadSelected}
+            onDownloadJson={viewer.openDownloadJson}
           />
         )}
         {viewer.csvData && (
@@ -95,8 +97,9 @@ export default function CsvViewer() {
       {viewer.isDownloadOpen && (
         <DownloadModal
           isOpen
+          format={viewer.downloadFormat}
           onClose={viewer.closeDownload}
-          defaultFilename={viewer.defaultDownloadFilename}
+          defaultBaseName={viewer.defaultDownloadBaseName}
           onDownload={viewer.handleDownload}
         />
       )}

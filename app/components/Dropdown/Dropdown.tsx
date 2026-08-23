@@ -23,6 +23,12 @@ export function DropdownItem({ children, ...rest }: DropdownItemProps) {
   );
 }
 
+export type DropdownSeparatorProps = ComponentPropsWithoutRef<"div">;
+
+export function DropdownSeparator(props: DropdownSeparatorProps) {
+  return <Separator role="separator" {...props} />;
+}
+
 const Menu = styled.div`
   position: absolute;
   top: calc(100% + 4px);
@@ -48,7 +54,21 @@ const MenuItem = styled.button`
   font-size: 0.85rem;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled):not([aria-disabled="true"]) {
     background: var(--subtle);
   }
+
+  /* Menu items may be disabled natively or, when they need to stay hoverable
+     so a \`title\` can explain why, via \`aria-disabled\`. Both look the same. */
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+`;
+
+const Separator = styled.div`
+  height: 1px;
+  margin: 0.25rem 0;
+  background: var(--border);
 `;

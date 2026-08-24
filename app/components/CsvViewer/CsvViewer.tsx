@@ -149,7 +149,7 @@ const UploadButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 `;
 
@@ -163,7 +163,7 @@ const ClearButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 

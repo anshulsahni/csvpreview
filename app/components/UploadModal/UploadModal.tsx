@@ -204,7 +204,7 @@ const PickerButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 `;
 
@@ -251,7 +251,7 @@ const PasteSubmitButton = styled.button`
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 
   &:disabled {

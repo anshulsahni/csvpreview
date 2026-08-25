@@ -4,6 +4,7 @@ import ToolBreadcrumb from "@/app/tools/components/ToolBreadcrumb";
 import ExcelToCsvConverter from "./components/ExcelToCsvConverter";
 import Faq, { faqItems } from "./components/Faq";
 import { BRAND, BRAND_NAME, brandOpenGraphImages } from "@/lib/brand";
+import { serializeJsonLd } from "@/lib/jsonLd";
 
 const PAGE_URL = "https://csvpreview.com/tools/excel-to-csv";
 const title = "Free Excel to CSV Converter – Convert XLSX to CSV Online";
@@ -77,7 +78,7 @@ export default function ExcelToCsvPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
       />
       <AboutNavbar />
       <ToolBreadcrumb slug="excel-to-csv" />

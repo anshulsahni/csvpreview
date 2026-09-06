@@ -405,7 +405,7 @@ describe("useCsvViewer", () => {
   describe("handleFilePicked() with JSON", () => {
     it("converts a .json file, turns on firstRowAsHeader, keeps the filename", async () => {
       mockFileReaderWithText(
-        '[{"Sheet Downloadedid":1,"name":"Ann","active":true,"note":null},{"id":2,"name":"Bob"}]',
+        '[{"id":1,"name":"Ann","active":true,"note":null},{"id":2,"name":"Bob"}]',
       );
       const { result } = renderHook(() => useCsvViewer(), {
         wrapper: ToastProvider,

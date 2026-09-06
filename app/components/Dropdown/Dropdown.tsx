@@ -55,7 +55,7 @@ const MenuItem = styled.button`
   cursor: pointer;
 
   &:hover:not(:disabled):not([aria-disabled="true"]) {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 
   /* Menu items may be disabled natively or, when they need to stay hoverable

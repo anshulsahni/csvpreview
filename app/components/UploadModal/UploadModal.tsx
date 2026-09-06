@@ -198,7 +198,7 @@ const DropZoneHint = styled.p`
 
 const PickerButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.5rem 0.9rem;
@@ -207,7 +207,7 @@ const PickerButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 `;
 
@@ -245,7 +245,7 @@ const PasteActions = styled.div`
 
 const PasteSubmitButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.4rem 0.85rem;
@@ -254,7 +254,7 @@ const PasteSubmitButton = styled.button`
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 
   &:disabled {

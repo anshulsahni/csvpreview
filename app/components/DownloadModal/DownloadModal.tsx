@@ -188,13 +188,13 @@ const CancelButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 
 const DownloadButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.45rem 0.9rem;
@@ -203,7 +203,7 @@ const DownloadButton = styled.button`
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 
   &:disabled {

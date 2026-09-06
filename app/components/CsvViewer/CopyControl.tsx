@@ -158,7 +158,7 @@ const SimpleButton = styled.button`
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 
   &:disabled {
@@ -183,7 +183,7 @@ const Primary = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 
@@ -200,7 +200,7 @@ const Caret = styled.button`
   justify-content: center;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 

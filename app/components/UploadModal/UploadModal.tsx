@@ -195,7 +195,7 @@ const DropZoneHint = styled.p`
 
 const PickerButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.5rem 0.9rem;
@@ -242,7 +242,7 @@ const PasteActions = styled.div`
 
 const PasteSubmitButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.4rem 0.85rem;

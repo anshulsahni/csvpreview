@@ -972,14 +972,29 @@ describe("useCsvViewer", () => {
       expect(result.current.canDownloadJson).toBe(false);
     });
 
-    it("openDownloadJson selects the json format, openDownload the csv one", async () => {
+    it("openDownloadFormat selects the given format, openDownload the csv one", async () => {
       const result = await mountWithExportState();
 
-      act(() => result.current.openDownloadJson());
+      act(() => result.current.openDownloadFormat("json"));
       expect(result.current.downloadFormat).toBe("json");
       expect(result.current.isDownloadOpen).toBe(true);
-
       act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownloadFormat("tsv"));
+      expect(result.current.downloadFormat).toBe("tsv");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownloadFormat("psv"));
+      expect(result.current.downloadFormat).toBe("psv");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownloadFormat("ssv"));
+      expect(result.current.downloadFormat).toBe("ssv");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
       act(() => result.current.openDownload());
       expect(result.current.downloadFormat).toBe("csv");
     });
@@ -1016,6 +1031,27 @@ describe("useCsvViewer", () => {
       ]);
     });
 
+    it.each([
+      ["tsv", "out.tsv", "text/tab-separated-values;charset=utf-8", "id\tname\n1\tAnn"],
+      ["psv", "out.psv", "text/plain;charset=utf-8", "id|name\n1|Ann"],
+      ["ssv", "out.txt", "text/plain;charset=utf-8", "id name\n1 Ann"],
+    ] as const)(
+      "writes %s with the format's separator and the header row prepended",
+      async (format, filename, mimeType, expected) => {
+        const result = await mountWithExportState();
+
+        act(() => {
+          result.current.handleDownload({ filename, format });
+        });
+
+        expect(downloadBlobMock).toHaveBeenCalledTimes(1);
+        expect(downloadBlobMock.mock.calls[0][1]).toBe(filename);
+        expect(downloadBlobMock.mock.calls[0][0].type).toBe(mimeType);
+        await expect(lastDownloadedText()).resolves.toBe(expected);
+        expect(result.current.isDownloadOpen).toBe(false);
+      }
+    );
+
     it("respects the scope chosen when the modal was opened", async () => {
       const result = await mountWithExportState();
 
@@ -1030,7 +1066,7 @@ describe("useCsvViewer", () => {
     it("exports the visible rows for JSON, matching the primary button's scope", async () => {
       const result = await mountWithExportState();
 
-      act(() => result.current.openDownloadJson());
+      act(() => result.current.openDownloadFormat("json"));
       act(() => {
         result.current.handleDownload({ filename: "out.json", format: "json" });
       });
@@ -1038,6 +1074,47 @@ describe("useCsvViewer", () => {
       expect(JSON.parse(await lastDownloadedText())).toEqual([
         { id: "1", name: "Ann" },
       ]);
+    });
+
+    it("exports the visible rows for a delimited format too, not every row", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadFormat("tsv"));
+      act(() => {
+        result.current.handleDownload({ filename: "out.tsv", format: "tsv" });
+      });
+
+      // UNFILTERED_ROWS holds Bob as well; the visible scope must drop him.
+      await expect(lastDownloadedText()).resolves.toBe("id\tname\n1\tAnn");
+    });
+
+    it("quotes a cell holding the active separator, per format", async () => {
+      const result = await mountWithExportState();
+
+      act(() => {
+        result.current.handleExportStateChange({
+          headerRow: ["id", "city"],
+          visibleRows: [["1", "New York"]],
+          unfilteredRows: [["1", "New York"]],
+          hasActiveFilter: false,
+        });
+      });
+
+      act(() => {
+        result.current.handleDownload({ filename: "out.txt", format: "ssv" });
+      });
+      await expect(lastDownloadedText()).resolves.toBe(
+        'id city\n1 "New York"'
+      );
+
+      downloadBlobMock.mockClear();
+      act(() => {
+        result.current.handleDownload({ filename: "out.tsv", format: "tsv" });
+      });
+      // A space is not the TSV separator, so the same cell stays unquoted.
+      await expect(lastDownloadedText()).resolves.toBe(
+        "id\tcity\n1\tNew York"
+      );
     });
   });
 

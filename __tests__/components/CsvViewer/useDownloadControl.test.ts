@@ -3,6 +3,7 @@ import React from "react";
 import { KeyboardShortcutsProvider } from "@/app/components/KeyboardShortcuts";
 import {
   JSON_DISABLED_REASON,
+  computeDownloadFormatOptions,
   computeExtraDownloadOptions,
   computePrimaryDownloadLabel,
   useDownloadControl,
@@ -22,7 +23,7 @@ function makeArgs(
     canDownloadJson: true,
     onDownloadAll: jest.fn(),
     onDownloadSelected: jest.fn(),
-    onDownloadJson: jest.fn(),
+    onDownloadFormat: jest.fn(),
     ...overrides,
   };
 }
@@ -64,6 +65,30 @@ describe("computeExtraDownloadOptions", () => {
     expect(computeExtraDownloadOptions(true, 2).map((o) => o.scope)).toEqual([
       "all",
       "selected",
+    ]);
+  });
+});
+
+describe("computeDownloadFormatOptions", () => {
+  it("builds every entry, in menu order, while a header row exists", () => {
+    expect(computeDownloadFormatOptions(true)).toEqual([
+      { format: "json", label: "Download as JSON" },
+      { format: "tsv", label: "Download as TSV" },
+      { format: "psv", label: "Download as Pipe-separated" },
+      { format: "ssv", label: "Download as Space-separated" },
+    ]);
+  });
+
+  it("gives only JSON a reason when there is no header row", () => {
+    expect(computeDownloadFormatOptions(false)).toEqual([
+      {
+        format: "json",
+        label: "Download as JSON",
+        disabledReason: JSON_DISABLED_REASON,
+      },
+      { format: "tsv", label: "Download as TSV" },
+      { format: "psv", label: "Download as Pipe-separated" },
+      { format: "ssv", label: "Download as Space-separated" },
     ]);
   });
 });
@@ -139,25 +164,83 @@ describe("useDownloadControl", () => {
     expect(args.onDownloadSelected).toHaveBeenCalledTimes(1);
   });
 
-  it("reports no reason and runs the JSON download while it is available", () => {
+  it("routes the JSON entry to the handler and closes the menu", () => {
     const { args, result } = renderControl();
-    expect(result.current.jsonDisabledReason).toBeUndefined();
-
     act(() => result.current.toggleMenu());
-    act(() => result.current.handleJsonClick());
 
-    expect(args.onDownloadJson).toHaveBeenCalledTimes(1);
+    act(() =>
+      result.current.handleFormatClick({
+        format: "json",
+        label: "Download as JSON",
+      })
+    );
+
+    expect(args.onDownloadFormat).toHaveBeenCalledTimes(1);
+    expect(args.onDownloadFormat).toHaveBeenCalledWith("json");
     expect(result.current.isMenuOpen).toBe(false);
   });
 
-  it("gives a reason and ignores clicks while JSON is unavailable", () => {
-    const { args, result } = renderControl({ canDownloadJson: false });
-    expect(result.current.jsonDisabledReason).toBe(JSON_DISABLED_REASON);
-
+  it("routes the TSV entry to the handler and closes the menu", () => {
+    const { args, result } = renderControl();
     act(() => result.current.toggleMenu());
-    act(() => result.current.handleJsonClick());
 
-    expect(args.onDownloadJson).not.toHaveBeenCalled();
+    act(() =>
+      result.current.handleFormatClick({
+        format: "tsv",
+        label: "Download as TSV",
+      })
+    );
+
+    expect(args.onDownloadFormat).toHaveBeenCalledTimes(1);
+    expect(args.onDownloadFormat).toHaveBeenCalledWith("tsv");
+    expect(result.current.isMenuOpen).toBe(false);
+  });
+
+  it("routes the pipe-separated entry to the handler and closes the menu", () => {
+    const { args, result } = renderControl();
+    act(() => result.current.toggleMenu());
+
+    act(() =>
+      result.current.handleFormatClick({
+        format: "psv",
+        label: "Download as Pipe-separated",
+      })
+    );
+
+    expect(args.onDownloadFormat).toHaveBeenCalledTimes(1);
+    expect(args.onDownloadFormat).toHaveBeenCalledWith("psv");
+    expect(result.current.isMenuOpen).toBe(false);
+  });
+
+  it("routes the space-separated entry to the handler and closes the menu", () => {
+    const { args, result } = renderControl();
+    act(() => result.current.toggleMenu());
+
+    act(() =>
+      result.current.handleFormatClick({
+        format: "ssv",
+        label: "Download as Space-separated",
+      })
+    );
+
+    expect(args.onDownloadFormat).toHaveBeenCalledTimes(1);
+    expect(args.onDownloadFormat).toHaveBeenCalledWith("ssv");
+    expect(result.current.isMenuOpen).toBe(false);
+  });
+
+  it("ignores a click on an entry carrying a reason, leaving the menu open", () => {
+    const { args, result } = renderControl({ canDownloadJson: false });
+    act(() => result.current.toggleMenu());
+
+    act(() =>
+      result.current.handleFormatClick({
+        format: "json",
+        label: "Download as JSON",
+        disabledReason: JSON_DISABLED_REASON,
+      })
+    );
+
+    expect(args.onDownloadFormat).not.toHaveBeenCalled();
     // The menu stays open so the tooltip remains reachable.
     expect(result.current.isMenuOpen).toBe(true);
   });

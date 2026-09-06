@@ -60,6 +60,24 @@ describe("parseJSON", () => {
       ]);
     });
 
+    it("fills a missing key named after a prototype member with an empty cell", () => {
+      // A bare `record[key]` would find Object.prototype.toString here and
+      // import its native function source as the cell.
+      expect(parseJSON('[{"toString":"x"},{}]').rows).toEqual([
+        ["toString"],
+        ["x"],
+        [""],
+      ]);
+    });
+
+    it.each(["constructor", "valueOf", "hasOwnProperty"])(
+      "does not read inherited %s off the prototype",
+      (key) => {
+        const rows = parseJSON(`[{"${key}":"x"},{}]`).rows;
+        expect(rows).toEqual([[key], ["x"], [""]]);
+      }
+    );
+
     it("keeps the header order JavaScript gives integer-like keys", () => {
       // Object.keys lists integer-like keys first, ascending. Documented, not chosen.
       expect(parseJSON('[{"2":"a","1":"b"}]').rows).toEqual([

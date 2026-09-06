@@ -265,7 +265,11 @@ export function parseJSON(input: string): ParseResult {
   // key missing from a record becomes an empty cell — the same rule
   // `rowsToJsonRecords` applies in the other direction.
   const bodyRows = records.map((record) =>
-    headerRow.map((key) => jsonValueToCell(record[key] ?? null))
+    headerRow.map((key) =>
+      jsonValueToCell(
+        Object.prototype.hasOwnProperty.call(record, key) ? record[key] : null,
+      ),
+    ),
   );
   return { rows: [headerRow, ...bodyRows], errors: [] };
 }

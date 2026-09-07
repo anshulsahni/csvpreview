@@ -9,9 +9,9 @@ import Papa from "papaparse";
  */
 
 /**
- * Supported CSV delimiters
+ * Supported CSV delimiters.
  */
-export type Delimiter = "," | "|" | " ";
+export type Delimiter = "," | "|" | " " | "\t";
 
 /**
  * Represents a single parsing error with line number and message

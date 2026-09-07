@@ -2,6 +2,11 @@
 
 import { useCallback, useState } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import {
+  DOWNLOAD_FORMATS,
+  SECONDARY_DOWNLOAD_FORMATS,
+  type DownloadFormat,
+} from "@/lib/downloadFormats";
 
 const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
 
@@ -17,6 +22,14 @@ export interface DownloadOption {
   scope: DownloadScope;
 }
 
+/** One entry in the dropdown's format section. */
+export interface DownloadFormatOption {
+  format: DownloadFormat;
+  label: string;
+  /** Set only while the format cannot be used — feeds the entry's `title`. */
+  disabledReason?: string;
+}
+
 export interface UseDownloadControlArgs {
   hasActiveFilter: boolean;
   selectedRowCount: number;
@@ -24,19 +37,18 @@ export interface UseDownloadControlArgs {
   canDownloadJson: boolean;
   onDownloadAll: () => void;
   onDownloadSelected: () => void;
-  onDownloadJson: () => void;
+  onDownloadFormat: (format: DownloadFormat) => void;
 }
 
 export interface UseDownloadControlReturn {
   isMenuOpen: boolean;
   primaryLabel: string;
   extraOptions: DownloadOption[];
-  /** `undefined` while JSON is available — feeds the entry's `title`. */
-  jsonDisabledReason: string | undefined;
+  formatOptions: DownloadFormatOption[];
   toggleMenu: () => void;
   handleBlur: (event: React.FocusEvent<HTMLElement>) => void;
   handleOptionClick: (scope: DownloadScope) => void;
-  handleJsonClick: () => void;
+  handleFormatClick: (option: DownloadFormatOption) => void;
 }
 
 /**
@@ -75,6 +87,28 @@ export function computeExtraDownloadOptions(
 }
 
 /**
+ * The format section of the dropdown, in registry order. Every secondary format
+ * is always listed — a format the sheet cannot currently produce is shown with
+ * a reason rather than hidden, so the option never silently disappears.
+ *
+ * Only JSON is conditional: it keys its objects by the header row, so it needs
+ * one. The delimited formats never do.
+ *
+ * Pure and exported for unit testing.
+ */
+export function computeDownloadFormatOptions(
+  canDownloadJson: boolean
+): DownloadFormatOption[] {
+  return SECONDARY_DOWNLOAD_FORMATS.map((format) => ({
+    format,
+    label: `Download as ${DOWNLOAD_FORMATS[format].label}`,
+    ...(format === "json" && !canDownloadJson
+      ? { disabledReason: JSON_DISABLED_REASON }
+      : {}),
+  }));
+}
+
+/**
  * Behavior for the download split button: menu open state, the derived option
  * list, and the handlers that close the menu before running an action.
  */
@@ -84,7 +118,7 @@ export function useDownloadControl({
   canDownloadJson,
   onDownloadAll,
   onDownloadSelected,
-  onDownloadJson,
+  onDownloadFormat,
 }: UseDownloadControlArgs): UseDownloadControlReturn {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -116,22 +150,26 @@ export function useDownloadControl({
     [onDownloadAll, onDownloadSelected]
   );
 
-  const handleJsonClick = useCallback(() => {
-    // The entry stays focusable while unavailable so its tooltip can explain
-    // why, which means the guard has to live here.
-    if (!canDownloadJson) return;
-    setIsMenuOpen(false);
-    onDownloadJson();
-  }, [canDownloadJson, onDownloadJson]);
+  const handleFormatClick = useCallback(
+    (option: DownloadFormatOption) => {
+      // An unavailable entry stays focusable so its tooltip can explain why,
+      // which means the guard has to live here — and the menu stays open so the
+      // explanation remains reachable.
+      if (option.disabledReason !== undefined) return;
+      setIsMenuOpen(false);
+      onDownloadFormat(option.format);
+    },
+    [onDownloadFormat]
+  );
 
   return {
     isMenuOpen,
     primaryLabel: computePrimaryDownloadLabel(hasActiveFilter),
     extraOptions: computeExtraDownloadOptions(hasActiveFilter, selectedRowCount),
-    jsonDisabledReason: canDownloadJson ? undefined : JSON_DISABLED_REASON,
+    formatOptions: computeDownloadFormatOptions(canDownloadJson),
     toggleMenu,
     handleBlur,
     handleOptionClick,
-    handleJsonClick,
+    handleFormatClick,
   };
 }

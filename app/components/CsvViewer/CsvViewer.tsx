@@ -51,7 +51,7 @@ export default function CsvViewer() {
             onDownload={viewer.openDownload}
             onDownloadAll={viewer.openDownloadAllRows}
             onDownloadSelected={viewer.openDownloadSelected}
-            onDownloadJson={viewer.openDownloadJson}
+            onDownloadFormat={viewer.openDownloadFormat}
           />
         )}
         {viewer.csvData && (

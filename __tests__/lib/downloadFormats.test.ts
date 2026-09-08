@@ -1,16 +1,70 @@
 import {
   DOWNLOAD_FORMATS,
+  SECONDARY_DOWNLOAD_FORMATS,
   ensureExtension,
   stripExtension,
 } from "@/lib/downloadFormats";
 
 describe("DOWNLOAD_FORMATS", () => {
-  it("gives every format a label, a dotted extension and a MIME type", () => {
-    for (const spec of Object.values(DOWNLOAD_FORMATS)) {
-      expect(spec.label).not.toBe("");
-      expect(spec.extension).toMatch(/^\.[a-z0-9]+$/);
-      expect(spec.mimeType).toContain("/");
-    }
+  // Asserted whole rather than probed field by field: adding a format now fails
+  // this test until the entry is written out here, which is the moment to
+  // notice a wrong extension or a separator that collides with another format.
+  it("describes every format the viewer can write", () => {
+    expect(DOWNLOAD_FORMATS).toEqual({
+      csv: {
+        label: "CSV",
+        extension: ".csv",
+        mimeType: "text/csv;charset=utf-8",
+        delimiter: ",",
+      },
+      json: {
+        label: "JSON",
+        extension: ".json",
+        mimeType: "application/json;charset=utf-8",
+      },
+      tsv: {
+        label: "TSV",
+        extension: ".tsv",
+        mimeType: "text/tab-separated-values;charset=utf-8",
+        delimiter: "\t",
+      },
+      psv: {
+        label: "Pipe-separated",
+        extension: ".psv",
+        mimeType: "text/plain;charset=utf-8",
+        delimiter: "|",
+      },
+      ssv: {
+        label: "Space-separated",
+        extension: ".txt",
+        mimeType: "text/plain;charset=utf-8",
+        delimiter: " ",
+      },
+    });
+  });
+
+  it("leaves JSON without a separator, which is what marks it non-delimited", () => {
+    expect(DOWNLOAD_FORMATS.json.delimiter).toBeUndefined();
+  });
+
+  it("maps space-separated onto .txt, the one extension that differs from its key", () => {
+    expect(DOWNLOAD_FORMATS.ssv.extension).toBe(".txt");
+    expect(DOWNLOAD_FORMATS.tsv.extension).toBe(".tsv");
+    expect(DOWNLOAD_FORMATS.psv.extension).toBe(".psv");
+  });
+});
+
+describe("SECONDARY_DOWNLOAD_FORMATS", () => {
+  it("covers every format except the primary CSV, in menu order", () => {
+    expect(SECONDARY_DOWNLOAD_FORMATS).toEqual(["json", "tsv", "psv", "ssv"]);
+  });
+
+  it("stays in sync with the registry", () => {
+    // A format added to the registry but not to the menu list fails here.
+    expect(Object.keys(DOWNLOAD_FORMATS)).toEqual([
+      "csv",
+      ...SECONDARY_DOWNLOAD_FORMATS,
+    ]);
   });
 });
 

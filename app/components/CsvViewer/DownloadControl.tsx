@@ -6,6 +6,7 @@ import {
   DropdownItem,
   DropdownSeparator,
 } from "@/app/components/Dropdown";
+import type { DownloadFormat } from "@/lib/downloadFormats";
 import { useDownloadControl } from "./useDownloadControl";
 
 export interface DownloadControlProps {
@@ -16,7 +17,7 @@ export interface DownloadControlProps {
   onDownload: () => void;
   onDownloadAll: () => void;
   onDownloadSelected: () => void;
-  onDownloadJson: () => void;
+  onDownloadFormat: (format: DownloadFormat) => void;
 }
 
 export default function DownloadControl({
@@ -26,7 +27,7 @@ export default function DownloadControl({
   onDownload,
   onDownloadAll,
   onDownloadSelected,
-  onDownloadJson,
+  onDownloadFormat,
 }: DownloadControlProps) {
   const control = useDownloadControl({
     hasActiveFilter,
@@ -34,7 +35,7 @@ export default function DownloadControl({
     canDownloadJson,
     onDownloadAll,
     onDownloadSelected,
-    onDownloadJson,
+    onDownloadFormat,
   });
 
   return (
@@ -65,13 +66,16 @@ export default function DownloadControl({
           {/* `aria-disabled` rather than the native `disabled` attribute:
               disabled buttons swallow mouse events, so the `title` explaining
               *why* the option is unavailable would never surface on hover. */}
-          <DropdownItem
-            aria-disabled={control.jsonDisabledReason !== undefined}
-            title={control.jsonDisabledReason}
-            onClick={control.handleJsonClick}
-          >
-            Download as JSON
-          </DropdownItem>
+          {control.formatOptions.map((option) => (
+            <DropdownItem
+              key={option.format}
+              aria-disabled={option.disabledReason !== undefined}
+              title={option.disabledReason}
+              onClick={() => control.handleFormatClick(option)}
+            >
+              {option.label}
+            </DropdownItem>
+          ))}
         </Dropdown>
       )}
     </Split>
@@ -95,7 +99,7 @@ const Primary = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 
@@ -112,7 +116,7 @@ const Caret = styled.button`
   justify-content: center;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 

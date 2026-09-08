@@ -12,8 +12,13 @@
   --foreground: light-dark(#171717, #ededed);
   --muted-foreground: light-dark(#6b7280, #9ca3af);
   --primary: #0070f3;
+  --primary-hover: #0059c1;
+  --on-primary: #ffffff;
   --success: light-dark(#16a34a, #22c55e);
   --error: light-dark(#dc2626, #ef4444);
+  --error-foreground: light-dark(#b91c1c, #fca5a5);
+  --error-border: light-dark(#fca5a5, #7f1d1d);
+  --error-bg: light-dark(rgba(220, 38, 38, 0.08), rgba(239, 68, 68, 0.12));
   --danger: light-dark(#e11d48, #f43f5e);
   --danger-hover: light-dark(#be123c, #e11d48);
   --danger-foreground: #ffffff;
@@ -22,6 +27,7 @@
   --backdrop: rgba(0, 0, 0, 0.45);
   --overlay-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
   --subtle: light-dark(#f3f4f6, #1a1a1a);
+  --hover-surface: light-dark(#e9ebef, #2e2e34);
   --grid-header-bg: light-dark(#f0f2f5, #161b22);
   --grid-header-text: light-dark(#555, #c9d1d9);
   --grid-border: light-dark(#d0d7de, #30363d);

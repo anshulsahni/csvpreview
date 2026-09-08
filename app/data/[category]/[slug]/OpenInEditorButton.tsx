@@ -36,7 +36,7 @@ export default function OpenInEditorButton({ rows, filename }: Props) {
 
 const Button = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.4rem 0.85rem;
@@ -46,6 +46,6 @@ const Button = styled.button`
   white-space: nowrap;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 `;

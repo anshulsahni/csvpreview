@@ -13,17 +13,17 @@ function renderControl(overrides?: Partial<DownloadControlProps>) {
     onDownload: jest.fn(),
     onDownloadAll: jest.fn(),
     onDownloadSelected: jest.fn(),
-    onDownloadJson: jest.fn(),
+    onDownloadFormat: jest.fn(),
     ...overrides,
   };
 
   render(
     <KeyboardShortcutsProvider>
       <DownloadControl {...props} />
-    </KeyboardShortcutsProvider>
+    </KeyboardShortcutsProvider>,
   );
-
   return props;
+
 }
 
 async function openMenu(user: ReturnType<typeof userEvent.setup>) {
@@ -47,33 +47,60 @@ describe("DownloadControl", () => {
     await user.click(screen.getByRole("button", { name: "Download" }));
 
     expect(props.onDownload).toHaveBeenCalledTimes(1);
-    expect(props.onDownloadJson).not.toHaveBeenCalled();
+    expect(props.onDownloadFormat).not.toHaveBeenCalled();
   });
 
-  it("lists the JSON option alongside the scope options", async () => {
+  it("lists every format option alongside the scope options", async () => {
     const user = userEvent.setup();
     renderControl({ hasActiveFilter: true, selectedRowCount: 2 });
     await openMenu(user);
 
     expect(
-      screen.getByRole("menuitem", { name: "Download all rows" })
+      screen.getByRole("menuitem", { name: "Download all rows" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("menuitem", { name: "Download selected rows (2)" })
+      screen.getByRole("menuitem", { name: "Download selected rows (2)" }),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("menuitem", { name: "Download as JSON" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("menuitem", { name: "Download as JSON" })
+      screen.getByRole("menuitem", { name: "Download as TSV" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: "Download as Pipe-separated" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: "Download as Space-separated" }),
     ).toBeInTheDocument();
   });
 
-  it("triggers the JSON download when the option is enabled", async () => {
+  it("orders the format options after the scope options", async () => {
+    const user = userEvent.setup();
+    renderControl({ hasActiveFilter: true });
+    await openMenu(user);
+
+    expect(
+      screen.getAllByRole("menuitem").map((item) => item.textContent),
+    ).toEqual([
+      "Download all rows",
+      "Download as JSON",
+      "Download as TSV",
+      "Download as Pipe-separated",
+      "Download as Space-separated",
+    ]);
+  });
+
+  it("triggers the chosen format's download", async () => {
     const user = userEvent.setup();
     const props = renderControl();
     await openMenu(user);
 
-    await user.click(screen.getByRole("menuitem", { name: "Download as JSON" }));
+    await user.click(screen.getByRole("menuitem", { name: "Download as TSV" }));
 
-    expect(props.onDownloadJson).toHaveBeenCalledTimes(1);
+    expect(props.onDownloadFormat).toHaveBeenCalledTimes(1);
+    expect(props.onDownloadFormat).toHaveBeenCalledWith("tsv");
   });
 
   it("disables the JSON option with a reason when there is no header row", async () => {
@@ -85,11 +112,34 @@ describe("DownloadControl", () => {
     expect(item).toHaveAttribute("aria-disabled", "true");
     expect(item).toHaveAttribute(
       "title",
-      'Enable "First row as header" to download JSON'
+      'Enable "First row as header" to download JSON',
     );
 
     await user.click(item);
 
-    expect(props.onDownloadJson).not.toHaveBeenCalled();
+    expect(props.onDownloadFormat).not.toHaveBeenCalled();
+  });
+
+  it("keeps the delimited formats usable without a header row", async () => {
+    const user = userEvent.setup();
+    const props = renderControl({ canDownloadJson: false });
+    await openMenu(user);
+
+    for (const label of [
+      "Download as TSV",
+      "Download as Pipe-separated",
+      "Download as Space-separated",
+    ]) {
+      expect(screen.getByRole("menuitem", { name: label })).toHaveAttribute(
+        "aria-disabled",
+        "false",
+      );
+    }
+
+    await user.click(
+      screen.getByRole("menuitem", { name: "Download as Space-separated" }),
+    );
+
+    expect(props.onDownloadFormat).toHaveBeenCalledWith("ssv");
   });
 });

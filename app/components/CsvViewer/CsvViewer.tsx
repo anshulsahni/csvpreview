@@ -51,7 +51,7 @@ export default function CsvViewer() {
             onDownload={viewer.openDownload}
             onDownloadAll={viewer.openDownloadAllRows}
             onDownloadSelected={viewer.openDownloadSelected}
-            onDownloadJson={viewer.openDownloadJson}
+            onDownloadFormat={viewer.openDownloadFormat}
           />
         )}
         {viewer.csvData && (
@@ -140,7 +140,7 @@ const TopBar = styled.div`
 
 const UploadButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.4rem 0.85rem;
@@ -149,7 +149,7 @@ const UploadButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 `;
 
@@ -163,7 +163,7 @@ const ClearButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 

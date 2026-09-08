@@ -8,6 +8,8 @@ import {
 } from "@/lib/csvParser";
 import { exportCSV } from "@/lib/csvExporter";
 import { exportJSON } from "@/lib/jsonExporter";
+import { parseJSON } from "@/lib/jsonImporter";
+import { detectUploadFormat, type UploadFormat } from "@/lib/uploadFormats";
 import { downloadBlob } from "@/lib/downloadFile";
 import { DOWNLOAD_FORMATS, type DownloadFormat } from "@/lib/downloadFormats";
 import { track } from "@/lib/analytics";
@@ -151,7 +153,7 @@ export interface UseCsvViewerReturn {
   openDownload: () => void;
   openDownloadAllRows: () => void;
   openDownloadSelected: () => void;
-  openDownloadJson: () => void;
+  openDownloadFormat: (format: DownloadFormat) => void;
   closeDownload: () => void;
   handleExportStateChange: (state: GridExportState) => void;
   handleSelectionChange: (selection: CellSelection | null) => void;
@@ -281,17 +283,20 @@ export function useCsvViewer(): UseCsvViewerReturn {
     }
   }, [csvData]);
 
-  function ingest(text: string, name: string) {
-    const { rows, errors } = parseCSV(text, { delimiter });
+  function ingest(text: string, name: string, format: UploadFormat) {
+    const { rows, errors } =
+      format === "json" ? parseJSON(text) : parseCSV(text, { delimiter });
     // Malformed input: keep the upload modal open and list the errors there so
     // the user sees exactly which lines are bad. Nothing is loaded until the
     // input parses cleanly — the modal is the single place errors are shown.
     if (errors.length > 0) {
       setParseErrors(errors);
+      track("Upload Rejected", { format, errorCount: errors.length });
       return;
     }
     if (rows.length === 0) {
       setParseErrors([{ line: 0, message: "No data found" }]);
+      track("Upload Rejected", { format, errorCount: 1 });
       return;
     }
     // Clean parse: load the rows and close the modal. Drop any prior row
@@ -301,6 +306,10 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setParseErrors([]);
     setCsvData(rows);
     setSelectedRowBodyIndices([]);
+    // JSON object keys are a header by construction. Without this the grid
+    // would show A/B/C column letters with the key row sitting in the body as
+    // data row 1. The CSV path deliberately leaves the toggle alone.
+    if (format === "json") setFirstRowAsHeader(true);
     setFileName(name);
     try {
       localStorage.setItem(LS_KEY_FILE_NAME, name);
@@ -308,9 +317,17 @@ export function useCsvViewer(): UseCsvViewerReturn {
       // localStorage may be unavailable (privacy mode, quota). Non-fatal.
     }
     setIsUploadOpen(false);
+    track("Sheet Uploaded", {
+      format,
+      rowCount: rows.length,
+      columnCount: rows[0].length,
+    });
   }
 
   function handleFilePicked(file: File) {
+    // `useUploadModal` already rejects unsupported files, but this is a public
+    // hook API — fall back to CSV so today's behaviour holds either way.
+    const format = detectUploadFormat(file.name, file.type) ?? "csv";
     // Reading the file is asynchronous, so the overlay paints during the read;
     // the parse then runs (and blocks) in `onload` while the overlay is up.
     const generation = beginParse();
@@ -322,7 +339,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
       if (generation !== parseGeneration.current) return;
       activeReader.current = null;
       const text = (event.target?.result as string) ?? "";
-      ingest(text, file.name);
+      ingest(text, file.name, format);
       setIsParsing(false);
     };
     reader.onerror = function handleFileReaderError() {
@@ -346,7 +363,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     setIsParsing(true);
     runAfterPaint(() => {
       if (generation !== parseGeneration.current) return;
-      ingest(text, PASTED_FILENAME);
+      ingest(text, PASTED_FILENAME, "csv");
       setIsParsing(false);
     });
   }
@@ -487,8 +504,13 @@ export function useCsvViewer(): UseCsvViewerReturn {
     openDownloadWith("selected", "csv");
   }
 
-  function openDownloadJson() {
-    openDownloadWith("visible", "json");
+  /**
+   * Every secondary format exports the rows currently on screen. Scope is the
+   * dropdown's other section, so a format entry only ever changes *how* the
+   * visible rows are written, never *which* rows they are.
+   */
+  function openDownloadFormat(format: DownloadFormat) {
+    openDownloadWith("visible", format);
   }
 
   function closeDownload() {
@@ -512,18 +534,20 @@ export function useCsvViewer(): UseCsvViewerReturn {
     } else {
       sourceRows = exportState.visibleRows;
     }
-    // JSON turns the header row into object keys, so — unlike CSV — it must not
-    // also be prepended as a record.
+    // The spec's separator decides both the shape and the encoding: a delimited
+    // format joins its cells with it, while JSON — which has none — turns the
+    // header row into object keys and so must not also prepend it as a record.
+    // Branching on the spec rather than the format key keeps this fixed-size as
+    // formats are added.
+    const spec = DOWNLOAD_FORMATS[options.format];
     const text =
-      options.format === "json"
+      spec.delimiter === undefined
         ? exportJSON(exportState.headerRow ?? [], sourceRows)
         : exportCSV(
             computeDownloadRows(sourceRows, exportState.headerRow),
-            delimiter
+            spec.delimiter
           );
-    const blob = new Blob([text], {
-      type: DOWNLOAD_FORMATS[options.format].mimeType,
-    });
+    const blob = new Blob([text], { type: spec.mimeType });
     downloadBlob(blob, options.filename);
     // The modal's submit button reads "Download" whatever the format, so the
     // global click listener can't tell the two apart — track it explicitly.
@@ -583,7 +607,7 @@ export function useCsvViewer(): UseCsvViewerReturn {
     openDownload,
     openDownloadAllRows,
     openDownloadSelected,
-    openDownloadJson,
+    openDownloadFormat,
     closeDownload,
     handleExportStateChange,
     handleSelectionChange,

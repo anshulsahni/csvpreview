@@ -105,11 +105,11 @@ const Option = styled.button`
 
   &:hover {
     opacity: 1;
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 
   &[data-active="true"] {
-    background: var(--subtle);
+    background: var(--hover-surface);
     opacity: 1;
     color: var(--primary);
   }

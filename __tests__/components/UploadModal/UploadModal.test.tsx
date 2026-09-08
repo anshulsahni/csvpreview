@@ -20,10 +20,10 @@ describe("UploadModal (render smoke)", () => {
 
     expect(screen.getByRole("dialog", { name: "Upload Data" })).toBeInTheDocument();
     expect(
-      screen.getByText("Drag a .csv file anywhere in this area")
+      screen.getByText("Drag a .csv or .json file anywhere in this area")
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Accepts: .csv files only" })
+      screen.getByRole("button", { name: "Accepts: .csv and .json files" })
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Paste CSV content")).toBeInTheDocument();
     const pasteSubmit = screen.getByRole("button", {
@@ -37,10 +37,9 @@ describe("UploadModal (render smoke)", () => {
     expect(
       screen.getByRole("button", { name: "Close upload modal" })
     ).toBeInTheDocument();
-    expect(screen.getByLabelText("Choose a .csv file")).toHaveAttribute(
-      "accept",
-      ".csv"
-    );
+    expect(
+      screen.getByLabelText("Choose a .csv or .json file")
+    ).toHaveAttribute("accept", ".csv,.json");
   });
 
   it("returns null when not open", () => {
@@ -75,6 +74,30 @@ describe("UploadModal (render smoke)", () => {
     expect(screen.getByText("Line 3: bad quote")).toBeInTheDocument();
     expect(screen.getByText("Line 7: missing field")).toBeInTheDocument();
     expect(screen.getByRole("alert")).toHaveTextContent("2 issues found");
+  });
+
+  it("omits the line prefix for errors that are not tied to a line", () => {
+    // JSON shape errors are located by path, not line, so they carry line 0 —
+    // rendering "Line 0:" in front of them would read like a bug.
+    render(
+      <UploadModal
+        isOpen
+        onClose={noop}
+        onFilePicked={noop}
+        onPasteSubmit={noop}
+        onStartBlank={noop}
+        errors={[
+          { line: 0, message: "$[2].tags: nested arrays are not supported" },
+          { line: 3, message: "bad quote" },
+        ]}
+      />
+    );
+
+    expect(
+      screen.getByText("$[2].tags: nested arrays are not supported")
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Line 0:/)).not.toBeInTheDocument();
+    expect(screen.getByText("Line 3: bad quote")).toBeInTheDocument();
   });
 
   it("closes on Escape through the keyboard shortcut provider", () => {

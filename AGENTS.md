@@ -29,6 +29,105 @@ CSV Preview is a **privacy-first, browser-based CSV viewer & editor** — all pa
 
 > There is **no `src/` directory** in this project. Application code lives at the repo root under `app/` (routes & UI) and `lib/` (non-UI logic, data, services).
 
+## Commands
+
+Run every command from the repo root.
+
+| Task | Command |
+| --- | --- |
+| Dev server | `npm run dev` |
+| Production build | `npm run build` |
+| Serve the build | `npm start` |
+| All tests | `npm test` |
+| All tests + coverage (CI runs this) | `npm test -- --coverage` |
+| Tests in watch mode | `npm run test:watch` |
+| One test file | `npm test -- __tests__/lib/sortUtils.test.ts` |
+| One test by name | `npm test -- __tests__/lib/sortUtils.test.ts -t "sorts numbers"` |
+| Tests by path pattern | `npm test -- --testPathPatterns "SpreadsheetGrid"` |
+| Lint | `npm run lint` |
+| Lint and auto-fix | `npm run lint -- --fix` |
+| Typecheck | `npm run typecheck` |
+
+Notes:
+
+- CI runs only `npm test -- --coverage` (`.github/workflows/test.yml`, Node 24). CI does not run lint, typecheck, or build. Run all three yourself before you open a PR.
+- Lint passes today with 5 warnings and 0 errors. Do not add new warnings.
+- Jest 30 uses `--testPathPatterns` (plural). A plain file path also works and is simpler.
+- Jest config is `jest.config.ts`. Setup is `jest.setup.ts`. Mocks are in `__mocks__/`.
+- The only env var is `NEXT_PUBLIC_MIXPANEL_TOKEN`, and it is optional. Analytics turns itself off when the token is missing. Tests and builds need no `.env`.
+
+## Where code lives
+
+```
+app/                       # routes + UI (App Router)
+├── layout.tsx             # root layout: default metadata, theme cookie, providers
+├── page.tsx               # "/" — the CSV viewer
+├── globals.css            # ALL design tokens (CSS custom properties)
+├── sitemap.ts             # sitemap for every route
+├── about/                 # "/about"
+├── data/                  # "/data" hub
+│   └── [category]/        # "/data/{category}" + [slug]/ dataset detail page
+├── tools/                 # "/tools" hub
+│   ├── csv-to-excel/      # page.tsx + components/
+│   └── excel-to-csv/      # page.tsx + components/
+└── components/            # shared components, one folder each (see 1.2)
+    ├── Navbar.tsx         # exception: flat file, no folder
+    ├── AnalyticsProvider.tsx   # fires page views
+    ├── SpreadsheetGrid/   # the grid: hooks split per concern + pure *Utils.ts
+    ├── CsvViewer/  Toolbar/  FilterDropdown/  UploadModal/  DownloadModal/
+    ├── ThemeProvider/  ThemeToggle/  Toast/  ToastAnalyticsProvider/
+    └── KeyboardShortcuts/ # provider + keys.ts (Keys enum) + utils.ts
+
+lib/                       # no React, no routes
+├── brand.ts               # SITE_URL, brand image paths, OG defaults
+├── theme.ts               # Theme enum, THEME_COOKIE_KEY
+├── analytics.ts           # Mixpanel: track, trackPageView, trackButtonClick, ...
+├── tools.ts               # registry of /tools entries (hub cards, sitemap)
+├── csvParser.ts  csvExporter.ts  sortUtils.ts  filterUtils.ts  clipboardUtils.ts
+├── xlsxImporter.ts  xlsxExporter.ts  zipFiles.ts  downloadFile.ts
+└── datasets/
+    ├── index.ts           # dataset registry — import each meta here
+    ├── categories.ts      # category list + path/redirect/static-param helpers
+    ├── types.ts  loadCsv.ts
+    └── <slug>/            # data.csv + meta.ts (one folder per dataset)
+
+__tests__/                 # mirrors the source path
+__mocks__/                 # jest module mocks
+public/                    # static assets, brand/, llms.txt
+```
+
+### Task → path
+
+| Task | Where |
+| --- | --- |
+| Add a route/page | `app/<route>/page.tsx` (Server Component + `metadata`) |
+| Add a page-only component | `app/<route>/components/` |
+| Add a shared component | `app/components/<Name>/` (`<Name>.tsx`, `hooks.ts`, `index.ts`) |
+| Add a pure util | `lib/<name>.ts` |
+| Add a dataset | `lib/datasets/<slug>/data.csv` + `meta.ts`, then register in `lib/datasets/index.ts` **and** add the slug to a category in `lib/datasets/categories.ts` |
+| Add a dataset category | `lib/datasets/categories.ts` |
+| Add a tool page | `lib/tools.ts` (registry) + `app/tools/<slug>/page.tsx` + `components/` |
+| Change colours / add a token | `app/globals.css` (tokens), `lib/theme.ts` (theme enum + cookie) |
+| Change per-section styling | `app/data/data-theme.css`, `app/tools/tools-theme.css`, `app/about/about.css` |
+| Add or rename an analytics event | `lib/analytics.ts` (single choke-point — never call `mixpanel` directly) |
+| Change page-view tracking | `app/components/AnalyticsProvider.tsx` |
+| Change site-wide SEO / icons / OG | `app/layout.tsx` metadata + `lib/brand.ts` |
+| Change per-page SEO | that route's `metadata` or `generateMetadata` in `page.tsx` |
+| Change the sitemap | `app/sitemap.ts` |
+| Change robots rules | No `app/robots.ts` exists. Indexing is set per page with `metadata.robots`. Add `app/robots.ts` if you need site-wide rules. |
+| Change JSON-LD | `app/components/DatasetJsonLd/jsonLdUtils.ts` (datasets), `app/tools/components/toolsJsonLd.ts` (tools) |
+| Change a keyboard shortcut | `app/components/KeyboardShortcuts/` (`keys.ts` holds the `Keys` enum) |
+| Add a URL redirect | `next.config.ts` → `getLegacyDatasetRedirects()` in `lib/datasets/categories.ts` |
+| Add a test | `__tests__/` at the mirrored path (`lib/x.ts` → `__tests__/lib/x.test.ts`) |
+| Add a static asset | `public/` (brand images in `public/brand/`) |
+
+Non-obvious points:
+
+- `app/components/Navbar.tsx` is a flat file, not a folder. It is the one exception.
+- Big components split behaviour across several hook files. See `app/components/SpreadsheetGrid/`. Follow that pattern instead of one huge `hooks.ts`.
+- `next.config.ts` loads through Next's require hook. Any file it imports must use relative imports only, never `@/`.
+- `lib/tools.ts` and `lib/datasets/categories.ts` feed the sitemap. A new tool or dataset appears in the sitemap only after you register it there.
+
 Let's dive into the guidelines.
 
 ## Guidelines

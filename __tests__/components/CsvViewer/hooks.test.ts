@@ -10,10 +10,26 @@ import {
   useCsvViewer,
 } from "@/app/components/CsvViewer/hooks";
 import { ToastProvider } from "@/app/components/Toast";
+import { downloadBlob } from "@/lib/downloadFile";
+import { track } from "@/lib/analytics";
+
+jest.mock("@/lib/downloadFile", () => ({ downloadBlob: jest.fn() }));
+jest.mock("@/lib/analytics", () => ({ track: jest.fn() }));
+
+const downloadBlobMock = downloadBlob as jest.MockedFunction<typeof downloadBlob>;
+const trackMock = track as jest.MockedFunction<typeof track>;
 
 beforeEach(() => {
   localStorage.clear();
+  downloadBlobMock.mockClear();
+  trackMock.mockClear();
 });
+
+/** Read back the text handed to the mocked `downloadBlob`. */
+async function lastDownloadedText(): Promise<string> {
+  const [blob] = downloadBlobMock.mock.calls.at(-1) ?? [];
+  return blob === undefined ? "" : blob.text();
+}
 
 /**
  * Helper to install a FileReader mock that deterministically resolves with the
@@ -383,6 +399,154 @@ describe("useCsvViewer", () => {
         { line: 0, message: "Could not read file" },
       ]);
       expect(result.current.csvData).toBeNull();
+    });
+  });
+
+  describe("handleFilePicked() with JSON", () => {
+    it("converts a .json file, turns on firstRowAsHeader, keeps the filename", async () => {
+      mockFileReaderWithText(
+        '[{"id":1,"name":"Ann","active":true,"note":null},{"id":2,"name":"Bob"}]',
+      );
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["ignored"], "data.json", { type: "application/json" })
+        );
+      });
+
+      expect(result.current.csvData).toEqual([
+        ["id", "name", "active", "note"],
+        ["1", "Ann", "true", ""],
+        ["2", "Bob", "", ""],
+      ]);
+      // JSON keys are a header by construction, so the toggle goes on.
+      expect(result.current.firstRowAsHeader).toBe(true);
+      // The filename keeps its real extension — nothing downstream needs .csv.
+      expect(result.current.fileName).toBe("data.json");
+      expect(localStorage.getItem(LS_KEY_FILE_NAME)).toBe("data.json");
+      expect(result.current.parseErrors).toEqual([]);
+      expect(result.current.isUploadOpen).toBe(false);
+      expect(trackMock).toHaveBeenCalledWith("Sheet Uploaded", {
+        format: "json",
+        rowCount: 3,
+        columnCount: 4,
+      });
+    });
+
+    it("blocks the upload and keeps the modal open on malformed JSON", async () => {
+      mockFileReaderWithText('[{"a":1},');
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["ignored"], "bad.json", { type: "application/json" })
+        );
+      });
+
+      expect(result.current.parseErrors).toHaveLength(1);
+      expect(result.current.parseErrors[0].message).toMatch(/^Invalid JSON: /);
+      expect(result.current.isUploadOpen).toBe(true);
+      expect(result.current.csvData).toBeNull();
+      expect(localStorage.getItem(LS_KEY_DATA)).toBeNull();
+      expect(trackMock).toHaveBeenCalledWith("Upload Rejected", {
+        format: "json",
+        errorCount: 1,
+      });
+    });
+
+    it("reports the JSON path of a shape that cannot become a sheet", async () => {
+      mockFileReaderWithText("[[1,2],[3,4]]");
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["ignored"], "matrix.json", { type: "application/json" })
+        );
+      });
+
+      expect(result.current.parseErrors[0].message).toContain("$[0]");
+      expect(result.current.csvData).toBeNull();
+    });
+
+    it("reports 'No data found' for an empty JSON array", async () => {
+      mockFileReaderWithText("[]");
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["ignored"], "empty.json", { type: "application/json" })
+        );
+      });
+
+      expect(result.current.parseErrors).toEqual([
+        { line: 0, message: "No data found" },
+      ]);
+      expect(result.current.csvData).toBeNull();
+    });
+
+    it("discards a stale JSON read that lands after a newer upload", async () => {
+      const pending = mockPendingFileReader('[{"stale":1}]');
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["ignored"], "slow.json", { type: "application/json" })
+        );
+      });
+
+      // A newer action invalidates the in-flight read.
+      act(() => {
+        result.current.handleStartBlank();
+      });
+      act(() => {
+        pending.finishRead();
+      });
+
+      expect(result.current.csvData).toEqual([]);
+    });
+
+    it("leaves firstRowAsHeader alone when a CSV is uploaded", async () => {
+      // Regression guard: the CSV path has never touched the toggle and must
+      // not start now that the JSON path sets it.
+      mockFileReaderWithText("Name,Age\nAlice,30");
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+
+      await waitFor(() => expect(result.current.isUploadOpen).toBe(true));
+
+      act(() => {
+        result.current.setFirstRowAsHeader(true);
+      });
+      act(() => {
+        result.current.handleFilePicked(
+          new File(["ignored"], "people.csv", { type: "text/csv" })
+        );
+      });
+
+      expect(result.current.csvData).not.toBeNull();
+      expect(result.current.firstRowAsHeader).toBe(true);
     });
   });
 
@@ -761,6 +925,199 @@ describe("useCsvViewer", () => {
     });
   });
 
+  describe("handleDownload()", () => {
+    const HEADER_ROW = ["id", "name"];
+    const VISIBLE_ROWS = [["1", "Ann"]];
+    const UNFILTERED_ROWS = [
+      ["1", "Ann"],
+      ["2", "Bob"],
+    ];
+
+    /**
+     * Mount the hook with a loaded sheet and a grid export state that has a
+     * header row and an active filter — the shape every download branch reads.
+     */
+    async function mountWithExportState() {
+      localStorage.setItem(LS_KEY_DATA, JSON.stringify(UNFILTERED_ROWS));
+      const { result } = renderHook(() => useCsvViewer(), {
+        wrapper: ToastProvider,
+      });
+      await waitFor(() => expect(result.current.csvData).toEqual(UNFILTERED_ROWS));
+
+      act(() => {
+        result.current.handleExportStateChange({
+          headerRow: HEADER_ROW,
+          visibleRows: VISIBLE_ROWS,
+          unfilteredRows: UNFILTERED_ROWS,
+          hasActiveFilter: true,
+        });
+      });
+
+      return result;
+    }
+
+    it("exposes canDownloadJson only while the grid reports a header row", async () => {
+      const result = await mountWithExportState();
+      expect(result.current.canDownloadJson).toBe(true);
+
+      act(() => {
+        result.current.handleExportStateChange({
+          headerRow: null,
+          visibleRows: VISIBLE_ROWS,
+          unfilteredRows: UNFILTERED_ROWS,
+          hasActiveFilter: false,
+        });
+      });
+
+      expect(result.current.canDownloadJson).toBe(false);
+    });
+
+    it("openDownloadFormat selects the given format, openDownload the csv one", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadFormat("json"));
+      expect(result.current.downloadFormat).toBe("json");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownloadFormat("tsv"));
+      expect(result.current.downloadFormat).toBe("tsv");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownloadFormat("psv"));
+      expect(result.current.downloadFormat).toBe("psv");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownloadFormat("ssv"));
+      expect(result.current.downloadFormat).toBe("ssv");
+      expect(result.current.isDownloadOpen).toBe(true);
+      act(() => result.current.closeDownload());
+
+      act(() => result.current.openDownload());
+      expect(result.current.downloadFormat).toBe("csv");
+    });
+
+    it("writes CSV with the header row prepended", async () => {
+      const result = await mountWithExportState();
+
+      act(() => {
+        result.current.handleDownload({ filename: "out.csv", format: "csv" });
+      });
+
+      expect(downloadBlobMock).toHaveBeenCalledTimes(1);
+      expect(downloadBlobMock.mock.calls[0][1]).toBe("out.csv");
+      expect(downloadBlobMock.mock.calls[0][0].type).toBe(
+        "text/csv;charset=utf-8"
+      );
+      await expect(lastDownloadedText()).resolves.toBe("id,name\n1,Ann");
+      expect(result.current.isDownloadOpen).toBe(false);
+    });
+
+    it("writes JSON keyed by the header row, without repeating it as a record", async () => {
+      const result = await mountWithExportState();
+
+      act(() => {
+        result.current.handleDownload({ filename: "out.json", format: "json" });
+      });
+
+      expect(downloadBlobMock.mock.calls[0][1]).toBe("out.json");
+      expect(downloadBlobMock.mock.calls[0][0].type).toBe(
+        "application/json;charset=utf-8"
+      );
+      expect(JSON.parse(await lastDownloadedText())).toEqual([
+        { id: "1", name: "Ann" },
+      ]);
+    });
+
+    it.each([
+      ["tsv", "out.tsv", "text/tab-separated-values;charset=utf-8", "id\tname\n1\tAnn"],
+      ["psv", "out.psv", "text/plain;charset=utf-8", "id|name\n1|Ann"],
+      ["ssv", "out.txt", "text/plain;charset=utf-8", "id name\n1 Ann"],
+    ] as const)(
+      "writes %s with the format's separator and the header row prepended",
+      async (format, filename, mimeType, expected) => {
+        const result = await mountWithExportState();
+
+        act(() => {
+          result.current.handleDownload({ filename, format });
+        });
+
+        expect(downloadBlobMock).toHaveBeenCalledTimes(1);
+        expect(downloadBlobMock.mock.calls[0][1]).toBe(filename);
+        expect(downloadBlobMock.mock.calls[0][0].type).toBe(mimeType);
+        await expect(lastDownloadedText()).resolves.toBe(expected);
+        expect(result.current.isDownloadOpen).toBe(false);
+      }
+    );
+
+    it("respects the scope chosen when the modal was opened", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadAllRows());
+      act(() => {
+        result.current.handleDownload({ filename: "out.csv", format: "csv" });
+      });
+
+      await expect(lastDownloadedText()).resolves.toBe("id,name\n1,Ann\n2,Bob");
+    });
+
+    it("exports the visible rows for JSON, matching the primary button's scope", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadFormat("json"));
+      act(() => {
+        result.current.handleDownload({ filename: "out.json", format: "json" });
+      });
+
+      expect(JSON.parse(await lastDownloadedText())).toEqual([
+        { id: "1", name: "Ann" },
+      ]);
+    });
+
+    it("exports the visible rows for a delimited format too, not every row", async () => {
+      const result = await mountWithExportState();
+
+      act(() => result.current.openDownloadFormat("tsv"));
+      act(() => {
+        result.current.handleDownload({ filename: "out.tsv", format: "tsv" });
+      });
+
+      // UNFILTERED_ROWS holds Bob as well; the visible scope must drop him.
+      await expect(lastDownloadedText()).resolves.toBe("id\tname\n1\tAnn");
+    });
+
+    it("quotes a cell holding the active separator, per format", async () => {
+      const result = await mountWithExportState();
+
+      act(() => {
+        result.current.handleExportStateChange({
+          headerRow: ["id", "city"],
+          visibleRows: [["1", "New York"]],
+          unfilteredRows: [["1", "New York"]],
+          hasActiveFilter: false,
+        });
+      });
+
+      act(() => {
+        result.current.handleDownload({ filename: "out.txt", format: "ssv" });
+      });
+      await expect(lastDownloadedText()).resolves.toBe(
+        'id city\n1 "New York"'
+      );
+
+      downloadBlobMock.mockClear();
+      act(() => {
+        result.current.handleDownload({ filename: "out.tsv", format: "tsv" });
+      });
+      // A space is not the TSV separator, so the same cell stays unquoted.
+      await expect(lastDownloadedText()).resolves.toBe(
+        "id\tcity\n1\tNew York"
+      );
+    });
+  });
+
   describe("handleCellChange()", () => {
     it("creates missing rows/cols and persists edits from blank state", async () => {
       const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
@@ -810,6 +1167,52 @@ describe("useCsvViewer", () => {
         ["a", "b"],
         ["changed", "d"],
       ]);
+    });
+
+    // An edit rebuilds state that flows all the way back into the grid, so it
+    // shares every row it did not touch and skips the write entirely when the
+    // value is unchanged (CSV-36).
+    it("copies only the edited row and shares the rest", async () => {
+      localStorage.setItem(
+        LS_KEY_DATA,
+        JSON.stringify([
+          ["a", "b"],
+          ["c", "d"],
+          ["e", "f"],
+        ])
+      );
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.csvData).not.toBeNull());
+      const before = result.current.csvData!;
+
+      act(() => {
+        result.current.handleCellChange(1, 0, "changed");
+      });
+
+      const after = result.current.csvData!;
+      expect(after).not.toBe(before);
+      expect(after[1]).not.toBe(before[1]);
+      expect(after[0]).toBe(before[0]);
+      expect(after[2]).toBe(before[2]);
+    });
+
+    it("leaves csvData untouched when the cell already holds that value", async () => {
+      localStorage.setItem(
+        LS_KEY_DATA,
+        JSON.stringify([
+          ["a", "b"],
+          ["c", "d"],
+        ])
+      );
+      const { result } = renderHook(() => useCsvViewer(), { wrapper: ToastProvider });
+      await waitFor(() => expect(result.current.csvData).not.toBeNull());
+      const before = result.current.csvData!;
+
+      act(() => {
+        result.current.handleCellChange(1, 1, "d");
+      });
+
+      expect(result.current.csvData).toBe(before);
     });
   });
 });

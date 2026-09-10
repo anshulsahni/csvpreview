@@ -1,4 +1,4 @@
-import { parseFiniteNumber } from "@/lib/sortUtils";
+import { parseFiniteNumber, textCollator } from "@/lib/sortUtils";
 
 export type NumericOperator = "=" | "!=" | "<" | "<=" | ">" | ">=";
 
@@ -21,9 +21,7 @@ export function getUniqueValues(
   for (const row of rows) {
     unique.add(normalizeCellValue(row, colIdx));
   }
-  return Array.from(unique).sort((a, b) =>
-    a.localeCompare(b, undefined, { sensitivity: "base" })
-  );
+  return Array.from(unique).sort(textCollator.compare);
 }
 
 export function matchesNumericFilter(
@@ -65,9 +63,12 @@ export function applyFiltersWithSourceIndices(
     return Number.isFinite(filter.value);
   });
 
+  // Both paths share the caller's rows rather than cloning them: the outer array
+  // is new, so callers still get a fresh list to sort, but a no-op re-filter of a
+  // large sheet no longer copies every cell. Rows are never mutated in place.
   if (activeEntries.length === 0) {
     return {
-      rows: rows.map((row) => row.slice()),
+      rows: rows.slice(),
       sourceIndices: [...sourceIndices],
     };
   }
@@ -85,7 +86,7 @@ export function applyFiltersWithSourceIndices(
     });
 
     if (matches) {
-      outRows.push(row.slice());
+      outRows.push(row);
       outSourceIndices.push(sourceIndices[i] ?? i);
     }
   }

@@ -50,7 +50,7 @@ Run every command from the repo root.
 
 Notes:
 
-- CI runs only `npm test -- --coverage` (`.github/workflows/test.yml`, Node 24). CI does not run lint, typecheck, or build. Run all three yourself before you open a PR.
+- CI runs tests, lint, and typecheck as three parallel jobs (`.github/workflows/test.yml`, Node 24). CI does not run `npm run build` — check the build yourself before you open a PR.
 - Lint passes today with 5 warnings and 0 errors. Do not add new warnings.
 - Jest 30 uses `--testPathPatterns` (plural). A plain file path also works and is simpler.
 - Jest config is `jest.config.ts`. Setup is `jest.setup.ts`. Mocks are in `__mocks__/`.

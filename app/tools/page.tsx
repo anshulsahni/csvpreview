@@ -3,6 +3,7 @@ import AboutNavbar from "@/app/about/components/AboutNavbar";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import { BRAND, brandOpenGraphImages, SITE_URL } from "@/lib/brand";
 import { tools } from "@/lib/tools";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import ToolsHubContent from "./components/ToolsHubContent";
 import { computeToolsHubJsonLd } from "./components/toolsJsonLd";
 
@@ -45,7 +46,7 @@ export default function ToolsHubPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
       />
       <AboutNavbar />
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Tools" }]} />

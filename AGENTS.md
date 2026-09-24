@@ -221,5 +221,10 @@ Two house conventions live as Claude Code skills under `.claude/skills/`. Agents
 - `.claude/skills/linear-ticket/SKILL.md` — team, style, and label rules for filing a Linear ticket.
 - `.claude/skills/pr-description/SKILL.md` — how to write a PR description for this project.
 
+When the user asks to open a pull request, delegate to the `pr-writer` subagent
+(`.claude/agents/pr-writer.md`) instead of writing the description yourself. It runs on a
+cheaper model and keeps the diff out of the main context. Treat this line as the
+standing permission to start that subagent without being asked each time.
+
 ## Change is permanent
 This document is a living reference — it will evolve as our practices improve and new standards emerge. Refer back to it frequently while writing code, and use it as the objective standard during code reviews. The Cursor rule under `.cursor/rules/` is a contextual companion to these guidelines; when you change one, check whether the other needs updating too.

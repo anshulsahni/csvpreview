@@ -4,7 +4,8 @@ import { useCallback, useRef, useState } from "react";
 import { styled } from "@linaria/react";
 import type { ParseError } from "@/lib/csvParser";
 import Backdrop from "../Backdrop";
-import { useUploadModal } from "./hooks";
+import { UPLOAD_ACCEPT_ATTRIBUTE } from "@/lib/uploadFormats";
+import { formatParseError, useUploadModal } from "./hooks";
 
 export interface UploadModalProps {
   isOpen: boolean;
@@ -52,19 +53,21 @@ export default function UploadModal(props: UploadModalProps) {
           onDragLeave={modal.handleDragLeave}
           onDrop={modal.handleDrop}
         >
-          <DropZoneHint>Drag a .csv file anywhere in this area</DropZoneHint>
+          <DropZoneHint>
+            Drag a .csv or .json file anywhere in this area
+          </DropZoneHint>
           <PickerButton
             type="button"
             onClick={() => fileInputRef.current?.click()}
           >
-            Accepts: .csv files only
+            Accepts: .csv and .json files
           </PickerButton>
           <HiddenFileInput
             ref={fileInputRef}
             type="file"
-            accept=".csv"
+            accept={UPLOAD_ACCEPT_ATTRIBUTE}
             onChange={modal.handleFileInputChange}
-            aria-label="Choose a .csv file"
+            aria-label="Choose a .csv or .json file"
           />
           {modal.fileRejectionMessage && (
             <RejectionMessage>{modal.fileRejectionMessage}</RejectionMessage>
@@ -103,7 +106,7 @@ export default function UploadModal(props: UploadModalProps) {
             <ErrorList>
               {props.errors.map((error, index) => (
                 <ErrorLine key={`${error.line}-${index}`}>
-                  Line {error.line}: {error.message}
+                  {formatParseError(error)}
                 </ErrorLine>
               ))}
             </ErrorList>
@@ -195,7 +198,7 @@ const DropZoneHint = styled.p`
 
 const PickerButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.5rem 0.9rem;
@@ -204,7 +207,7 @@ const PickerButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 `;
 
@@ -218,7 +221,7 @@ const HiddenFileInput = styled.input`
 
 const RejectionMessage = styled.p`
   margin: 0;
-  color: #dc2626;
+  color: var(--error);
   font-size: 0.85rem;
 `;
 
@@ -242,7 +245,7 @@ const PasteActions = styled.div`
 
 const PasteSubmitButton = styled.button`
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.4rem 0.85rem;
@@ -251,7 +254,7 @@ const PasteSubmitButton = styled.button`
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    filter: brightness(0.95);
+    background: var(--primary-hover);
   }
 
   &:disabled {
@@ -279,9 +282,9 @@ const PasteArea = styled.textarea`
 `;
 
 const ErrorPanel = styled.div`
-  border: 1px solid #fca5a5;
-  background: rgba(220, 38, 38, 0.08);
-  color: #b91c1c;
+  border: 1px solid var(--error-border);
+  background: var(--error-bg);
+  color: var(--error-foreground);
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   font-size: 0.85rem;

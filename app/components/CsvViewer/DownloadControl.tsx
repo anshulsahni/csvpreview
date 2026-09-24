@@ -1,91 +1,77 @@
 "use client";
 
-import { useState } from "react";
 import { styled } from "@linaria/react";
-import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
-import { Dropdown, DropdownItem } from "@/app/components/Dropdown";
-
-const ESCAPE_SHORTCUT = { primaryKey: Keys.Escape };
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownSeparator,
+} from "@/app/components/Dropdown";
+import type { DownloadFormat } from "@/lib/downloadFormats";
+import { useDownloadControl } from "./useDownloadControl";
 
 export interface DownloadControlProps {
   hasActiveFilter: boolean;
   selectedRowCount: number;
+  /** JSON needs a header row to key its objects by. */
+  canDownloadJson: boolean;
   onDownload: () => void;
   onDownloadAll: () => void;
   onDownloadSelected: () => void;
-}
-
-interface DownloadOption {
-  label: string;
-  action: () => void;
+  onDownloadFormat: (format: DownloadFormat) => void;
 }
 
 export default function DownloadControl({
   hasActiveFilter,
   selectedRowCount,
+  canDownloadJson,
   onDownload,
   onDownloadAll,
   onDownloadSelected,
+  onDownloadFormat,
 }: DownloadControlProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useKeyboardShortcuts(
-    ESCAPE_SHORTCUT,
-    () => setIsMenuOpen(false),
-    [],
-    { enabled: isMenuOpen }
-  );
-
-  // The primary button downloads the visible rows — the filtered set when a
-  // filter is active, otherwise every row. Extra scopes go in the dropdown.
-  const extraOptions: DownloadOption[] = [];
-  if (hasActiveFilter) {
-    extraOptions.push({ label: "Download all rows", action: onDownloadAll });
-  }
-  if (selectedRowCount > 0) {
-    extraOptions.push({
-      label: `Download selected ${selectedRowCount === 1 ? "row" : "rows"} (${selectedRowCount})`,
-      action: onDownloadSelected,
-    });
-  }
-
-  if (extraOptions.length === 0) {
-    return (
-      <SimpleButton type="button" onClick={onDownload}>
-        Download
-      </SimpleButton>
-    );
-  }
+  const control = useDownloadControl({
+    hasActiveFilter,
+    selectedRowCount,
+    canDownloadJson,
+    onDownloadAll,
+    onDownloadSelected,
+    onDownloadFormat,
+  });
 
   return (
-    <Split
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-          setIsMenuOpen(false);
-        }
-      }}
-    >
+    <Split onBlur={control.handleBlur}>
       <Primary type="button" onClick={onDownload}>
-        {hasActiveFilter ? "Download filtered rows" : "Download"}
+        {control.primaryLabel}
       </Primary>
       <Caret
         type="button"
         aria-label="More download options"
         aria-haspopup="menu"
-        aria-expanded={isMenuOpen}
-        onClick={() => setIsMenuOpen((prev) => !prev)}
+        aria-expanded={control.isMenuOpen}
+        onClick={control.toggleMenu}
       >
         <CaretIcon aria-hidden="true">▾</CaretIcon>
       </Caret>
-      {isMenuOpen && (
+      {control.isMenuOpen && (
         <Dropdown>
-          {extraOptions.map((option) => (
+          {control.extraOptions.map((option) => (
             <DropdownItem
-              key={option.label}
-              onClick={() => {
-                setIsMenuOpen(false);
-                option.action();
-              }}
+              key={option.scope}
+              onClick={() => control.handleOptionClick(option.scope)}
+            >
+              {option.label}
+            </DropdownItem>
+          ))}
+          {control.extraOptions.length > 0 && <DropdownSeparator />}
+          {/* `aria-disabled` rather than the native `disabled` attribute:
+              disabled buttons swallow mouse events, so the `title` explaining
+              *why* the option is unavailable would never surface on hover. */}
+          {control.formatOptions.map((option) => (
+            <DropdownItem
+              key={option.format}
+              aria-disabled={option.disabledReason !== undefined}
+              title={option.disabledReason}
+              onClick={() => control.handleFormatClick(option)}
             >
               {option.label}
             </DropdownItem>
@@ -95,20 +81,6 @@ export default function DownloadControl({
     </Split>
   );
 }
-
-const SimpleButton = styled.button`
-  background: transparent;
-  color: var(--foreground);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--subtle);
-  }
-`;
 
 const Split = styled.div`
   position: relative;
@@ -127,7 +99,7 @@ const Primary = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 
@@ -144,7 +116,7 @@ const Caret = styled.button`
   justify-content: center;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 

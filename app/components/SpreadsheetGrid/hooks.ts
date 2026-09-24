@@ -257,13 +257,31 @@ function computeViewModel(
   const activeFilterEntries = Object.entries(filters);
   const activeFilterCount = activeFilterEntries.length;
 
+  // Column type and unique values are only read by the filter dropdown, for the
+  // single column whose dropdown is open. Computing them for all `numCols`
+  // columns up front scanned (and locale-sorted) the whole sheet once per column
+  // on every edit, and threw nearly all of it away. They are computed on first
+  // ask instead and cached here — the cache lives as long as this view model, so
+  // it is discarded exactly when the data, header flag, sort or filters change.
   const columnTypeByIdx = new Map<number, "numeric" | "text">();
   const uniqueValuesByIdx = new Map<number, string[]>();
-  for (let ci = 0; ci < numCols; ci += 1) {
-    const values = bodyRows.map((row) => (row[ci] ?? "").trim());
-    columnTypeByIdx.set(ci, detectColumnType(values));
-    uniqueValuesByIdx.set(ci, getUniqueValues(bodyRows, ci));
-  }
+
+  const columnTypeFor = (colIdx: number): "numeric" | "text" => {
+    const cached = columnTypeByIdx.get(colIdx);
+    if (cached !== undefined) return cached;
+    // `detectColumnType` trims each value itself, so the column is read raw.
+    const type = detectColumnType(bodyRows.map((row) => row[colIdx] ?? ""));
+    columnTypeByIdx.set(colIdx, type);
+    return type;
+  };
+
+  const uniqueValuesFor = (colIdx: number): string[] => {
+    const cached = uniqueValuesByIdx.get(colIdx);
+    if (cached !== undefined) return cached;
+    const values = getUniqueValues(bodyRows, colIdx);
+    uniqueValuesByIdx.set(colIdx, values);
+    return values;
+  };
 
   const numRows = isEmpty
     ? MIN_ROWS
@@ -318,8 +336,8 @@ function computeViewModel(
     activeFilterCount,
     sourceRowIndexForDisplayRow,
     getSourceBodyIndexForDisplayRow,
-    columnTypeFor: (colIdx: number) => columnTypeByIdx.get(colIdx) ?? "text",
-    uniqueValuesFor: (colIdx: number) => uniqueValuesByIdx.get(colIdx) ?? [],
+    columnTypeFor,
+    uniqueValuesFor,
     columnDisplayName: (colIdx: number) =>
       getColumnDisplayName(firstRowAsHeader, headerRowCells, colIdx),
   };

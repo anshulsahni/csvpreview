@@ -11,9 +11,12 @@ function renderWithShortcuts(ui: ReactElement) {
 function EditableGridHarness({
   initialData,
   firstRowAsHeader = false,
+  onCommit,
 }: {
   initialData: string[][];
   firstRowAsHeader?: boolean;
+  /** Observes every commit the grid makes, for tests that count them. */
+  onCommit?: (rowIdx: number, colIdx: number, value: string) => void;
 }) {
   const [data, setData] = useState(initialData);
   return (
@@ -21,6 +24,7 @@ function EditableGridHarness({
       data={data}
       firstRowAsHeader={firstRowAsHeader}
       onCellChange={(rowIdx, colIdx, value) => {
+        onCommit?.(rowIdx, colIdx, value);
         setData((prev) => {
           const next = prev.map((row) => row.slice());
           while (next.length <= rowIdx) next.push([]);
@@ -385,5 +389,91 @@ describe("SpreadsheetGrid (render smoke)", () => {
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect((cellA1 as Element).textContent).toContain("Committed on click");
     expect(cellB2).toHaveAttribute("data-selected", "true");
+  });
+
+  // Rebuilding the sheet is O(rows) work all the way up to `csvData` (CSV-36),
+  // so leaving a cell untouched must not commit anything at all.
+  describe("leaving edit mode without a change", () => {
+    it("does not commit when the editor is opened and another cell is clicked", async () => {
+      const user = userEvent.setup();
+      const onCommit = jest.fn();
+      renderWithShortcuts(
+        <EditableGridHarness
+          initialData={[["A1", "B1"], ["A2", "B2"]]}
+          onCommit={onCommit}
+        />
+      );
+
+      const table = screen.getByRole("table");
+      const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+      const cellB2 = table.querySelector("tbody tr:nth-child(2) td:nth-child(4)");
+
+      await user.dblClick(cellA1 as Element);
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+      await user.click(cellB2 as Element);
+
+      expect(onCommit).not.toHaveBeenCalled();
+      expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+      expect((cellA1 as Element).textContent).toContain("A1");
+      expect(cellB2).toHaveAttribute("data-selected", "true");
+    });
+
+    it("does not commit when the editor is opened and Enter, Tab or Escape is pressed", async () => {
+      const user = userEvent.setup();
+      const onCommit = jest.fn();
+      renderWithShortcuts(
+        <EditableGridHarness initialData={[["A1", "B1"]]} onCommit={onCommit} />
+      );
+
+      const table = screen.getByRole("table");
+      const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+
+      for (const key of ["{enter}", "{tab}", "{escape}"]) {
+        await user.dblClick(cellA1 as Element);
+        await user.type(screen.getByRole("textbox"), key);
+        expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+      }
+
+      expect(onCommit).not.toHaveBeenCalled();
+      expect((cellA1 as Element).textContent).toContain("A1");
+    });
+
+    it("still commits once when the value is actually edited", async () => {
+      const user = userEvent.setup();
+      const onCommit = jest.fn();
+      renderWithShortcuts(
+        <EditableGridHarness initialData={[["A1", "B1"]]} onCommit={onCommit} />
+      );
+
+      const table = screen.getByRole("table");
+      const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+
+      await user.dblClick(cellA1 as Element);
+      const textarea = screen.getByRole("textbox");
+      await user.clear(textarea);
+      await user.type(textarea, "Changed{enter}");
+
+      expect(onCommit).toHaveBeenCalledTimes(1);
+      expect(onCommit).toHaveBeenCalledWith(0, 0, "Changed");
+      expect((cellA1 as Element).textContent).toContain("Changed");
+    });
+
+    it("does not commit when an edit is typed and then undone back to the original", async () => {
+      const user = userEvent.setup();
+      const onCommit = jest.fn();
+      renderWithShortcuts(
+        <EditableGridHarness initialData={[["A1", "B1"]]} onCommit={onCommit} />
+      );
+
+      const table = screen.getByRole("table");
+      const cellA1 = table.querySelector("tbody tr:nth-child(1) td:nth-child(3)");
+
+      await user.dblClick(cellA1 as Element);
+      const textarea = screen.getByRole("textbox");
+      await user.type(textarea, "X{backspace}{enter}");
+
+      expect(onCommit).not.toHaveBeenCalled();
+      expect((cellA1 as Element).textContent).toContain("A1");
+    });
   });
 });

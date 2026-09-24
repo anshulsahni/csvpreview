@@ -88,7 +88,7 @@ const CancelButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: var(--subtle);
+    background: var(--hover-surface);
   }
 `;
 

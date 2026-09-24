@@ -1,6 +1,7 @@
 import { act, renderHook, fireEvent } from "@testing-library/react";
 import React from "react";
 import {
+  formatParseError,
   useUploadModal,
   type UseUploadModalArgs,
 } from "@/app/components/UploadModal/hooks";
@@ -114,6 +115,56 @@ describe("useUploadModal", () => {
       expect(onFilePicked).toHaveBeenCalledWith(file);
     });
 
+    it("accepts a .json file on drop", () => {
+      const onFilePicked = jest.fn();
+      const { result } = renderHook(() =>
+        useUploadModal(makeArgs({ onFilePicked }))
+      );
+      const file = new File(['[{"a":1}]'], "data.json", {
+        type: "application/json",
+      });
+
+      act(() => {
+        result.current.handleDrop(makeDragEvent(file));
+      });
+
+      expect(onFilePicked).toHaveBeenCalledWith(file);
+      expect(result.current.fileRejectionMessage).toBeNull();
+    });
+
+    it("accepts .json extension even with an unhelpful mime type", () => {
+      const onFilePicked = jest.fn();
+      const { result } = renderHook(() =>
+        useUploadModal(makeArgs({ onFilePicked }))
+      );
+      const file = new File(["[]"], "MyData.JSON", {
+        type: "application/octet-stream",
+      });
+
+      act(() => {
+        result.current.handleDrop(makeDragEvent(file));
+      });
+
+      expect(onFilePicked).toHaveBeenCalledWith(file);
+    });
+
+    it("still rejects a format we do not parse", () => {
+      const onFilePicked = jest.fn();
+      const { result } = renderHook(() =>
+        useUploadModal(makeArgs({ onFilePicked }))
+      );
+      const file = new File(["x"], "book.xlsx", { type: "application/zip" });
+
+      act(() => {
+        result.current.handleDrop(makeDragEvent(file));
+      });
+
+      expect(onFilePicked).not.toHaveBeenCalled();
+      expect(result.current.fileRejectionMessage).toBe(
+        "Only .csv and .json files are accepted"
+      );
+    });
+
     it("rejects a non-csv file on drop, does not call onFilePicked, sets rejection message", () => {
       const onFilePicked = jest.fn();
       const { result } = renderHook(() =>
@@ -127,7 +178,7 @@ describe("useUploadModal", () => {
 
       expect(onFilePicked).not.toHaveBeenCalled();
       expect(result.current.fileRejectionMessage).toBe(
-        "Only .csv files are accepted"
+        "Only .csv and .json files are accepted"
       );
     });
 
@@ -150,7 +201,7 @@ describe("useUploadModal", () => {
       });
       expect(onFilePicked).not.toHaveBeenCalled();
       expect(result.current.fileRejectionMessage).toBe(
-        "Only .csv files are accepted"
+        "Only .csv and .json files are accepted"
       );
     });
   });
@@ -364,7 +415,7 @@ describe("useUploadModal", () => {
       expect(result.current.pastedText).toBe("hello");
       // handleDrop resets isDragging; rejection message should be set
       expect(result.current.fileRejectionMessage).toBe(
-        "Only .csv files are accepted"
+        "Only .csv and .json files are accepted"
       );
 
       rerender({ isOpen: false });
@@ -429,5 +480,20 @@ describe("useUploadModal", () => {
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
+  });
+});
+
+describe("formatParseError", () => {
+  it("prefixes the line when the error is tied to one", () => {
+    expect(formatParseError({ line: 3, message: "bad quote" })).toBe(
+      "Line 3: bad quote"
+    );
+  });
+
+  it("returns the bare message when there is no line", () => {
+    // JSON shape errors are located by path, not line, so they carry line 0.
+    expect(
+      formatParseError({ line: 0, message: "$[2].tags: nested arrays" })
+    ).toBe("$[2].tags: nested arrays");
   });
 });

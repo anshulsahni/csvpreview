@@ -9,6 +9,8 @@ import {
 } from "react";
 import { Keys, useKeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
 import { ModifierKeys } from "@/app/components/KeyboardShortcuts/keys";
+import type { ParseError } from "@/lib/csvParser";
+import { detectUploadFormat } from "@/lib/uploadFormats";
 
 export interface UseUploadModalArgs {
   isOpen: boolean;
@@ -37,7 +39,7 @@ export interface UseUploadModalReturn {
   handleCloseClick: () => void;
 }
 
-const NON_CSV_MESSAGE = "Only .csv files are accepted";
+const UNSUPPORTED_FILE_MESSAGE = "Only .csv and .json files are accepted";
 const SUBMIT_PASTE_SHORTCUT = {
   primaryKey: Keys.Enter,
   modifierKey: {
@@ -53,9 +55,24 @@ const SUBMIT_PASTE_ALTERNATE_SHORTCUT = {
   },
 };
 
-function isCsvFile(file: File): boolean {
-  if (file.type === "text/csv") return true;
-  return file.name.toLowerCase().endsWith(".csv");
+/**
+ * Render one parse error for the error panel.
+ *
+ * Not every error is tied to a line: JSON shape errors are located by JSON path
+ * instead, and "No data found" / "Could not read file" / "Paste area is empty"
+ * are not located at all. Those carry `line: 0`, and a `Line 0:` prefix reads
+ * like a bug, so it is dropped.
+ *
+ * Pure and exported for unit testing.
+ *
+ * @example
+ * ```typescript
+ * formatParseError({ line: 3, message: "bad quote" });  // "Line 3: bad quote"
+ * formatParseError({ line: 0, message: "No data found" });  // "No data found"
+ * ```
+ */
+export function formatParseError(error: ParseError): string {
+  return error.line > 0 ? `Line ${error.line}: ${error.message}` : error.message;
 }
 
 export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
@@ -115,8 +132,8 @@ export function useUploadModal(args: UseUploadModalArgs): UseUploadModalReturn {
 
   function validateAndSubmitFile(file: File | undefined | null) {
     if (!file) return;
-    if (!isCsvFile(file)) {
-      setFileRejectionMessage(NON_CSV_MESSAGE);
+    if (detectUploadFormat(file.name, file.type) === null) {
+      setFileRejectionMessage(UNSUPPORTED_FILE_MESSAGE);
       return;
     }
     setFileRejectionMessage(null);

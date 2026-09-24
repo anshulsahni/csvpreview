@@ -208,6 +208,50 @@ describe("computeSpreadsheetGridViewModel", () => {
     ]);
     expect(vm.sourceRowIndexForDisplayRow).toEqual([1, 0]);
   });
+
+  // These are computed on first ask rather than up front (CSV-36), so the
+  // accessors are what the filter dropdown relies on.
+  describe("column metadata accessors", () => {
+    const data = [
+      ["City", "Age"],
+      ["  NYC ", "30"],
+      ["LA", "22"],
+      ["nyc", ""],
+    ];
+
+    it("reports unique trimmed values for a column, ignoring the header row", () => {
+      const vm = computeSpreadsheetGridViewModel(data, true);
+      expect(vm.uniqueValuesFor(0)).toEqual(["LA", "NYC", "nyc"]);
+    });
+
+    it("detects the column type, treating blanks as unknown", () => {
+      const vm = computeSpreadsheetGridViewModel(data, true);
+      expect(vm.columnTypeFor(0)).toBe("text");
+      expect(vm.columnTypeFor(1)).toBe("numeric");
+    });
+
+    it("returns the same result on a second call for the same column", () => {
+      const vm = computeSpreadsheetGridViewModel(data, true);
+      expect(vm.uniqueValuesFor(0)).toEqual(vm.uniqueValuesFor(0));
+      expect(vm.columnTypeFor(1)).toBe(vm.columnTypeFor(1));
+    });
+
+    it("treats a column past the widest row as an all-blank text column", () => {
+      const vm = computeSpreadsheetGridViewModel(data, true);
+      expect(vm.uniqueValuesFor(5)).toEqual([""]);
+      expect(vm.columnTypeFor(5)).toBe("text");
+    });
+
+    it("reflects the active filter, not the whole sheet", () => {
+      const vm = computeSpreadsheetGridViewModel(data, true, null, {
+        1: { kind: "numeric", op: ">=", value: 30 },
+      });
+      // Unique values feed the dropdown's own checkbox list, so they stay based
+      // on every body row rather than the filtered view.
+      expect(vm.uniqueValuesFor(0)).toEqual(["LA", "NYC", "nyc"]);
+      expect(vm.bodyRows).toEqual([["  NYC ", "30"]]);
+    });
+  });
 });
 
 describe("useSortState", () => {

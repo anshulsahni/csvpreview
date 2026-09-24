@@ -42,8 +42,8 @@
   --border-strong: light-dark(var(--hairline-2), rgba(244, 239, 217, 0.18));
 
   --primary:     light-dark(var(--green-600), #8FD09A);
-  --primary-hover: light-dark(var(--green-700), #A6DCAE);
-  --on-primary:  var(--cream);
+  --primary-hover: light-dark(var(--green-700), #BFE8C6);
+  --on-primary:  light-dark(var(--cream), var(--ink));
 
   --secondary:   var(--mustard-600);
 

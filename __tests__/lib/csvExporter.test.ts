@@ -69,3 +69,23 @@ describe("exportCSV", () => {
     });
   });
 });
+
+describe("exportCSV with the other download separators", () => {
+  it("joins cells with a tab for TSV", () => {
+    expect(exportCSV([["a", "b"], ["c", "d"]], "\t")).toBe("a\tb\nc\td");
+  });
+
+  it("quotes a cell containing the active tab separator", () => {
+    expect(exportCSV([["a\tb", "c"]], "\t")).toBe('"a\tb"\tc');
+  });
+
+  it("leaves a tab unquoted when the separator is something else", () => {
+    expect(exportCSV([["a\tb", "c"]], "|")).toBe("a\tb|c");
+  });
+
+  it("quotes a cell containing the active space separator", () => {
+    expect(exportCSV([["New York", "8804190"]], " ")).toBe(
+      '"New York" 8804190'
+    );
+  });
+});

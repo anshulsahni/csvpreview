@@ -1,4 +1,5 @@
 import type { DatasetMeta } from "@/lib/datasets/types";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { computeDatasetJsonLd } from "./jsonLdUtils";
 
 export interface DatasetJsonLdProps {
@@ -21,7 +22,7 @@ export default function DatasetJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   );
 }

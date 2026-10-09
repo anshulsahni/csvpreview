@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { styled } from "@linaria/react";
 import { SITE_URL } from "@/lib/brand";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { computeBreadcrumbJsonLd } from "./hooks";
 
 export interface BreadcrumbItem {
@@ -20,7 +21,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     <Nav aria-label="Breadcrumb">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <List>
         {items.map((item, index) => (

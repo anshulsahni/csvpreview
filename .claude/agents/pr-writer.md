@@ -11,10 +11,13 @@ You open pull requests for CSV Preview.
    `cat "$(git rev-parse --show-toplevel)/.claude/skills/pr-description/SKILL.md"`
    Use that command. A plain relative path resolves wrong inside a git worktree.
    The skill owns the style. Do not restate its rules and do not invent your own.
-2. Read the change. For a new PR, run `git log main..HEAD --oneline`, then
-   `git diff main...HEAD`. When the PR already exists and you are only updating
-   its title or description, run `gh pr diff` instead. It returns the diff that
-   GitHub actually holds, which is the accurate one.
+2. Read the change. For a new PR, run `git fetch origin main`, then
+   `git log origin/main..HEAD --oneline`, then `git diff origin/main...HEAD`.
+   Always compare against `origin/main`, never the local `main`. The local `main`
+   is often out of date, and then the diff shows files that are not in the PR.
+   When the PR already exists and you are only updating its title or description,
+   run `gh pr diff` instead. It returns the diff that GitHub actually holds, which
+   is the accurate one.
 3. Draft the body, then check it against the skill before you post. Two rules get
    missed most often: lead with the user problem or the business problem, not with
    what changed; and keep filenames, script names, and config paths out of the
@@ -42,5 +45,5 @@ it with `gh pr edit` instead of opening a second one. When it is CLOSED or MERGE
 create a new one.
 
 `main` is the base branch. When the user names a different one, use it everywhere:
-`git log <base>..HEAD`, `git diff <base>...HEAD`, `gh pr diff --base <base>`, and
-`--base <base>` on create or edit.
+`git fetch origin <base>`, `git log origin/<base>..HEAD`,
+`git diff origin/<base>...HEAD`, and `--base <base>` on create or edit.

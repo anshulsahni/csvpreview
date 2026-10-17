@@ -1,0 +1,3 @@
+# Context for non-coding assistants (for example, a Claude project on the web).
+# Coding agents use AGENTS.md and the code instead.
+docs/PROJECT_CONTEXT.md

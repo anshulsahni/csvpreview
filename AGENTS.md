@@ -114,7 +114,7 @@ public/                    # static assets, brand/, llms.txt
 | Change site-wide SEO / icons / OG | `app/layout.tsx` metadata + `lib/brand.ts` |
 | Change per-page SEO | that route's `metadata` or `generateMetadata` in `page.tsx` |
 | Change the sitemap | `app/sitemap.ts` |
-| Change robots rules | No `app/robots.ts` exists. Indexing is set per page with `metadata.robots`. Add `app/robots.ts` if you need site-wide rules. |
+| Change robots rules | Site-wide crawler rules are defined in [`app/robots.ts`](app/robots.ts). Use `metadata.robots` for page-specific indexing rules.
 | Change JSON-LD | `app/components/DatasetJsonLd/jsonLdUtils.ts` (datasets), `app/tools/components/toolsJsonLd.ts` (tools) |
 | Change a keyboard shortcut | `app/components/KeyboardShortcuts/` (`keys.ts` holds the `Keys` enum) |
 | Add a URL redirect | `next.config.ts` → `getLegacyDatasetRedirects()` in `lib/datasets/categories.ts` |
@@ -127,6 +127,7 @@ Non-obvious points:
 - Big components split behaviour across several hook files. See `app/components/SpreadsheetGrid/`. Follow that pattern instead of one huge `hooks.ts`.
 - `next.config.ts` loads through Next's require hook. Any file it imports must use relative imports only, never `@/`.
 - `lib/tools.ts` and `lib/datasets/categories.ts` feed the sitemap. A new tool or dataset appears in the sitemap only after you register it there.
+- `docs/PROJECT_CONTEXT.md` is a project summary for non-coding assistants (for example, a Claude project on the web). Do not use it as context or as a source of truth. Use this file and the code. But when your change affects something it describes (features, stack, folders, dataset pages, SEO, decisions, limits, open questions), update the matching part of it in the same change, and update its "Last updated" date.
 
 Let's dive into the guidelines.
 

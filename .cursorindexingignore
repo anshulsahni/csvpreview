@@ -1,0 +1,4 @@
+# Summary for non-coding assistants (for example, a Claude project on the web).
+# Kept out of the search index so agents do not use it as context.
+# Agents can still open it to update it. See AGENTS.md.
+docs/PROJECT_CONTEXT.md

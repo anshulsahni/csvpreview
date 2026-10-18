@@ -114,7 +114,7 @@ public/                    # static assets, brand/, llms.txt
 | Change site-wide SEO / icons / OG | `app/layout.tsx` metadata + `lib/brand.ts` |
 | Change per-page SEO | that route's `metadata` or `generateMetadata` in `page.tsx` |
 | Change the sitemap | `app/sitemap.ts` |
-| Change robots rules | No `app/robots.ts` exists. Indexing is set per page with `metadata.robots`. Add `app/robots.ts` if you need site-wide rules. |
+| Change robots rules | Site-wide crawler rules are defined in [`app/robots.ts`](app/robots.ts). Use `metadata.robots` for page-specific indexing rules.
 | Change JSON-LD | `app/components/DatasetJsonLd/jsonLdUtils.ts` (datasets), `app/tools/components/toolsJsonLd.ts` (tools) |
 | Change a keyboard shortcut | `app/components/KeyboardShortcuts/` (`keys.ts` holds the `Keys` enum) |
 | Add a URL redirect | `next.config.ts` → `getLegacyDatasetRedirects()` in `lib/datasets/categories.ts` |

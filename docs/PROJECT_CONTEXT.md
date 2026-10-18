@@ -50,7 +50,7 @@ See also [`README.md`](../README.md) and the v0.1 user stories and wireframes in
 | Testing | Jest 30, React Testing Library, `jest-dom` |
 | Lint | ESLint 9 with `eslint-config-next` |
 | Hosting | Vercel (from the Vercel Analytics and Speed Insights packages) |
-| CI | GitHub Actions on Node 24: tests with coverage, lint, and typecheck run as three parallel jobs ([`.github/workflows/test.yml`](../.github/workflows/test.yml)). CI does not run the production build. |
+| CI | GitHub Actions on Node 24: tests with coverage, lint, and typecheck run as three parallel jobs ([`.github/workflows/test.yml`](../.github/workflows/test.yml)). CI does not run the production build. actionlint checks workflow files on PRs that change them. Claude reviews each Dependabot PR and adds a `deps: safe`, `deps: risky`, or `deps: breaks` label; it never approves. Every Monday at 6 AM IST, Claude fixes open Dependabot alerts and opens one PR. |
 
 All dependency versions are pinned exactly in [`package.json`](../package.json). The `overrides` block forces safe versions of some transitive packages to fix security alerts.
 
@@ -78,7 +78,7 @@ There is no `src/` folder. Code lives at the repo root.
 | [`__tests__/`](../__tests__/) | Tests. The folder layout mirrors the source layout. |
 | [`public/`](../public/) | Static files: brand images, `llms.txt`, IndexNow key file |
 | [`plans/`](../plans/), [`specs/`](../specs/), [`TASKS.md`](../TASKS.md), [`tasks.csv`](../tasks.csv) | Planning notes and the original build plan (see "Known limits") |
-| [`.claude/`](../.claude/), [`.cursor/`](../.cursor/) | Coding-agent config: a PR-writer agent, skills for Linear tickets and PR descriptions, Cursor rules |
+| [`.claude/`](../.claude/), [`.cursor/`](../.cursor/) | Coding-agent config: a PR-writer agent, dependency PR-reviewer and alert-fixer agents, skills for Linear tickets, PR descriptions, and dependency updates, Cursor rules |
 
 **Component pattern.** In each component folder, `<Name>.tsx` only renders, `hooks.ts` holds state, effects, and pure helpers for tests, and `index.ts` re-exports the public parts. Large components split behaviour into several hook files (see [`app/components/SpreadsheetGrid/`](../app/components/SpreadsheetGrid/)).
 

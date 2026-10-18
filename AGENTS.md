@@ -127,7 +127,7 @@ Non-obvious points:
 - Big components split behaviour across several hook files. See `app/components/SpreadsheetGrid/`. Follow that pattern instead of one huge `hooks.ts`.
 - `next.config.ts` loads through Next's require hook. Any file it imports must use relative imports only, never `@/`.
 - `lib/tools.ts` and `lib/datasets/categories.ts` feed the sitemap. A new tool or dataset appears in the sitemap only after you register it there.
-- `docs/PROJECT_CONTEXT.md` is a snapshot for non-coding assistants, not for coding agents. Do not read it or use it as a source of truth. Use this file and the code. Read or update it only when the user asks. It is blocked in `.claude/settings.json` and `.cursorignore`.
+- `docs/PROJECT_CONTEXT.md` is a project summary for non-coding assistants (for example, a Claude project on the web). Do not use it as context or as a source of truth. Use this file and the code. But when your change affects something it describes (features, stack, folders, dataset pages, SEO, decisions, limits, open questions), update the matching part of it in the same change, and update its "Last updated" date.
 
 Let's dive into the guidelines.
 

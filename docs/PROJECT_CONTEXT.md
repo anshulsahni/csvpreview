@@ -1,8 +1,18 @@
 # CSV Preview — Project Context
 
-> **Audience:** people and non-coding AI assistants (for example, a Claude project on the web) who need to understand the codebase without reading it.
-> **Not for coding agents.** Coding agents must use [`AGENTS.md`](../AGENTS.md) and the code itself. This file is excluded from them (see "About this file" at the end).
-> **Snapshot:** written on 2026-10-11, from `main` at commit `125a8f0`. File paths are relative to the repo root.
+---
+
+**Audience:** people and non-coding AI assistants (for example, a Claude project on the web) who need to understand the codebase without reading it.
+
+**Last updated:** 2026-10-18. File paths are relative to the repo root.
+
+[!IMPORTANT]
+
+**Coding agents (Claude Code, Cursor, Codex, Copilot, and others):**
+
+ - Do not use this file as context or as a source of truth. Use [`AGENTS.md`](../AGENTS.md) and the code.
+
+ - **Keep this file current.** When your change affects something this file describes, update the matching part in the same change, and update the "Last updated" date.
 
 ---
 
@@ -196,6 +206,5 @@ The home page, the about page, and the category pages have no JSON-LD of their o
 
 ## About this file
 
-- **Purpose.** This file passes current project context to non-coding assistants, such as a Claude project on claude.ai. To use it, upload or paste it into that project.
-- **Excluded from coding agents.** A deny rule in [`.claude/settings.json`](../.claude/settings.json) blocks Claude Code from reading it. [`.cursorignore`](../.cursorignore) hides it from Cursor. [`AGENTS.md`](../AGENTS.md) tells all other agents to ignore it.
-- **Updating.** This file is a snapshot. Rewrite it after large changes and update the "Snapshot" line.
+- **Purpose.** Upload or paste this file into a Claude project on claude.ai to give it current project context.
+- **Coding agents.** The note at the top and [`AGENTS.md`](../AGENTS.md) cover them. [`.cursorindexingignore`](../.cursorindexingignore) keeps this file out of Cursor's search index, but Cursor can still open it.

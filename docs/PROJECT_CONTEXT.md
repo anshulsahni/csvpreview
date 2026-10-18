@@ -14,7 +14,9 @@ The site has four parts:
 
 1. **The viewer** (`/`). The user opens a CSV or JSON file (file picker, drag and drop, or paste), or starts with a blank sheet. The user can pin the first row as a header, sort, filter (by value, text, or number), select ranges (with sum, average, min, max), edit cells, delete selected rows, copy, and download the sheet or a range as CSV, JSON, TSV, pipe-separated, or space-separated text. There are keyboard shortcuts and light, dark, and system themes. The sheet is saved in the browser's `localStorage`, so it survives a reload.
 
-2. **Free tools** (`/tools`). Two converters that also run fully in the browser. **CSV to Excel** merges one or many CSV files into one `.xlsx` file, or makes one file each. **Excel to CSV** turns each worksheet into a CSV, with a zip download for all of them.
+2. **Free tools** (`/tools`). Converters that also run fully in the browser:
+   - **CSV to Excel** (`/tools/csv-to-excel`): merges one or many CSV files into one `.xlsx` file, or makes one file each.
+   - **Excel to CSV** (`/tools/excel-to-csv`): turns each worksheet into a CSV, with a zip download for all of them.
 
 3. **Datasets** (`/data`). 43 curated CSV datasets in 9 categories (geography, transport, economics, history, food and drink, animals and nature, science, language and culture, architecture). Each dataset has its own page with a read-only grid and an "Open in editor" button. These pages are the main source of search traffic.
 

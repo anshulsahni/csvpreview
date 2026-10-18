@@ -1,0 +1,83 @@
+name: Dependency alert fix
+
+# Once a week, Claude fixes Dependabot alerts that have no Dependabot PR.
+# It pushes the deps/security-fixes branch and opens one PR. It never pushes to main.
+#
+# Setup:
+#   1. Make a fine-grained token for this repo only, with:
+#      Contents: read and write, Pull requests: read and write, Dependabot alerts: read.
+#      Save it as the Actions secret DEPENDENCY_BOT_TOKEN.
+#      A PR opened with the default GITHUB_TOKEN does not start the Tests workflow,
+#      so this job needs its own token.
+#   2. Save CLAUDE_CODE_OAUTH_TOKEN as an Actions secret (run `claude setup-token`).
+
+on:
+  schedule:
+    # Every Monday at 6:00 AM IST (00:30 UTC). GitHub reads cron times in UTC.
+    - cron: '30 0 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: dependency-alert-fix
+
+permissions:
+  contents: read
+
+env:
+  BRANCH: deps/security-fixes
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Skip when a fix PR is already open
+        id: open
+        env:
+          GH_TOKEN: ${{ secrets.DEPENDENCY_BOT_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: echo "count=$(gh pr list --head "$BRANCH" --state open --json number -q length)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.open.outputs.count == '0'
+        with:
+          token: ${{ secrets.DEPENDENCY_BOT_TOKEN }}
+          fetch-depth: 0
+
+      - name: Use Node.js 24.x
+        if: steps.open.outputs.count == '0'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: 'npm'
+
+      - name: Make the branch
+        if: steps.open.outputs.count == '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+      - name: Fix alerts with Claude
+        if: steps.open.outputs.count == '0'
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ secrets.DEPENDENCY_BOT_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.DEPENDENCY_BOT_TOKEN }}
+          prompt: |
+            You run in GitHub Actions in ${{ github.repository }}, on branch ${{ env.BRANCH }}.
+            1. Do job A (triage) from .claude/skills/dependency-updates/SKILL.md. Write the
+               repo name in full in the alerts call:
+               gh api "repos/${{ github.repository }}/dependabot/alerts?state=open" --paginate
+            2. Follow .claude/agents/dependency-alert-fixer.md for every alert that has no
+               open Dependabot PR. The worktree is the current directory. The repo owner
+               allows you to commit and push ${{ env.BRANCH }}.
+            3. When you pushed a commit, open the PR. Follow .claude/agents/pr-writer.md.
+            4. When there is nothing to fix, stop. Do not commit and do not open a PR.
+          claude_args: |
+            --model sonnet
+            --max-turns 80
+            --allowedTools "Read,Write,Edit,Grep,Glob,WebFetch,Bash(cat:*),Bash(grep:*),Bash(jq:*),Bash(npm:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git fetch:*),Bash(git branch:*),Bash(git rev-parse:*),Bash(git checkout -- package-lock.json),Bash(git add package.json package-lock.json),Bash(git commit:*),Bash(git push -u origin HEAD:refs/heads/deps/security-fixes),Bash(gh api repos/${{ github.repository }}/dependabot/alerts:*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(gh pr create:*)"

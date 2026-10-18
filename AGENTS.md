@@ -51,6 +51,7 @@ Run every command from the repo root.
 Notes:
 
 - CI runs tests, lint, and typecheck as three parallel jobs (`.github/workflows/test.yml`, Node 24). CI does not run `npm run build` — check the build yourself before you open a PR.
+- When a change touches `.github/workflows/`, CI also runs actionlint (`.github/workflows/actionlint.yml`). It checks workflow syntax and the shell scripts in `run:` steps. To run it locally, install actionlint and shellcheck, then run `actionlint` from the repo root.
 - Lint passes today with 5 warnings and 0 errors. Do not add new warnings.
 - Jest 30 uses `--testPathPatterns` (plural). A plain file path also works and is simpler.
 - Jest config is `jest.config.ts`. Setup is `jest.setup.ts`. Mocks are in `__mocks__/`.
@@ -214,12 +215,13 @@ This project ships with a real test suite — keep it green and grow it with the
 - **TypeScript:** the project is `strict`. Type component props and hook return shapes explicitly; avoid `any`.
 - **Imports:** use the `@/*` alias for cross-directory imports (`@/app/...`, `@/lib/...`) rather than long relative chains.
 
-## Workflow conventions (Linear tickets & PR descriptions)
+## Workflow conventions (Linear tickets, PR descriptions & dependency updates)
 
-Two house conventions live as Claude Code skills under `.claude/skills/`. Agents that don't auto-load skills should read the relevant `SKILL.md` directly before doing that work:
+Three house conventions live as Claude Code skills under `.claude/skills/`. Agents that don't auto-load skills should read the relevant `SKILL.md` directly before doing that work:
 
 - `.claude/skills/linear-ticket/SKILL.md` — team, style, and label rules for filing a Linear ticket.
 - `.claude/skills/pr-description/SKILL.md` — how to write a PR description for this project.
+- `.claude/skills/dependency-updates/SKILL.md` — how to triage Dependabot alerts, review upgrade PRs, and fix vulnerable packages. It uses the `dependency-pr-reviewer` and `dependency-alert-fixer` subagents. The same files drive the `Dependency PR review` and `Dependency alert fix` GitHub workflows.
 
 When the user asks to open a pull request, delegate to the `pr-writer` subagent
 (`.claude/agents/pr-writer.md`) instead of writing the description yourself. It runs on a

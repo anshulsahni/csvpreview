@@ -1,0 +1,28 @@
+name: Actionlint
+
+# Checks the syntax of every workflow file. Runners have shellcheck installed,
+# so actionlint also checks the shell scripts in each `run:` step.
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download actionlint
+        id: get_actionlint
+        run: bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.12/scripts/download-actionlint.bash) 1.7.12
+
+      - name: Run actionlint
+        run: ${{ steps.get_actionlint.outputs.executable }} -color

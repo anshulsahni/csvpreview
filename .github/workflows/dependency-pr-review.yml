@@ -1,0 +1,100 @@
+name: Dependency PR review
+
+# Claude reviews each Dependabot PR and returns a verdict.
+# A second job, with no Claude and no npm, adds the verdict label
+# (deps: safe, deps: risky, or deps: breaks) and posts the reasons as a comment.
+# Nothing here approves or merges. A person does both.
+#
+# Setup:
+#   Settings → Secrets and variables → Dependabot → add CLAUDE_CODE_OAUTH_TOKEN
+#   (run `claude setup-token` to get it). Dependabot runs cannot read Actions secrets.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+concurrency:
+  group: dependency-pr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: read
+      checks: read
+    outputs:
+      result: ${{ steps.claude.outputs.structured_output }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Review with Claude
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          allowed_bots: 'dependabot[bot]'
+          prompt: |
+            Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+            Follow .claude/agents/dependency-pr-reviewer.md step by step. You run in
+            GitHub Actions. The PR is checked out and installed in the current directory.
+            Put the full reply from that file in "summary".
+          claude_args: |
+            --model sonnet
+            --max-turns 40
+            --allowedTools "Read,Grep,Glob,WebFetch,Bash(cat:*),Bash(grep:*),Bash(git rev-parse:*),Bash(git log:*),Bash(git diff:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr checks:*),Bash(npm ls:*),Bash(npm explain:*),Bash(npm view:*),Bash(npm diff:*),Bash(npm run build)"
+            --json-schema '{"type":"object","properties":{"verdict":{"type":"string","enum":["SAFE","RISKY","BREAKS"]},"summary":{"type":"string"}},"required":["verdict","summary"]}'
+
+  label:
+    needs: review
+    if: always() && needs.review.result != 'skipped'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Label the PR with the verdict
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          RESULT: ${{ needs.review.outputs.result }}
+        run: |
+          verdict=$(jq -r '.verdict // "RISKY"' <<<"$RESULT" 2>/dev/null || echo RISKY)
+          case "$verdict" in
+            SAFE|RISKY|BREAKS) ;;
+            *) verdict=RISKY ;;
+          esac
+          if ! jq -re '.summary' <<<"$RESULT" > review.md 2>/dev/null; then
+            echo "The automated review did not finish. Review this PR by hand." > review.md
+          fi
+
+          gh label create "deps: safe" --color 0E8A16 --description "Dependency review: nothing in this repo breaks" --force
+          gh label create "deps: risky" --color FBCA04 --description "Dependency review: may affect this repo" --force
+          gh label create "deps: breaks" --color B60205 --description "Dependency review: found a break" --force
+
+          gh pr edit "$PR" --remove-label "deps: safe" --remove-label "deps: risky" --remove-label "deps: breaks" || true
+          gh pr edit "$PR" --add-label "deps: ${verdict,,}"
+          gh pr comment "$PR" --body-file review.md --edit-last --create-if-none

@@ -51,6 +51,7 @@ Run every command from the repo root.
 Notes:
 
 - CI runs tests, lint, and typecheck as three parallel jobs (`.github/workflows/test.yml`, Node 24). CI does not run `npm run build` — check the build yourself before you open a PR.
+- When a change touches `.github/workflows/`, CI also runs actionlint (`.github/workflows/actionlint.yml`). It checks workflow syntax and the shell scripts in `run:` steps. To run it locally, install actionlint and shellcheck, then run `actionlint` from the repo root.
 - Lint passes today with 5 warnings and 0 errors. Do not add new warnings.
 - Jest 30 uses `--testPathPatterns` (plural). A plain file path also works and is simpler.
 - Jest config is `jest.config.ts`. Setup is `jest.setup.ts`. Mocks are in `__mocks__/`.
@@ -114,7 +115,7 @@ public/                    # static assets, brand/, llms.txt
 | Change site-wide SEO / icons / OG | `app/layout.tsx` metadata + `lib/brand.ts` |
 | Change per-page SEO | that route's `metadata` or `generateMetadata` in `page.tsx` |
 | Change the sitemap | `app/sitemap.ts` |
-| Change robots rules | No `app/robots.ts` exists. Indexing is set per page with `metadata.robots`. Add `app/robots.ts` if you need site-wide rules. |
+| Change robots rules | Site-wide crawler rules are defined in [`app/robots.ts`](app/robots.ts). Use `metadata.robots` for page-specific indexing rules.
 | Change JSON-LD | `app/components/DatasetJsonLd/jsonLdUtils.ts` (datasets), `app/tools/components/toolsJsonLd.ts` (tools) |
 | Change a keyboard shortcut | `app/components/KeyboardShortcuts/` (`keys.ts` holds the `Keys` enum) |
 | Add a URL redirect | `next.config.ts` → `getLegacyDatasetRedirects()` in `lib/datasets/categories.ts` |
@@ -127,6 +128,7 @@ Non-obvious points:
 - Big components split behaviour across several hook files. See `app/components/SpreadsheetGrid/`. Follow that pattern instead of one huge `hooks.ts`.
 - `next.config.ts` loads through Next's require hook. Any file it imports must use relative imports only, never `@/`.
 - `lib/tools.ts` and `lib/datasets/categories.ts` feed the sitemap. A new tool or dataset appears in the sitemap only after you register it there.
+- `docs/PROJECT_CONTEXT.md` is a project summary for non-coding assistants (for example, a Claude project on the web). Do not use it as context or as a source of truth. Use this file and the code. But when your change affects something it describes (features, stack, folders, dataset pages, SEO, decisions, limits, open questions), update the matching part of it in the same change, and update its "Last updated" date.
 
 Let's dive into the guidelines.
 
@@ -214,12 +216,13 @@ This project ships with a real test suite — keep it green and grow it with the
 - **TypeScript:** the project is `strict`. Type component props and hook return shapes explicitly; avoid `any`.
 - **Imports:** use the `@/*` alias for cross-directory imports (`@/app/...`, `@/lib/...`) rather than long relative chains.
 
-## Workflow conventions (Linear tickets & PR descriptions)
+## Workflow conventions (Linear tickets, PR descriptions & dependency updates)
 
-Two house conventions live as Claude Code skills under `.claude/skills/`. Agents that don't auto-load skills should read the relevant `SKILL.md` directly before doing that work:
+Three house conventions live as Claude Code skills under `.claude/skills/`. Agents that don't auto-load skills should read the relevant `SKILL.md` directly before doing that work:
 
 - `.claude/skills/linear-ticket/SKILL.md` — team, style, and label rules for filing a Linear ticket.
 - `.claude/skills/pr-description/SKILL.md` — how to write a PR description for this project.
+- `.claude/skills/dependency-updates/SKILL.md` — how to triage Dependabot alerts, review upgrade PRs, and fix vulnerable packages. It uses the `dependency-pr-reviewer` and `dependency-alert-fixer` subagents. The same files drive the `Dependency PR review` and `Dependency alert fix` GitHub workflows.
 
 When the user asks to open a pull request, delegate to the `pr-writer` subagent
 (`.claude/agents/pr-writer.md`) instead of writing the description yourself. It runs on a

@@ -13,6 +13,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [main]
+    # GitHub cannot filter by PR author here, so the review job checks for
+    # Dependabot. This filter skips PRs that do not change dependencies.
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
 
 concurrency:
   group: dependency-pr-review-${{ github.event.pull_request.number }}

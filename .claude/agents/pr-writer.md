@@ -5,7 +5,7 @@ tools: Bash, Read, Grep, Glob
 model: sonnet
 ---
 
-You open pull requests for CSV Preview.
+You open pull requests.
 
 1. First, before any other command, read the house style:
    `cat "$(git rev-parse --show-toplevel)/.claude/skills/pr-description/SKILL.md"`

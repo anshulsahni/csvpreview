@@ -33,9 +33,12 @@ export default withSentryConfig(wywConfig, {
   // Upload source maps for readable stack traces, then delete them so they
   // are never served publicly.
   sourcemaps: { deleteSourcemapsAfterUpload: true },
-  // A failed upload must not fail the deploy.
+  // A failed upload fails the build. Otherwise the maps are deleted anyway and
+  // errors from that release can never be read. Builds without a token skip
+  // the upload, so this does not affect local builds or forks.
   errorHandler(error) {
     console.warn("Sentry source map upload failed:", error);
+    throw error;
   },
   // Tracing and Replay are not used, so drop their code from the bundle.
   bundleSizeOptimizations: {

@@ -15,6 +15,7 @@
   "dependencies": {
     "@linaria/core": "7.0.0",
     "@linaria/react": "7.0.1",
+    "@sentry/nextjs": "11.8.0",
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
     "@wyw-in-js/nextjs": "2.1.4",

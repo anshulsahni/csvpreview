@@ -4,7 +4,7 @@
 
 **Audience:** people and non-coding AI assistants (for example, a Claude project on the web) who need to understand the codebase without reading it.
 
-**Last updated:** 2026-10-18. File paths are relative to the repo root.
+**Last updated:** 2026-10-21. File paths are relative to the repo root.
 
 [!IMPORTANT]
 
@@ -18,7 +18,7 @@
 
 ## 1. What the product does
 
-CSV Preview is a free, privacy-first CSV viewer and editor at [csvpreview.com](https://csvpreview.com). All parsing, sorting, filtering, and editing happen in the user's browser. User data is never sent to a server. There are no accounts.
+CSV Preview is a free, privacy-first CSV viewer and editor at [csvpreview.com](https://csvpreview.com). All parsing, sorting, filtering, and editing happen in the user's browser. User data is never sent to a server. There are no accounts. When the app crashes, it sends an anonymous crash report to Sentry (error type and code location only, see decision 14).
 
 The site has four parts:
 
@@ -47,6 +47,7 @@ See also [`README.md`](../README.md) and the v0.1 user stories and wireframes in
 | Excel | `read-excel-file` (import) and `write-excel-file` (export) |
 | Zip | `fflate` |
 | Analytics | Mixpanel, Vercel Web Analytics, Vercel Speed Insights |
+| Error tracking | Sentry (`@sentry/nextjs`, free Developer plan), browser and server, errors only |
 | Testing | Jest 30, React Testing Library, `jest-dom` |
 | Lint | ESLint 9 with `eslint-config-next` |
 | Hosting | Vercel (from the Vercel Analytics and Speed Insights packages) |
@@ -54,7 +55,13 @@ See also [`README.md`](../README.md) and the v0.1 user stories and wireframes in
 
 All dependency versions are pinned exactly in [`package.json`](../package.json). The `overrides` block forces safe versions of some transitive packages to fix security alerts.
 
-The only environment variable is `NEXT_PUBLIC_MIXPANEL_TOKEN`. It is optional. Without it, Mixpanel turns itself off.
+All environment variables are optional. Without them, the matching feature turns itself off, and tests and builds still pass.
+
+| Variable | Used for |
+| --- | --- |
+| `NEXT_PUBLIC_MIXPANEL_TOKEN` | Mixpanel analytics |
+| `NEXT_PUBLIC_SENTRY_DSN` | Sentry error tracking. Without it, the SDK never starts and sends nothing. |
+| `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | Build only: upload source maps to Sentry. Without them, the build skips the upload. |
 
 ---
 
@@ -74,6 +81,8 @@ There is no `src/` folder. Code lives at the repo root.
 | [`app/about/`](../app/about/) | About page |
 | [`app/components/`](../app/components/) | Shared components, one folder each. Main ones: `CsvViewer` (the viewer screen), `SpreadsheetGrid` (the grid), `UploadModal`, `DownloadModal`, `FilterDropdown`, `Toolbar`, `KeyboardShortcuts`, `Toast`, `ThemeProvider`, `DatasetJsonLd`, `Breadcrumb` |
 | [`lib/`](../lib/) | Code with no React and no routes: parsers, exporters, sort and filter logic, format registries, analytics, brand constants, tool registry |
+| [`instrumentation-client.ts`](../instrumentation-client.ts), [`instrumentation.ts`](../instrumentation.ts) | Start Sentry in the browser and on the server |
+| [`app/error.tsx`](../app/error.tsx), [`app/global-error.tsx`](../app/global-error.tsx) | Error boundaries. They show the `ErrorFallback` screen instead of a blank page and report the error. |
 | [`lib/datasets/`](../lib/datasets/) | One folder per dataset (`data.csv` + `meta.ts`), plus the registry and the category list |
 | [`__tests__/`](../__tests__/) | Tests. The folder layout mirrors the source layout. |
 | [`public/`](../public/) | Static files: brand images, `llms.txt`, IndexNow key file |
@@ -169,6 +178,15 @@ The home page, the about page, and the category pages have no JSON-LD of their o
 12. **No "open the result in the viewer" button on the converter tools.** This is a product decision. Each converter returns its file and nothing more.
 
 13. **Strict dependency control.** Versions are pinned exactly, security alerts are fixed with `overrides`, and only named packages may run install scripts.
+
+14. **Error tracking with no user data** (CSV-42). Sentry on the free Developer plan (5k errors a month; extra errors are dropped, not billed). The Sentry SDK also works with Better Stack, Bugsink, and GlitchTip, so we can switch by changing the DSN. All Sentry calls go through [`lib/errorTracking.ts`](../lib/errorTracking.ts). [`lib/errorScrubber.ts`](../lib/errorScrubber.ts) cleans every event before it is sent:
+    - Error messages are replaced with `[redacted]` unless they match a short list of safe engine messages. Parser errors (PapaParse, `JSON.parse`) quote the user's data, so they are always redacted.
+    - No user, IP, cookies, headers, request bodies, query strings, local variables, or console and click breadcrumbs.
+    - At most 10 events per page load in the browser, and 30 a minute per server instance.
+    - No Session Replay, no performance tracing, and no session pings. The browser talks to Sentry only when an error happens.
+    - Events go through our own domain (`/relay`) so that ad blockers do not drop them.
+    - Source maps upload during the Vercel build and are deleted before deploy, so they are not public.
+    - Review the volume after 30 days. If it is above about 4k a month, move the DSN to Better Stack instead of paying for Sentry Team.
 
 ---
 

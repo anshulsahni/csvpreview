@@ -24,6 +24,7 @@ CSV Preview is a **privacy-first, browser-based CSV viewer & editor** — all pa
 - **Styling:** [Linaria](https://github.com/callstack/linaria) (`@linaria/react`) zero-runtime CSS-in-JS, with CSS custom properties for theme tokens.
 - **CSV parsing:** `papaparse`.
 - **Analytics:** Mixpanel + Vercel Analytics/Speed Insights.
+- **Error tracking:** Sentry (`@sentry/nextjs`), errors only, with all user data scrubbed.
 - **Testing:** Jest + React Testing Library + `@testing-library/jest-dom`.
 - **Path alias:** `@/*` maps to the repo root (e.g. `@/app/components/Navbar`, `@/lib/brand`).
 
@@ -55,13 +56,17 @@ Notes:
 - Lint passes today with 5 warnings and 0 errors. Do not add new warnings.
 - Jest 30 uses `--testPathPatterns` (plural). A plain file path also works and is simpler.
 - Jest config is `jest.config.ts`. Setup is `jest.setup.ts`. Mocks are in `__mocks__/`.
-- The only env var is `NEXT_PUBLIC_MIXPANEL_TOKEN`, and it is optional. Analytics turns itself off when the token is missing. Tests and builds need no `.env`.
+- All env vars are optional. Tests and builds need no `.env`.
+  - `NEXT_PUBLIC_MIXPANEL_TOKEN`: analytics turns itself off when it is missing.
+  - `NEXT_PUBLIC_SENTRY_DSN`: Sentry never starts when it is missing.
+  - `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`: build only, for the source-map upload. The build skips the upload when they are missing.
 
 ## Where code lives
 
 ```
 app/                       # routes + UI (App Router)
 ├── layout.tsx             # root layout: default metadata, theme cookie, providers
+├── error.tsx  global-error.tsx  # error boundaries → ErrorFallback, report to Sentry
 ├── page.tsx               # "/" — the CSV viewer
 ├── globals.css            # ALL design tokens (CSS custom properties)
 ├── sitemap.ts             # sitemap for every route
@@ -83,6 +88,8 @@ lib/                       # no React, no routes
 ├── brand.ts               # SITE_URL, brand image paths, OG defaults
 ├── theme.ts               # Theme enum, THEME_COOKIE_KEY
 ├── analytics.ts           # Mixpanel: track, trackPageView, trackButtonClick, ...
+├── errorTracking.ts       # Sentry init + captureError (single choke-point)
+├── errorScrubber.ts       # pure beforeSend/beforeBreadcrumb scrubbing + rate limiter
 ├── tools.ts               # registry of /tools entries (hub cards, sitemap)
 ├── csvParser.ts  csvExporter.ts  sortUtils.ts  filterUtils.ts  clipboardUtils.ts
 ├── xlsxImporter.ts  xlsxExporter.ts  zipFiles.ts  downloadFile.ts
@@ -112,6 +119,7 @@ public/                    # static assets, brand/, llms.txt
 | Change per-section styling | `app/data/data-theme.css`, `app/tools/tools-theme.css`, `app/about/about.css` |
 | Add or rename an analytics event | `lib/analytics.ts` (single choke-point — never call `mixpanel` directly) |
 | Change page-view tracking | `app/components/AnalyticsProvider.tsx` |
+| Change error tracking | `app/components/ErrorFallback/ERROR_HANDLING.md` (read first: how error handling works and how to test it), `lib/errorTracking.ts` (single choke-point — never call `Sentry` directly), `lib/errorScrubber.ts` (what is removed before sending), `instrumentation-client.ts` / `instrumentation.ts` (startup), `next.config.ts` (`withSentryConfig`) |
 | Change site-wide SEO / icons / OG | `app/layout.tsx` metadata + `lib/brand.ts` |
 | Change per-page SEO | that route's `metadata` or `generateMetadata` in `page.tsx` |
 | Change the sitemap | `app/sitemap.ts` |
@@ -127,6 +135,8 @@ Non-obvious points:
 - `app/components/Navbar.tsx` is a flat file, not a folder. It is the one exception.
 - Big components split behaviour across several hook files. See `app/components/SpreadsheetGrid/`. Follow that pattern instead of one huge `hooks.ts`.
 - `next.config.ts` loads through Next's require hook. Any file it imports must use relative imports only, never `@/`.
+- Never send user data to Sentry. An error message is redacted unless it matches the allowlist in `lib/errorScrubber.ts`. If you add a `throw new Error(...)` whose text is safe and useful, add it to `SAFE_APP_MESSAGES`. Never put cell values or file names in an error message.
+- Before you change error handling, read `app/components/ErrorFallback/ERROR_HANDLING.md`. Test with `CrashTestButton.tsx` in that folder, and turn it off again before you commit.
 - `lib/tools.ts` and `lib/datasets/categories.ts` feed the sitemap. A new tool or dataset appears in the sitemap only after you register it there.
 - `docs/PROJECT_CONTEXT.md` is a project summary for non-coding assistants (for example, a Claude project on the web). Do not use it as context or as a source of truth. Use this file and the code. But when your change affects something it describes (features, stack, folders, dataset pages, SEO, decisions, limits, open questions), update the matching part of it in the same change, and update its "Last updated" date.
 

@@ -61,7 +61,10 @@ export default function AboutContent() {
           <PrivacyText>
             Your data never leaves your browser. There are no accounts, no
             uploads, and no servers parsing your files. Everything happens on
-            your device, and you can clear it any time.
+            your device, and you can clear it any time. If the app crashes, we
+            send an anonymous crash report with the error type and the place in
+            our code where it broke. It never includes your data, file names,
+            or IP address.
           </PrivacyText>
           <PrivacyChips>
             <Chip>No uploads</Chip>

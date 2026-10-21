@@ -18,7 +18,7 @@
 
 ## 1. What the product does
 
-CSV Preview is a free, privacy-first CSV viewer and editor at [csvpreview.com](https://csvpreview.com). All parsing, sorting, filtering, and editing happen in the user's browser. User data is never sent to a server. There are no accounts. When the app crashes, it sends an anonymous crash report to Sentry (error type and code location only, see decision 14).
+CSV Preview is a free, privacy-first CSV viewer and editor at [csvpreview.com](https://csvpreview.com). All parsing, sorting, filtering, and editing happen in the user's browser. User data is never sent to a server. There are no accounts. When the app crashes, it sends an anonymous crash report to Sentry (error type and code location only, see decision 14). The server logs each page request (path, IP, user agent, country, and referrer host), but never file data (see decision 15).
 
 The site has four parts:
 
@@ -48,6 +48,7 @@ See also [`README.md`](../README.md) and the v0.1 user stories and wireframes in
 | Zip | `fflate` |
 | Analytics | Mixpanel, Vercel Web Analytics, Vercel Speed Insights |
 | Error tracking | Sentry (`@sentry/nextjs`, free Developer plan), browser and server, errors only |
+| Logging | In-house structured JSON logger in [`lib/logger/`](../lib/logger/), server only. It writes to the console, so logs show in Vercel runtime logs. |
 | Testing | Jest 30, React Testing Library, `jest-dom` |
 | Lint | ESLint 9 with `eslint-config-next` |
 | Hosting | Vercel (from the Vercel Analytics and Speed Insights packages) |
@@ -81,7 +82,9 @@ There is no `src/` folder. Code lives at the repo root.
 | [`app/about/`](../app/about/) | About page |
 | [`app/components/`](../app/components/) | Shared components, one folder each. Main ones: `CsvViewer` (the viewer screen), `SpreadsheetGrid` (the grid), `UploadModal`, `DownloadModal`, `FilterDropdown`, `Toolbar`, `KeyboardShortcuts`, `Toast`, `ThemeProvider`, `DatasetJsonLd`, `Breadcrumb` |
 | [`lib/`](../lib/) | Code with no React and no routes: parsers, exporters, sort and filter logic, format registries, analytics, brand constants, tool registry |
-| [`instrumentation-client.ts`](../instrumentation-client.ts), [`instrumentation.ts`](../instrumentation.ts) | Start Sentry in the browser and on the server |
+| [`instrumentation-client.ts`](../instrumentation-client.ts), [`instrumentation.ts`](../instrumentation.ts) | Start Sentry in the browser and on the server. `onRequestError` reports server errors to Sentry and also logs them. |
+| [`proxy.ts`](../proxy.ts) | Logs every request that reaches the server and passes a request ID to the route |
+| [`lib/logger/`](../lib/logger/) | Server-side JSON logger: core (no app imports), request logging helpers, and `getRequestLogger()` |
 | [`app/error.tsx`](../app/error.tsx), [`app/global-error.tsx`](../app/global-error.tsx) | Error boundaries. They show the `ErrorFallback` screen instead of a blank page and report the error. |
 | [`lib/datasets/`](../lib/datasets/) | One folder per dataset (`data.csv` + `meta.ts`), plus the registry and the category list |
 | [`__tests__/`](../__tests__/) | Tests. The folder layout mirrors the source layout. |
@@ -188,6 +191,13 @@ The home page, the about page, and the category pages have no JSON-LD of their o
     - Source maps upload during the Vercel build and are deleted before deploy, so they are not public.
     - Review the volume after 30 days. If it is above about 4k a month, move the DSN to Better Stack instead of paying for Sentry Team.
 
+15. **Our own server-side logger before a log platform** (step before CSV-41). A small JSON logger in [`lib/logger/`](../lib/logger/) with no dependencies. The core imports nothing from the app, so it can be open-sourced later. It is server only; Sentry covers the browser.
+    - One JSON line per record: `timestamp`, `level`, `message`, and `context`. Levels: `debug` in development, `info` in production, off in tests.
+    - [`proxy.ts`](../proxy.ts) logs every request except build assets, static files from `public/`, and the Sentry tunnel (`/relay`). It logs the method, the path without the query string, the request kind (full page load, client `fetch` such as a navigation or prefetch, server action, or other such as bots), user agent, country, referrer host, IP, and the Vercel request ID.
+    - The proxy passes its request ID to the route in the `x-request-id` header. `getRequestLogger()` reads it through `headers()`, so any server code can log with the request ID. AsyncLocalStorage cannot be used here, because the proxy can run apart from the render.
+    - Error messages go through the same allowlist as Sentry (`sanitizeMessage`), so user data in an error message is never logged.
+    - Logs go to the console for now. CSV-41 adds an Axiom transport without changing call sites.
+
 ---
 
 ## 7. Known limits
@@ -203,6 +213,8 @@ The home page, the about page, and the category pages have no JSON-LD of their o
 - **Planning docs are out of date.** [`TASKS.md`](../TASKS.md) and [`tasks.csv`](../tasks.csv) show cell editing, download, toolbar, and persistence as "To Do", but these features are live. Current work is tracked in Linear (team "Csvpreview").
 - **Agent guide drift.** [`AGENTS.md`](../AGENTS.md) says no `app/robots.ts` exists, but it was added in commit `f092d1c`.
 - **Style rule exceptions.** The dataset page uses inline styles instead of Linaria. The tool pages use the about page's navbar, not the shared one.
+- **Request logs have no status or duration.** The proxy runs before the route, so it cannot see the response. Only server errors carry an outcome (through `onRequestError`). The `next.config.ts` redirects run before the proxy, so the legacy `/data/{slug}` redirects are not logged.
+- **Short log retention.** Logs go only to Vercel runtime logs, which keep them for 1 hour on the Hobby plan, until CSV-41 adds Axiom.
 - **CI does not run `next build`.** A build error can reach `main` if the developer does not run the build on their own machine first.
 
 ---

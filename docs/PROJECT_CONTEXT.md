@@ -18,7 +18,7 @@
 
 ## 1. What the product does
 
-CSV Preview is a free, privacy-first CSV viewer and editor at [csvpreview.com](https://csvpreview.com). All parsing, sorting, filtering, and editing happen in the user's browser. User data is never sent to a server. There are no accounts. When the app crashes, it sends an anonymous crash report to Sentry (error type and code location only, see decision 14). The server logs each page request (path, IP, user agent, country, and referrer host), but never file data (see decision 15).
+CSV Preview is a free, privacy-first CSV viewer and editor at [csvpreview.com](https://csvpreview.com). All parsing, sorting, filtering, and editing happen in the user's browser. User data is never sent to a server. There are no accounts. When the app crashes, it sends an anonymous crash report to Sentry (error type and code location only, see decision 14).
 
 The site has four parts:
 

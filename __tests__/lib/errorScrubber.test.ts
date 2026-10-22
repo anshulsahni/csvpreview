@@ -166,6 +166,11 @@ describe("scrubBreadcrumb", () => {
     expect(scrubBreadcrumb({ message: "no category" })).toBeNull();
   });
 
+  it("drops server log lines, which hold IPs", () => {
+    const line = JSON.stringify({ level: "info", message: "Incoming request", context: { ip: "203.0.113.7" } });
+    expect(scrubBreadcrumb({ category: "console", level: "info", message: line })).toBeNull();
+  });
+
   it("keeps network breadcrumbs without the query or message", () => {
     expect(
       scrubBreadcrumb({

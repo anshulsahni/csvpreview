@@ -17,6 +17,7 @@ Use `CrashTestButton.tsx` (in this folder) to test both. Its code is commented o
 | `app/global-error.tsx` | Catches crashes in the root layout itself |
 | `lib/errorTracking.ts` | Starts Sentry. All Sentry calls go through it. |
 | `lib/errorScrubber.ts` | Removes user data from every event before it is sent |
+| `instrumentation.ts` | `onRequestError`: reports server errors to Sentry, then writes a log line |
 
 ## 1. Turn on the test button
 
@@ -67,6 +68,20 @@ You need a Sentry DSN for this.
 5. Optional: turn on an ad blocker (for example, uBlock Origin) and repeat. The event must still arrive.
 
 To check source maps and the release tag, run the same test on a Vercel preview deploy. That build has `SENTRY_AUTH_TOKEN`. The stack trace must point to `CrashTestButton.tsx`, and the release must be the commit SHA.
+
+## Server errors are also logged
+
+An error on the server (render, route handler, server action, or proxy) also writes one JSON line to the server log, through `lib/logger/requestLog.ts`:
+
+```json
+{"timestamp":"…","level":"error","message":"Request failed","context":{"env":"production","requestId":"…","method":"GET","path":"/","routePath":"/","routeType":"render","renderSource":"server-rendering","error":{"name":"Error","message":"[redacted]","stack":"…","digest":"…"}}}
+```
+
+- `requestId` matches the `Incoming request` line that `proxy.ts` wrote for the same request.
+- The error message uses the same allowlist as Sentry.
+- Sentry is called first, so a logging bug can never stop the report.
+
+`CrashTestButton` crashes the page in the browser, so it does not write this line. To see it, throw an error in a Server Component (for example, at the top of `app/about/page.tsx`), run `npm run dev`, open the page, and check the terminal. Remove the throw before you commit.
 
 ## 4. Test with no DSN
 

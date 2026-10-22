@@ -1,8 +1,10 @@
 <!-- BEGIN:nextjs-agent-rules -->
 
-# Next.js: ALWAYS read docs before coding
+## This is NOT the Next.js you know
 
-Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`. Your training data is outdated — the docs are the source of truth.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
 
@@ -25,6 +27,7 @@ CSV Preview is a **privacy-first, browser-based CSV viewer & editor** — all pa
 - **CSV parsing:** `papaparse`.
 - **Analytics:** Mixpanel + Vercel Analytics/Speed Insights.
 - **Error tracking:** Sentry (`@sentry/nextjs`), errors only, with all user data scrubbed.
+- **Logging:** in-house structured JSON logger (`lib/logger/`), server only. `proxy.ts` logs every request.
 - **Testing:** Jest + React Testing Library + `@testing-library/jest-dom`.
 - **Path alias:** `@/*` maps to the repo root (e.g. `@/app/components/Navbar`, `@/lib/brand`).
 
@@ -60,6 +63,7 @@ Notes:
   - `NEXT_PUBLIC_MIXPANEL_TOKEN`: analytics turns itself off when it is missing.
   - `NEXT_PUBLIC_SENTRY_DSN`: Sentry never starts when it is missing.
   - `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`: build only, for the source-map upload. The build skips the upload when they are missing.
+  - The logger reads only `NODE_ENV` and needs no setup.
 
 ## Where code lives
 
@@ -90,6 +94,11 @@ lib/                       # no React, no routes
 ├── analytics.ts           # Mixpanel: track, trackPageView, trackButtonClick, ...
 ├── errorTracking.ts       # Sentry init + captureError (single choke-point)
 ├── errorScrubber.ts       # pure beforeSend/beforeBreadcrumb scrubbing + rate limiter
+├── logger/                # server-side JSON logger (single choke-point)
+│   ├── index.ts           # the app `logger` + public exports
+│   ├── createLogger.ts  serialize.ts  transports.ts  types.ts  # core: no app imports
+│   ├── requestLog.ts      # request fields, REQUEST_ID_HEADER, logRequestError
+│   └── getRequestLogger.ts  # logger with the current request ID
 ├── tools.ts               # registry of /tools entries (hub cards, sitemap)
 ├── csvParser.ts  csvExporter.ts  sortUtils.ts  filterUtils.ts  clipboardUtils.ts
 ├── xlsxImporter.ts  xlsxExporter.ts  zipFiles.ts  downloadFile.ts
@@ -102,6 +111,8 @@ lib/                       # no React, no routes
 __tests__/                 # mirrors the source path
 __mocks__/                 # jest module mocks
 public/                    # static assets, brand/, llms.txt
+proxy.ts                   # logs every request, sets x-request-id
+instrumentation.ts         # starts Sentry; onRequestError → Sentry + log
 ```
 
 ### Task → path
@@ -119,7 +130,9 @@ public/                    # static assets, brand/, llms.txt
 | Change per-section styling | `app/data/data-theme.css`, `app/tools/tools-theme.css`, `app/about/about.css` |
 | Add or rename an analytics event | `lib/analytics.ts` (single choke-point — never call `mixpanel` directly) |
 | Change page-view tracking | `app/components/AnalyticsProvider.tsx` |
-| Change error tracking | `app/components/ErrorFallback/ERROR_HANDLING.md` (read first: how error handling works and how to test it), `lib/errorTracking.ts` (single choke-point — never call `Sentry` directly), `lib/errorScrubber.ts` (what is removed before sending), `instrumentation-client.ts` / `instrumentation.ts` (startup), `next.config.ts` (`withSentryConfig`) |
+| Change error tracking | `app/components/ErrorFallback/ERROR_HANDLING.md` (read first: how error handling works and how to test it), `lib/errorTracking.ts` (single choke-point — never call `Sentry` directly), `lib/errorScrubber.ts` (what is removed before sending), `instrumentation-client.ts` / `instrumentation.ts` (startup; `onRequestError` also writes a log line), `next.config.ts` (`withSentryConfig`) |
+| Log something on the server | `import { logger } from "@/lib/logger"`, or `await getRequestLogger()` from `@/lib/logger/getRequestLogger` to include the request ID |
+| Change request logging | `proxy.ts` (matcher), `lib/logger/requestLog.ts` (logged fields) |
 | Change site-wide SEO / icons / OG | `app/layout.tsx` metadata + `lib/brand.ts` |
 | Change per-page SEO | that route's `metadata` or `generateMetadata` in `page.tsx` |
 | Change the sitemap | `app/sitemap.ts` |
@@ -136,6 +149,11 @@ Non-obvious points:
 - Big components split behaviour across several hook files. See `app/components/SpreadsheetGrid/`. Follow that pattern instead of one huge `hooks.ts`.
 - `next.config.ts` loads through Next's require hook. Any file it imports must use relative imports only, never `@/`.
 - Never send user data to Sentry. An error message is redacted unless it matches the allowlist in `lib/errorScrubber.ts`. If you add a `throw new Error(...)` whose text is safe and useful, add it to `SAFE_APP_MESSAGES`. Never put cell values or file names in an error message.
+- The logger is server only. Never import `@/lib/logger` in a client component; browser errors go to Sentry.
+- Never log cell values, file names, or pasted text. Error messages in logs pass through the same allowlist as Sentry (`sanitizeMessage`).
+- `logger.error` writes a log line only; it does not report to Sentry. Use `captureError` from `lib/errorTracking.ts` for that.
+- Keep `/relay` (the Sentry tunnel route) out of the `proxy.ts` matcher.
+- Keep the logger core (`createLogger.ts`, `serialize.ts`, `transports.ts`, `types.ts`) free of app and Next imports, so it can be open-sourced.
 - Before you change error handling, read `app/components/ErrorFallback/ERROR_HANDLING.md`. Test with `CrashTestButton.tsx` in that folder, and turn it off again before you commit.
 - `lib/tools.ts` and `lib/datasets/categories.ts` feed the sitemap. A new tool or dataset appears in the sitemap only after you register it there.
 - `docs/PROJECT_CONTEXT.md` is a project summary for non-coding assistants (for example, a Claude project on the web). Do not use it as context or as a source of truth. Use this file and the code. But when your change affects something it describes (features, stack, folders, dataset pages, SEO, decisions, limits, open questions), update the matching part of it in the same change, and update its "Last updated" date.
@@ -206,7 +224,7 @@ app/components/SpreadsheetGrid
 ### 1.4 Non-UI code (`lib/`)
 Anything that isn't a route or a React component lives under `lib/`, organized by nature:
 - **Pure logic / utilities** — e.g. `lib/csvParser.ts`, `lib/filterUtils.ts`, `lib/sortUtils.ts`. Keep these framework-agnostic and easily unit-testable.
-- **Services** — small focused integrations used across the app, e.g. `lib/analytics.ts` (Mixpanel). These are the "mini frameworks" of the app.
+- **Services** — small focused integrations used across the app, e.g. `lib/analytics.ts` (Mixpanel), `lib/logger/` (server logs). These are the "mini frameworks" of the app.
 - **Data** — bundled datasets under `lib/datasets/<slug>/` (`data.csv` + `meta.ts`), registered through `lib/datasets/index.ts`. Add new datasets by following the existing slug-folder pattern and wiring them into the index.
 - **Shared constants/config** — e.g. `lib/brand.ts`, `lib/theme.ts`.
 
